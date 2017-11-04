@@ -30,8 +30,6 @@ router.post('/user', function (req, res) {
     })
 });
 
-router.delete('/user', function (req, res) {
-    console.log('aaaa')
-});
+
 
 module.exports = router;
