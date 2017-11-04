@@ -5,8 +5,7 @@ var User = require('../models/user');
 
 router.get('/user', function (req, res) {
     var username = 'a';
-
-    var aaaa = 'aaa';
+    var aaaa = 'aaaaaa';
     User.get(username, function (err, user) {
         if(err){
             res.send("test1")
