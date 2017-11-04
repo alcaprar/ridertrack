@@ -29,3 +29,5 @@ server.listen(config.port, function () {
     console.log(
         'Server listening on port: ' + config.port);
 });
+
+module.exports = server;

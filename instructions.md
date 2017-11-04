@@ -5,7 +5,7 @@ The first thing you should be able to install is docker.
 It may be tricky so if you encounter a problem and you find the solution please post it here in order to help the other.
 
 ## Node
-You need to have Node.js installed at least version 6.
+You need to have Node.js installed. Latest LTS Version: 8.9.0 (includes npm 5.5.1).
 After you have installed try to run in the terminal "node -v". It should reply with a version number.
 Try also "npm -v" and it should also reply with a version number.
 
