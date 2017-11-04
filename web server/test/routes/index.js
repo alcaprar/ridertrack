@@ -12,11 +12,12 @@ global.uuid = uuid;
 global.expect = chai.expect;
 global.request = supertest(server);
 
-
-
 describe('API tests', function () {
     // this will run before every test to clear the database
     // TODO clear database
+    before(function (done) {
+        done()
+    });
 
     describe('GET /', function () {
         it('it should return the home page', function (done) {
@@ -27,7 +28,10 @@ describe('API tests', function () {
                 })
         })
     });
-    
-    // it stops the server and finishes the tests
-    server.close();
+
+    // it closes the server at the end
+    after(function (done) {
+        server.close();
+        done()
+    });
 });
