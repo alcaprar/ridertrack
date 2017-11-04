@@ -1,8 +1,15 @@
 var express = require('express');
 var router = express.Router();
 
-router.get('/', function (req, res) {
-    res.send('Ciao, it works!')
+// require user endpoints
+var userRouter = require('./user');
+router.use(userRouter);
+
+router.use(require('./event'));
+
+
+router.get('*', function (req, res) {
+    // send the angular app
 });
 
 module.exports = router;
