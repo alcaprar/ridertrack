@@ -29,17 +29,6 @@ userSchema.pre('save', function(next) {
 // attach passport plugin to handle registration and login
 userSchema.plugin(passportLocalMongoose);
 
-
-userSchema.static.createUser = function (data, callback) {
-    var user = new User();
-    
-    user.save(function (err, user) {
-        callback(err, user)
-    })
-};
-
-
-
 var User = mongoose.model('User', userSchema);
 
 module.exports = User;

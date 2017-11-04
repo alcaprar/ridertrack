@@ -3,33 +3,30 @@ var router = express.Router();
 
 var User = require('../models/user');
 
-router.get('/user', function (req, res) {
-    var username = 'a';
-
-    var aaaa = 'aaa';
-    User.get(username, function (err, user) {
-        if(err){
-            res.send("test1")
-        }else{
-            res.send("test2");
-        }
-    })
-});
-
-router.post('/user', function (req, res) {
-    var data = {};
+// it returns the list of users
+router.get('/users', function (req, res) {
     
-    User.createUser(data, function (err, user) {
-        if(err){
-            res.send('User NOT created.')
-        }else{
-            res.send({
-                
-            })
-        }
-    })
+});
+
+// it returns the user requested
+router.get('/users/:userId', function (req, res) {
+    
+});
+
+// it creates the user passed in the request
+router.post('/users', function (req, res) {
+
 });
 
 
+// it updates the fields passed in the request
+router.put('/users/:userId', function (req, res) {
+    
+});
+
+// it deletes the requested user
+router.delete('/users/:userId', function (req, res) {
+    
+});
 
 module.exports = router;
