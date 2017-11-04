@@ -11,3 +11,5 @@ router.use(require('./event'));
 router.get('*', function (req, res) {
     // send the angular app
 });
+
+module.exports = router;
