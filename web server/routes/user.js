@@ -5,16 +5,13 @@ var User = require('../models/user');
 
 router.get('/user', function (req, res) {
     var username = 'a';
+
+    var aaaa = 'aaa';
     User.get(username, function (err, user) {
         if(err){
-            res.send({
-                type: 'blabla',
-                message: 'asdasdasd'
-            })
+            res.send("test1")
         }else{
-            res.send({
-                username: 'blabla'
-            });
+            res.send("test2");
         }
     })
 });
@@ -34,7 +31,7 @@ router.post('/user', function (req, res) {
 });
 
 router.delete('/user', function (req, res) {
-    
+    console.log('aaaa')
 });
 
 module.exports = router;
