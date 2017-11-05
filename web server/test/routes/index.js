@@ -13,7 +13,6 @@ global.expect = chai.expect;
 global.request = supertest(server);
 
 
-
 describe('API tests', function () {
     // this will run before every test to clear the database
     // TODO clear database
