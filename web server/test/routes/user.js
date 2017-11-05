@@ -30,8 +30,10 @@ describe('User API tests', function () {
             request.get('/users')
                 .end(function (err, res) {
                     expect(res.status).to.be.eql(200);
-                    expect(res.body).to.be.an('array');
-                    expect(res.body.length).to.be.eql(0);
+                    expect(res.body).to.be.an('object');
+                    expect(res.body.status).to.be.eql('success');
+                    expect(res.body.users).to.be.an('array');
+                    expect(res.body.users.length).to.be.eql(0);
                     done();
                 })
         })
@@ -77,8 +79,10 @@ describe('User API tests', function () {
             request.get('/users')
                 .end(function (err, res) {
                     expect(res.status).to.be.eql(200);
-                    expect(res.body).to.be.an('array');
-                    expect(res.body.length).to.be.eql(0);
+                    expect(res.body).to.be.an('object');
+                    expect(res.body.status).to.be.eql('success');
+                    expect(res.body.users).to.be.an('array');
+                    expect(res.body.users.length).to.be.eql(0);
                     done();
                 })
         });
@@ -107,11 +111,15 @@ describe('User API tests', function () {
             request.get('/users')
                 .end(function (err, res) {
                     expect(res.status).to.be.eql(200);
-                    expect(res.body).to.be.an('array');
-                    expect(res.body.length).to.be.eql(1);
+                    expect(res.body).to.be.an('object');
+                    expect(res.body.status).to.be.eql('success');
+                    expect(res.body.users).to.be.an('array');
+                    expect(res.body.users.length).to.be.eql(1);
                     done();
                 })
         });
+        
+        var organizerId;
 
         it('it should add an organizer', function (done) {
             let user = {
@@ -129,6 +137,83 @@ describe('User API tests', function () {
                     expect(res.body).to.be.an('object');
                     expect(res.body).to.not.have.property('errors');
                     expect(res.body).to.have.property('user');
+                    
+                    organizerId = res.body.user._id;
+                    
+                    done()
+                })
+        });
+
+        it('it should return a list with two object', function (done) {
+            request.get('/users')
+                .end(function (err, res) {
+                    expect(res.status).to.be.eql(200);
+                    expect(res.body).to.be.an('object');
+                    expect(res.body.status).to.be.eql('success');
+                    expect(res.body.users).to.be.an('array');
+                    expect(res.body.users.length).to.be.eql(2);
+                    done();
+                })
+        });
+
+        it('it should update the name of an organizer', function (done) {
+            let user = {
+                name: 'organzer2'
+            };
+            
+            request.put('/users/' + organizerId)
+                .send(user)
+                .end(function (err, res) {
+                    expect(res.status).to.be.eql(200);
+                    expect(res.body).to.be.an('object');
+                    expect(res.body).to.not.have.property('errors');
+                    expect(res.body).to.have.property('user');
+                    done()
+                })
+        });
+
+        it('it should NOT update the role of an organizer', function (done) {
+            let user = {
+                role: 'participant'
+            };
+
+            request.put('/users/' + organizerId)
+                .send(user)
+                .end(function (err, res) {
+                    expect(res.status).to.be.eql(200);
+                    expect(res.body).to.be.an('object');
+                    expect(res.body).to.have.property('errors');
+                    done()
+                })
+        });
+
+        it('it should NOT update the email of an organizer', function (done) {
+            let user = {
+                email: 'email'
+            };
+
+            request.put('/users/' + organizerId)
+                .send(user)
+                .end(function (err, res) {
+                    expect(res.status).to.be.eql(200);
+                    expect(res.body).to.be.an('object');
+                    expect(res.body).to.have.property('errors');
+                    done()
+                })
+        });
+
+        it('it should NOT update the hash and salt of an organizer', function (done) {
+            let user = {
+                hash: 'hash',
+                salt: 'salt'
+            };
+
+            request.put('/users/' + organizerId)
+                .send(user)
+                .end(function (err, res) {
+                    expect(res.status).to.be.eql(200);
+                    expect(res.body).to.be.an('object');
+                    expect(res.body).to.have.property('errors');
                     done()
                 })
         });
