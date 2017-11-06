@@ -4,7 +4,7 @@ It stores the given user in the database and returns also immediately a valid jw
 
 ### URL
 
-/api/users/register
+/api/auth/register
 
 ### Method
 

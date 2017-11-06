@@ -54,6 +54,12 @@ passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
     });
 }));
 
+// add facebook strategy
+var FacebookStrategy = require('passport-facebook');
+passport.use(new FacebookStrategy(config.passport.facebookAuth, function (accessToken, refreshToken, profile, callback) {
+    return callback(accessToken, refreshToken, profile);
+}));
+
 // Include the controllers folder, where there are all the routes handler
 app.use(require('./routes'));
 

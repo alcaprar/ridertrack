@@ -25,6 +25,13 @@ var userSchema = Schema({
         required: true, 
         enum:['participant', 'organizer']
     },
+    facebookProvider: {
+        type: {
+            id: String,
+            token: String
+        },
+        select: false // it exclude by default this field in queries
+    },
     created_at: {type: Date},
     updated_at: {type: Date}
 });

@@ -156,6 +156,20 @@ describe('User API tests', function () {
                 })
         });
 
+        it('it should returns ok even if we changed to ask nothing', function (done) {
+            let user = {};
+
+            request.put('/api/users/' + organizerId)
+                .send(user)
+                .end(function (err, res) {
+                    expect(res.status).to.be.eql(200);
+                    expect(res.body).to.be.an('object');
+                    expect(res.body).to.not.have.property('errors');
+                    expect(res.body).to.have.property('user');
+                    done()
+                })
+        });
+
         it('it should update the name of an organizer', function (done) {
             let user = {
                 name: 'organzer2'
@@ -180,7 +194,7 @@ describe('User API tests', function () {
             request.put('/api/users/' + organizerId)
                 .send(user)
                 .end(function (err, res) {
-                    expect(res.status).to.be.eql(403);
+                    expect(res.status).to.be.eql(400);
                     expect(res.body).to.be.an('object');
                     expect(res.body).to.have.property('errors');
                     done()
@@ -195,7 +209,7 @@ describe('User API tests', function () {
             request.put('/api/users/' + organizerId)
                 .send(user)
                 .end(function (err, res) {
-                    expect(res.status).to.be.eql(403);
+                    expect(res.status).to.be.eql(400);
                     expect(res.body).to.be.an('object');
                     expect(res.body).to.have.property('errors');
                     done()
@@ -211,12 +225,69 @@ describe('User API tests', function () {
             request.put('/api/users/' + organizerId)
                 .send(user)
                 .end(function (err, res) {
-                    expect(res.status).to.be.eql(403);
+                    expect(res.status).to.be.eql(400);
                     expect(res.body).to.be.an('object');
                     expect(res.body).to.have.property('errors');
                     done()
                 })
         });
+
+        it('it should NOT register an organizer with no email', function (done) {
+            let user = {
+                name: 'Organizer2Name',
+                surname: 'Organizer2Surname',
+                password: 'aaa',
+                role: 'organizer'
+            };
+
+            request.post('/api/auth/register')
+                .send(user)
+                .end(function (err, res) {
+                    expect(res.status).to.be.eql(400);
+                    expect(res.body).to.be.an('object');
+                    expect(res.body).to.have.property('errors');
+
+                    done()
+                })
+        });
+
+        it('it should NOT register an organizer with no password', function (done) {
+            let user = {
+                name: 'Organizer2Name',
+                surname: 'Organizer2Surname',
+                email: "test@test.it",
+                role: 'organizer'
+            };
+
+            request.post('/api/auth/register')
+                .send(user)
+                .end(function (err, res) {
+                    expect(res.status).to.be.eql(400);
+                    expect(res.body).to.be.an('object');
+                    expect(res.body).to.have.property('errors');
+
+                    done()
+                })
+        });
+
+        it('it should NOT register an organizer with no role', function (done) {
+            let user = {
+                name: 'Organizer2Name',
+                surname: 'Organizer2Surname',
+                email: "test@test.it"
+            };
+
+            request.post('/api/auth/register')
+                .send(user)
+                .end(function (err, res) {
+                    expect(res.status).to.be.eql(400);
+                    expect(res.body).to.be.an('object');
+                    expect(res.body).to.have.property('errors');
+
+                    done()
+                })
+        });
+        
 
         it('it should register an organizer and receive back a jwt token', function (done) {
             let user = {
@@ -227,7 +298,7 @@ describe('User API tests', function () {
                 role: 'organizer'
             };
 
-            request.post('/api/users/register')
+            request.post('/api/auth/register')
                 .send(user)
                 .end(function (err, res) {
                     expect(res.status).to.be.eql(200);
