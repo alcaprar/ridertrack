@@ -32,8 +32,8 @@ var userSchema = Schema({
         },
         select: false // it exclude by default this field in queries
     },
-    created_at: {type: Date},
-    updated_at: {type: Date}
+    created_at: {type: Date, select: false},
+    updated_at: {type: Date, select: false}
 });
 
 // on every save, add the date
@@ -67,6 +67,21 @@ userSchema.methods.removePrivateFields = function (callback) {
     if(typeof callback !== 'undefined'){
         callback();
     }
+};
+
+/**
+ * It search for an user given the email.
+ * @param email
+ * @param callback
+ */
+userSchema.statics.findByEmail = function (email, callback) {
+    User.findOne({email: email}, function (err, user) {
+        if(err){
+            return callback(err)
+        }else{
+            return callback(null, user)
+        }
+    })
 };
 
 /**

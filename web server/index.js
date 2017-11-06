@@ -33,32 +33,8 @@ app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// add the passport-jwt strategy for authentication
+// add the passport authentication strategies
 var passport = require('passport');
-
-var JwtStrategy = require('passport-jwt').Strategy,
-    ExtractJwt = require('passport-jwt').ExtractJwt;
-var opts = {};
-opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-opts.secretOrKey = config.passport.jwt.jwtSecret;
-passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
-    User.findOne({id: jwt_payload.sub}, function(err, user) {
-        if (err) {
-            return done(err, false);
-        }
-        if (user) {
-            return done(null, user);
-        } else {
-            return done(null, false);
-        }
-    });
-}));
-
-// add facebook strategy
-var FacebookStrategy = require('passport-facebook');
-passport.use(new FacebookStrategy(config.passport.facebookAuth, function (accessToken, refreshToken, profile, callback) {
-    return callback(accessToken, refreshToken, profile);
-}));
 
 // Include the controllers folder, where there are all the routes handler
 app.use(require('./routes'));
