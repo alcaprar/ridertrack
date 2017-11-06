@@ -27,7 +27,7 @@ describe('User API tests', function () {
 
     describe('GET /users', function () {
         it('it should return an empty list since the database is empty', function (done) {
-            request.get('/users')
+            request.get('/api/users')
                 .end(function (err, res) {
                     expect(res.status).to.be.eql(200);
                     expect(res.body).to.be.an('object');
@@ -46,10 +46,10 @@ describe('User API tests', function () {
                 password: 'aaa'
             };
 
-            request.post('/users')
+            request.post('/api/users')
                 .send(user)
                 .end(function (err, res) {
-                    expect(res.status).to.be.eql(200);
+                    expect(res.status).to.be.eql(400);
                     expect(res.body).to.be.an('object');
                     expect(res.body).to.have.property('errors');
                     done()
@@ -65,10 +65,10 @@ describe('User API tests', function () {
                 role: 'fakerole'
             };
 
-            request.post('/users')
+            request.post('/api/users')
                 .send(user)
                 .end(function (err, res) {
-                    expect(res.status).to.be.eql(200);
+                    expect(res.status).to.be.eql(400);
                     expect(res.body).to.be.an('object');
                     expect(res.body).to.have.property('errors');
                     done()
@@ -76,7 +76,7 @@ describe('User API tests', function () {
         });
 
         it('it should return an empty list since the database is empty', function (done) {
-            request.get('/users')
+            request.get('/api/users')
                 .end(function (err, res) {
                     expect(res.status).to.be.eql(200);
                     expect(res.body).to.be.an('object');
@@ -96,7 +96,7 @@ describe('User API tests', function () {
                 role: 'participant'
             };
 
-            request.post('/users')
+            request.post('/api/users')
                 .send(user)
                 .end(function (err, res) {
                     expect(res.status).to.be.eql(200);
@@ -108,7 +108,7 @@ describe('User API tests', function () {
         });
 
         it('it should return a list with one object', function (done) {
-            request.get('/users')
+            request.get('/api/users')
                 .end(function (err, res) {
                     expect(res.status).to.be.eql(200);
                     expect(res.body).to.be.an('object');
@@ -130,7 +130,7 @@ describe('User API tests', function () {
                 role: 'organizer'
             };
 
-            request.post('/users')
+            request.post('/api/users')
                 .send(user)
                 .end(function (err, res) {
                     expect(res.status).to.be.eql(200);
@@ -145,7 +145,7 @@ describe('User API tests', function () {
         });
 
         it('it should return a list with two object', function (done) {
-            request.get('/users')
+            request.get('/api/users')
                 .end(function (err, res) {
                     expect(res.status).to.be.eql(200);
                     expect(res.body).to.be.an('object');
@@ -161,7 +161,7 @@ describe('User API tests', function () {
                 name: 'organzer2'
             };
             
-            request.put('/users/' + organizerId)
+            request.put('/api/users/' + organizerId)
                 .send(user)
                 .end(function (err, res) {
                     expect(res.status).to.be.eql(200);
@@ -177,10 +177,10 @@ describe('User API tests', function () {
                 role: 'participant'
             };
 
-            request.put('/users/' + organizerId)
+            request.put('/api/users/' + organizerId)
                 .send(user)
                 .end(function (err, res) {
-                    expect(res.status).to.be.eql(200);
+                    expect(res.status).to.be.eql(403);
                     expect(res.body).to.be.an('object');
                     expect(res.body).to.have.property('errors');
                     done()
@@ -192,10 +192,10 @@ describe('User API tests', function () {
                 email: 'email'
             };
 
-            request.put('/users/' + organizerId)
+            request.put('/api/users/' + organizerId)
                 .send(user)
                 .end(function (err, res) {
-                    expect(res.status).to.be.eql(200);
+                    expect(res.status).to.be.eql(403);
                     expect(res.body).to.be.an('object');
                     expect(res.body).to.have.property('errors');
                     done()
@@ -208,10 +208,10 @@ describe('User API tests', function () {
                 salt: 'salt'
             };
 
-            request.put('/users/' + organizerId)
+            request.put('/api/users/' + organizerId)
                 .send(user)
                 .end(function (err, res) {
-                    expect(res.status).to.be.eql(200);
+                    expect(res.status).to.be.eql(403);
                     expect(res.body).to.be.an('object');
                     expect(res.body).to.have.property('errors');
                     done()
@@ -227,7 +227,7 @@ describe('User API tests', function () {
                 role: 'organizer'
             };
 
-            request.post('/users/register')
+            request.post('/api/users/register')
                 .send(user)
                 .end(function (err, res) {
                     expect(res.status).to.be.eql(200);

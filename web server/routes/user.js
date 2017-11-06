@@ -38,13 +38,11 @@ router.get('/users/:userId', function (req, res) {
 router.post('/users', function (req, res) {
     User.create(req.body, function (err, user) {
         if(err){
-            res.send({
-                status: 'failed',
+            res.status(400).send({
                 errors: err
             })
         }else{
-            res.send({
-                status: 'success',
+            res.status(200).send({
                 user: user
             })
         }
@@ -58,8 +56,7 @@ router.post('/users', function (req, res) {
 router.post('/users/register', function (req, res) {
     User.create(req.body, function (err, user) {
         if(err){
-            res.send({
-                status: 'failed',
+            res.status(400).send({
                 errors: err
             })
         }else{
@@ -67,8 +64,7 @@ router.post('/users/register', function (req, res) {
                 expiresIn: 631139040 // 20 years in seconds
             });
 
-            res.send({
-                status: 'success',
+            res.status(200).send({
                 user: user,
                 jwtToken: token
             })
@@ -82,13 +78,11 @@ router.post('/users/register', function (req, res) {
 router.put('/users/:userId', function (req, res) {
     User.update(req.params.userId, req.body, function (err, user) {
         if(err){
-            res.send({
-                status: 'failed',
+            res.status(403).send({
                 errors: err
             })
         }else{
-            res.send({
-                status: 'success',
+            res.status(200).send({
                 user: user
             })
         }
