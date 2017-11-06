@@ -1,6 +1,7 @@
 var express = require('express'),
     bodyParser = require('body-parser'), //to retrieve post parameters
-    favicon = require('serve-favicon');
+    favicon = require('serve-favicon'),
+    User = require('./models/user');
 
 var app = express();
 
@@ -31,6 +32,27 @@ app.use(express.static(__dirname + '/public'));
 //Middleware that puts request bodies into req.body
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// add the passport-jwt strategy for authentication
+var passport = require('passport');
+
+var JwtStrategy = require('passport-jwt').Strategy,
+    ExtractJwt = require('passport-jwt').ExtractJwt;
+var opts = {};
+opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+opts.secretOrKey = config.passport.jwt.jwtSecret;
+passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
+    User.findOne({id: jwt_payload.sub}, function(err, user) {
+        if (err) {
+            return done(err, false);
+        }
+        if (user) {
+            return done(null, user);
+        } else {
+            return done(null, false);
+        }
+    });
+}));
 
 // Include the controllers folder, where there are all the routes handler
 app.use(require('./routes'));

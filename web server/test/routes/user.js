@@ -137,9 +137,9 @@ describe('User API tests', function () {
                     expect(res.body).to.be.an('object');
                     expect(res.body).to.not.have.property('errors');
                     expect(res.body).to.have.property('user');
-                    
+
                     organizerId = res.body.user._id;
-                    
+
                     done()
                 })
         });
@@ -214,6 +214,32 @@ describe('User API tests', function () {
                     expect(res.status).to.be.eql(200);
                     expect(res.body).to.be.an('object');
                     expect(res.body).to.have.property('errors');
+                    done()
+                })
+        });
+
+        it('it should register an organizer and receive back a jwt token', function (done) {
+            let user = {
+                name: 'Organizer2Name',
+                surname: 'Organizer2Surname',
+                email: 'organizer2@test.it',
+                password: 'aaa',
+                role: 'organizer'
+            };
+
+            request.post('/users/register')
+                .send(user)
+                .end(function (err, res) {
+                    console.log(res.body);
+                    expect(res.status).to.be.eql(200);
+                    expect(res.body).to.be.an('object');
+                    expect(res.body).to.not.have.property('errors');
+                    expect(res.body).to.have.property('user');
+                    expect(res.body).to.have.property('jwtToken');
+                    expect(res.body.jwtToken).to.not.eql('');
+
+                    organizerId = res.body.user._id;
+
                     done()
                 })
         });

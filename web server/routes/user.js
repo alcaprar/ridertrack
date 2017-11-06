@@ -1,5 +1,7 @@
 var express = require('express');
 var router = express.Router();
+var jwt = require('jsonwebtoken');
+var config = require('../config');
 
 var User = require('../models/user');
 
@@ -29,7 +31,10 @@ router.get('/users/:userId', function (req, res) {
     
 });
 
-// it creates the user passed in the request
+/**
+ * It creates the user passed in the body.
+ * It returns the detail of the user just created.
+ */
 router.post('/users', function (req, res) {
     User.create(req.body, function (err, user) {
         if(err){
@@ -41,6 +46,31 @@ router.post('/users', function (req, res) {
             res.send({
                 status: 'success',
                 user: user
+            })
+        }
+    });
+});
+
+/**
+ * It creates the user passed in the body and return a JWT token in order to
+ * immediately login the user.
+ */
+router.post('/users/register', function (req, res) {
+    User.create(req.body, function (err, user) {
+        if(err){
+            res.send({
+                status: 'failed',
+                errors: err
+            })
+        }else{
+            var token = jwt.sign(user, config.passport.jwt.jwtSecret, {
+                expiresIn: 631139040 // 20 years in seconds
+            });
+
+            res.send({
+                status: 'success',
+                user: user,
+                jwtToken: token
             })
         }
     });
