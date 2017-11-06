@@ -230,7 +230,6 @@ describe('User API tests', function () {
             request.post('/users/register')
                 .send(user)
                 .end(function (err, res) {
-                    console.log(res.body);
                     expect(res.status).to.be.eql(200);
                     expect(res.body).to.be.an('object');
                     expect(res.body).to.not.have.property('errors');
