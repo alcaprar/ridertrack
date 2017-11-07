@@ -10,6 +10,8 @@ import { RegistrationPageComponent } from './registration-page/registration-page
 import { AboutUsComponent } from './about-us/about-us.component';
 import { ParticipantPageComponent } from './participant-page/participant-page.component';
 import { EventAdminPageComponent } from './event-admin-page/event-admin-page.component';
+import { HeaderConnectComponent } from './header-connect/header-connect.component';
+import { NavbarComponent } from './navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,9 @@ import { EventAdminPageComponent } from './event-admin-page/event-admin-page.com
     RegistrationPageComponent,
     AboutUsComponent,
     ParticipantPageComponent,
-    EventAdminPageComponent
+    EventAdminPageComponent,
+    HeaderConnectComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
