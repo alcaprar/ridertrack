@@ -1,6 +1,18 @@
 <p>
   login-page works!
 </p>
+<br><br>
+
+<form [formGroup]="loginForm" #f="ngForm">
+  <input formControlName="username_text"  type="text" name="username" placeholder="Type username">
+  <br><br>
+  <input formControlName="password_text" type="password" name="user_password" placeholder="Type user password">
+  <br><br>
+  <button type="button" (click)="logIn()"> Login </button>
+</form>
+
+<!-- hyperlinks to other components -->
+<br><br>
 <a [routerLink]="['/home']">home-page</a><br>
 <a [routerLink]="['/login']">login-page</a><br>
 <a [routerLink]="['/register']">registration-page</a><br>
