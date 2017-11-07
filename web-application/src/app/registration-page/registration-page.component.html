@@ -1,9 +1,29 @@
-<p>
-  registration-page works!
-</p>
-<a [routerLink]="['/home']">home-page</a><br>
-<a [routerLink]="['/login']">login-page</a><br>
-<a [routerLink]="['/register']">registration-page</a><br>
-<a [routerLink]="['/participant']">participant-page</a><br>
-<a [routerLink]="['/event-admin']">event-admin-page</a><br>
-<a [routerLink]="['/about-us']">about-us</a>
+<app-page-header title="Register"></app-page-header>
+<div class="register-area" style="background-color: rgb(249, 249, 249);">
+  <div class="container">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="box-for overflow">
+        <div class="col-md-12 col-xs-12 register-blocks">
+          <h2>New account : </h2>
+          <form action="" method="post">
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" class="form-control" id="name">
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="text" class="form-control" id="email">
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" class="form-control" id="password">
+            </div>
+            <div class="text-center">
+              <button type="submit" class="btn btn-default">Register</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

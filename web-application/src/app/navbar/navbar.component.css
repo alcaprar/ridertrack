@@ -1,0 +1,112 @@
+
+.navbar-default .navbar-nav > li > a{
+  color: #929292;
+  font-size: 16px;
+  font-weight: 400;
+  text-transform: capitalize;
+  position: relative;
+
+}
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
+  color: #929292;
+  background-color: transparent;
+}
+.navbar-nav > li > a {
+  padding-right: 20px;
+  padding-left: 20px;
+}
+
+.navbar-default .navbar-nav > li > a.active:after{
+
+  background-color: #FDC600;
+  bottom: -24px;
+  content: "";
+  height: 5px;
+  left: 0;
+  position: absolute;
+  transition: all 0.2s ease 0s;
+  width: 100%;
+}
+.navbar-default .navbar-nav > li > a::after {
+  background-color: #FDC600;
+  bottom: -24px;
+  content: "";
+  height: 5px;
+  left: 0;
+  position: absolute;
+  transition: all 0.2s ease 0s;
+  width: 0%;
+}
+.navbar-default .navbar-nav > li > a:hover:after {
+  width: 100%;
+}
+
+.navbar-nav.navbar-right:last-child{
+  margin-right: 20px
+}
+.navbar-brand {
+
+}
+.main-nav {
+  padding-top: 10px;
+}
+.button.navbar-right {
+  padding-top: 10px;
+}
+.nav-button {
+  background-color: #c2c2c2;
+  border: medium none;
+  color: #fff;
+  font-size: 16px;
+  padding: 8px 20px;
+  border-radius: 2px;
+  -webkit-transition: all 0.4s ease;
+  -moz-transition: all 0.4s ease;
+  -ms-transition: all 0.4s ease;
+  transition: all 0.4s ease;
+}
+.nav-button.login{
+  background-color: #FDC600;
+  margin-right: 5px;
+}
+.nav-button:hover{
+  background-color: #FDC600;
+
+}
+.navbar{
+  margin-bottom: 0px;
+  min-height: 100px;
+}
+.navbar-default {
+  background-image: none;
+  background-color: #fff;
+  background-repeat: repeat-x;
+  border-radius: 4px;
+  box-shadow: none;
+}
+.navbar .container{
+  padding-top: 15px
+}
+.navbar-default {
+  background-image: none;
+  background-color: #FFF;
+  background-repeat: repeat-x;
+  border-radius: 0px;
+  box-shadow: none;
+  border-left: none;
+  border-right: none;
+}
+.nav-tabs > li > a{
+  color: #666;
+  font-weight: 300;
+  border-width: 4px;
+}
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+  border-color: transparent transparent #FDC600;
+  border-style: solid;
+  border-width: 4px;
+  color: #666666;
+  cursor: default;
+  font-weight: 700;
+  outline: none;
+}

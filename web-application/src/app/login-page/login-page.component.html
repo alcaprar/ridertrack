@@ -1,21 +1,36 @@
-<p>
-  login-page works!
-</p>
-<br><br>
+<app-page-header title="Login"></app-page-header>
+<div class="register-area" style="background-color: rgb(249, 249, 249);">
+  <div class="container">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="box-for overflow">
+        <div class="col-md-12 col-xs-12 login-blocks">
+          <h2>Login : </h2>
+          <form action="" method="post">
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="text" class="form-control" id="email">
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" class="form-control" id="password">
+            </div>
+            <div class="text-center">
+              <button type="submit" class="btn btn-default"> Log in</button>
+            </div>
+          </form>
+          <br>
 
-<form [formGroup]="loginForm" #f="ngForm">
-  <input formControlName="username_text"  type="text" name="username" placeholder="Type username">
-  <br><br>
-  <input formControlName="password_text" type="password" name="user_password" placeholder="Type user password">
-  <br><br>
-  <button type="button" (click)="logIn()"> Login </button>
-</form>
+          <h2>Social login :  </h2>
 
-<!-- hyperlinks to other components -->
-<br><br>
-<a [routerLink]="['/home']">home-page</a><br>
-<a [routerLink]="['/login']">login-page</a><br>
-<a [routerLink]="['/register']">registration-page</a><br>
-<a [routerLink]="['/participant']">participant-page</a><br>
-<a [routerLink]="['/event-admin']">event-admin-page</a><br>
-<a [routerLink]="['/about-us']">about-us</a>
+          <p>
+            <a class="login-social" href="#"><i class="fa fa-facebook"></i>&nbsp;Facebook</a>
+            <a class="login-social" href="#"><i class="fa fa-google-plus"></i>&nbsp;Gmail</a>
+            <a class="login-social" href="#"><i class="fa fa-twitter"></i>&nbsp;Twitter</a>
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>

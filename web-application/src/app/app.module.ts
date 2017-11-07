@@ -14,6 +14,10 @@ import { ParticipantPageComponent } from './participant-page/participant-page.co
 import { EventAdminPageComponent } from './event-admin-page/event-admin-page.component';
 import { HeaderConnectComponent } from './header-connect/header-connect.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { EventsListPageComponent } from './events-list-page/events-list-page.component';
+import { FooterComponent } from './footer/footer.component';
+import { ContactsPageComponent } from './contacts-page/contacts-page.component';
+import { PageHeaderComponent } from './page-header/page-header.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +29,11 @@ import { NavbarComponent } from './navbar/navbar.component';
     ParticipantPageComponent,
     EventAdminPageComponent,
     HeaderConnectComponent,
-    NavbarComponent
+    NavbarComponent,
+    EventsListPageComponent,
+    FooterComponent,
+    ContactsPageComponent,
+    PageHeaderComponent
   ],
   imports: [
     BrowserModule,
@@ -36,11 +44,15 @@ import { NavbarComponent } from './navbar/navbar.component';
         path: 'home',
         component:  HomePageComponent
       } ,
+
       {
-        path: '',
-        redirectTo: '/home',
-        pathMatch: 'full'
-      } ,
+        path: 'events',
+        component: EventsListPageComponent
+      },
+      {
+        path: 'contacts',
+        component: ContactsPageComponent
+      },
       {
         path: 'login',
         component: LoginPageComponent
@@ -60,6 +72,16 @@ import { NavbarComponent } from './navbar/navbar.component';
       {
         path: 'about-us',
         component: AboutUsComponent
+      },
+      {
+        path: '',
+        redirectTo: '/home',
+        pathMatch: 'full'
+      } ,
+      {
+        path: '**',
+        redirectTo: '/home',
+        pathMatch: 'full'
       }
     ]),
     HttpModule
