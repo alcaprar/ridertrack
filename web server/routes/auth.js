@@ -17,9 +17,15 @@ router.post('/register', function (req, res) {
                 errors: err
             })
         }else{
+
+            //expects to be plain object so I found somewhere that they've used email and id and pass it for jwt.sign --> test should pass now
+            var userToken = {
+                username:user.email,
+                id:user._id
+            };
             // if no errors are thrown the user has been created.
             // create a token and send back the response with the user detail
-            var token = jwt.sign(user, config.passport.jwt.jwtSecret, {
+            var token = jwt.sign(userToken, config.passport.jwt.jwtSecret, {
                 expiresIn: 172800 // 20 years in seconds
             });
 
@@ -63,9 +69,15 @@ router.post('/login', function (req, res) {
                     // if the user is found, check if password matches
                     user.authenticate(req.body.password, function (err, isMatch) {
                         if(isMatch && !err){
+
+                            //also here
+                            var userToken = {
+                                username:user.email,
+                                id:user._id
+                            };
                             // if it matches and there are no error, create
                             // thw jwt token and send it
-                            var token = jwt.sign(user, config.passport.jwt.jwtSecret, {
+                            var token = jwt.sign(userToken, config.passport.jwt.jwtSecret, {
                                 expiresIn: 172800 // 2 days in seconds
                             });
                             return res.send({

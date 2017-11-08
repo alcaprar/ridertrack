@@ -70,6 +70,22 @@ userSchema.methods.removePrivateFields = function (callback) {
 };
 
 /**
+ * It sets facebook data to user
+ * @param facebookData
+ * @param facebookToken
+ */
+userSchema.methods.setFacebookData = function (facebookData,facebookToken){
+    let user = this;
+
+    user.email = facebookData.emails[0].name;
+    user.firstname = facebookData.name.givenName;
+    user.lastname = facebookData.name.familyName;
+
+    user.facebookProvider.type.id = facebookData.id;
+    user.facebookProvider.type.token = facebookToken;
+};
+
+/**
  * It search for an user given the email.
  * @param email
  * @param callback
