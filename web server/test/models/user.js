@@ -15,7 +15,9 @@ describe('User model test', function () {
     // this will run before every test to clear the database
     // TODO clear database
     before(function (done) {
-        done()
+        User.remove({}, function (err) {
+            done()
+        });
     });
 
     it('should be invalid if name is empty', function(done) {
@@ -26,4 +28,20 @@ describe('User model test', function () {
             done();
         });
     });
+
+    it('should save an user', function (done) {
+        var user = new User({
+            name: 'a',
+            surname: 'a',
+            email: 'aaa@aa.it',
+            password: 'aa',
+            role: 'participant'
+        });
+
+        user.save(function (err) {
+            expect(err).to.be.eql(null);
+            done();
+        })
+
+    })
 });
