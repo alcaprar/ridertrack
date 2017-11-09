@@ -14,6 +14,7 @@
   float:none;
   display: inline-block;
   width:60%;
+  border-radius: 4px;
 }
 .circle {
   padding: 1em 1em 2em 1em;
@@ -41,7 +42,46 @@
   color: white;
   text-align: center;
   padding:2em 1.5em 1.5em;
+  font-weight: bolder;
 
+}
+#link-to-event {
+  display: block;
+  background-color: transparent;
+  color:white;
+  border: none;
+  text-align: center;
+  font-size: 2em;
+  padding: 3em;
+  width: 50%;
+  transition: all 0.5s;
+  cursor: pointer;
+  float:right;
+}
+
+#link-to-event span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+#link-to-event span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -2em;
+  transition: 0.5s;
+}
+
+#link-to-event:hover span {
+  padding-right: 1.5em;
+}
+
+#link-to-event:hover span:after {
+  opacity: 1;
+  right: 0;
 }
 /*Count-down*/
 

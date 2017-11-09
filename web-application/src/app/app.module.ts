@@ -12,7 +12,7 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { RegistrationPageComponent } from './registration-page/registration-page.component';
 import { AboutUsComponent } from './about-us/about-us.component';
-import { ParticipantPageComponent } from './participant-page/participant-page.component';
+import {ParticipantPageComponent} from './participant-page/participant-page.component';
 import { EventAdminPageComponent } from './event-admin-page/event-admin-page.component';
 import { HeaderConnectComponent } from './header-connect/header-connect.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -37,7 +37,7 @@ import {AuthguardGuard} from './authguard.guard';
     EventsListPageComponent,
     FooterComponent,
     ContactsPageComponent,
-    PageHeaderComponent
+    PageHeaderComponent,
   ],
   imports: [
     BrowserModule,
