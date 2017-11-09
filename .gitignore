@@ -1,6 +1,7 @@
 coverage/
 
 ## Jetbrains
+.idea
 modules.xml
 ridertrack.iml
 
