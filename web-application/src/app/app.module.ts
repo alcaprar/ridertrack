@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { HttpModule } from '@angular/http';
 import { HttpClient } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { AppComponent } from './app.component';
@@ -12,7 +12,8 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { RegistrationPageComponent } from './registration-page/registration-page.component';
 import { AboutUsComponent } from './about-us/about-us.component';
-import {ParticipantPageComponent} from './participant-page/participant-page.component';
+import { ParticipantPageComponent } from './participant-page/participant-page.component';
+import { CountDownComponent } from './count-down/count-down.component';
 import { EventAdminPageComponent } from './event-admin-page/event-admin-page.component';
 import { HeaderConnectComponent } from './header-connect/header-connect.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -31,6 +32,7 @@ import {AuthguardGuard} from './authguard.guard';
     RegistrationPageComponent,
     AboutUsComponent,
     ParticipantPageComponent,
+    CountDownComponent,
     EventAdminPageComponent,
     HeaderConnectComponent,
     NavbarComponent,
@@ -44,6 +46,7 @@ import {AuthguardGuard} from './authguard.guard';
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
+
     RouterModule.forRoot([
       {
         path: 'home',
@@ -68,9 +71,13 @@ import {AuthguardGuard} from './authguard.guard';
       } ,
       {
         path: 'participant',
-        canActivate: [AuthguardGuard],
+        /*canActivate: [AuthguardGuard],*/
         component: ParticipantPageComponent
       } ,
+      {
+        path: 'count-down',
+        component: CountDownComponent
+      },
       {
         path: 'event-admin',
         canActivate: [AuthguardGuard],
