@@ -3,16 +3,10 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class UserService {
 
-  private isUserLoggedIn;
   private role;
 
   constructor() {
-    this.isUserLoggedIn = false;
-    this.role = 'public';
-  }
-
-  setUserLoggedIn() {
-    this.isUserLoggedIn = true;
+    this.role = '';
   }
 
   setRole(login: String) {
@@ -23,8 +17,8 @@ export class UserService {
     return this.role;
   }
 
-  getUserLoggedIn() {
-    return this.isUserLoggedIn;
+  isLoggedIn() {
+    return this.role !== '';
   }
 
   isParticipant() {
@@ -35,7 +29,6 @@ export class UserService {
   }
 
   logout() {
-    this.isUserLoggedIn = false;
-    this.role = 'public';
+    this.role = '';
   }
 }

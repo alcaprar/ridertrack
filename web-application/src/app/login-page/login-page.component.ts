@@ -48,11 +48,9 @@ export class LoginPageComponent implements OnInit {
       console.log(res);
       if(this.respond.user.role === "organizer"){
         this.auth.setRole('organizer');
-        this.auth.setUserLoggedIn();
         this.router.navigate(['event-admin']);
       } else if(this.respond.user.role === "participant") {
         this.auth.setRole('participant');
-        this.auth.setUserLoggedIn();
         this.router.navigate(['participant']);
       }
       alert('Welcome ' + this.respond.user.name);
