@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 })
 export class RegistrationPageComponent implements OnInit {
 
+  respond: any;
   registerForm: FormGroup;
   @Input() user = { name: '', surname: '', email: '', password:'', role: ''};
 
@@ -46,9 +47,16 @@ export class RegistrationPageComponent implements OnInit {
     console.log('Registering...');
     console.log(body);
     this.http.post('http://localhost:5000/api/auth/register', body).subscribe(res => {
+      this.respond = res;
       console.log('Respond: ');
       console.log(res);
-    });
+      if(this.respond.user.role === "organizer"){
+        this.router.navigate(['event-admin']);
+      } else if(this.respond.user.role === "participant") {
+        this.router.navigate(['participant']);
+      }
+      alert('Welcome ' + this.respond.user.name);
+    })
   }
 
 }
