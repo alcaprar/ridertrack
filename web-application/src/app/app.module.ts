@@ -20,6 +20,8 @@ import { EventsListPageComponent } from './events-list-page/events-list-page.com
 import { FooterComponent } from './footer/footer.component';
 import { ContactsPageComponent } from './contacts-page/contacts-page.component';
 import { PageHeaderComponent } from './page-header/page-header.component';
+import {UserService} from "./user.service";
+import {AuthguardGuard} from "./authguard.guard";
 
 @NgModule({
   declarations: [
@@ -66,10 +68,12 @@ import { PageHeaderComponent } from './page-header/page-header.component';
       } ,
       {
         path: 'participant',
+        canActivate: [AuthguardGuard],
         component: ParticipantPageComponent
       } ,
       {
         path: 'event-admin',
+        canActivate: [AuthguardGuard],
         component: EventAdminPageComponent
       } ,
       {
@@ -89,7 +93,7 @@ import { PageHeaderComponent } from './page-header/page-header.component';
     ]),
     HttpModule
   ],
-  providers: [],
+  providers: [UserService,AuthguardGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

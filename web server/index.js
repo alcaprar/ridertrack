@@ -2,6 +2,7 @@ var express = require('express'),
     bodyParser = require('body-parser'), //to retrieve post parameters
     favicon = require('serve-favicon'),
     User = require('./models/user');
+    Event = require('./models/event');
 
 var app = express();
 
