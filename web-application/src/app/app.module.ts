@@ -21,8 +21,9 @@ import { EventsListPageComponent } from './events-list-page/events-list-page.com
 import { FooterComponent } from './footer/footer.component';
 import { ContactsPageComponent } from './contacts-page/contacts-page.component';
 import { PageHeaderComponent } from './page-header/page-header.component';
-import {UserService} from './user.service';
-import {AuthguardGuard} from './authguard.guard';
+import {UserService} from './_services/user.service';
+import {AuthguardGuard} from './_guards/authguard.guard';
+import {AuthenticationService} from "./_services/authentication.service";
 
 @NgModule({
   declarations: [
@@ -100,7 +101,10 @@ import {AuthguardGuard} from './authguard.guard';
     ]),
     HttpModule
   ],
-  providers: [UserService, AuthguardGuard],
+  providers: [
+    UserService,
+    AuthguardGuard,
+  AuthenticationService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
+import {AuthenticationService} from "./authentication.service";
+import {Http} from "@angular/http";
 
 @Injectable()
 export class UserService {
 
   private role;
 
-  constructor() {
+  constructor(private http: Http,
+              private authenticationService: AuthenticationService) {
     this.role = '';
   }
 
