@@ -1,0 +1,47 @@
+@import '//fonts.googleapis.com/css?family=Bangers';
+
+.slider-content {
+  position:static;
+}
+.slider-area {
+  background: url("../../assets/img/count-down-background.jpg");
+  -webkit-background-size: cover;
+  background-size: cover;
+  background-position: center center;
+}
+.count-down-area {
+  background: rgba(255, 255, 255, 0.3);
+  float:none;
+  display: inline-block;
+  width:60%;
+}
+.circle {
+  padding: 1em 1em 2em 1em;
+  display: inline-block;
+  float: none;
+  opacity: 1;
+  border: 0;
+  width:18em;
+  z-index: 200
+;
+}
+.count-down {
+  display: block;
+  margin-bottom:0em;
+  font-size: 20em;
+  font: 1.5em arial, sans-serif;
+  padding-bottom:1em;
+
+}
+#title-count-down {
+  display: block;
+  float: none;
+  font-size: 3.5em;
+  font-type: arial, sans-serif bold;
+  color: white;
+  text-align: center;
+  padding:2em 1.5em 1.5em;
+
+}
+/*Count-down*/
+

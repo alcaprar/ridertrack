@@ -18,7 +18,7 @@
 
 .navbar-default .navbar-nav > li > a.active:after{
 
-  background-color: #FDC600;
+  background-color: lightcoral;
   bottom: -24px;
   content: "";
   height: 5px;
@@ -28,7 +28,7 @@
   width: 100%;
 }
 .navbar-default .navbar-nav > li > a::after {
-  background-color: #FDC600;
+  background-color: lightcoral;
   bottom: -24px;
   content: "";
   height: 5px;
@@ -45,7 +45,9 @@
   margin-right: 20px
 }
 .navbar-brand {
-
+  padding-top: 2px;
+  width: 200px;
+  height: 130px;
 }
 .main-nav {
   padding-top: 10px;
@@ -66,11 +68,11 @@
   transition: all 0.4s ease;
 }
 .nav-button.login{
-  background-color: #FDC600;
+  background-color: red;
   margin-right: 5px;
 }
 .nav-button:hover{
-  background-color: #FDC600;
+  background-color: lightcoral;
 
 }
 .navbar{

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
+
 @Component({
   selector: 'app-participant-page',
   templateUrl: './participant-page.component.html',
@@ -11,5 +12,4 @@ export class ParticipantPageComponent implements OnInit {
 
   ngOnInit() {
   }
-
 }

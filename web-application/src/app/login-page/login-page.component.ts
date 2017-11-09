@@ -11,30 +11,47 @@ import { Router } from '@angular/router';
 export class LoginPageComponent implements OnInit {
 
   loginForm: FormGroup;
-  @Input() user = { username_text: '', password_text: ''};
+  respond: any;
+  @Input() user = { name: '', surname: '', email: '', password:'', role: ''};
 
-  constructor(private fbLogin: FormBuilder, private router: Router) { }
+  constructor(private http: HttpClient, private fbLogin: FormBuilder, private router: Router) { }
 
   ngOnInit() {
    this.setFormLogin();
   }
 
+  // setting the login form
   setFormLogin() {
     this.loginForm = this.fbLogin.group({
-      username_text: [this.user ? this.user.username_text : ''],
-      password_text: [this.user ? this.user.password_text : '']
+      email: [this.user ? this.user.email : ''],
+      password: [this.user ? this.user.password : '']
       });
   }
 
-  logIn() {
-    this.user.username_text = this.loginForm.get('username_text').value;
-    this.user.password_text = this.loginForm.get('password_text').value;
+  // this method is called when clicking the Login button
+  // it calls API POST method to the web server with the body containing email and password
+  // if credentials are correct you'll get userid, name, surname, email and role in response 
+  // then, depending on your role you are routed to the participant-page or the event-admin-page
+  login() {
+    this.user.email = this.loginForm.get('email').value;
+    this.user.password = this.loginForm.get('password').value;
     const body = {
-      username: this.user.username_text,
-      password: this.user.password_text,
+      email: this.user.email,
+      password: this.user.password
     };
-    console.log('Logging');
+    console.log('Logging in...');
     console.log(body);
+    this.http.post('http://localhost:5000/api/auth/login', body).subscribe(res => {
+      this.respond = res;
+      console.log('Respond: ');
+      console.log(res);
+      if(this.respond.user.role === "organizer"){
+        this.router.navigate(['event-admin']);
+      } else if(this.respond.user.role === "participant") {
+        this.router.navigate(['participant']);
+      }
+      alert('Welcome ' + this.respond.user.name);
+    });
   }
 
 }
