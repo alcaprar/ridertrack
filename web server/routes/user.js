@@ -26,10 +26,41 @@ router.get('/', function (req, res) {
 /**
  * It return the details of the requested userId.
  */
-router.get('/:userId', function (req, res) {
-    
-});
 
+//josip
+router.get('/:userId', function (req, res) {
+    User.findById(req.params.userId, function (err, user) {
+        if(err){
+            res.send({
+                status: 'failed',
+                errors: err
+            })
+        }else{
+            res.send({
+                status: 'success',
+                users: user
+            })
+        }
+    })
+});
+//it returns the details of user which mail was requested
+//i put user in front of mail because in other case it cannot distinct between mail and Id(it can be in header**to do)
+router.get('/user/:mail', function (req, res) {
+
+    User.findByEmail(req.params.mail, function (err, user) {
+        if(err){
+            res.send({
+                status: 'failed',
+                errors: err
+            })
+        }else{
+            res.send({
+                status: 'success',
+                users: user
+            })
+        }
+    })
+});
 /**
  * It creates the user passed in the body.
  * It returns the detail of the user just created.
@@ -72,7 +103,7 @@ router.put('/:userId', function (req, res) {
  * This will delete permanently everything related to it.
  */
 router.delete('/:userId', function (req, res) {
-    
+
 });
 
 module.exports = router;

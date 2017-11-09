@@ -123,10 +123,20 @@ userSchema.methods.setFacebookData = function (facebookData,facebookToken){
 };
 
 /**
- * It search for an user given the email.
+ * It search for an user given the id.
  * @param email
  * @param callback
  */
+userSchema.statics.findById = function (userId, callback) {
+    User.findOne({_id: userId}, function (err, user) {
+        if(err){
+            return callback(err)
+        }else{
+            return callback(null, user)
+        }
+    })
+};
+//It searches for an user given the mail
 userSchema.statics.findByEmail = function (email, callback) {
     User.findOne({email: email}, function (err, user) {
         if(err){
