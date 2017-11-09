@@ -1,5 +1,6 @@
 var config = {
     port: 5000,
+    rootFolder: __dirname + '/../',
     mongodb: {
         uri: 'mongodb://localhost/my_database'
     },

@@ -1,4 +1,6 @@
 coverage/
+web server/public
+
 
 ## Jetbrains
 .idea
