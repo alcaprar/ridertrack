@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import {constructDependencies} from "@angular/core/src/di/reflective_provider";
-import {UserService} from "./user.service";
+import {constructDependencies} from '@angular/core/src/di/reflective_provider';
+import {UserService} from './user.service';
 
 @Component({
   selector: 'app-root',
@@ -10,6 +10,6 @@ import {UserService} from "./user.service";
 export class AppComponent {
   title = 'app';
 
-  constructor(private auth: UserService){};
+  constructor(private auth: UserService) { }
 }
 

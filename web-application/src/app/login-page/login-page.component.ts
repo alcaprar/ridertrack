@@ -2,7 +2,7 @@ import { Component, Input, OnInit, Injectable, OnChanges } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import {UserService} from "../user.service";
+import {UserService} from '../user.service';
 
 @Component({
   selector: 'app-login-page',
@@ -15,7 +15,7 @@ export class LoginPageComponent implements OnInit {
   respond: any;
   @Input() user = { name: '', surname: '', email: '', password:'', role: ''};
 
-  constructor(private http: HttpClient, private fbLogin: FormBuilder, private router: Router, private auth:UserService) { }
+  constructor(private http: HttpClient, private fbLogin: FormBuilder, private router: Router, private auth: UserService) { }
 
   ngOnInit() {
    this.setFormLogin();
@@ -47,11 +47,11 @@ export class LoginPageComponent implements OnInit {
       console.log('Respond: ');
       console.log(res);
       if(this.respond.user.role === "organizer"){
-        this.auth.setRole("organizer");
+        this.auth.setRole('organizer');
         this.auth.setUserLoggedIn();
         this.router.navigate(['event-admin']);
       } else if(this.respond.user.role === "participant") {
-        this.auth.setRole("participant");
+        this.auth.setRole('participant');
         this.auth.setUserLoggedIn();
         this.router.navigate(['participant']);
       }

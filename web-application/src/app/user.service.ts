@@ -7,35 +7,35 @@ export class UserService {
   private role;
 
   constructor() {
-    this.isUserLoggedIn=false;
-    this.role="public";
+    this.isUserLoggedIn = false;
+    this.role = 'public';
   }
 
-  setUserLoggedIn(){
-    this.isUserLoggedIn=true;
+  setUserLoggedIn() {
+    this.isUserLoggedIn = true;
   }
 
-  setRole(login:String){
-    this.role=login;
+  setRole(login: String) {
+    this.role = login;
   }
 
-  getRole(){
+  getRole() {
     return this.role;
   }
 
-  getUserLoggedIn(){
-    return this.isUserLoggedIn
+  getUserLoggedIn() {
+    return this.isUserLoggedIn;
   }
 
-  isParticipant(){
-    return this.role.equal("participant")
+  isParticipant() {
+    return this.role.equal('participant');
   }
-  isOrganizer(){
-    return this.role.equal("organizer")
+  isOrganizer() {
+    return this.role.equal('participant');
   }
 
-  logout(){
-    this.isUserLoggedIn=false;
-    this.role="public";
+  logout() {
+    this.isUserLoggedIn = false;
+    this.role = 'public';
   }
 }
