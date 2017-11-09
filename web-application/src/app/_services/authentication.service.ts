@@ -1,36 +1,68 @@
 import { Injectable } from '@angular/core';
-import {Http} from "@angular/http";
-import  {Observable} from "rxjs/Observable";
-import 'rxjs/add/operator/map'
+import { Headers, Http } from '@angular/http';
+import {Observable} from "rxjs/Observable";
+import 'rxjs/add/operator/catch.js'
+import 'rxjs/Rx';
 
 @Injectable()
 export class AuthenticationService {
-  public token: string;
+  private BASE_URL: string = 'http://localhost:5000/api/auth';
+
+  private headers: Headers = new Headers({'Content-Type': 'application/json'});
+
+  public token : String;
 
   constructor(private http: Http) {
+    // set token if saved in local storage
     var currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    this.token= currentUser && currentUser.token;
+    console.log('[AuthService] init: ', currentUser);
+    this.token = currentUser && currentUser.token;
   }
 
-  //I don't know why but it gives me an error at line 17
-  /*
-   login(username: string, password: string): Observable<boolean> {
-    return this.http.post('/api/authenticate', JSON.stringify({ username: username, password: password }))
-       .map((response: Response) => {
-       let token = response.json() && response.json().token;
-       if (token) {
-         this.token=token;
-         localStorage.setItem('currentUser', JSON.stringify({username: username, token: token}));
-         return true;
-       } else {
-         return false;
-       }
-       })
-  }*/
+  /**
+   * It calls the api passing email and password.
+   * If the credentials are valid it stores the received token in localStorage and return true.
+   * If they are invalid, it returns false.
+   * @param email
+   * @param password
+   * @returns {Subscription}
+     */
+  login(email : String, password : String): Observable<Object> {
+    let url: string = `${this.BASE_URL}/login`;
+    return this.http.post(url, {email: email, password: password})
+      .map(
+        (response: Response) => {
+          // login successful
+          let body = response.json();
+          // store the token in localStorage
+          this.token = body.jwtToken;
+          localStorage.setItem('currentUser', JSON.stringify({
+            user: body.user,
+            jwtToken: body.jwtToken
+          }));
+          return body.user;
 
+        }
+      )
+      .catch(
+        (error : any) => {
+          console.log('An error occured in authentication service. ', error);
+          return Observable.of(false);
+        }
+      )
+  }
+
+  register(user): Promise<any> {
+    let url: string = `${this.BASE_URL}/register`;
+    return this.http.post(url, user, {headers: this.headers}).toPromise();
+  }
+
+  /**
+   * It clears the localStorage removin the currentUser.
+   */
   logout(): void {
-    this.token=null;
+    // clear token remove user from local storage to log user out
+    this.token = null;
     localStorage.removeItem('currentUser');
   }
-
 }
