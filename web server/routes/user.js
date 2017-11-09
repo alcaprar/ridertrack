@@ -27,7 +27,6 @@ router.get('/', function (req, res) {
  * It return the details of the requested userId.
  */
 
-//josip
 router.get('/:userId', function (req, res) {
     User.findById(req.params.userId, function (err, user) {
         if(err){
