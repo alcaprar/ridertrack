@@ -2,7 +2,7 @@ import { Component, Input, OnInit, Injectable, OnChanges } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import {UserService} from '../user.service';
+import {UserService} from '../_services/user.service';
 
 @Component({
   selector: 'app-login-page',
