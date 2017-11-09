@@ -119,6 +119,7 @@ describe('User API tests', function () {
             request.post('/api/auth/login')
                 .send(user)
                 .end(function (err, res) {
+                    console.log(res.status)
                     expect(res.status).to.be.eql(400);
                     expect(res.body).to.be.an('object');
                     expect(res.body).to.have.property('errors');
@@ -136,12 +137,15 @@ describe('User API tests', function () {
             request.post('/api/auth/login')
                 .send(user)
                 .end(function (err, res) {
+                    console.log(res.body);
                     expect(res.status).to.be.eql(200);
                     expect(res.body).to.be.an('object');
                     expect(res.body).to.not.have.property('errors');
                     expect(res.body).to.have.property('user');
                     expect(res.body).to.have.property('jwtToken');
+                    expect(res.body).to.have.property('expiresIn');
                     expect(res.body.jwtToken).to.not.eql('');
+                    expect(res.body.expiresIn).to.be.above(0)
 
                     done()
                 })

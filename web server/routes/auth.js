@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var jwt = require('jsonwebtoken');
 var config = require('../config');
+var passport = require('passport');
 
 var User = require('../models/user');
 
@@ -10,31 +11,38 @@ var User = require('../models/user');
  * immediately login the user.
  */
 router.post('/register', function (req, res) {
-    User.create(req.body, function (err, user) {
-        // if the error throws any error, send them
-        if(err){
-            return res.status(400).send({
-                errors: err
-            })
-        }else{
+    if(typeof req.body.email === 'undefined' || typeof req.body.password === 'undefined'){
+        return res.status(400).send({
+            errors: ['Email and/or password missing.']
+        })
+    }else{
+        User.create(req.body, function (err, user) {
+            // if the error throws any error, send them
+            if(err){
+                return res.status(400).send({
+                    errors: err
+                })
+            }else{
 
-            //expects to be plain object so I found somewhere that they've used email and id and pass it for jwt.sign --> test should pass now
-            var userToken = {
-                username:user.email,
-                id:user._id
-            };
-            // if no errors are thrown the user has been created.
-            // create a token and send back the response with the user detail
-            var token = jwt.sign(userToken, config.passport.jwt.jwtSecret, {
-                expiresIn: 172800 // 20 years in seconds
-            });
+                //expects to be plain object so I found somewhere that they've used email and id and pass it for jwt.sign --> test should pass now
+                var userToken = {
+                    email: user.email,
+                    id: user._id
+                };
+                // if no errors are thrown the user has been created.
+                // create a token and send back the response with the user detail
+                var token = jwt.sign(userToken, config.passport.jwt.jwtSecret, {
+                    expiresIn: 172800 // 2 days in seconds
+                });
 
-            return res.status(200).send({
-                user: user,
-                jwtToken: token
-            })
-        }
-    });
+                return res.status(200).send({
+                    user: user,
+                    jwtToken: token,
+                    expiresIn: 172800
+                })
+            }
+        });   
+    }    
 });
 
 router.get('/register/facebook', function (req, res) {
@@ -49,59 +57,37 @@ router.get('/register/facebook/callback', function (req, res) {
  * It checkes the given email and password in the db.
  * If matches it creates a jwt and return it.
  */
-router.post('/login', function (req, res) {
-    if(typeof req.body.email !== 'undefined' && typeof req.body.password !== 'undefined'){
-        // if the email and passowrd are passed in the request, find the
-        // user with that email
-        User.findOne({email: req.body.email}, function (err, user) {
-            if(err){
-                // if the db throws any error send them
-                return res.status(400).send({
-                    errors: err
-                })
-            }else{
-                if(!user){
-                    // if the user is not found send an error
-                    return res.status(400).send({
-                        errors: ['Invalid credentials.']
-                    })
-                }else{
-                    // if the user is found, check if password matches
-                    user.authenticate(req.body.password, function (err, isMatch) {
-                        if(isMatch && !err){
+router.post('/login', function (req, res, next) {
+    passport.authenticate('local', function (err, user, info) {
+        if(err){
+            // it should generate a 500 error
+            return next(err);
+        }
 
-                            //also here
-                            var userToken = {
-                                username:user.email,
-                                id:user._id
-                            };
-                            // if it matches and there are no error, create
-                            // thw jwt token and send it
-                            var token = jwt.sign(userToken, config.passport.jwt.jwtSecret, {
-                                expiresIn: 172800 // 2 days in seconds
-                            });
-                            return res.send({
-                                user: user,
-                                jwtToken: token
-                            })
-                        }else{
-                            // if there is no match or an error occured send
-                            // an error
-                            res.status(400).send({
-                                errors: ['Authentication failed.']
-                            })
-                        }
-                    })
-                }
-            }
-        })
-    }else{
-        // if email and/or password are not passed, send an error
-        return res.status(400).send({
-            errors: ['Email and/or password not definied.']
-        })
-    }
+        if(!user){
+            // user is not found or password incorrect
+            return res.status(400).send({
+                errors: ['Invalid credentials.']
+            })
+        }
 
+        // the user passed valid credentials
+        // create jwt token
+        var userToken = {
+            email: user.email,
+            id: user._id
+        };
+        // if it matches and there are no error, create
+        // thw jwt token and send it
+        var token = jwt.sign(userToken, config.passport.jwt.jwtSecret, {
+            expiresIn: 172800 // 2 days in seconds
+        });
+        return res.send({
+            user: user,
+            jwtToken: token,
+            expiresIn: 172800
+        })
+    })(req, res, next)
 });
 
 module.exports = router;

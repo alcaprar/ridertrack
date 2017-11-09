@@ -1,7 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-
-var passportLocalMongoose = require('passport-local-mongoose');
+var bcrypt = require('bcrypt');
 
 // list of fields that should not be passed to the frontend
 const privateFields = ['__v', 'salt', 'hash', 'created_at', 'updated_at'];
@@ -10,6 +9,19 @@ const privateFields = ['__v', 'salt', 'hash', 'created_at', 'updated_at'];
 const fieldsNotChangeable = ['_id', '__v', 'salt', 'hash', 'email', 'role', 'created_at', 'updated_at'];
 
 var userSchema = Schema({
+    email: {
+        type: String,
+        required: true,
+        minlength: 1
+    },
+    salt: {
+        type: String,
+        required: false
+    },
+    hash: {
+        type: String,
+        required: false // to solve facebook login
+    },
     name: {
         type: String, 
         required: true, 
@@ -25,7 +37,7 @@ var userSchema = Schema({
         required: true, 
         enum:['participant', 'organizer']
     },
-    facebookProvider: {
+    facebookProfile: {
         type: {
             id: String,
             token: String
@@ -49,11 +61,6 @@ userSchema.pre('save', function(next) {
     next();
 });
 
-// attach passport plugin to handle registration and login
-userSchema.plugin(passportLocalMongoose, {
-    usernameField: 'email'
-});
-
 /**
  * It clears the user instance removing some private fields.
  * Useful to not send to the frontend some fields like hash, salt ecc..
@@ -67,6 +74,36 @@ userSchema.methods.removePrivateFields = function (callback) {
     if(typeof callback !== 'undefined'){
         callback();
     }
+};
+
+userSchema.methods.generateHash = function (password, callback) {
+    var user = this;
+    return bcrypt.genSalt(10, function (err, salt) {
+        if(err){
+            return callback(err)
+        }
+        bcrypt.hash(password, salt, function (err, hash) {
+            if(err){
+                return callback(err)
+            }
+
+            user.salt = salt;
+            user.hash = hash;
+
+            return callback(null)
+        })
+    });
+};
+
+userSchema.methods.verifyPassword = function (password, callback) {
+    var user = this;
+    bcrypt.compare(password, user.hash, function (err, res) {
+        if(err){
+            return callback(err)
+        }
+
+        return callback(null, res)
+    })
 };
 
 /**
@@ -108,14 +145,34 @@ userSchema.statics.findByEmail = function (email, callback) {
  */
 userSchema.statics.create = function (userJson, callback) {
     var user = new User(userJson);
-    User.register(user, userJson.password, function (err, user) {
-        if(err){
-            return callback(err)
-        }else{
+
+    if(typeof userJson.password === 'undefined'){
+        // social registration
+        // TODO add some data for social registration
+        user.save(function (err) {
+            if(err){
+                return callback(err)
+            }
+
             user.removePrivateFields();
-            return callback(null, user)
-        }
-    });
+            return callback(null, user);
+        })
+    }else{
+        user.generateHash(userJson.password, function (err) {
+            if(err){
+                return callback(err)
+            }
+            user.save(function (err) {
+                if(err){
+                    return callback(err)
+                }
+
+                return user.removePrivateFields(function () {
+                    callback(null, user)
+                });
+            })
+        });
+    }
 };
 
 /**

@@ -43,5 +43,21 @@ describe('User model test', function () {
             done();
         })
 
+    });
+
+    // useful for facebook authentication
+    it('should save an user without a password', function (done) {
+        var user = new User({
+            name: 'a',
+            surname: 'a',
+            email: 'aaaa@aa.it',
+            role: 'participant'
+        });
+
+        user.save(function (err) {
+            expect(err).to.be.eql(null);
+            done();
+        })
+
     })
 });
