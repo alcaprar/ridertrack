@@ -24,9 +24,7 @@ router.post('/register', function (req, res) {
                 })
             }else{
 
-                //expects to be plain object so I found somewhere that they've used email and id and pass it for jwt.sign --> test should pass now
                 var userToken = {
-                    email: user.email,
                     id: user._id
                 };
                 // if no errors are thrown the user has been created.
@@ -74,7 +72,6 @@ router.post('/login', function (req, res, next) {
         // the user passed valid credentials
         // create jwt token
         var userToken = {
-            email: user.email,
             id: user._id
         };
         // if it matches and there are no error, create
