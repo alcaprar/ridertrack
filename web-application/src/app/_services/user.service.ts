@@ -6,33 +6,22 @@ import {User} from "../_models/user";
 @Injectable()
 export class UserService {
 
-  private role;
+  private isLogged: boolean;
 
   constructor(private http: Http,
               private authenticationService: AuthenticationService) {
-    this.role = '';
+   this.isLogged=false;
   }
 
-  setRole(login: String) {
-    this.role = login;
-  }
-
-  getRole() {
-    return this.role;
+  setLogin(){
+    this.isLogged=true;
   }
 
   isLoggedIn() {
-    return this.role !== '';
+    return this.isLogged;
   }
 
-  isParticipant() {
-    return this.role.equal('participant');
-  }
-  isOrganizer() {
-    return this.role.equal('participant');
-  }
-
-  logout() {
-    this.role = '';
+  setLogout() {
+    this.isLogged=false;
   }
 }

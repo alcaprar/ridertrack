@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {UserService} from "../_services/user.service";
 
 @Component({
   selector: 'app-event-detail-page',
@@ -7,7 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EventDetailPageComponent implements OnInit {
 
-  constructor() { }
+  private eventTitle: string;
+  private registrationStatus: string;
+
+  //to change with the title retrieved from the server
+  constructor(user: UserService) {
+    this.eventTitle="London Marathon 2017",
+      this.registrationStatus= "Open"
+  }
 
   ngOnInit() {
   }

@@ -61,6 +61,10 @@ import { EventDetailPageComponent } from './event-detail-page/event-detail-page.
         component: EventsListPageComponent
       },
       {
+        path: 'event',
+        component: EventDetailPageComponent
+      },
+      {
         path: 'contacts',
         component: ContactsPageComponent
       },
@@ -106,7 +110,8 @@ import { EventDetailPageComponent } from './event-detail-page/event-detail-page.
   providers: [
     UserService,
     AuthguardGuard,
-  AuthenticationService ],
+    AuthenticationService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
