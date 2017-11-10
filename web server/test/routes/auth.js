@@ -7,6 +7,9 @@ var server = require('../../index');
 var uuid = require('uuid');
 var supertest = require('supertest');
 
+var Browser = require('zombie');
+var path = require('path');
+
 global.server = server;
 global.uuid = uuid;
 global.expect = chai.expect;
@@ -157,4 +160,49 @@ describe('User API tests', function () {
         server.close();
         done()
     });
+});
+
+describe('Public authentication service API test',function(){
+
+    var browser = new Browser();
+    var events = [];
+    beforeEach(function(done){
+
+        done()
+    });
+
+    before(function(done) {
+        User.remove({}, function (err) {
+            done()
+        });
+    });
+
+    before(function(done){
+        browser.on('request', function(request) {
+            events.push([request.url]);
+        });
+        browser.on('redirect', function(request, response) {
+            events.push([request.url, response.url, response.status]);
+        });
+        browser.on('response', function(request, response) {
+            events.push([request.url, response.url, response.status]);
+        });
+        done()
+    });
+
+    it('should login with google account',function(done){
+
+        done();
+    });
+
+    it('should login with facebook account',function(done){
+        done();
+    });
+
+    // it closes the server at the end
+    after(function (done) {
+        server.close();
+        done()
+    });
+
 });
