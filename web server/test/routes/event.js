@@ -40,11 +40,31 @@ describe('Event API tests', function () {
         })
     });
 
+
+    //Testing the endpoint to the events
+    describe('PUT /events', function () {
+        it('it should update the name of an event', function (done) {
+            let event = {
+                name: 'event2'
+            };
+
+            request.put('/api/event/')
+                .send(event)
+                .end(function (err, res) {
+                    //expect(res.status).to.be.eql(200);
+                    expect(res.body).to.be.an('object');
+                    expect(res.body).to.not.have.property('errors');
+                    //expect(res.body).to.have.property('event_num_update');
+                    done()
+                })
+        });
+    });
+
+
     // it closes the server at the end
     after(function (done) {
         server.close();
         done()
     })
 });
-
 

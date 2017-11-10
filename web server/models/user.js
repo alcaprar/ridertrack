@@ -44,6 +44,14 @@ var userSchema = Schema({
         },
         select: false // it exclude by default this field in queries
     },
+    googleProfile:{
+        data:{
+            id:String,
+            token:String
+        },
+        select:false
+    },
+
     created_at: {type: Date, select: false},
     updated_at: {type: Date, select: false}
 });
@@ -107,19 +115,55 @@ userSchema.methods.verifyPassword = function (password, callback) {
 };
 
 /**
- * It sets facebook data to user
- * @param facebookData
- * @param facebookToken
+ * It executes facebook passport callback function
+ * @param accessToken
+ * @param refreshToken
+ * @param profile
+ * @param cb
  */
-userSchema.methods.setFacebookData = function (facebookData,facebookToken){
-    let user = this;
+userSchema.statics.setFbUser = function (accessToken,refreshToken,profile,cb){
+    var user = new User();
+    var email = profile.emails[0].name;
 
-    user.email = facebookData.emails[0].name;
-    user.firstname = facebookData.name.givenName;
-    user.lastname = facebookData.name.familyName;
+    return User.findByEmail(email,function(err,user){
+        if (user){
+            cb (err,user);
+        }
+        else{
+            user.name = profile.first_name;
+            user.surname = profile.last_name;
+            user.email = profile.email;
+            user.type.facebookProvider = {
+                id:profile.id,
+                token:accessToken
+            };
+            console.log(user);
+            cb (err,user);
+        }
+        });
 
-    user.facebookProvider.type.id = facebookData.id;
-    user.facebookProvider.type.token = facebookToken;
+};
+
+userSchema.statics.setGoogleUser = function (accessToken,refreshToken,profile,cb){
+    var user = new User();
+    var email = profile.emails[0].value;
+
+    return User.findByEmail(email,function(err,userData){
+        if (userData){
+            return cb(null,userData);
+        }
+        else{
+            user.name = profile.name.givenName;
+            user.surname = profile.name.familyName;
+            user.email = email;
+            user.googleProfile.data = {
+                id:profile.id,
+                token:accessToken
+            }
+            return cb (null,user);
+        }
+    })
+
 };
 
 /**

@@ -1,7 +1,7 @@
 var express = require('express'),
     bodyParser = require('body-parser'), //to retrieve post parameters
     favicon = require('serve-favicon'),
-    User = require('./models/user');
+    User = require('./models/user'),
     Event = require('./models/event');
 
 var app = express();
@@ -71,8 +71,14 @@ passport.use('local', new LocalStrategy({usernameField: 'email', session: false}
     })
 }));
 
-// initialize passport
-app.use(passport.initialize());
+// initialize facebook-passport
+//initialize google-passport
+var initFacebook = require('./config/facebookPassport');
+var initGoogle = require('./config/googlePassport');
+initFacebook (passport);
+initGoogle(passport);
+
+passport.initialize();
 
 // Include the controllers folder, where there are all the routes handler
 app.use(require('./routes'));
