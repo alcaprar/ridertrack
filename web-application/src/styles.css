@@ -70,7 +70,7 @@ p {
   margin:0;
 }
 a {
-  color: #d27e04;
+  color: #8a8b87;
   outline: 0;
   font-weight: bold;
   -webkit-transition: all .8s ease;
@@ -689,106 +689,7 @@ label small{
 }
 
 
-/*!
- * Yamm!3
- * Yet another megamenu for Bootstrap 3
- *
- * http://geedmo.github.com/yamm3
- */
-.yamm .nav,
-.yamm .collapse,
-.yamm .dropup,
-.yamm .dropdown {
-  position: static;
-}
-.yamm .container {
-  position: relative;
-}
-.yamm .dropdown-menu {
-  left: auto;
-}
-.yamm .yamm-content {
-  padding: 20px 30px;
-}
-@media (max-width: 767px) {
-  .yamm .yamm-content {
-    padding: 10px 20px;
-  }
-}
-.yamm .dropdown.yamm-fw .dropdown-menu {
-  left: 0;
-  right: 0;
-}
-.yamm .dropdown-menu {
-  background-color: #FFF;
-  border: 0.3px solid rgba(227, 227, 227, 0.22);
-  border-radius: 0px;
-  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.176);
-}
-.ymm-sw .dropdown-menu {
-  position: absolute;
-  top: 100%;
-  left: 0px;
-  z-index: 1000;
-  float: left;
-  min-width: 160px;
-  padding: inherit;
-  margin: inherit;
-  list-style: outside none none;
-  font-size: inherit;
-  background-color: #FFF;
-  border: 0px solid rgba(0, 0, 0, 0);
-  border-radius: 0px;
-  box-shadow: 0px 0.5px 1px #CECECE;
-  background-clip: padding-box;
-}
-.ymm-sw .dropdown-menu li{
-  clear: both;
-  height: 50px;
-}
-.navbar-default .ymm-sw .navbar-nav a::after {
-  bottom: 5px;
-  background-color: #FFF;
-}
-.yamm .ymm-sw  .dropdown-menu {
-  left: auto;
-  right: auto;
-}
-.navbar .yamm-content h5 {
-  font-size: 18px;
-  font-weight: 400;
-  text-transform: uppercase;
-  padding-bottom: 10px;
-  border-bottom: dotted 1px #555555;
-}
-@media (max-width: 767px) {
-  .navbar .yamm-content h5 {
-    font-size: 14px;
-  }
-}
-.navbar .yamm-content ul {
-  margin: 0;
-  padding: 0;
-}
-.navbar .yamm-content ul li {
-  list-style-type: none;
-  border-bottom: solid 1px #eeeeee;
-  text-transform: uppercase;
-  padding: 4px 0;
-}
-.navbar .yamm-content ul li a {
-  color: #777;
-  font-size: 14px;
-  display: block;
-  font-weight: 300;
-}
-.navbar .yamm-content ul li a:hover {
-  color: #FDC600;
-  text-decoration: none;
-}
-.navbar .yamm-content .banner {
-  margin-bottom: 10px;
-}
+
 
 .tooltip {
   font-size: 14px;

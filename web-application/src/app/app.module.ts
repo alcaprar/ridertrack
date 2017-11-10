@@ -24,6 +24,7 @@ import { PageHeaderComponent } from './page-header/page-header.component';
 import {UserService} from './_services/user.service';
 import {AuthguardGuard} from './_guards/authguard.guard';
 import {AuthenticationService} from "./_services/authentication.service";
+import { EventDetailPageComponent } from './event-detail-page/event-detail-page.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import {AuthenticationService} from "./_services/authentication.service";
     FooterComponent,
     ContactsPageComponent,
     PageHeaderComponent,
+    EventDetailPageComponent,
   ],
   imports: [
     BrowserModule,
