@@ -28,7 +28,7 @@ router.get('/', function (req, res) {
  */
 
 router.get('/:userId', function (req, res) {
-    User.findById(req.params.userId, function (err, user) {
+    User.findByUserId(req.params.userId, function (err, user) {
         if(err){
             res.send({
                 status: 'failed',
@@ -97,12 +97,24 @@ router.put('/:userId', function (req, res) {
 });
 
 /**
- * It deletes the given user.
+ * It deletes the given user by Id
  * Can be called only by the given user.
  * This will delete permanently everything related to it.
  */
 router.delete('/:userId', function (req, res) {
-
+    User.delete(req.params.userId, function (err, user) {
+        if(err){
+            res.send({
+                status: 'failed',
+                errors: err
+            })
+        }else{
+            res.send({
+                status: 'success',
+                users: user
+            })
+        }
+    })
 });
 
 module.exports = router;

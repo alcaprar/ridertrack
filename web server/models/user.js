@@ -171,8 +171,8 @@ userSchema.statics.setGoogleUser = function (accessToken,refreshToken,profile,cb
  * @param email
  * @param callback
  */
-userSchema.statics.findById = function (userId, callback) {
-    User.findOne({_id: userId}, function (err, user) {
+userSchema.statics.findByUserId = function (userId, callback) {
+    User.findById(userId, function (err, user) {
         if(err){
             return callback(err)
         }else{
@@ -261,6 +261,17 @@ userSchema.statics.update = function (userId, userJson, callback) {
                     return callback(null, user)
                 }
             })
+        }
+    })
+};
+
+//it deletes an user by given ID(it can be changed to another property) in URL
+userSchema.statics.delete = function (userId,callback) {
+    User.findOneAndRemove({_id:userId}, function (err, user){
+        if(err) {
+            return callback(err)
+        }else{
+            return callback(null,user)
         }
     })
 };
