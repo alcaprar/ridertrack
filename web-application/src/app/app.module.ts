@@ -11,7 +11,6 @@ import { AppComponent } from './app.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { RegistrationPageComponent } from './registration-page/registration-page.component';
-import { AboutUsComponent } from './about-us/about-us.component';
 import { ParticipantPageComponent } from './participant-page/participant-page.component';
 import { CountDownComponent } from './count-down/count-down.component';
 import { EventAdminPageComponent } from './event-admin-page/event-admin-page.component';
@@ -24,7 +23,7 @@ import { PageHeaderComponent } from './page-header/page-header.component';
 import {UserService} from './_services/user.service';
 import {AuthguardGuard} from './_guards/authguard.guard';
 import {AuthenticationService} from "./_services/authentication.service";
-import { EventDetailPageComponent } from './event-detail-page/event-detail-page.component';
+import {EventDetailPageComponent} from './event-detail-page/event-detail-page.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +31,6 @@ import { EventDetailPageComponent } from './event-detail-page/event-detail-page.
     HomePageComponent,
     LoginPageComponent,
     RegistrationPageComponent,
-    AboutUsComponent,
     ParticipantPageComponent,
     CountDownComponent,
     EventAdminPageComponent,
@@ -90,10 +88,6 @@ import { EventDetailPageComponent } from './event-detail-page/event-detail-page.
         canActivate: [AuthguardGuard],
         component: EventAdminPageComponent
       } ,
-      {
-        path: 'about-us',
-        component: AboutUsComponent
-      },
       {
         path: '',
         redirectTo: '/home',
