@@ -23,11 +23,14 @@ exampleUserId
 ```
 {
     "user": {
+        "hash":String,
+        "salt":String,
         "_id": String,
         "name": String,
         "surname": String,
         "email": String,
-        "role": String
+        "role": String,
+        "_v":Number
     }
 }
 ```
