@@ -25,6 +25,9 @@ router.get('/', function(req, res) {
 // It return the details of the requested eventId. //
 router.get('/:eventId', function (req, res) {
     res.send(req.params)
+  //  res.status(200).send({
+   //     event: user
+   // })
 
 });
 
@@ -46,6 +49,23 @@ router.post('/', function (req, res) {
     })
 });
 
+
+/**
+ * It updates the fields passed in the body of the given eventId
+ */
+router.put('/:eventId', function (req, res) {
+    Event.update(req.params.eventId, req.body, function (err, num_updated) {
+        if(err){
+            res.status(400).send({
+                errors: err
+            })
+        }else{
+            res.status(200).send({
+                event_num_updated: num_updated
+            })
+        }
+    })
+});
 
 
 

@@ -43,13 +43,21 @@ router.post('/register', function (req, res) {
     }    
 });
 
-router.get('/register/facebook', function (req, res) {
+//TODO:facebook email returns undefined
+router.get('/register/facebook', passport.authenticate('facebook',{scope:['email','public_profile']}));
 
+router.get('/register/facebook/callback',function(err,user){
 });
 
-router.get('/register/facebook/callback', function (req, res) {
+router.get('/register/google',passport.authenticate('google',{scope:['openid','email','profile']}));
 
-});
+//TODO:what to do with google callback ???Redirect where???
+router.get('register/google/callback',passport.authenticate('google',{failureRedirect:'/'},
+    function(err,user){
+        console.log(user);
+        return user;
+    })
+);
 
 /**
  * It checkes the given email and password in the db.

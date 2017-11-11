@@ -29,7 +29,7 @@ describe('User model test', function () {
         });
     });
 
-    it('should save an user', function (done) {
+    it('should save a user', function (done) {
         var user = new User({
             name: 'a',
             surname: 'a',

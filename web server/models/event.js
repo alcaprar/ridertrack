@@ -79,8 +79,29 @@ eventSchema.statics.create = function (eventJson, callback) {
     })
 };
 
+// Updates an event. Note: there might be an easier way of doign this looking at docs.
+eventSchema.statics.update = function (eventId, eventJson, callback) {
+// find the right event and modify it
+    this.findOne({_id: eventId}, function (err, event) {
+        if (err) {
+            return callback(err)
+        } else {
+            // override the previous value
+            for (let key in eventJson) {
+                event[key] = eventJson[key]
+            }
+
+            event.save(function (err) {
+                if (err) {
+                    return callback(err)
+                } else {
+                    return callback(null, event)
+                }
+            })
+        }
+    })
 
 
-
+};
 var Event = mongoose.model('Event', eventSchema);
 module.exports = Event;

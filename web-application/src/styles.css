@@ -70,7 +70,7 @@ p {
   margin:0;
 }
 a {
-  color: #d27e04;
+  color: #8a8b87;
   outline: 0;
   font-weight: bold;
   -webkit-transition: all .8s ease;
@@ -742,53 +742,7 @@ label small{
   box-shadow: 0px 0.5px 1px #CECECE;
   background-clip: padding-box;
 }
-.ymm-sw .dropdown-menu li{
-  clear: both;
-  height: 50px;
-}
-.navbar-default .ymm-sw .navbar-nav a::after {
-  bottom: 5px;
-  background-color: #FFF;
-}
-.yamm .ymm-sw  .dropdown-menu {
-  left: auto;
-  right: auto;
-}
-.navbar .yamm-content h5 {
-  font-size: 18px;
-  font-weight: 400;
-  text-transform: uppercase;
-  padding-bottom: 10px;
-  border-bottom: dotted 1px #555555;
-}
-@media (max-width: 767px) {
-  .navbar .yamm-content h5 {
-    font-size: 14px;
-  }
-}
-.navbar .yamm-content ul {
-  margin: 0;
-  padding: 0;
-}
-.navbar .yamm-content ul li {
-  list-style-type: none;
-  border-bottom: solid 1px #eeeeee;
-  text-transform: uppercase;
-  padding: 4px 0;
-}
-.navbar .yamm-content ul li a {
-  color: #777;
-  font-size: 14px;
-  display: block;
-  font-weight: 300;
-}
-.navbar .yamm-content ul li a:hover {
-  color: #FDC600;
-  text-decoration: none;
-}
-.navbar .yamm-content .banner {
-  margin-bottom: 10px;
-}
+
 
 .tooltip {
   font-size: 14px;
@@ -1938,10 +1892,12 @@ single property page
   padding: 20px 0px;
 }
 .property-info-entry .property-info-label {
-  font-size: 13px;
+  font-size: 14px;
+  color: #d30000;
+  font-style: italic;
   display: block;
-  line-height: 15px;
-  text-transform: uppercase;
+  line-height: 24px;
+  font-weight:bold;
 }
 .property-info-entry .property-info-value {
   font-size: 18px;
