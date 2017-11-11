@@ -22,7 +22,7 @@ e-mail address(example@gmail.com)
 - Content:
 ```
 {
-
+    "status": String,
     "user": {
         "hash":String,
         "salt":String,

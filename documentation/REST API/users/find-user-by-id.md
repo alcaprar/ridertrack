@@ -22,6 +22,7 @@ exampleUserId
 - Content:
 ```
 {
+    "status": String,
     "user": {
         "hash":String,
         "salt":String,
