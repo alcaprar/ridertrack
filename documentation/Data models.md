@@ -37,18 +37,18 @@ Note:
 ```
 {
     "_id": Number,
+    "organizerId": Number,
     "name" : String,
     "type": String,
     "description": String,
     "country": String,
     "city": String,
     "startingTime": Date,
-    "estimatedDuration": Number,  // number of minutes??
+    "maxDuration": Number,  // number of minutes??
     "maxParticipants": Number,
-    "organizerId": Number,
     "enrollmentOpeningAt": Date,
     "enrollmentClosingAt": Date,
-    "participantsList": [userId]
+    "participantsList": [userId], //redundancy
     "logo": String,
     "route": [Coordinates],
     "created_at": Date,
@@ -58,6 +58,7 @@ Note:
 Note:
 - Type is like: marathon, cycling...
 - Logo: URL of the image.
+- MaxDuration: after that time the race is closed.
 - Route: Ordered list of coordinates.
 
 ### Enrollment
@@ -67,7 +68,7 @@ Note:
     "eventId": Number,
     "userId": Number,
     "additionalInfo": Object,
-    "trackingSources" [TrackingSource]
+    "trackingSources" [TrackingSource],
     "created_at": Date,
     "updated_at": Date
 }
@@ -103,13 +104,12 @@ Index: (eventId, userId, timestamp)
 
 ```
 {
+    "_id": Number,
     "eventId": Number,
-    "senderUserId": Number,
-    "recipientUserId": Number,
+    "nameSender": String,
+    "userIdRecipient": Number,
     "message": String,
     "read": Boolean
 }
 ```
-
-Note:
-- senderUserId can be null if the message is sent by a guest. 
+ 
