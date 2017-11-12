@@ -34,8 +34,7 @@ describe('User model test', function () {
             name: 'a',
             surname: 'a',
             email: 'aaa@aa.it',
-            password: 'aa',
-            role: 'participant'
+            password: 'aa'
         });
 
         user.save(function (err) {
@@ -50,8 +49,7 @@ describe('User model test', function () {
         var user = new User({
             name: 'a',
             surname: 'a',
-            email: 'aaaa@aa.it',
-            role: 'participant'
+            email: 'aaaa@aa.it'
         });
 
         user.save(function (err) {

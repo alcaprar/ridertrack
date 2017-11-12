@@ -20,7 +20,7 @@ var userSchema = Schema({
     },
     hash: {
         type: String,
-        required: false // to solve facebook login
+        required: false
     },
     name: {
         type: String, 
@@ -33,9 +33,10 @@ var userSchema = Schema({
         minlength: 1
     },
     role: {
-        type: String, 
-        required: true, 
-        enum:['participant', 'organizer']
+        type: String,
+        required: true,
+        default: 'user',
+        enum: ['user', 'administrator']
     },
     facebookProfile: {
         type: {
@@ -45,13 +46,12 @@ var userSchema = Schema({
         select: false // it exclude by default this field in queries
     },
     googleProfile:{
-        data:{
-            id:String,
-            token:String
+        type: {
+            id: String,
+            token: String
         },
         select:false
     },
-
     created_at: {type: Date, select: false},
     updated_at: {type: Date, select: false}
 });
@@ -192,6 +192,21 @@ userSchema.statics.findByEmail = function (email, callback) {
 };
 
 /**
+ * It looks for user with the given googleId.
+ * @param googleId
+ * @param callback
+ */
+userSchema.statics.findByGoogleId = function (googleId, callback) {
+    User.findOne({'googleProfile.id': googleId}, function (err, user) {
+        if (err) {
+            return callback(err)
+        }
+        
+        return callback(null, user)
+    })
+};
+
+/**
  * It creates the user using the register function offered by passport.
  * It then calls a callback passing either an error list or the created user.
  * @param userJson
@@ -202,7 +217,6 @@ userSchema.statics.create = function (userJson, callback) {
 
     if(typeof userJson.password === 'undefined'){
         // social registration
-        // TODO add some data for social registration
         user.save(function (err) {
             if(err){
                 return callback(err)

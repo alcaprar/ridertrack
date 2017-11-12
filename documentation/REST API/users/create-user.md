@@ -1,8 +1,7 @@
 # Create user
 
 It stores the given user in the database.
-Have a look also to "Register user". 
-It does the same of this endpoint but it also returns immediately a valid jwt token.
+Have a look also to "Register user". It does the same of this endpoint but it also returns immediately a valid jwt token.
 
 ## URL
 

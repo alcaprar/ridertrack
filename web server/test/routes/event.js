@@ -12,7 +12,7 @@ global.uuid = uuid;
 global.expect = chai.expect;
 global.request = supertest(server);
 
-var User = require('../../models/event');
+var Event = require('../../models/event');
 
 
 describe('Event API tests', function () {

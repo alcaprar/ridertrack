@@ -47,17 +47,36 @@ router.post('/register', function (req, res) {
 router.get('/register/facebook', passport.authenticate('facebook',{scope:['email','public_profile']}));
 
 router.get('/register/facebook/callback',function(err,user){
+    
 });
 
-router.get('/register/google',passport.authenticate('google',{scope:['openid','email','profile']}));
+router.get('/login/google', passport.authenticate('google', {scope:['openid','email','profile']}));
 
-//TODO:what to do with google callback ???Redirect where???
-router.get('register/google/callback',passport.authenticate('google',{failureRedirect:'/'},
-    function(err,user){
-        console.log(user);
-        return user;
-    })
-);
+router.get('/login/google/callback', function (req, res, next) {
+    passport.authenticate('google', function (err, user, info) {
+        console.log(err, user, info);
+        if(err || !user){
+            return res.status(400).send({
+                errors: [err]
+            })
+        }
+        
+        // create jwt token
+        var userToken = {
+            id: user._id
+        };
+        
+        var token = jwt.sign(userToken, config.passport.jwt.jwtSecret, {
+            expiresIn: 172800 // 2 days in seconds
+        });
+        return res.send({
+            user: user,
+            jwtToken: token,
+            expiresIn: 172800
+        })
+        
+    })(req, res, next)
+});
 
 /**
  * It checkes the given email and password in the db.

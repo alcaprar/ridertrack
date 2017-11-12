@@ -72,11 +72,11 @@ passport.use('local', new LocalStrategy({usernameField: 'email', session: false}
 }));
 
 // initialize facebook-passport
-//initialize google-passport
-var initFacebook = require('./config/facebookPassport');
-var initGoogle = require('./config/googlePassport');
+// initialize google-passport
+var initFacebook = require('./passport/facebookPassport');
+var initGoogleStrategy = require('./passport/googleStrategy');
 initFacebook (passport);
-initGoogle(passport);
+initGoogleStrategy(passport);
 
 passport.initialize();
 
