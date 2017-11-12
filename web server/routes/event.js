@@ -36,7 +36,7 @@ router.get('/:eventId', function (req, res) {
  * It returns the detail of the event just created.
  */
 router.post('/', function (req, res) {
-    Event.statics.create(req.body, function (err, event) {
+    Event.create(req.body, function (err, event) {
         if (err) {
             res.status(400).send({
                 errors: err
@@ -67,6 +67,20 @@ router.put('/:eventId', function (req, res) {
     })
 });
 
+//deletes an event by given ID in URI
 
+router.delete('/:eventId', function(req,res){
+    Event.delete(req.params.eventId, function(err,event) {
+        if(err){
+            res.status(400).send({
+                errors: err
+            })
+        }else{
+            res.status(200).send({
+                events: event
+            })
+        }
+    })
+});
 
 module.exports = router;

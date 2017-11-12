@@ -104,13 +104,11 @@ router.put('/:userId', function (req, res) {
 router.delete('/:userId', function (req, res) {
     User.delete(req.params.userId, function (err, user) {
         if(err){
-            res.send({
-                status: 'failed',
+            res.status(400).send({
                 errors: err
             })
         }else{
-            res.send({
-                status: 'success',
+            res.status(200).send({
                 users: user
             })
         }

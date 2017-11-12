@@ -1,4 +1,4 @@
-var mongoose = require('mongoose')
+var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var eventSchema = Schema({
@@ -20,7 +20,7 @@ var eventSchema = Schema({
     },
     description: {
         type: String,
-        required: true,
+        required: true
     },
     created_at: {
         type: Date,
@@ -44,8 +44,6 @@ eventSchema.pre('save', function(next) {
     next();
 });
 
-
-
 /* It finds an event by name passed
  * Then, calls callback with either an error or the found event
  */
@@ -59,13 +57,10 @@ eventSchema.statics.findByName = function (name, callback ){
     })
 };
 
-
-
-
  /* It creates an event.
   * It then calls a callback passing either an error list or the created event.
  */
-
+ //TODO removePrivateFields
 eventSchema.statics.create = function (eventJson, callback) {
     var event = new Event(eventJson);
 
@@ -73,7 +68,7 @@ eventSchema.statics.create = function (eventJson, callback) {
         if (err) {
             return callback(err)
         } else {
-            event.removePrivateFields();
+            //event.removePrivateFields();
             return callback(null, event)
         }
     })
@@ -100,8 +95,19 @@ eventSchema.statics.update = function (eventId, eventJson, callback) {
             })
         }
     })
-
-
 };
+
+//deletes an event
+
+eventSchema.statics.delete = function (eventId, callback){
+    this.findOneAndRemove({_id: eventId}, function (err, event){
+        if(err) {
+            return callback(err)
+        }else{
+            return callback(null,event)
+        }
+    })
+};
+
 var Event = mongoose.model('Event', eventSchema);
 module.exports = Event;
