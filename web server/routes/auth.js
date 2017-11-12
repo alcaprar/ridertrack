@@ -43,18 +43,50 @@ router.post('/register', function (req, res) {
     }    
 });
 
-//TODO:facebook email returns undefined
-router.get('/register/facebook', passport.authenticate('facebook',{scope:['email','public_profile']}));
+/**
+ * It calls the facebook auth endpoint
+ */
+router.get('/register/facebook', passport.authenticate('facebook', {scope: 'email'}));
 
-router.get('/register/facebook/callback',function(err,user){
-    
+/**
+ * It is called by the facebook auth service as callback.
+ * It receives the response of the facebook login.
+ */
+router.get('/register/facebook/callback', function(req, res, next){
+    passport.authenticate('facebook', function (err, user, info) {
+        if(err || !user){
+            return res.status(400).send({
+                errors: [err]
+            })
+        }
+
+        // create jwt token
+        var userToken = {
+            id: user._id
+        };
+
+        var token = jwt.sign(userToken, config.passport.jwt.jwtSecret, {
+            expiresIn: 172800 // 2 days in seconds
+        });
+        return res.send({
+            user: user,
+            jwtToken: token,
+            expiresIn: 172800
+        })
+    })(req, res, next)
 });
 
-router.get('/login/google', passport.authenticate('google', {scope:['openid','email','profile']}));
+/**
+ * It calls the google oauth2 endpoint.
+ */
+router.get('/register/google', passport.authenticate('google', {scope:['openid','email','profile']}));
 
-router.get('/login/google/callback', function (req, res, next) {
+/**
+ * It is called by the google auth service as callback.
+ * It receives the response of the google login.
+ */
+router.get('/register/google/callback', function (req, res, next) {
     passport.authenticate('google', function (err, user, info) {
-        console.log(err, user, info);
         if(err || !user){
             return res.status(400).send({
                 errors: [err]
@@ -79,7 +111,7 @@ router.get('/login/google/callback', function (req, res, next) {
 });
 
 /**
- * It checkes the given email and password in the db.
+ * It checks the given email and password in the db.
  * If matches it creates a jwt and return it.
  */
 router.post('/login', function (req, res, next) {

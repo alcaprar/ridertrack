@@ -1,13 +1,13 @@
-## Register and login with google
+## Register and login with facebook
 
-It redirects to google oauth2 page and waits for the response.
-If the google login is successful it returns a jwt token otherwise the error.
+It redirects to facebook page and waits for the response.
+If the facebook login is successful it returns a jwt token otherwise the error.
 
-Important: there is only one endpoint for login and registration with google.
+Important: there is only one endpoint for login and registration with facebook.
 
 ### URL
 
-/api/auth/register/google
+/api/auth/register/facebook
 
 ### Method
 

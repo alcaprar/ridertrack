@@ -73,9 +73,9 @@ passport.use('local', new LocalStrategy({usernameField: 'email', session: false}
 
 // initialize facebook-passport
 // initialize google-passport
-var initFacebook = require('./passport/facebookPassport');
+var initFacebookStrategy = require('./passport/facebookPassport');
 var initGoogleStrategy = require('./passport/googleStrategy');
-initFacebook (passport);
+initFacebookStrategy(passport);
 initGoogleStrategy(passport);
 
 passport.initialize();

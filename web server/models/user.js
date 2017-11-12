@@ -3,10 +3,10 @@ var Schema = mongoose.Schema;
 var bcrypt = require('bcrypt');
 
 // list of fields that should not be passed to the frontend
-const privateFields = ['__v', 'salt', 'hash', 'created_at', 'updated_at'];
+const privateFields = ['__v', 'salt', 'hash', 'created_at', 'updated_at', 'googleProfile', 'facebookProfile'];
 
 // list of fields that an user can not change
-const fieldsNotChangeable = ['_id', '__v', 'salt', 'hash', 'email', 'role', 'created_at', 'updated_at'];
+const fieldsNotChangeable = ['_id', '__v', 'salt', 'hash', 'email', 'role', 'created_at', 'updated_at', 'googleProfile', 'facebookProfile'];
 
 var userSchema = Schema({
     email: {
@@ -84,6 +84,13 @@ userSchema.methods.removePrivateFields = function (callback) {
     }
 };
 
+
+/**
+ * It generates the hash of the password.
+ * It stores both the hash and the salt in the user instance.
+ * @param password
+ * @param callback
+ */
 userSchema.methods.generateHash = function (password, callback) {
     var user = this;
     return bcrypt.genSalt(10, function (err, salt) {
@@ -103,6 +110,13 @@ userSchema.methods.generateHash = function (password, callback) {
     });
 };
 
+/**
+ * It checks if the given password is valid.
+ * It creates the hash of the given password and it compares it with the
+ * stored hash.
+ * @param password
+ * @param callback
+ */
 userSchema.methods.verifyPassword = function (password, callback) {
     var user = this;
     bcrypt.compare(password, user.hash, function (err, res) {
@@ -112,58 +126,6 @@ userSchema.methods.verifyPassword = function (password, callback) {
 
         return callback(null, res)
     })
-};
-
-/**
- * It executes facebook passport callback function
- * @param accessToken
- * @param refreshToken
- * @param profile
- * @param cb
- */
-userSchema.statics.setFbUser = function (accessToken,refreshToken,profile,cb){
-    var user = new User();
-    var email = profile.emails[0].name;
-
-    return User.findByEmail(email,function(err,user){
-        if (user){
-            cb (err,user);
-        }
-        else{
-            user.name = profile.first_name;
-            user.surname = profile.last_name;
-            user.email = profile.email;
-            user.type.facebookProvider = {
-                id:profile.id,
-                token:accessToken
-            };
-            console.log(user);
-            cb (err,user);
-        }
-        });
-
-};
-
-userSchema.statics.setGoogleUser = function (accessToken,refreshToken,profile,cb){
-    var user = new User();
-    var email = profile.emails[0].value;
-
-    return User.findByEmail(email,function(err,userData){
-        if (userData){
-            return cb(null,userData);
-        }
-        else{
-            user.name = profile.name.givenName;
-            user.surname = profile.name.familyName;
-            user.email = email;
-            user.googleProfile.data = {
-                id:profile.id,
-                token:accessToken
-            }
-            return cb (null,user);
-        }
-    })
-
 };
 
 /**
@@ -180,7 +142,12 @@ userSchema.statics.findByUserId = function (userId, callback) {
         }
     })
 };
-//It searches for an user given the mail
+
+/**
+ * It search for an user given the mail
+ * @param email
+ * @param callback
+ */
 userSchema.statics.findByEmail = function (email, callback) {
     User.findOne({email: email}, function (err, user) {
         if(err){
@@ -192,7 +159,7 @@ userSchema.statics.findByEmail = function (email, callback) {
 };
 
 /**
- * It looks for user with the given googleId.
+ * It search for user with the given googleId.
  * @param googleId
  * @param callback
  */
@@ -202,6 +169,22 @@ userSchema.statics.findByGoogleId = function (googleId, callback) {
             return callback(err)
         }
         
+        return callback(null, user)
+    })
+};
+
+
+/**
+ * It search for user with the given facebookId.
+ * @param facebookId
+ * @param callback
+ */
+userSchema.statics.findByFacebookId = function (facebookId, callback) {
+    User.findOne({'facebookProfile.id': facebookId}, function (err, user) {
+        if (err) {
+            return callback(err)
+        }
+
         return callback(null, user)
     })
 };
@@ -279,9 +262,13 @@ userSchema.statics.update = function (userId, userJson, callback) {
     })
 };
 
-//it deletes an user by given ID(it can be changed to another property) in URL
-userSchema.statics.delete = function (userId,callback) {
-    User.findOneAndRemove({_id:userId}, function (err, user){
+/**
+ * It delete the user given an id.
+ * @param userId
+ * @param callback
+ */
+userSchema.statics.delete = function (userId, callback) {
+    User.findOneAndRemove({_id: userId}, function (err, user){
         if(err) {
             return callback(err)
         }else{

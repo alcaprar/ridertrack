@@ -6,8 +6,8 @@ var config = {
     },
     passport: {
         facebookAuth: {
-            clientID: '143499929611948',
-            clientSecret: 'fe28012bb3b594a80aa7bf35774dfead',
+            clientID: '278876872621248',
+            clientSecret: '53f98a00b42e720b69ad44110b1c48a7',
             callbackURL: "http://localhost:5000/api/auth/register/facebook/callback",
             profileFields:['id','displayName','emails']
         },
