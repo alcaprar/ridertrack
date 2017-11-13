@@ -21,10 +21,77 @@ describe('User model test', function () {
     });
 
     it('should be invalid if name is empty', function(done) {
-        var user = new User();
+        var user = new User({
+            surname: 'Caprarelli',
+            email: 'ale.capra@hotmail.it'
+        });
 
         user.validate(function(err) {
-            expect(err.errors.name).to.exist;
+            expect(err).to.not.be.eql(null);
+            done();
+        });
+    });
+
+    it('should be invalid if surname is empty', function(done) {
+        var user = new User({
+            name: 'Alessandro',
+            email: 'ale.capra@hotmail.it'
+        });
+
+        user.validate(function(err) {
+            console.log('sur', err);
+            expect(err).to.not.be.eql(null);
+            done();
+        });
+    });
+
+    it('should be invalid if email is empty', function(done) {
+        var user = new User({
+            name: 'Alessandro',
+            surname: 'Caprarelli'
+        });
+
+        user.validate(function(err) {
+            expect(err).to.not.be.eql(null);
+            done();
+        });
+    });
+
+    it('should be valid if password is empty', function(done) {
+        var user = new User({
+            name: 'Alessandro',
+            surname: 'Caprarelli',
+            email: 'ale@hotmail.it'
+        });
+
+        user.validate(function(err) {
+            expect(err).to.be.eql(null);
+            done();
+        });
+    });
+    
+    it('should be valid if email is correct', function(done) {
+        var user = new User({
+            name: 'Alessandro',
+            surname: 'Caprarelli',
+            email: 'ale@hotmail.it'
+        });
+
+        user.validate(function(err) {
+            expect(err).to.be.eql(null);
+            done();
+        });
+    });
+
+    it('should be NOT valid if email is NOT correct', function(done) {
+        var user = new User({
+            name: 'Alessandro',
+            surname: 'Caprarelli',
+            email: 'alehotmail.it'
+        });
+
+        user.validate(function(err) {
+            expect(err).to.not.be.eql(null);
             done();
         });
     });

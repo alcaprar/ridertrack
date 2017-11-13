@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var bcrypt = require('bcrypt');
+var validator = require('validator');
 
 // list of fields that should not be passed to the frontend
 const privateFields = ['__v', 'salt', 'hash', 'created_at', 'updated_at', 'googleProfile', 'facebookProfile'];
@@ -12,7 +13,8 @@ var userSchema = Schema({
     email: {
         type: String,
         required: true,
-        minlength: 1
+        minlength: 1,
+        validate: [validator.isEmail, 'Email is not correct.']     
     },
     salt: {
         type: String,
