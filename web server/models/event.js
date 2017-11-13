@@ -5,7 +5,8 @@ var eventSchema = Schema({
     name: {
         type: String,
         required: [true, 'Name of the event is required.'],
-        minlength: 1
+        minlength: 1,
+        unique: true
     },
     organizerId: {
         type: Number,
