@@ -58,6 +58,46 @@ export class AuthenticationService {
     return this.http.post(url, user, {headers: this.headers}).toPromise();
   }
 
+  loginFB(): Observable <Object> {
+    let url: string = `${this.BASE_URL}/register/facebook`;
+    return this.http.get(url).map((response: Response) => {
+        // login successful
+        let body = response.json();
+        // store the token in localStorage
+        this.token = body.jwtToken;
+        localStorage.setItem('currentUser', JSON.stringify({
+          user: body.user,
+          jwtToken: body.jwtToken
+        }));
+        return body.user;
+    })
+      .catch(
+        (error : any) => {
+          console.log('An error occured in authentication service. ', error);
+          return Observable.of(false);
+        })
+  }
+
+  loginGoogle(): Observable <Object> {
+    let url: string = `${this.BASE_URL}/register/google`;
+    return this.http.get(url).map((response: Response) => {
+      // login successful
+      let body = response.json();
+      // store the token in localStorage
+      this.token = body.jwtToken;
+      localStorage.setItem('currentUser', JSON.stringify({
+        user: body.user,
+        jwtToken: body.jwtToken
+      }));
+      return body.user;
+    })
+      .catch(
+        (error : any) => {
+          console.log('An error occured in authentication service. ', error);
+          return Observable.of(false);
+        })
+  }
+
   /**
    * It clears the localStorage removin the currentUser.
    */
