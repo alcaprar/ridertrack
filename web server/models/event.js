@@ -28,7 +28,8 @@ var eventSchema = Schema({
     },
     updated_at: {
         type: Date,
-        select: false}
+        select: false
+    }
 });
 
 // on every save, add the date
@@ -48,7 +49,19 @@ eventSchema.pre('save', function(next) {
  * Then, calls callback with either an error or the found event
  */
 eventSchema.statics.findByName = function (name, callback ){
-    this.find({name: name}, function (err, event) {
+    this.findOne({name: name}, function (err, event) {
+        if(err){
+            return callback(err)
+        }else{
+            return callback(null, event)
+        }
+    })
+};
+/* It finds an event by name passed
+ * Then, calls callback with either an error or the found event
+ */
+eventSchema.statics.findByEventId = function (eventId, callback ){
+    this.findOne({_id: eventId}, function (err, event) {
         if(err){
             return callback(err)
         }else{

@@ -6,16 +6,14 @@ var Event = require('../models/event');
 
 // returns the list of all events //
 router.get('/', function(req, res) {
-    Event.find({},function(err, events){
-        if(err){
-            res.send({
-                status: 'failed',
+    Event.find({},function(err, event){
+        if (err) {
+            res.status(400).send({
                 errors: err
             })
-        }else {
-            res.send({
-                status: 'success',
-                events: events
+        } else {
+            res.status(200).send({
+                events: event
             })
         }
     })
@@ -24,11 +22,32 @@ router.get('/', function(req, res) {
 
 // It return the details of the requested eventId. //
 router.get('/:eventId', function (req, res) {
-    res.send(req.params)
-  //  res.status(200).send({
-   //     event: user
-   // })
+    Event.findById(req.params.eventId, function (err, event) {
+        if (err) {
+            res.status(400).send({
+                errors: err
+            })
+        } else {
+            res.status(200).send({
+                events: event
+            })
+        }
+    })
+});
+// It return the details of the requested event. //
+router.get('/event/:name', function (req, res) {
+    Event.findByName(req.params.name, function (err, event) {
+        if (err) {
+            res.status(400).send({
+                errors: err
+            })
+        } else {
 
+            res.status(200).send({
+                events:event
+            })
+        }
+    })
 });
 
 
@@ -42,10 +61,11 @@ router.post('/', function (req, res) {
                 errors: err
             })
         }else{
-                res.status(200).send({
-                    event: event
-                })
-            }
+            res.status(200).send({
+                message: 'Event successfully created',
+                event: event
+            })
+        }
     })
 });
 
@@ -61,6 +81,7 @@ router.put('/:eventId', function (req, res) {
             })
         }else{
             res.status(200).send({
+                message: 'Event successfully updated',
                 event_num_updated: num_updated
             })
         }
@@ -77,7 +98,8 @@ router.delete('/:eventId', function(req,res){
             })
         }else{
             res.status(200).send({
-                events: event
+                message: 'Event successfully deleted',
+                event: event
             })
         }
     })

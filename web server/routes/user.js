@@ -8,16 +8,14 @@ var User = require('../models/user');
  * It returns the list of all the users
  */
 router.get('/', function (req, res) {
-    User.find({}, function (err, users) {
+    User.find({}, function (err, user) {
         if(err){
-            res.send({
-                status: 'failed',
+            res.status(400).send({
                 errors: err
             })
         }else{
-            res.send({
-                status: 'success',
-                users: users
+            res.status(200).send({
+                users: user
             })
         }
     })
@@ -30,13 +28,11 @@ router.get('/', function (req, res) {
 router.get('/:userId', function (req, res) {
     User.findByUserId(req.params.userId, function (err, user) {
         if(err){
-            res.send({
-                status: 'failed',
+            res.status(400).send({
                 errors: err
             })
         }else{
-            res.send({
-                status: 'success',
+            res.status(200).send({
                 users: user
             })
         }
@@ -48,13 +44,11 @@ router.get('/user/:mail', function (req, res) {
 
     User.findByEmail(req.params.mail, function (err, user) {
         if(err){
-            res.send({
-                status: 'failed',
+            res.status(400).send({
                 errors: err
             })
         }else{
-            res.send({
-                status: 'success',
+            res.status(200).send({
                 users: user
             })
         }
@@ -72,6 +66,7 @@ router.post('/', function (req, res) {
             })
         }else{
             res.status(200).send({
+                message: 'User successfully created',
                 user: user
             })
         }
@@ -90,6 +85,7 @@ router.put('/:userId', function (req, res) {
             })
         }else{
             res.status(200).send({
+                message: 'User successfully updated',
                 user: user
             })
         }
@@ -109,6 +105,7 @@ router.delete('/:userId', function (req, res) {
             })
         }else{
             res.status(200).send({
+                message: 'User successfully deleted',
                 users: user
             })
         }
