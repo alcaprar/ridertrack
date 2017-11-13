@@ -42,7 +42,6 @@ export class AuthenticationService {
             jwtToken: body.jwtToken
           }));
           return body.user;
-
         }
       )
       .catch(
@@ -53,9 +52,28 @@ export class AuthenticationService {
       )
   }
 
-  register(user): Promise<any> {
+  register(name: String, surname: String, email : String, password : String): Observable<Object> {
     let url: string = `${this.BASE_URL}/register`;
-    return this.http.post(url, user, {headers: this.headers}).toPromise();
+    return this.http.post(url, {name: name, surname: surname, email: email, password: password})
+      .map(
+        (response: Response) => {
+          // login successful
+          let body = response.json();
+          // store the token in localStorage
+          this.token = body.jwtToken;
+          localStorage.setItem('currentUser', JSON.stringify({
+            user: body.user,
+            jwtToken: body.jwtToken
+          }));
+          return body.user;
+        }
+      )
+      .catch(
+        (error : any) => {
+          console.log('An error occured in authentication service. ', error);
+          return Observable.of(false);
+        }
+      )
   }
 
   loginFB(): Observable <Object> {
@@ -105,5 +123,8 @@ export class AuthenticationService {
     // clear token remove user from local storage to log user out
     this.token = null;
     localStorage.removeItem('currentUser');
+    var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    console.log('Logging out...');
+    console.log('[AuthService] init: ', currentUser);
   }
 }

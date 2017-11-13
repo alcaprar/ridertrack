@@ -16,6 +16,7 @@
       <div class="button navbar-right" *ngIf="!loggedIn">
         <button class="navbar-btn nav-button wow bounceInRight login" routerLink="login" data-wow-delay="0.45s">Login</button>
         <button class="navbar-btn nav-button wow fadeInRight" routerLink="register" data-wow-delay="0.48s">Register</button>
+        <button class="navbar-btn nav-button wow bounceInRight" (click)="logout()" data-wow-delay="0.45s">Log out</button>
       </div>
 
 
