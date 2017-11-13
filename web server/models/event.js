@@ -4,23 +4,68 @@ var Schema = mongoose.Schema;
 var eventSchema = Schema({
     name: {
         type: String,
-        required: true,
+        required: [true, 'Name of the event is required.'],
         minlength: 1
     },
-    type_of_event: {
+    organizerId: {
+        type: Number,
+        required: true
+    },
+    type: {
         type: String,
-        required: true,
-        minlength: 1,
-        enum:['running', 'cycling', 'other']
-    },
-    date: {
-        type: Date,
-        required: true,
-        minlength: 1
+        required: [true, 'Type of the event is required.']
     },
     description: {
         type: String,
+        required: [true, 'A short description of the event is required.']
+    },
+    country: {
+        type: String,
+        required: [true, 'Country is required.']
+    },
+    city: {
+        type: String,
         required: true
+    },
+    startingTime: {
+        type: Date,
+        required: true
+    },
+    maxDuration: {
+        type: Number,
+        required: true
+    },
+    enrollmentOpeningAt: {
+        type: Date,
+        required: true,
+        validate: [
+            function (value) {
+                return this.enrollmentClosingAt > value
+            }
+        ]
+    },
+    enrollmentClosingAt: {
+        type: Date,
+        required: true,
+        validate: [
+            function (value) {
+                return this.enrollmentOpeningAt < value
+            }
+        ]
+    },
+    participantsList: {
+        type: [Number],
+        required: true,
+        default: []
+    },
+    logo: {
+        type: String,
+        required: false
+    },
+    routes: {
+        type: [String], //TODO to change with coordinates
+        required: true,
+        default: []
     },
     created_at: {
         type: Date,

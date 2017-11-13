@@ -25,7 +25,7 @@ describe('Event model test', function () {
         var event = new Event();
 
         event.validate(function(err) {
-            expect(err.errors.name).to.exist;
+            expect(err).to.not.be.eql(null);
             done();
         });
     });

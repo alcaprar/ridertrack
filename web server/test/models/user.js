@@ -98,9 +98,9 @@ describe('User model test', function () {
 
     it('should save a user', function (done) {
         var user = new User({
-            name: 'a',
-            surname: 'a',
-            email: 'aaa@aa.it',
+            name: 'Alessandro',
+            surname: 'Caprarelli',
+            email: 'alessandrocaprarelli@hotmail.it',
             password: 'aa'
         });
 
