@@ -5,10 +5,25 @@ var config = require('../config');
 var User = require('../models/user');
 
 /**
- * It returns the list of all the users
+ * It returns the list of all the users.
+ * It accepts query params for filtering the users: email, name, surname.
  */
 router.get('/', function (req, res) {
-    User.find({}, function (err, user) {
+    var conditions = {};
+    
+    // check for query parameters
+    // if they are present, add them to the conditions
+    if(req.query.email){
+        conditions.email = req.query.email
+    }
+    if(req.query.name){
+        conditions.name = req.query.name
+    }
+    if(req.query.surname){
+        conditions.surname = req.query.surname
+    }
+    
+    User.find(conditions, function (err, user) {
         if(err){
             res.status(400).send({
                 errors: err
@@ -38,22 +53,7 @@ router.get('/:userId', function (req, res) {
         }
     })
 });
-//it returns the details of user which mail was requested
-//i put user in front of mail because in other case it cannot distinct between mail and Id(it can be in header**to do)
-router.get('/user/:mail', function (req, res) {
 
-    User.findByEmail(req.params.mail, function (err, user) {
-        if(err){
-            res.status(400).send({
-                errors: err
-            })
-        }else{
-            res.status(200).send({
-                users: user
-            })
-        }
-    })
-});
 /**
  * It creates the user passed in the body.
  * It returns the detail of the user just created.
@@ -105,8 +105,7 @@ router.delete('/:userId', function (req, res) {
             })
         }else{
             res.status(200).send({
-                message: 'User successfully deleted',
-                users: user
+                message: 'User successfully deleted'
             })
         }
     })

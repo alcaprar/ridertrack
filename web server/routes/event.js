@@ -4,9 +4,23 @@ var router = express.Router();
 var Event = require('../models/event');
 
 
-// returns the list of all events //
+/**
+ * It returns the list of all the events.
+ * It accepts query params for filtering the events: name, type....
+ */
 router.get('/', function(req, res) {
-    Event.find({},function(err, event){
+    var conditions = {};
+    
+    // check for query parameters
+    // if they are present, add them to the conditions
+    if(req.query.name){
+        conditions.name = req.query.name
+    }
+    if(req.query.type){
+        conditions.type = req.query.type
+    }
+    
+    Event.find(conditions, function(err, event){
         if (err) {
             res.status(400).send({
                 errors: err
@@ -19,8 +33,9 @@ router.get('/', function(req, res) {
     })
 });
 
-
-// It return the details of the requested eventId. //
+/**
+ * It returns the detail of the given eventId
+ */
 router.get('/:eventId', function (req, res) {
     Event.findById(req.params.eventId, function (err, event) {
         if (err) {
@@ -29,29 +44,14 @@ router.get('/:eventId', function (req, res) {
             })
         } else {
             res.status(200).send({
-                events: event
-            })
-        }
-    })
-});
-// It return the details of the requested event. //
-router.get('/event/:name', function (req, res) {
-    Event.findByName(req.params.name, function (err, event) {
-        if (err) {
-            res.status(400).send({
-                errors: err
-            })
-        } else {
-
-            res.status(200).send({
-                events:event
+                event: event
             })
         }
     })
 });
 
-
-/* It creates the event passed in the body.
+/** 
+ * It creates the event passed in the body.
  * It returns the detail of the event just created.
  */
 router.post('/', function (req, res) {
@@ -62,7 +62,6 @@ router.post('/', function (req, res) {
             })
         }else{
             res.status(200).send({
-                message: 'Event successfully created',
                 event: event
             })
         }
@@ -81,25 +80,25 @@ router.put('/:eventId', function (req, res) {
             })
         }else{
             res.status(200).send({
-                message: 'Event successfully updated',
                 event_num_updated: num_updated
             })
         }
     })
 });
 
-//deletes an event by given ID in URI
 
+/**
+ * It deletes the event with the id given in the URI
+ */
 router.delete('/:eventId', function(req,res){
-    Event.delete(req.params.eventId, function(err,event) {
+    Event.delete(req.params.eventId, function(err, event) {
         if(err){
             res.status(400).send({
                 errors: err
             })
         }else{
             res.status(200).send({
-                message: 'Event successfully deleted',
-                event: event
+                message: 'Event successfully deleted'
             })
         }
     })

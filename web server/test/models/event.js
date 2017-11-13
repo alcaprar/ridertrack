@@ -16,7 +16,9 @@ describe('Event model test', function () {
     // this will run before every test to clear the database
     // TODO clear database
     before(function (done) {
-        done()
+        Event.remove({}, function (err) {
+            done()
+        });
     });
 
     it('should be invalid if name is empty', function(done) {

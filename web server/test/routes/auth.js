@@ -101,7 +101,6 @@ describe('Auth API tests', function () {
             request.post('/api/auth/login')
                 .send(user)
                 .end(function (err, res) {
-                    console.log(res.status);
                     expect(res.status).to.be.eql(400);
                     expect(res.body).to.be.an('object');
                     expect(res.body).to.have.property('errors');
@@ -119,7 +118,6 @@ describe('Auth API tests', function () {
             request.post('/api/auth/login')
                 .send(user)
                 .end(function (err, res) {
-                    console.log(res.body);
                     expect(res.status).to.be.eql(200);
                     expect(res.body).to.be.an('object');
                     expect(res.body).to.not.have.property('errors');

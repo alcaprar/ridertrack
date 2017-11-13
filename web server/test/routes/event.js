@@ -32,7 +32,6 @@ describe('Event API tests', function () {
                 .end(function (err, res) {
                     expect(res.status).to.be.eql(200);
                     expect(res.body).to.be.an('object');
-                    expect(res.body.status).to.be.eql('success');
                     expect(res.body.events).to.be.an('array');
                     expect(res.body.events.length).to.be.eql(0);
                     done();

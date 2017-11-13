@@ -1,10 +1,10 @@
-# Find user by email
+# Find user by id
 
 It finds the user by givenId in the database.
 
 ## URL
 
-/api/users/exampleUserId
+/api/users/<userId>
 
 ## Method
 
@@ -12,9 +12,11 @@ GET
 
 ## Url params
 
-exampleUserId
+userId
 
 ## Data Params
+
+None
 
 ## Success response
 
@@ -22,7 +24,6 @@ exampleUserId
 - Content:
 ```
 {
-    "status": String,
     "user": {
         "hash":String,
         "salt":String,

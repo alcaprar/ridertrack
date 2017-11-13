@@ -1,10 +1,11 @@
 # Find user by email
 
-It finds the user by given email in the database.
+It returns a list of users.
+You can also specify parameters to filter. (order and paginate soon) 
 
 ## URL
 
-/api/users/user/example@gmail.com
+/api/users
 
 ## Method
 
@@ -12,9 +13,14 @@ GET
 
 ## Url params
 
-e-mail address(example@gmail.com)
+None
 
 ## Data Params
+
+It accepts 3 query params for filtering:
+- email
+- name
+- surname
 
 ## Success response
 
@@ -22,8 +28,7 @@ e-mail address(example@gmail.com)
 - Content:
 ```
 {
-    "status": String,
-    "user": {
+    "users": [{
         "hash":String,
         "salt":String,
         "_id": String,
@@ -32,7 +37,9 @@ e-mail address(example@gmail.com)
         "email": String,
         "role": String,
         "_v":Number
-    }
+    },
+    ...
+    ]    
 }
 ```
 

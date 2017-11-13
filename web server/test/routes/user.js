@@ -31,7 +31,6 @@ describe('User API tests', function () {
                 .end(function (err, res) {
                     expect(res.status).to.be.eql(200);
                     expect(res.body).to.be.an('object');
-                    expect(res.body.status).to.be.eql('success');
                     expect(res.body.users).to.be.an('array');
                     expect(res.body.users.length).to.be.eql(0);
                     done();
@@ -62,7 +61,6 @@ describe('User API tests', function () {
                 .end(function (err, res) {
                     expect(res.status).to.be.eql(200);
                     expect(res.body).to.be.an('object');
-                    expect(res.body.status).to.be.eql('success');
                     expect(res.body.users).to.be.an('array');
                     expect(res.body.users.length).to.be.eql(0);
                     done();
@@ -93,7 +91,6 @@ describe('User API tests', function () {
                 .end(function (err, res) {
                     expect(res.status).to.be.eql(200);
                     expect(res.body).to.be.an('object');
-                    expect(res.body.status).to.be.eql('success');
                     expect(res.body.users).to.be.an('array');
                     expect(res.body.users.length).to.be.eql(1);
                     done();
@@ -129,9 +126,19 @@ describe('User API tests', function () {
                 .end(function (err, res) {
                     expect(res.status).to.be.eql(200);
                     expect(res.body).to.be.an('object');
-                    expect(res.body.status).to.be.eql('success');
                     expect(res.body.users).to.be.an('array');
                     expect(res.body.users.length).to.be.eql(2);
+                    done();
+                })
+        });
+
+        it('it should return a list with one object', function (done) {
+            request.get('/api/users?name=organzer1')
+                .end(function (err, res) {
+                    expect(res.status).to.be.eql(200);
+                    expect(res.body).to.be.an('object');
+                    expect(res.body.users).to.be.an('array');
+                    expect(res.body.users.length).to.be.eql(1);
                     done();
                 })
         });
