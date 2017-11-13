@@ -2,7 +2,7 @@
   position:static;
 }
 .slider-area {
-  background: url("../../assets/img/count-down-background.jpg");
+  background: url("../../../assets/img/count-down-background.jpg");
   -webkit-background-size: cover;
   background-size: cover;
   background-position: center center;
@@ -74,7 +74,7 @@
   right: 0;
 }
 .count-down-element {
-  background: url(../../assets/img/black-circle.png);
+  background: url(../../../assets/img/black-circle.png);
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;

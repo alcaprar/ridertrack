@@ -8,20 +8,20 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" routerLink="count-down"><img src="../../assets/img/logoRidertrack.png" alt=""></a>
+      <a class="navbar-brand" routerLink="count-down"><img src="../../../../assets/img/logoRidertrack.png" alt=""></a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
 
-      <div class="button navbar-right" *ngIf="!user.isLoggedIn()">
+      <div class="button navbar-right" *ngIf="!loggedIn">
         <button class="navbar-btn nav-button wow bounceInRight login" routerLink="login" data-wow-delay="0.45s">Login</button>
         <button class="navbar-btn nav-button wow fadeInRight" routerLink="register" data-wow-delay="0.48s">Register</button>
       </div>
 
 
-        <div class="main-nav nav navbar-nav navbar-right" *ngIf="user.isLoggedIn()">
+        <div class="main-nav nav navbar-nav navbar-right" *ngIf="loggedIn">
           <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" dropdownToggle (click)="false">
-            <img src="../../assets/img/round-account-button-with-user-inside.png"
+            <img src="../../../../assets/img/round-account-button-with-user-inside.png"
                  class="img-avatar" align="center"/>
           </a>
           <div class="dropdown-menu navbar-nav">

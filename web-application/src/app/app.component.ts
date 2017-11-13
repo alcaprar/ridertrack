@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {constructDependencies} from '@angular/core/src/di/reflective_provider';
-import {UserService} from './_services/user.service';
+import {UserService} from './shared/services/user.service';
 
 @Component({
   selector: 'app-root',
