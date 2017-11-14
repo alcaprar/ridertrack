@@ -146,4 +146,28 @@ router.post('/login', function (req, res, next) {
     })(req, res, next)
 });
 
+router.get('/login/facebook', function (req, res, next) {
+    passport.authenticate('facebook-token', function (err, user, info) {
+        if(err || !user){
+            return res.status(400).send({
+                errors: [err]
+            })
+        }
+
+        // create jwt token
+        var userToken = {
+            id: user._id
+        };
+
+        var token = jwt.sign(userToken, config.passport.jwt.jwtSecret, {
+            expiresIn: 172800 // 2 days in seconds
+        });
+        return res.send({
+            user: user,
+            jwtToken: token,
+            expiresIn: 172800
+        })
+    })(req, res, next)
+});
+
 module.exports = router;

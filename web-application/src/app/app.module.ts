@@ -25,6 +25,9 @@ import {AuthguardGuard} from './shared/guards/authguard.guard';
 import {AuthenticationService} from "./authentication/authentication.service";
 import {EventDetailPageComponent} from './event-pages/event-detail-page/event-detail-page.component';
 
+
+import { FacebookModule } from 'ngx-facebook';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -47,7 +50,7 @@ import {EventDetailPageComponent} from './event-pages/event-detail-page/event-de
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
-
+    FacebookModule.forRoot(),
     RouterModule.forRoot([
       {
         path: 'home',

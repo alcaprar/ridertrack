@@ -2,9 +2,12 @@ var express = require('express'),
     bodyParser = require('body-parser'), //to retrieve post parameters
     favicon = require('serve-favicon'),
     User = require('./models/user'),
-    Event = require('./models/event');
+    Event = require('./models/event'),
+    cors = require('cors');
 
 var app = express();
+
+app.use(cors());
 
 // Creating http server and socket.io server
 var server = require('http').Server(app);
@@ -74,8 +77,10 @@ passport.use('local', new LocalStrategy({usernameField: 'email', session: false}
 // initialize facebook-passport
 // initialize google-passport
 var initFacebookStrategy = require('./passport/facebookPassport');
+var initFacebookTokenStrategy = require('./passport/facebookTokenStrategy');
 var initGoogleStrategy = require('./passport/googleStrategy');
 initFacebookStrategy(passport);
+initFacebookTokenStrategy(passport);
 initGoogleStrategy(passport);
 
 passport.initialize();

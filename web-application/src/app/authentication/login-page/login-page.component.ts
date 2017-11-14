@@ -58,35 +58,9 @@ export class LoginPageComponent implements OnInit {
   loginFB(){
     this.error = '';
     this.loading = true;
-    this.authService.loginFB().subscribe(
-      result => {
-        this.loading = false;
-        if(result){
-          console.log(result);
-          this.router.navigate(['home']);
-        }else{
-          this.error = 'Invalid credentals. Try again.';
-        }
-      }
-    )
+    this.authService.loginWithFacebook()
   }
-
-  loginGoogle(){
-    this.error = '';
-    this.loading = true;
-    this.authService.loginGoogle().subscribe(
-      result => {
-        this.loading = false;
-        if(result){
-          console.log(result);
-          this.router.navigate(['home']);
-        }else{
-          this.error = 'Invalid credentals. Try again.';
-        }
-      }
-    )
-  }
-
+  
   logout(){
     this.authService.logout();
   }
