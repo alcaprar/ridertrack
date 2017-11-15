@@ -55,10 +55,10 @@ import { MyEventsComponent } from './event-pages/my-events/my-events.component';
     FacebookModule.forRoot(),
     RouterModule.forRoot([
       {
-        path: 'home',
-        component:  HomePageComponent
+        path: '',
+        component:  HomePageComponent,
+        pathMatch: 'full'
       } ,
-
       {
         path: 'events',
         component: EventsListPageComponent
@@ -96,11 +96,6 @@ import { MyEventsComponent } from './event-pages/my-events/my-events.component';
         path: 'event-admin',
         canActivate: [AuthguardGuard],
         component: EventAdminPageComponent
-      } ,
-      {
-        path: '',
-        redirectTo: '/home',
-        pathMatch: 'full'
       } ,
       {
         path: '**',

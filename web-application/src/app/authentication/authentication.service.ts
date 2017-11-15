@@ -139,6 +139,10 @@ export class AuthenticationService {
     }));
   }
 
+  /**
+   * It returns true if the user is authenticated, false otherwise.
+   * @returns {boolean}
+     */
   public isAuthenticated() : boolean {
     // TODO check token expiration
     return (this.token !== null)
@@ -147,12 +151,15 @@ export class AuthenticationService {
 
   /**
    * It clears the localStorage removing the currentUser.
+   * It also redirects to the home.
    */
   logout(): void {
     console.log('Logging out...');
     // clear token remove user from local storage to log user out
     this.token = null;
     localStorage.removeItem('currentUser');
-
+    
+    // redirect to the home page
+    this.router.navigate(['']);
   }
 }
