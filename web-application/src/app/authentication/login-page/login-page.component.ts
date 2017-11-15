@@ -2,6 +2,7 @@ import { Component, Input, OnInit, Injectable, OnChanges } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import {AuthenticationService} from "../authentication.service";
+import {User} from "../../shared/models/user";
 
 @Component({
   selector: 'app-login-page',
@@ -31,24 +32,28 @@ export class LoginPageComponent implements OnInit {
       });
   }
 
-  // this method is called when clicking the Login button
-  // it calls API POST method to the web server with the body containing email and password
-  // if credentials are correct you'll get userid, name, surname, email and role in response
-  // then, depending on your role you are routed to the participant-page or the event-admin-page
+  /**
+   * It is called when the user clicks login.
+   * It calls the login method of authservice and wait for a results.
+   * If the login fails it shows the errors.
+   */
   login() {
     this.error = '';
     this.loading = true;
-    this.user.email = this.loginForm.get('email').value;
-    this.user.password = this.loginForm.get('password').value;
-    console.log('Logging in...');
-    this.authService.login(this.user.email, this.user.password)
+    
+    var user = new User(
+      this.loginForm.get('email').value,
+      this.loginForm.get('password').value,
+      '',
+      ''
+    );
+    console.log('[LoginComponent][Login]', user);
+    this.authService.login(user)
       .subscribe(
         result => {
+          console.log('[LoginComponent][Login result]', result);
           this.loading = false;
-          if(result){
-            console.log(result);
-            this.router.navigate(['home']);
-          }else{
+          if(!result){
             this.error = 'Invalid credentals. Try again.';
           }
         }

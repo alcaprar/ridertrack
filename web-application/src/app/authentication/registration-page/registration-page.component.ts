@@ -4,6 +4,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
 import { Router } from '@angular/router';
 import {AuthenticationService} from "../authentication.service";
+import {User} from "../../shared/models/user";
 
 @Component({
   selector: 'app-registration-page',
@@ -19,45 +20,46 @@ export class RegistrationPageComponent implements OnInit {
 
   @Input() user = { name: '', surname: '', email: '', password:''};
 
-  constructor(private http: HttpClient, private fbLogin: FormBuilder, private router: Router, private authService: AuthenticationService) { }
+  constructor(private http: HttpClient, private formBuilderLogin: FormBuilder, private router: Router, private authService: AuthenticationService) { }
 
   ngOnInit() {
    this.setFormRegister();
   }
 
   setFormRegister() {
-    this.registerForm = this.fbLogin.group({
-      name: [this.user ? this.user.name : ''],
-      surname: [this.user ? this.user.surname : ''],
-      email: [this.user ? this.user.email : ''],
-      password: [this.user ? this.user.password : '']
+    this.registerForm = this.formBuilderLogin.group({
+      name: '',
+      surname: '',
+      email: '',
+      password: ''
       });
   }
 
+  /**
+   * It is called when the user clicks the button.
+   * It calls the register method of the authservice and wait for the result.
+   */
   register() {
     this.error = '';
     this.loading = true;
-    this.user.name = this.registerForm.get('name').value;
-    this.user.surname = this.registerForm.get('surname').value;
-    this.user.email = this.registerForm.get('email').value;
-    this.user.password = this.registerForm.get('password').value;
-    const body = {
-      name: this.user.name,
-      surname: this.user.surname,
-      email: this.user.email,
-      password: this.user.password
-    };
-    console.log('Registering...');
-    console.log(body);
-    this.authService.login(this.user.email, this.user.password)
+
+    // create an instance if user model
+    var user = new User(
+      this.registerForm.get('email').value,
+      this.registerForm.get('password').value,
+      this.registerForm.get('name').value,
+      this.registerForm.get('surname').value
+    );
+
+    console.log('[RegistrationComponent][Register]', user);
+    this.authService.register(user)
     .subscribe(
       result => {
         this.loading = false;
         if(result){
-          console.log(result);
-          this.router.navigate(['home']);
+          console.log('[RegistrationComponent][Register]', result);
         }else{
-          this.error = 'Invalid credentals. Try again.';
+          this.error = 'Registration failed.';
         }
       }
     )
