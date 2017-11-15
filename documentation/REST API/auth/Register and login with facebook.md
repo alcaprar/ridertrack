@@ -1,13 +1,12 @@
 ## Register and login with facebook
 
-It redirects to facebook page and waits for the response.
-If the facebook login is successful it returns a jwt token otherwise the error.
+It receives the access token that the frontend got from Facebook auth and create our jwtToken.
 
 Important: there is only one endpoint for login and registration with facebook.
 
 ### URL
 
-/api/auth/register/facebook
+/api/auth/login/facebook
 
 ### Method
 
@@ -15,7 +14,7 @@ GET
 
 ### Url params
 
-None
+access_token
 
 ### Data Params
 

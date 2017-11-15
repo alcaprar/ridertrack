@@ -43,38 +43,6 @@ router.post('/register', function (req, res) {
     }    
 });
 
-/**
- * It calls the facebook auth endpoint
- */
-router.get('/register/facebook', passport.authenticate('facebook', {scope: 'email'}));
-
-/**
- * It is called by the facebook auth service as callback.
- * It receives the response of the facebook login.
- */
-router.get('/register/facebook/callback', function(req, res, next){
-    passport.authenticate('facebook', function (err, user, info) {
-        if(err || !user){
-            return res.status(400).send({
-                errors: [err]
-            })
-        }
-
-        // create jwt token
-        var userToken = {
-            id: user._id
-        };
-
-        var token = jwt.sign(userToken, config.passport.jwt.jwtSecret, {
-            expiresIn: 172800 // 2 days in seconds
-        });
-        return res.send({
-            user: user,
-            jwtToken: token,
-            expiresIn: 172800
-        })
-    })(req, res, next)
-});
 
 /**
  * It calls the google oauth2 endpoint.
