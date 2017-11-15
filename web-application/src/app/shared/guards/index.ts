@@ -1,1 +1,2 @@
-export * from './authguard.guard';
+export * from './auth.guard';
+export * from './guest.guard';

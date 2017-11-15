@@ -21,13 +21,14 @@ import { FooterComponent } from './shared/layout/footer/footer.component';
 import { ContactsPageComponent } from './contacts-page/contacts-page.component';
 import { PageHeaderComponent } from './shared/layout/page-header/page-header.component';
 import {UserService} from './shared/services/user.service';
-import {AuthguardGuard} from './shared/guards/authguard.guard';
+import {AuthGuard} from './shared/guards/auth.guard';
 import {AuthenticationService} from "./authentication/authentication.service";
 import {EventDetailPageComponent} from './event-pages/event-detail-page/event-detail-page.component';
 
 
 import { FacebookModule } from 'ngx-facebook';
 import { MyEventsComponent } from './event-pages/my-events/my-events.component';
+import {GuestGuard} from "./shared/guards/guest.guard";
 
 @NgModule({
   declarations: [
@@ -73,30 +74,19 @@ import { MyEventsComponent } from './event-pages/my-events/my-events.component';
       },
       {
         path: 'login',
-        component: LoginPageComponent
+        component: LoginPageComponent,
+        canActivate: [GuestGuard]
       } ,
       {
         path: 'register',
-        component: RegistrationPageComponent
+        component: RegistrationPageComponent,
+        canActivate: [GuestGuard]
       } ,
       {
         path: 'my-events',
-        component: MyEventsComponent
+        component: MyEventsComponent,
+        canActivate: [AuthGuard]
       },
-      {
-        path: 'participant',
-        /*canActivate: [AuthguardGuard],*/
-        component: ParticipantPageComponent
-      } ,
-      {
-        path: 'count-down',
-        component: CountDownComponent
-      },
-      {
-        path: 'event-admin',
-        canActivate: [AuthguardGuard],
-        component: EventAdminPageComponent
-      } ,
       {
         path: '**',
         redirectTo: '/home',
@@ -107,7 +97,8 @@ import { MyEventsComponent } from './event-pages/my-events/my-events.component';
   ],
   providers: [
     UserService,
-    AuthguardGuard,
+    AuthGuard,
+    GuestGuard,
     AuthenticationService
   ],
   bootstrap: [AppComponent]
