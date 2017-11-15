@@ -43,41 +43,6 @@ router.post('/register', function (req, res) {
     }    
 });
 
-
-/**
- * It calls the google oauth2 endpoint.
- */
-router.get('/register/google', passport.authenticate('google', {scope:['openid','email','profile']}));
-
-/**
- * It is called by the google auth service as callback.
- * It receives the response of the google login.
- */
-router.get('/register/google/callback', function (req, res, next) {
-    passport.authenticate('google', function (err, user, info) {
-        if(err || !user){
-            return res.status(400).send({
-                errors: [err]
-            })
-        }
-        
-        // create jwt token
-        var userToken = {
-            id: user._id
-        };
-        
-        var token = jwt.sign(userToken, config.passport.jwt.jwtSecret, {
-            expiresIn: 172800 // 2 days in seconds
-        });
-        return res.send({
-            user: user,
-            jwtToken: token,
-            expiresIn: 172800
-        })
-        
-    })(req, res, next)
-});
-
 /**
  * It checks the given email and password in the db.
  * If matches it creates a jwt and return it.
@@ -116,6 +81,31 @@ router.post('/login', function (req, res, next) {
 
 router.get('/login/facebook', function (req, res, next) {
     passport.authenticate('facebook-token', function (err, user, info) {
+        if(err || !user){
+            return res.status(400).send({
+                errors: [err]
+            })
+        }
+
+        // create jwt token
+        var userToken = {
+            id: user._id
+        };
+
+        var token = jwt.sign(userToken, config.passport.jwt.jwtSecret, {
+            expiresIn: 172800 // 2 days in seconds
+        });
+        return res.send({
+            user: user,
+            jwtToken: token,
+            expiresIn: 172800
+        })
+    })(req, res, next)
+});
+
+
+router.get('/login/google', function (req, res, next) {
+    passport.authenticate('google-token', function (err, user, info) {
         if(err || !user){
             return res.status(400).send({
                 errors: [err]

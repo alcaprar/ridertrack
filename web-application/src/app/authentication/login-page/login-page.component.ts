@@ -24,6 +24,12 @@ export class LoginPageComponent implements OnInit {
    this.setFormLogin();
   }
 
+  
+  ngAfterViewInit(){
+    // it attaches a listener on the google button
+    this.authService.attachGoogleSignIn(document.getElementById('google-signin'));
+  }
+
   // setting the login form
   setFormLogin() {
     this.loginForm = this.fbLogin.group({
@@ -40,7 +46,7 @@ export class LoginPageComponent implements OnInit {
   login() {
     this.error = '';
     this.loading = true;
-    
+
     var user = new User(
       this.loginForm.get('email').value,
       this.loginForm.get('password').value,
@@ -60,12 +66,19 @@ export class LoginPageComponent implements OnInit {
       )
   }
 
+  /**
+   * It is called when the user clicks the facebook button.
+   * It calls the method of the authservice that manages the Facebook login.
+   */
   loginFB(){
     this.error = '';
     this.loading = true;
     this.authService.loginWithFacebook()
   }
-  
+
+  /**
+   * It calls the logout method of the authservice.
+   */
   logout(){
     this.authService.logout();
   }

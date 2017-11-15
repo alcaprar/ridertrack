@@ -1,13 +1,12 @@
-var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+var GoogleStrategy = require('passport-google-token').Strategy;
 var User = require('../models/user');
 var config = require('../config');
 
 module.exports = function (passport) {
-    passport.use('google', new GoogleStrategy({
+    passport.use('google-token', new GoogleStrategy({
             clientID: config.passport.googleAuth.client_id,
             clientSecret: config.passport.googleAuth.client_secret,
-            callbackURL: config.passport.googleAuth.redirect_uri,
-            scope: ['openid','email','profile']
+            scope: ['openid', 'email', 'profile']
         },
         function(accessToken, refreshToken, profile, done) {
             // check if the user has already registered with this social
@@ -41,9 +40,9 @@ module.exports = function (passport) {
                             // TODO check the error and send a nice message
                             return done(err);
                         }
-                        
+
                         console.log('[GoogleStrategy]', '[user not found]', 'user successfully created');
-                        
+
                         // user has been correctly save
                         return done(null, user)
                     })
@@ -52,7 +51,7 @@ module.exports = function (passport) {
 
                     // user with this google id has been found
                     return done(null, user)
-                }                
+                }
             });
         })
     );

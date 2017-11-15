@@ -1,12 +1,14 @@
-import { Injectable } from '@angular/core';
-import { Headers, Http } from '@angular/http';
-import {Observable} from "rxjs/Observable";
-import {Response} from '@angular/http';
-import {FacebookService, InitParams, LoginResponse} from 'ngx-facebook';
+import { Injectable, ApplicationRef  } from '@angular/core';
+import { Http } from '@angular/http';
+import { Observable } from "rxjs/Observable";
+import { Response } from '@angular/http';
+import { FacebookService, InitParams, LoginResponse} from 'ngx-facebook';
 import { Router } from '@angular/router';
-import {User} from '../shared/models/user';
+import { User } from '../shared/models/user';
 import 'rxjs/add/operator/catch.js'
 import 'rxjs/Rx';
+
+declare const gapi: any;
 
 @Injectable()
 export class AuthenticationService {
@@ -15,7 +17,11 @@ export class AuthenticationService {
   public token : String;
   public user : User;
 
-  constructor(private http: Http, private fb: FacebookService, private router: Router) {
+  public auth2:any;
+
+  private gapiPromise: Promise;
+
+  constructor(private http: Http, private fb: FacebookService, private router: Router, private appRef: ApplicationRef) {
     // set token if saved in local storage
     this.recoverToken();
 
@@ -26,6 +32,71 @@ export class AuthenticationService {
       version: 'v2.8'
     };
     fb.init(initParams);
+
+    // init google strategy
+    gapi.load('auth2',  () => {
+      this.auth2 = gapi.auth2.init({
+        client_id: '909431710947-moe1csc5e564mo5qn8mmtc13thmmjj2e.apps.googleusercontent.com',
+        cookiepolicy: 'single_host_origin',
+        scope: 'profile email'
+      });
+    });
+
+    this.gapiPromise = new Promise((resolve, reject) => {
+      gapi.load('auth2',  () => {
+        this.auth2 = gapi.auth2.init({
+          client_id: '909431710947-moe1csc5e564mo5qn8mmtc13thmmjj2e.apps.googleusercontent.com',
+          cookiepolicy: 'single_host_origin',
+          scope: 'profile email'
+        });
+        resolve()
+      });
+    });
+  }
+
+  /**
+   * It attached a listener to the google button.
+   * When the button is clicked it calls the google api.
+   * When it receives the token from the google api it sends it to the webserver and waits for a jwt token.
+   * @param element
+     */
+  attachGoogleSignIn(element){
+    this.gapiPromise.then(
+      data =>{
+        this.auth2.attachClickHandler(element, {},
+          (response) => {
+            console.log('[AuthService][Google login][success]', response.getAuthResponse().access_token);
+            let url: string = `${this.BASE_AUTH_URL}/login/google?access_token=${response.getAuthResponse().access_token}`;
+            this.http.get(url)
+              .subscribe(
+                data => {
+                  console.log('[AuthS][Google login][success]', data);
+                  // the google token was successfully received by the web server
+                  // and it has sent a jwt token
+                  let body = data.json();
+                  this.storeUser(body.user);
+                  this.storeToken(body.jwtToken);
+
+                  // route to my-events
+                  this.router.navigate(['my-events'])
+
+                  // to force angular to update the views
+                  this.appRef.tick();
+                },
+                error => {
+                  console.log('[AuthS][Google login][error]', error);
+                  // something went wrong with the sending of the google token
+                }
+              )
+
+          },
+          (error) =>{
+            console.log('[AuthService][Google login][error]', error);
+          }
+        )
+      }
+    )
+
   }
 
   /**
@@ -35,7 +106,7 @@ export class AuthenticationService {
    * @param email
    * @param password
    * @returns {Subscription}
-     */
+   */
   login(user : User) : Observable<boolean> {
     console.log('[AuthS][ClassicalLogin]');
     let url: string = `${this.BASE_AUTH_URL}/login`;
@@ -68,7 +139,7 @@ export class AuthenticationService {
    * If the registration is successfull it receives also a token and redirects to the private page.
    * @param user
    * @returns {any|Promise<R>|Promise<T>|Maybe<T>}
-     */
+   */
   register(user : User): Observable<boolean> {
     let url: string = `${this.BASE_AUTH_URL}/register`;
     return this.http.post(url, {name: user.name, surname: user.surname, email: user.email, password: user.password})
@@ -120,6 +191,9 @@ export class AuthenticationService {
 
               // route to my-events
               this.router.navigate(['my-events'])
+
+              // to force angular to update the views
+              this.appRef.tick();
             },
             error => {
               console.log('[AuthS][FB][login/facebook][error]', error);
@@ -143,27 +217,29 @@ export class AuthenticationService {
   /**
    * It receives the token and stores it.
    * @param token
-     */
+   */
   storeToken(token){
     // store the token in localStorage
     this.token = token;
     localStorage.setItem('token', this.token.toString());
+    console.log('[AuthService][token stored in localStorage]')
   }
 
 
   /**
    * It receives the user from auth endpoints and stores it to localStorage.
    * @param user
-     */
+   */
   storeUser(user){
     this.user = user;
     localStorage.setItem('user', JSON.stringify(this.user));
+    console.log('[AuthService][user stored in localStorage]')
   }
 
   /**
    * It returns true if the user is authenticated, false otherwise.
    * @returns {boolean}
-     */
+   */
   public isAuthenticated() : boolean {
     // TODO check token expiration
     return (this.token !== null)
@@ -184,5 +260,8 @@ export class AuthenticationService {
 
     // redirect to the home page
     this.router.navigate(['']);
+
+    // to force angular to update the views
+    this.appRef.tick();
   }
 }

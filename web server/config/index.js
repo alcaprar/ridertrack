@@ -12,7 +12,7 @@ var config = {
             profileFields:['id','displayName','emails']
         },
         googleAuth:{
-                 client_id :"81577305569-u01r8b47n4o2f4m8l1r1gu8099puolfo.apps.googleusercontent.com",
+                 client_id :"909431710947-moe1csc5e564mo5qn8mmtc13thmmjj2e.apps.googleusercontent.com",
                  client_secret:"pZyGLQUglyurszgfveC6H3Yg",
                  redirect_uri:"http://localhost:5000/api/auth/register/google/callback",
                  project_id:"ridertrackapp",

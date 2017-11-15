@@ -1,8 +1,5 @@
 import { Component, Input, OnInit, Injectable, OnChanges } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { HttpModule } from '@angular/http';
-import { Router } from '@angular/router';
 import {AuthenticationService} from "../authentication.service";
 import {User} from "../../shared/models/user";
 
@@ -13,19 +10,26 @@ import {User} from "../../shared/models/user";
 })
 export class RegistrationPageComponent implements OnInit {
 
-  respond: any;
   registerForm: FormGroup;
   error = '';
   loading = false;
 
   @Input() user = { name: '', surname: '', email: '', password:''};
 
-  constructor(private http: HttpClient, private formBuilderLogin: FormBuilder, private router: Router, private authService: AuthenticationService) { }
+  constructor(private formBuilderLogin: FormBuilder, private authService: AuthenticationService) { }
 
   ngOnInit() {
    this.setFormRegister();
   }
 
+  ngAfterViewInit(){
+    // it attaches a listener on the google button
+    this.authService.attachGoogleSignIn(document.getElementById('google-register'));
+  }
+
+  /**
+   * It initializes the form with empty values.
+   */
   setFormRegister() {
     this.registerForm = this.formBuilderLogin.group({
       name: '',
@@ -33,6 +37,16 @@ export class RegistrationPageComponent implements OnInit {
       email: '',
       password: ''
       });
+  }
+
+  /**
+   * It is called when the user clicks the facebook button.
+   * It calls the method of the authservice that manages the Facebook login.
+   */
+  loginFB(){
+    this.error = '';
+    this.loading = true;
+    this.authService.loginWithFacebook()
   }
 
   /**
