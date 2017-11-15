@@ -27,17 +27,22 @@
       <div class="dropdown-menu navbar-nav">
         <a class="dropdown-item" ><i class="fa fa-user"></i> Profile</a>
         <div class="divider"></div>
-        <a class="dropdown-item" routerLink="home"><i class="fa fa-lock"></i> Logout</a>
+        <a class="dropdown-item" (click)="logout()"><i class="fa fa-lock"></i> Logout</a>
       </div>
     </div>
 
 
     <div class="collapse navbar-collapse yamm" id="navigation">
       <ul class="main-nav nav navbar-nav navbar-right" routerLinkActive="active">
-        <li class="wow fadeInDown" data-wow-delay="0.2s"><a class="" routerLink="events"> All Events</a></li>
+        <li class="wow fadeInDown" data-wow-delay="0.2s">
+          <a class="" routerLink="events"> All Events</a>
+        </li>
         <li class="wow fadeInDown" data-wow-delay="0.3s" *ngIf="isLoggedIn()">
-          <a class="" routerLink="contacts">My Events</a></li>
-        <li class="wow fadeInDown" data-wow-delay="0.3s"><a class="" routerLink="contacts">Contacts</a></li>
+          <a class="" routerLink="my-events">My Events</a>
+        </li>
+        <li class="wow fadeInDown" data-wow-delay="0.3s">
+          <a class="" routerLink="contacts">Contacts</a>
+        </li>
       </ul>
     </div><!-- /.navbar-collapse -->
 

@@ -27,6 +27,7 @@ import {EventDetailPageComponent} from './event-pages/event-detail-page/event-de
 
 
 import { FacebookModule } from 'ngx-facebook';
+import { MyEventsComponent } from './event-pages/my-events/my-events.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { FacebookModule } from 'ngx-facebook';
     ContactsPageComponent,
     PageHeaderComponent,
     EventDetailPageComponent,
+    MyEventsComponent,
   ],
   imports: [
     BrowserModule,
@@ -77,6 +79,10 @@ import { FacebookModule } from 'ngx-facebook';
         path: 'register',
         component: RegistrationPageComponent
       } ,
+      {
+        path: 'my-events',
+        component: MyEventsComponent
+      },
       {
         path: 'participant',
         /*canActivate: [AuthguardGuard],*/

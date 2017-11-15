@@ -3,6 +3,7 @@ import { Headers, Http } from '@angular/http';
 import {Observable} from "rxjs/Observable";
 import {Response} from '@angular/http';
 import {FacebookService, InitParams, LoginResponse} from 'ngx-facebook';
+import { Router } from '@angular/router';
 import 'rxjs/add/operator/catch.js'
 import 'rxjs/Rx';
 
@@ -12,7 +13,7 @@ export class AuthenticationService {
 
   public token : String;
 
-  constructor(private http: Http, private fb: FacebookService) {
+  constructor(private http: Http, private fb: FacebookService, private router: Router) {
     // set token if saved in local storage
     this.recoverToken();
 
@@ -101,6 +102,9 @@ export class AuthenticationService {
               // the Facebook token was successfully received by the web server
               // and it has sent a jwt token
               this.storeToken(data);
+              
+              // route to my-events
+              this.router.navigate(['my-events'])
             },
             error => {
               console.log('[AuthS][FB][login/facebook][error]', error);
