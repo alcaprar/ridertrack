@@ -34,10 +34,12 @@ export class EventDetailPageComponent implements OnInit {
 
   getOrganizerDetail() {
     const id = this.currentEvent.organizerID;
-    this.userService.getUserById(id)
-      .then((user) => this.organizer = user,
-        (error) => this.errorMessage = <any> error
-      );
+    this.userService.getUser()
+      .subscribe(
+        (user: User) =>{
+          
+        }
+      )
   }
 
 }

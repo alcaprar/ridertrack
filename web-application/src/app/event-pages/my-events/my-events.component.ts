@@ -9,7 +9,7 @@ import {User} from "../../shared/models/user";
 })
 export class MyEventsComponent implements OnInit {
 
-  constructor() { }
+  constructor(private userService: UserService) { }
 
   ngOnInit() {
 
