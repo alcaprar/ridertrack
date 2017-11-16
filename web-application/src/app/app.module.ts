@@ -30,7 +30,7 @@ import {AuthGuard} from './shared/guards/auth.guard';
 
 import { FacebookModule } from 'ngx-facebook';
 import {AuthService} from 'angular2-google-login';
-import {EventService} from "./shared/services/event.service";
+import {EventService} from './shared/services/event.service';
 
 
 
@@ -69,7 +69,14 @@ import {EventService} from "./shared/services/event.service";
         component: EventsListPageComponent
       },
       {
-        path: 'product-details/:id',
+        /*when you call this routing inside the event list page you
+        have to add something like this:
+        <a *ngFor="let event of eventList"
+              [routerLink]="['/event-details', event.id]">
+              {{ event.name }}
+          </a>
+         */
+        path: 'event-details/:id',
         component: EventDetailPageComponent
       },
       {

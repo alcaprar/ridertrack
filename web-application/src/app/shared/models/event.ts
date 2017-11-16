@@ -1,4 +1,5 @@
 export  class Event {
+  id: Number;
   name: String;
   organizerID: Number;
   type: String;
