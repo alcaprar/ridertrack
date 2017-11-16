@@ -15,21 +15,18 @@ export class EventService {
    * Perform an HTTP GET request to the REST API to read all the events
    * @returns {Promise<any>}
    */
-  getAllEvents(): Promise<any> {
+  getAllEvents(): Observable<Event[]> {
     const url = `${this.BASE_URL}/events`;
 
-    return new Promise((resolve, reject) => {
-      this.http.get(url)
-        .map(res => res.json())
-        .subscribe(res => {
+    return this.http.get(url)
+        .map( (res) => {
           console.log('[EventService][getAllEvents][success]', res);
           const body = res.json();
           return body.event;
         }, (err) => {
           console.log('[EventService][getAllEvents][error]', err);
-          reject(err);
+          return Observable.of(null);
         });
-    });
   }
 
   /**
