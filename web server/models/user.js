@@ -131,33 +131,17 @@ userSchema.methods.verifyPassword = function (password, callback) {
         if(err){
             return callback(err)
         }
-
         return callback(null, res)
     })
 };
 
 /**
  * It search for an user given the id.
- * @param email
+ * @param userId
  * @param callback
  */
 userSchema.statics.findByUserId = function (userId, callback) {
     User.findById(userId, function (err, user) {
-        if(err){
-            return callback(err)
-        }else{
-            return callback(null, user)
-        }
-    })
-};
-
-/**
- * It search for an user given the mail
- * @param email
- * @param callback
- */
-userSchema.statics.findByEmail = function (email, callback) {
-    User.findOne({email: email}, function (err, user) {
         if(err){
             return callback(err)
         }else{
@@ -180,7 +164,6 @@ userSchema.statics.findByGoogleId = function (googleId, callback) {
         return callback(null, user)
     })
 };
-
 
 /**
  * It search for user with the given facebookId.

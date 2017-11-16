@@ -120,7 +120,6 @@ eventSchema.statics.findByEventId = function (eventId, callback ){
  /* It creates an event.
   * It then calls a callback passing either an error list or the created event.
  */
- //TODO removePrivateFields
 eventSchema.statics.create = function (eventJson, callback) {
     var event = new Event(eventJson);
 
@@ -128,7 +127,6 @@ eventSchema.statics.create = function (eventJson, callback) {
         if (err) {
             return callback(err)
         } else {
-            //event.removePrivateFields();
             return callback(null, event)
         }
     })

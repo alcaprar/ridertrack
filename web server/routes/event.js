@@ -38,7 +38,7 @@ router.get('/', function(req, res) {
  * It returns the detail of the given eventId
  */
 router.get('/:eventId', function (req, res) {
-    Event.findById(req.params.eventId, function (err, event) {
+    Event.findByEventId(req.params.eventId, function (err, event) {
         if (err) {
             res.status(400).send({
                 errors: err
@@ -74,17 +74,14 @@ router.post('/', authMiddleware.hasValidToken, function (req, res) {
  * It updates the fields passed in the body of the given eventId
  */
 router.put('/:eventId',authMiddleware.hasValidToken,function (req, res) {
-    var userId = req.userId;
-    var eventId = req.params.eventId;
-
-    Event.findByEventId(eventId, function (err, event) {
+    Event.findByEventId(req.params.eventId, function (err, event) {
         if (err) {
             res.status(400).send({
                 errors: err
             })
         }
         //Only organizer can change event
-        else if (event.organizerId !== userId) {
+        else if (event.organizerId !== req.userId) {
             res.status(401).send({
                 errors: ["You are not allowed to change event"]
             })
@@ -110,16 +107,13 @@ router.put('/:eventId',authMiddleware.hasValidToken,function (req, res) {
  * It deletes the event with the id given in the URI
  */
 router.delete('/:eventId', authMiddleware.hasValidToken, function(req,res){
-    var userId = req.userId;
-    var eventId = req.params.eventId;
-
-    Event.findByEventId(eventId, function (err, event) {
+    Event.findByEventId(req.params.eventId, function (err, event) {
         if (err) {
             res.status(400).send({
                 errors: err
             })
         }
-        else if (event.organizerId !== userId) {
+        else if (event.organizerId !== req.userId) {
             res.status(401).send({
                 errors: "You are not allowed to delete this event"
             })
