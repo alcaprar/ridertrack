@@ -34,7 +34,7 @@ export class EventDetailPageComponent implements OnInit {
 
   getCurrentUser() {
     this.userService.getUser()
-      .then((user) => this.currentUser = user,
+      .subscribe((user) => this.currentUser = user,
             (error) => this.errorMessage = <any> error
       );
   }
