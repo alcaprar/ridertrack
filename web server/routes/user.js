@@ -39,7 +39,6 @@ router.get('/', function (req, res) {
 /**
  * It return the details of the requested userId.
  */
-
 router.get('/:userId', function (req, res) {
     User.findByUserId(req.params.userId, function (err, user) {
         if(err){
@@ -72,7 +71,6 @@ router.post('/', function (req, res) {
         }
     });
 });
-
 
 /**
  * It updates the fields passed in the body of the given userId
