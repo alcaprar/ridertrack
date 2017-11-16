@@ -110,19 +110,34 @@ router.put('/:eventId',authMiddleware.hasValidToken,function (req, res) {
  * It deletes the event with the id given in the URI
  */
 router.delete('/:eventId', authMiddleware.hasValidToken, function(req,res){
-    // TODO authorization
-    
-    Event.delete(req.userId, req.params.eventId, function(err, event) {
-        if(err){
+    var userId = req.userId;
+    var eventId = req.params.eventId;
+
+    Event.findByEventId(eventId, function (err, event) {
+        if (err) {
             res.status(400).send({
                 errors: err
             })
-        }else{
-            res.status(200).send({
-                message: 'Event successfully deleted'
+        }
+        else if (event.organizerId !== userId) {
+            res.status(401).send({
+                errors: "You are not allowed to delete this event"
             })
         }
-    })
+        else {
+            Event.delete(req.params.eventId, function (err, event){
+                if (err) {
+                    res.status(400).send({
+                        errors: err
+                    })
+                } else {
+                    res.status(200).send({
+                        status: "Event successfully deleted!"
+                    })
+                }
+            })
+        }
+    });
 });
 
 module.exports = router;

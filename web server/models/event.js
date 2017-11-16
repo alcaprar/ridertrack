@@ -159,7 +159,7 @@ eventSchema.statics.update = function (eventId, eventJson, callback) {
 
 //deletes an event
 
-eventSchema.statics.delete = function (userId, eventId, callback){
+eventSchema.statics.delete = function (eventId, callback){
     /* find logged user and compare with organizerId
     * if they match then the event can be deleted
     */
@@ -167,16 +167,14 @@ eventSchema.statics.delete = function (userId, eventId, callback){
         if(err) {
             return callback(err)
         }else{
-            if(event.organizerId === userId){
-                event.remove({_id: eventId}, function(err, event){
-                    if(err){
-                        callback(err)
-                    }
-                    else{
-                        return callback(null, event)
-                    }
-                })
-            }
+            event.remove({_id: eventId}, function(err, event){
+                if(err){
+                    callback(err)
+                }
+                else{
+                    return callback(null, event)
+                }
+            })
         }
     })
 };
