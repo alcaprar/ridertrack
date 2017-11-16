@@ -22,24 +22,21 @@ export class EventDetailPageComponent implements OnInit {
 
   ngOnInit() {
     this.getEventDetail(this.route.snapshot.params['id']);
-    this.getOrganizerDetail();
+    this.getCurrentUser();
   }
 
   getEventDetail(id): void {
     this.eventService.getEvent(id)
       .then((event) => this.currentEvent = event,
-        (error) => this.errorMessage = <any> error
+            (error) => this.errorMessage = <any> error
       );
   }
 
-  getOrganizerDetail() {
-    const id = this.currentEvent.organizerID;
+  getCurrentUser() {
     this.userService.getUser()
-      .subscribe(
-        (user: User) =>{
-          
-        }
-      )
+      .then((user) => this.currentUser = user,
+            (error) => this.errorMessage = <any> error
+      );
   }
 
 }

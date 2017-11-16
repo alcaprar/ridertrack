@@ -1,26 +1,26 @@
 import { Injectable, ApplicationRef  } from '@angular/core';
 import { Http } from '@angular/http';
-import { Observable } from "rxjs/Observable";
+import { Observable } from 'rxjs/Observable';
 import { Response } from '@angular/http';
 import { FacebookService, InitParams, LoginResponse} from 'ngx-facebook';
 import { Router } from '@angular/router';
 import { User } from '../shared/models/user';
-import 'rxjs/add/operator/catch.js'
+import 'rxjs/add/operator/catch.js';
 import 'rxjs/Rx';
-import {UserService} from "../shared/services/user.service";
+import {UserService} from '../shared/services/user.service';
 import * as jwt_decode from 'jwt-decode';
 
 declare const gapi: any;
 
-export const TOKEN: string = 'TOKEN';
-export const USERID: string = 'USERID';
-export const ROLE: string = 'ROLE';
+export const TOKEN = 'TOKEN';
+export const USERID = 'USERID';
+export const ROLE = 'ROLE';
 
 @Injectable()
 export class AuthenticationService {
-  private BASE_AUTH_URL: string = 'http://localhost:5000/api/auth';
+  private BASE_AUTH_URL = 'http://localhost:5000/api/auth';
 
-  public auth2:any;
+  public auth2: any;
 
   private gapiPromise: any;
 
@@ -29,7 +29,7 @@ export class AuthenticationService {
     this.isAuthenticated();
 
     // init Facebook strategy
-    let initParams: InitParams = {
+    const initParams: InitParams = {
       appId: '278876872621248',
       xfbml: true,
       version: 'v2.8'
@@ -43,7 +43,7 @@ export class AuthenticationService {
           cookiepolicy: 'single_host_origin',
           scope: 'profile email'
         });
-        resolve()
+        resolve();
       });
     });
   }
@@ -56,18 +56,18 @@ export class AuthenticationService {
      */
   attachGoogleSignIn(element){
     this.gapiPromise.then(
-      data =>{
+      data => {
         this.auth2.attachClickHandler(element, {},
           (response) => {
             console.log('[AuthService][Google login][success]', response.getAuthResponse().access_token);
-            let url: string = `${this.BASE_AUTH_URL}/login/google?access_token=${response.getAuthResponse().access_token}`;
+            const url = `${this.BASE_AUTH_URL}/login/google?access_token=${response.getAuthResponse().access_token}`;
             this.http.get(url)
               .subscribe(
                 data => {
                   console.log('[AuthS][Google login][success]', data);
                   // the google token was successfully received by the web server
                   // and it has sent a jwt token
-                  let body = data.json();
+                  const body = data.json();
                   this.storeResponse(body.userId, body.role, body.jwtToken);
 
                   // route to my-events
@@ -80,15 +80,15 @@ export class AuthenticationService {
                   console.log('[AuthS][Google login][error]', error);
                   // something went wrong with the sending of the google token
                 }
-              )
+              );
 
           },
-          (error) =>{
+          (error) => {
             console.log('[AuthService][Google login][error]', error);
           }
-        )
+        );
       }
-    )
+    );
 
   }
 
@@ -100,15 +100,15 @@ export class AuthenticationService {
    * @param password
    * @returns {Subscription}
    */
-  login(user : User) : Observable<boolean> {
+  login(user: User): Observable<boolean> {
     console.log('[AuthS][ClassicalLogin]');
-    let url: string = `${this.BASE_AUTH_URL}/login`;
+    const url = `${this.BASE_AUTH_URL}/login`;
     return this.http.post(url, {email: user.email, password: user.password})
       .map(
-        (response : Response) => {
+        (response: Response) => {
           console.log('[AuthS][ClassicalLogin][success]', response.json());
 
-          let body = response.json();
+          const body = response.json();
 
           this.storeResponse(body.userId, body.role, body.jwtToken);
 
@@ -119,11 +119,11 @@ export class AuthenticationService {
         }
       )
       .catch(
-        (error : any) => {
+        (error: any) => {
           console.log('[AuthS][ClassicalLogin][error]', error.json());
           return Observable.of(false);
         }
-      )
+      );
   }
 
   /**
@@ -132,14 +132,14 @@ export class AuthenticationService {
    * @param user
    * @returns {any|Promise<R>|Promise<T>|Maybe<T>}
    */
-  register(user : User): Observable<boolean> {
-    let url: string = `${this.BASE_AUTH_URL}/register`;
+  register(user: User): Observable<boolean> {
+    const url = `${this.BASE_AUTH_URL}/register`;
     return this.http.post(url, {name: user.name, surname: user.surname, email: user.email, password: user.password})
       .map(
         (response: Response) => {
           console.log('[AuthS][Register][success]', response);
           // the registration succedeed
-          let body = response.json();
+          const body = response.json();
 
           this.storeResponse(body.userId, body.role, body.jwtToken);
 
@@ -150,11 +150,11 @@ export class AuthenticationService {
         }
       )
       .catch(
-        (error : any) => {
+        (error: any) => {
           console.log('[AuthS][Registration][error]', error.json());
           return Observable.of(false);
         }
-      )
+      );
   }
 
   /**
@@ -169,14 +169,14 @@ export class AuthenticationService {
         // facebook login is successful and returned a token
         // we send this token to our web server
         console.log('[AuthS][FB][success]', response);
-        let url: string = `${this.BASE_AUTH_URL}/login/facebook?access_token=${response.authResponse.accessToken}`;
+        const url = `${this.BASE_AUTH_URL}/login/facebook?access_token=${response.authResponse.accessToken}`;
         this.http.get(url)
           .subscribe(
             data => {
               console.log('[AuthS][FB][login/facebook][success]', data);
               // the Facebook token was successfully received by the web server
               // and it has sent a jwt token
-              let body = data.json();
+              const body = data.json();
               this.storeResponse(body.userId, body.role, body.jwtToken);
 
               // route to my-events
@@ -189,7 +189,7 @@ export class AuthenticationService {
               console.log('[AuthS][FB][login/facebook][error]', error);
               // something went wrong with the sending of the facebook token
             }
-          )
+          );
       })
       .catch((error: any) => {
         console.log('[AuthS][FB][error]', error);
@@ -200,15 +200,15 @@ export class AuthenticationService {
    * It returns true if the user is authenticated, false otherwise.
    * @returns {boolean}
    */
-  public isAuthenticated() : boolean {
-    var token = this.recoverToken();
+  public isAuthenticated(): boolean {
+    const token = this.recoverToken();
 
     // if the token is not stored the user is not authenticated
-    if(token === null){
+    if (token === null){
       return false;
     }else{
       // if the token is expired the user is not authenticated
-      if(this.isTokenExpired(token)){
+      if (this.isTokenExpired(token)){
         // clean the localStorage
         localStorage.removeItem(USERID);
         localStorage.removeItem(TOKEN);
@@ -226,10 +226,10 @@ export class AuthenticationService {
    * @returns {any}
      */
   getUserId(): String {
-    if(this.isAuthenticated()){
-      let userId = localStorage.getItem(USERID);
+    if (this.isAuthenticated()){
+      const userId = localStorage.getItem(USERID);
       console.log('[AuthService][getUserId]', userId);
-      return userId
+      return userId;
     }else{
       return null;
     }
@@ -256,11 +256,11 @@ export class AuthenticationService {
    * @returns {boolean}
      */
   isTokenExpired(token?: string): boolean {
-    if(!token) token = this.recoverToken();
-    if(!token) return true;
+    if (!token) token = this.recoverToken();
+    if (!token) return true;
 
     const date = this.getTokenExpirationDate(token);
-    if(date === undefined) return false;
+    if (date === undefined) return false;
     return !(date.valueOf() > new Date().valueOf());
   }
 
@@ -280,7 +280,7 @@ export class AuthenticationService {
   private storeResponse(userId, role, jwtToken){
     this.storeUserId(userId);
     this.storeToken(jwtToken);
-    this.storeRole(role)
+    this.storeRole(role);
   }
 
   /**
@@ -290,7 +290,7 @@ export class AuthenticationService {
   private storeToken(token){
     // store the token in localStorage
     localStorage.setItem(TOKEN, token.toString());
-    console.log('[AuthService][token stored in localStorage]')
+    console.log('[AuthService][token stored in localStorage]');
   }
 
 
@@ -300,7 +300,7 @@ export class AuthenticationService {
    */
   private storeUserId(userId){
     localStorage.setItem(USERID, userId.toString());
-    console.log('[AuthService][user stored in localStorage]')
+    console.log('[AuthService][user stored in localStorage]');
   }
 
   /**
@@ -309,7 +309,7 @@ export class AuthenticationService {
      */
   private storeRole(role){
     localStorage.setItem(ROLE, role);
-    console.log('[AuthService][role stored in localStorage]')
+    console.log('[AuthService][role stored in localStorage]');
   }
 
   /**

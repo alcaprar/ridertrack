@@ -1,21 +1,18 @@
 import { Injectable } from '@angular/core';
 import {Http} from '@angular/http';
 import {Event} from '../models/event';
+import {Observable} from 'rxjs/Observable';
 
 @Injectable()
 export class EventService {
 
   private BASE_URL = 'http://localhost:5000/api';
 
-  currentEvent: Event;
-  eventList: Event[];
-
   constructor(private http: Http) {
   }
 
-    /**
-   *returns the list of all the events after an HTTP GET and store the result inside an array
-   * of events: "eventList"
+  /**
+   * Perform an HTTP GET request to the REST API to read all the events
    * @returns {Promise<any>}
    */
   getAllEvents(): Promise<any> {
@@ -27,8 +24,7 @@ export class EventService {
         .subscribe(res => {
           console.log('[EventService][getAllEvents][success]', res);
           const body = res.json();
-          this.eventList = body.event;
-          localStorage.setItem('eventList', JSON.stringify(this.eventList));
+          return body.event;
         }, (err) => {
           console.log('[EventService][getAllEvents][error]', err);
           reject(err);
@@ -37,32 +33,56 @@ export class EventService {
   }
 
   /**
-   * get a specific event by id, performing an HTTP GET to the api server and storing the result
-   * in the currentEvent
+   * Perform an HTTP GET request to the REST API to read a specific event by id   *
    * @param id
-   * @returns {Promise<any>}
+   * @returns {Promise<any>} of the event
    */
   getEvent(id): Promise<any> {
     const url = `${this.BASE_URL}/events/`;
-    return this.http.get (url + id).toPromise()
-        .then((res) => {
-          const body = res.json();
-          return body.event;
-        })
+    return this.http.get(url + id).toPromise()
+      .then((res) => {
+        const body = res.json();
+        return body.event;
+      })
       .catch(error => {
         console.log('[EventService][getEvent][error]', error);
         return Promise.reject(error.message || error);
       });
   }
 
+  /**
+   * Perform an HTTP POST to REST API to create an event
+   * @param {Event} event
+   * @returns {Promise<any>} of the event
+   */
+  createEvent(event: Event): Promise<any> {
+    const url = `${this.BASE_URL}/events/`;
+    return this.http.post(url, JSON.stringify(event)).toPromise()
+      .then((res) => {
+        const body = res.json();
+        console.log('[EventService][creteEvent][success]', body.data);
+        return body.event;
+      })
+      .catch( error => {
+        console.log('[EventService][createEvent][error]', error);
+        return Promise.reject(error.message || error);
+      });
+  }
+
+  /**
+   * Perform an HTTP PUT request to REST API to update a certain event   *
+   * @param id of the event
+   * @param {Event} data of the event
+   * @returns {Promise<any>} of the event updated
+   */
   updateEvent(id, data: Event) {
     const url = `${this.BASE_URL}/events/`;
     return new Promise((resolve, reject) => {
       this.http.put(url + id, data)
-        .map(res => res.json())
         .subscribe(res => {
-          console.log('[EventService][updateEvent][succes]', res);
-          resolve(res);
+          const body = res.json();
+          console.log('[EventService][updateEvent][succes]', body);
+          resolve(body.event);
         }, (err) => {
           console.log('[EventService][updateEvent][error]', err);
           reject(err);
@@ -70,19 +90,25 @@ export class EventService {
     });
   }
 
+  /**
+   * Perform an HTTP DELETE request to REST API to delete a certain event
+   * @param id of the event
+   * @returns {Promise<any>} of the event deleted
+   */
   deleteEvent(id): Promise<any> {
     const url = `${this.BASE_URL}/events/`;
     return new Promise((resolve, reject) => {
       this.http.delete(url + id)
-        .map(res => res.json())
         .subscribe(res => {
-          console.log('[EventService][deleteEvent][success]', res);
-          resolve(res);
+          const body = res.json();
+          console.log('[EventService][deleteEvent][success]', body.event);
+          resolve(body.event);
         }, (err) => {
           console.log('[EventService][deleteEvent][error]', err);
           reject(err);
         });
     });
   }
+
 }
 
