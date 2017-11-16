@@ -73,20 +73,38 @@ router.post('/', authMiddleware.hasValidToken, function (req, res) {
 /**
  * It updates the fields passed in the body of the given eventId
  */
-router.put('/:eventId', authMiddleware.hasValidToken, function (req, res) {
-    Event.update(req.params.eventId, req.body, function (err, num_updated) {
-        if(err){
+router.put('/:eventId',authMiddleware.hasValidToken,function (req, res) {
+    var userId = req.userId;
+    var eventId = req.params.eventId;
+
+    Event.findByEventId(eventId, function (err, event) {
+        if (err) {
             res.status(400).send({
                 errors: err
             })
-        }else{
-            res.status(200).send({
-                event_num_updated: num_updated
+        }
+        //Only organizer can change event
+        else if (event.organizerId !== userId) {
+            res.status(401).send({
+                errors: ["You are not allowed to change event"]
             })
         }
-    })
+        //you have been logged in as organizer
+        else {
+            Event.update(req.params.eventId, req.body, function (err, num_updated) {
+                if (err) {
+                    res.status(400).send({
+                        errors: err
+                    })
+                } else {
+                    res.status(200).send({
+                        event_num_updated: num_updated
+                    })
+                }
+            })
+        }
+    });
 });
-
 
 /**
  * It deletes the event with the id given in the URI

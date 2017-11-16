@@ -30,7 +30,7 @@ var authMiddlewares = {
             }else{
                 // invalid authorization header
                 return res.status(401).send({
-                    errros: ['Unauthorized']
+                    errros: ['Invalid authorization header']
                 })
             }
         }
