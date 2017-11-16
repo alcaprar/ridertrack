@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {UserService} from "../../shared/services/user.service";
+import {UserService} from '../../shared/services/user.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {EventService} from '../../shared/services/event.service';
+import {User} from '../../shared/models/user';
+import {Event} from '../../shared/models/event';
 
 @Component({
   selector: 'app-event-detail-page',
@@ -8,16 +12,34 @@ import {UserService} from "../../shared/services/user.service";
 })
 export class EventDetailPageComponent implements OnInit {
 
-  private eventTitle: string;
-  private registrationStatus: string;
+  currentEvent: Event;
+  currentUser: User;
+  organizer: User;
+  errorMessage: String;
 
-  //to change with the title retrieved from the server
-  constructor(user: UserService) {
-    this.eventTitle="London Marathon 2017",
-      this.registrationStatus= "Open"
+  constructor(private userService: UserService, private route: ActivatedRoute, private eventService: EventService) {
   }
 
   ngOnInit() {
+    this.getEventDetail(this.route.snapshot.params['id']);
+    this.getOrganizerDetail();
+  }
+
+  getEventDetail(id): void {
+    this.eventService.getEvent(id)
+      .then((event) => this.currentEvent = event,
+        (error) => this.errorMessage = <any> error
+      );
+  }
+
+  getOrganizerDetail() {
+    const id = this.currentEvent.organizerID;
+    this.userService.getUserById(id)
+      .then((user) => this.organizer = user,
+        (error) => this.errorMessage = <any> error
+      );
   }
 
 }
+
+

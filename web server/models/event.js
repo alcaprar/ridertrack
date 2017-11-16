@@ -8,6 +8,7 @@ var eventSchema = Schema({
         minlength: 1,
         unique: true
     },
+    //Changed this to string because organizerID returns numbers and alphas
     organizerId: {
         type: String,
         required: true

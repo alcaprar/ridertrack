@@ -13,7 +13,7 @@ var authMiddlewares = {
         var authHeader = req.get('Authorization');
         if(typeof authHeader === 'undefined'){
             return res.status(401).send({
-                errors: ['Unauthorized']
+                errros: ['Unauthorized']
             })
         }else{
             if(authHeader.split(' ')[0] === 'JWT'){
@@ -30,7 +30,7 @@ var authMiddlewares = {
             }else{
                 // invalid authorization header
                 return res.status(401).send({
-                    errors: ['Unauthorized']
+                    errros: ['Invalid authorization header']
                 })
             }
         }

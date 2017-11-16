@@ -22,6 +22,8 @@
     "@angular/platform-browser": "^4.2.4",
     "@angular/platform-browser-dynamic": "^4.2.4",
     "@angular/router": "^4.2.4",
+    "angular-google-auth2": "^1.0.8",
+    "angular2-google-login": "^1.0.9",
     "angular4-social-login": "^1.0.13",
     "body-parser": "^1.18.2",
     "bootstrap": "^3.3.7",
