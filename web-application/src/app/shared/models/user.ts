@@ -3,7 +3,7 @@ export class User {
  private _password: String;
  private _name: String;
  private _surname: String;
- private _id: Number;
+ private _id: String;
  private picture: String;
 
 
@@ -54,7 +54,7 @@ export class User {
     this._surname = value;
   }
 
-  set id(value: Number){
+  set id(value: String){
     this._id = value;
   }
 

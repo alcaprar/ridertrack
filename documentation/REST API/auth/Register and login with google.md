@@ -32,6 +32,8 @@ None
         "surname": String,
         "email": String
     },
+    "userId": Number,
+    "role": String,
     "jwtToken": String
 }
 ```

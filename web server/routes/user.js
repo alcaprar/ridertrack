@@ -48,7 +48,7 @@ router.get('/:userId', function (req, res) {
             })
         }else{
             res.status(200).send({
-                users: user
+                user: user
             })
         }
     })

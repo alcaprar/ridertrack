@@ -7,23 +7,26 @@ import { Router } from '@angular/router';
 import { User } from '../shared/models/user';
 import 'rxjs/add/operator/catch.js'
 import 'rxjs/Rx';
+import {UserService} from "../shared/services/user.service";
+import * as jwt_decode from 'jwt-decode';
 
 declare const gapi: any;
+
+export const TOKEN: string = 'TOKEN';
+export const USERID: string = 'USERID';
+export const ROLE: string = 'ROLE';
 
 @Injectable()
 export class AuthenticationService {
   private BASE_AUTH_URL: string = 'http://localhost:5000/api/auth';
 
-  public token : String;
-  public user : User;
-
   public auth2:any;
 
-  private gapiPromise: Promise;
+  private gapiPromise: any;
 
   constructor(private http: Http, private fb: FacebookService, private router: Router, private appRef: ApplicationRef) {
-    // set token if saved in local storage
-    this.recoverToken();
+    // check the token stored in localStorage
+    this.isAuthenticated();
 
     // init Facebook strategy
     let initParams: InitParams = {
@@ -32,15 +35,6 @@ export class AuthenticationService {
       version: 'v2.8'
     };
     fb.init(initParams);
-
-    // init google strategy
-    gapi.load('auth2',  () => {
-      this.auth2 = gapi.auth2.init({
-        client_id: '909431710947-moe1csc5e564mo5qn8mmtc13thmmjj2e.apps.googleusercontent.com',
-        cookiepolicy: 'single_host_origin',
-        scope: 'profile email'
-      });
-    });
 
     this.gapiPromise = new Promise((resolve, reject) => {
       gapi.load('auth2',  () => {
@@ -74,11 +68,10 @@ export class AuthenticationService {
                   // the google token was successfully received by the web server
                   // and it has sent a jwt token
                   let body = data.json();
-                  this.storeUser(body.user);
-                  this.storeToken(body.jwtToken);
+                  this.storeResponse(body.userId, body.role, body.jwtToken);
 
                   // route to my-events
-                  this.router.navigate(['my-events'])
+                  this.router.navigate(['my-events']);
 
                   // to force angular to update the views
                   this.appRef.tick();
@@ -117,8 +110,7 @@ export class AuthenticationService {
 
           let body = response.json();
 
-          this.storeUser(body.user);
-          this.storeToken(body.jwtToken);
+          this.storeResponse(body.userId, body.role, body.jwtToken);
 
           // route to my-events
           this.router.navigate(['my-events']);
@@ -149,8 +141,7 @@ export class AuthenticationService {
           // the registration succedeed
           let body = response.json();
 
-          this.storeUser(body.user);
-          this.storeToken(body.jwtToken);
+          this.storeResponse(body.userId, body.role, body.jwtToken);
 
           // route to my-events
           this.router.navigate(['my-events']);
@@ -186,11 +177,10 @@ export class AuthenticationService {
               // the Facebook token was successfully received by the web server
               // and it has sent a jwt token
               let body = data.json();
-              this.storeUser(body.user);
-              this.storeToken(body.jwtToken);
+              this.storeResponse(body.userId, body.role, body.jwtToken);
 
               // route to my-events
-              this.router.navigate(['my-events'])
+              this.router.navigate(['my-events']);
 
               // to force angular to update the views
               this.appRef.tick();
@@ -207,21 +197,99 @@ export class AuthenticationService {
   }
 
   /**
-   * It recovers the token from the local storage.
+   * It returns true if the user is authenticated, false otherwise.
+   * @returns {boolean}
+   */
+  public isAuthenticated() : boolean {
+    var token = this.recoverToken();
+
+    // if the token is not stored the user is not authenticated
+    if(token === null){
+      return false;
+    }else{
+      // if the token is expired the user is not authenticated
+      if(this.isTokenExpired(token)){
+        // clean the localStorage
+        localStorage.removeItem(USERID);
+        localStorage.removeItem(TOKEN);
+        localStorage.removeItem(ROLE);
+        return false;
+      }
+    }
+
+    // the token exists and it is not expired
+    return true;
+  }
+
+  /**
+   * It returns the id of the logged user.
+   * @returns {any}
+     */
+  getUserId(): String {
+    if(this.isAuthenticated()){
+      let userId = localStorage.getItem(USERID);
+      console.log('[AuthService][getUserId]', userId);
+      return userId
+    }else{
+      return null;
+    }
+  }
+
+
+  /** It returns the expiration date of the stored token, if any.
+   * @param token
+   * @returns {any}
+     */
+  getTokenExpirationDate(token: string): Date {
+    const decoded = jwt_decode(token);
+
+    if (decoded.exp === undefined) return null;
+
+    const date = new Date(0);
+    date.setUTCSeconds(decoded.exp);
+    return date;
+  }
+
+  /**
+   * It checks if the token is expired.
+   * @param token
+   * @returns {boolean}
+     */
+  isTokenExpired(token?: string): boolean {
+    if(!token) token = this.recoverToken();
+    if(!token) return true;
+
+    const date = this.getTokenExpirationDate(token);
+    if(date === undefined) return false;
+    return !(date.valueOf() > new Date().valueOf());
+  }
+
+  /**
+   * It returns the token from the local storage.
    */
   private recoverToken(){
-    this.user = JSON.parse(localStorage.getItem('user'));
-    this.token = localStorage.getItem('token');
+    return localStorage.getItem(TOKEN);
+  }
+
+  /**
+   * It stores the response from logins into the localstorage
+   * @param user
+   * @param jwtToken
+   * @param role
+     */
+  private storeResponse(userId, role, jwtToken){
+    this.storeUserId(userId);
+    this.storeToken(jwtToken);
+    this.storeRole(role)
   }
 
   /**
    * It receives the token and stores it.
    * @param token
    */
-  storeToken(token){
+  private storeToken(token){
     // store the token in localStorage
-    this.token = token;
-    localStorage.setItem('token', this.token.toString());
+    localStorage.setItem(TOKEN, token.toString());
     console.log('[AuthService][token stored in localStorage]')
   }
 
@@ -230,33 +298,30 @@ export class AuthenticationService {
    * It receives the user from auth endpoints and stores it to localStorage.
    * @param user
    */
-  storeUser(user){
-    this.user = user;
-    localStorage.setItem('user', JSON.stringify(this.user));
+  private storeUserId(userId){
+    localStorage.setItem(USERID, userId.toString());
     console.log('[AuthService][user stored in localStorage]')
   }
 
   /**
-   * It returns true if the user is authenticated, false otherwise.
-   * @returns {boolean}
-   */
-  public isAuthenticated() : boolean {
-    // TODO check token expiration
-    return (this.token !== null)
+   * It stores the role in the localStorage.
+   * @param role
+     */
+  private storeRole(role){
+    localStorage.setItem(ROLE, role);
+    console.log('[AuthService][role stored in localStorage]')
   }
-
 
   /**
    * It clears the localStorage removing the currentUser.
    * It also redirects to the home.
    */
   logout(): void {
-    console.log('Logging out...');
+    console.log('[AuthService][Logout]');
     // clear token remove user from local storage to log user out
-    this.token = null;
-    this.user = null;
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
+    localStorage.removeItem(USERID);
+    localStorage.removeItem(TOKEN);
+    localStorage.removeItem(ROLE);
 
     // redirect to the home page
     this.router.navigate(['']);

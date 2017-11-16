@@ -34,7 +34,8 @@ router.post('/register', function (req, res) {
                 });
 
                 return res.status(200).send({
-                    user: user,
+                    userId: user._id,
+                    role: user.role,
                     jwtToken: token,
                     expiresIn: 172800
                 })
@@ -71,8 +72,9 @@ router.post('/login', function (req, res, next) {
         var token = jwt.sign(userToken, config.passport.jwt.jwtSecret, {
             expiresIn: 172800 // 2 days in seconds
         });
-        return res.send({
-            user: user,
+        return res.status(200).send({
+            userId: user._id,
+            role: user.role,
             jwtToken: token,
             expiresIn: 172800
         })
@@ -95,8 +97,9 @@ router.get('/login/facebook', function (req, res, next) {
         var token = jwt.sign(userToken, config.passport.jwt.jwtSecret, {
             expiresIn: 172800 // 2 days in seconds
         });
-        return res.send({
-            user: user,
+        return res.status(200).send({
+            userId: user._id,
+            role: user.role,
             jwtToken: token,
             expiresIn: 172800
         })
@@ -120,8 +123,9 @@ router.get('/login/google', function (req, res, next) {
         var token = jwt.sign(userToken, config.passport.jwt.jwtSecret, {
             expiresIn: 172800 // 2 days in seconds
         });
-        return res.send({
-            user: user,
+        return res.status(200).send({
+            userId: user._id,
+            role: user.role,
             jwtToken: token,
             expiresIn: 172800
         })

@@ -20,7 +20,8 @@ var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 mongoose.connect(config.mongodb.uri, {useMongoClient: true}, function (err) {
     if (err){
-        console.log('[MDB] Error while connecting to mongodb.', err)
+        console.log('[MDB] Error while connecting to mongodb.', err);
+        // TODO try to reconnect
     }else{
         console.log('[MDB] Successfully connected to MongoDB')
     }
