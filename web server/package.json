@@ -16,7 +16,7 @@
     "cors": "^2.8.4",
     "express": "^4.16.2",
     "jsonwebtoken": "^8.1.0",
-    "mongoose": "^4.13.1",
+    "mongoose": "^4.13.2",
     "nodemon": "^1.12.1",
     "passport": "^0.4.0",
     "passport-facebook": "^2.1.1",

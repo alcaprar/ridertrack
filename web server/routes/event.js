@@ -92,11 +92,9 @@ router.put('/:eventId', authMiddleware.hasValidToken, function (req, res) {
  * It deletes the event with the id given in the URI
  */
 router.delete('/:eventId', authMiddleware.hasValidToken, function(req,res){
-    var userId = req.userId;
-    
     // TODO authorization
     
-    Event.delete(req.params.eventId, function(err, event) {
+    Event.delete(req.userId, req.params.eventId, function(err, event) {
         if(err){
             res.status(400).send({
                 errors: err

@@ -1,10 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-const privateFields = ['__v', 'salt', 'hash', 'created_at', 'updated_at', 'googleProfile', 'facebookProfile'];
-
-
-
 var eventSchema = Schema({
     name: {
         type: String,
@@ -13,7 +9,7 @@ var eventSchema = Schema({
         unique: true
     },
     organizerId: {
-        type: Number,
+        type: String,
         required: true
     },
     type: {
@@ -95,15 +91,6 @@ eventSchema.pre('save', function(next) {
     next();
 });
 
-eventSchema.methods.removePrivateFields = function (callback){
-    var event = this;
-    for (let i in privateFields){
-        delete event[privateFields[i]];
-    }
-    if (typeof callback !== 'undefined'){callback()}
-};
-
-
 /* It finds an event by name passed
  * Then, calls callback with either an error or the found event
  */
@@ -131,23 +118,22 @@ eventSchema.statics.findByEventId = function (eventId, callback ){
 
  /* It creates an event.
   * It then calls a callback passing either an error list or the created event.
-  * Removes private fields to not be sent to the frontend
-  */
+ */
+ //TODO removePrivateFields
 eventSchema.statics.create = function (eventJson, callback) {
     var event = new Event(eventJson);
 
     event.save(function (err, event) {
         if (err) {
-            event.removePrivateFields();
             return callback(err)
         } else {
-            event.removePrivateFields();
+            //event.removePrivateFields();
             return callback(null, event)
         }
     })
 };
 
-// Updates an event. Note: there might be an easier way of doing this looking at docs.
+// Updates an event. Note: there might be an easier way of doign this looking at docs.
 eventSchema.statics.update = function (eventId, eventJson, callback) {
 // find the right event and modify it
     this.findOne({_id: eventId}, function (err, event) {
@@ -170,14 +156,26 @@ eventSchema.statics.update = function (eventId, eventJson, callback) {
     })
 };
 
-
 //deletes an event
-eventSchema.statics.delete = function (eventId, callback){
-    this.findOneAndRemove({_id: eventId}, function (err, event){
+
+eventSchema.statics.delete = function (userId, eventId, callback){
+    /* find logged user and compare with organizerId
+    * if they match then the event can be deleted
+    */
+    this.findOne({_id: eventId}, function (err, event){
         if(err) {
             return callback(err)
         }else{
-            return callback(null,event)
+            if(event.organizerId === userId){
+                event.remove({_id: eventId}, function(err, event){
+                    if(err){
+                        callback(err)
+                    }
+                    else{
+                        return callback(null, event)
+                    }
+                })
+            }
         }
     })
 };
