@@ -54,8 +54,14 @@ var userSchema = Schema({
         },
         select:false
     },
-    created_at: {type: Date, select: false},
-    updated_at: {type: Date, select: false}
+    created_at: {
+        type: Date,
+        select: false
+    },
+    updated_at: {
+        type: Date,
+        select: false
+    }
 });
 
 // on every save, add the date
