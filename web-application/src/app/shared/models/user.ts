@@ -1,48 +1,65 @@
-export class User{
-  private _email: String;
-  private _password: String;
-  private _name: String;
-  private _surname: String;
+export class User {
+ private _email: String;
+ private _password: String;
+ private _name: String;
+ private _surname: String;
+ private _id: Number;
+ private picture: String;
 
 
-  constructor(email:String, password:String, name:String, surname:String) {
+  constructor(email: String, name: String, surname: String, password: String) {
     this._email = email;
-    this._password = password;
     this._name = name;
     this._surname = surname;
+    this._password = password;
   }
 
-
-  get email():String{
-    return this._email;
+  set profilePicture(value: String) {
+    this.picture = value;
   }
 
-  set email(value:String){
-    this._email=value;
+  get profilePicture(){
+    return this.picture;
   }
 
-  get password():String{
+  get password() {
     return this._password;
   }
 
-  set password(value:String){
-    this._password=value;
+  set password(value: String) {
+    this._password = value;
   }
 
-  get name():String{
+  get email(): String{
+    return this._email;
+  }
+
+  set email(value: String){
+    this._email = value;
+  }
+
+  get name(): String{
     return this._name;
   }
 
-  set name(value:String){
-    this._name=value;
+  set name(value: String){
+    this._name = value;
   }
 
-  get surname():String{
+  get surname(): String{
     return this._surname;
   }
 
-  set surname(value:String){
-    this._surname=value;
+  set surname(value: String){
+    this._surname = value;
+  }
+
+  set id(value: Number){
+    this._id = value;
+  }
+
+  get id(){
+    return this._id;
   }
 }
 

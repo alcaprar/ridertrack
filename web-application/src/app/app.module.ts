@@ -2,10 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpModule } from '@angular/http';
-import { HttpClient } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './home-page/home-page.component';
@@ -20,15 +18,21 @@ import { EventsListPageComponent } from './event-pages/events-list-page/events-l
 import { FooterComponent } from './shared/layout/footer/footer.component';
 import { ContactsPageComponent } from './contacts-page/contacts-page.component';
 import { PageHeaderComponent } from './shared/layout/page-header/page-header.component';
-import {UserService} from './shared/services/user.service';
-import {AuthGuard} from './shared/guards/auth.guard';
-import {AuthenticationService} from "./authentication/authentication.service";
 import {EventDetailPageComponent} from './event-pages/event-detail-page/event-detail-page.component';
+import { MyEventsComponent } from './event-pages/my-events/my-events.component';
+
+import {UserService} from './shared/services/user.service';
+import {AuthenticationService} from './authentication/authentication.service';
+
+import {GuestGuard} from './shared/guards/guest.guard';
+import {AuthGuard} from './shared/guards/auth.guard';
 
 
 import { FacebookModule } from 'ngx-facebook';
-import { MyEventsComponent } from './event-pages/my-events/my-events.component';
-import {GuestGuard} from "./shared/guards/guest.guard";
+import {AuthService} from 'angular2-google-login';
+import {EventService} from "./shared/services/event.service";
+
+
 
 @NgModule({
   declarations: [
@@ -65,7 +69,7 @@ import {GuestGuard} from "./shared/guards/guest.guard";
         component: EventsListPageComponent
       },
       {
-        path: 'event',
+        path: 'product-details/:id',
         component: EventDetailPageComponent
       },
       {
@@ -97,10 +101,13 @@ import {GuestGuard} from "./shared/guards/guest.guard";
   ],
   providers: [
     UserService,
+    EventService,
     AuthGuard,
     GuestGuard,
-    AuthenticationService
-  ],
+    AuthenticationService,
+    AuthService
+   ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+

@@ -7,7 +7,7 @@
   <div class="container">
     <div class="row">
       <div class="page-head-content">
-        <h1 class="page-title">{{eventTitle}}</h1>
+        <h1 class="page-title">{{currentEvent.name}}</h1>
       </div>
       <div class="button right">
         <button class="navbar-btn nav-button wow fadeInRight" routerLink="login">Enroll</button>
@@ -43,7 +43,7 @@
 
           <div class="single-property-wrapper" >
             <div class="section">
-              <h4 class="s-property-title">Description</h4>
+              <h4 class="s-property-title">{{currentEvent.description}}</h4>
               <div class="s-property-content">
                 <p>Nulla quis dapibus nisl. Suspendisse ultricies Nulla quis dapibus nisl. Suspendisse ultricies commodo arcu nec pretium. Nullam sed arcu ultricies commodo arcu nec pretium. Nullam sed arcu ultricies Nulla quis dapibus nisl. Suspendisse ultricies commodo arcu nec pretium. Nullam sed arcu ultricies Nulla quis dapibus nisl. Suspendisse ultricies commodo arcu nec pretium. Nullam sed arcu ultricies                                </p>
               </div>
@@ -56,18 +56,19 @@
 
               <ul class="additional-details-list clearfix">
                 <li>
-                  <span class="col-xs-6 col-sm-4 col-md-4 add-d-title">Max Participants</span>
-                  <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry">100</span>
+                  <span class="col-xs-6 col-sm-4 col-md-4 add-d-title">Duration</span>
+                  <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry">{{currentEvent.maxDuration}}</span>
                 </li>
 
                 <li>
                   <span class="col-xs-6 col-sm-4 col-md-4 add-d-title">Registration Period</span>
-                  <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry">14th october 2017 - 31st october 2017</span>
+                  <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry">{{currentEvent.enrollmentOpeningAt.getDate()}} -
+                    {{currentEvent.enrollmentOpeningAt.getDate()}}</span>
                 </li>
 
                 <li>
-                  <span class="col-xs-6 col-sm-4 col-md-4 add-d-title">Date</span>
-                  <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry">2nd November 2017</span>
+                  <span class="col-xs-6 col-sm-4 col-md-4 add-d-title">City</span>
+                  <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry">{{currentEvent.city}}</span>
                 </li>
               </ul>
             </div>
@@ -78,7 +79,7 @@
               <h4 class="s-property-title">Share width your friends </h4>
               <div class="roperty-social">
                 <ul>
-                  <li><a title="Share this on facebok " href="#"><img src="../../../assets/img/social_big/facebook_grey.png"></a></li>
+                  <li><a title="Share this on facebook " href="#"><img src="../../../assets/img/social_big/facebook_grey.png"></a></li>
                   <li><a title="Share this on twitter " href="#"><img src="../../../assets/img/social_big/twitter_grey.png"></a></li>
                 </ul>
               </div>
@@ -88,13 +89,14 @@
         </div>
       </div>
 
+      <!--Information menu area-->
       <div class="col-md-4 p0">
         <aside class="sidebar sidebar-property blog-asside-right property-style2">
           <div class="dealer-widget">
             <div class="dealer-content">
               <div class="inner-wrapper">
                 <div class="single-property-header">
-                  <h1 class="property-title">{{eventTitle}}</h1>
+                  <h1 class="property-title">{{currentEvent.name}}</h1>
                 </div>
 
                 <div class="property-meta entry-meta clearfix ">
@@ -102,7 +104,7 @@
                     <li>
                        <span class="property-info-entry">
                          <span class="property-info-value">Registration Period</span>
-                         <span class="property-info-label">{{registrationStatus}}</span>
+                         <span class="property-info-label">Open</span>
                        </span>
                     </li>
                     <!-- TO ADD *nfIf TO MANAGE THE TRACKING
@@ -115,7 +117,10 @@
                     -->
                   </ul>
                 </div>
+                <!--end Information area-->
 
+
+                <!--organizer area-->
 
                 <div class="dealer-section-space">
                   <span>Information</span>
@@ -123,18 +128,20 @@
                 <div class="clear">
                   <div class="col-xs-4 col-sm-4 dealer-face">
                     <a href="">
-                      <img src="../../../assets/img/client-face1.png" class="img-circle">
+                      <img src='{{organizer.profilePicture}}' class="img-circle">
                     </a>
                   </div>
                   <div class="col-xs-8 col-sm-8 ">
                     <h3 class="dealer-name">
-                      <a href="">Nathan James</a>
+                      <a href="">{{organizer.name}} {{organizer.surname}}</a>
                       <span>Event Organizer</span>
                     </h3>
                   </div>
 
                   </div>
                 </div>
+              <!--End organizer area-->
+
               </div>
             </div>
         </aside>
