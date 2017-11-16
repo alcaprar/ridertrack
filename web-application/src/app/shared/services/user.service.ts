@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Http} from '@angular/http';
 import {User} from '../models/user';
-import {AuthenticationService} from "../../authentication/authentication.service";
-import {Observable} from "rxjs/Observable";
+import {AuthenticationService} from '../../authentication/authentication.service';
+import {Observable} from 'rxjs/Observable';
 
 @Injectable()
 export class UserService {
@@ -17,10 +17,10 @@ export class UserService {
    * If the user is not logged it returns null.
    * @returns {any}
    */
-  getUser(): Observable<User>{
+  getUser(): Observable<User> {
     let userId = this.authService.getUserId();
     console.log('[UserService][getUser]', userId);
-    if(userId){
+    if (userId) {
       const url = `${this.BASE_USERS_URL}${userId}`;
       return this.http.get(url)
         .map(
@@ -30,14 +30,14 @@ export class UserService {
             // TODO create the user instance
             let user = new User(userJson.email, userJson.name, userJson.surname, '');
             user.id = userId;
-            return user
+            return user;
           },
           (error: any) => {
             console.log('[UserService][getUser][Error]', error);
-            return Observable.of(null)
+            return Observable.of(null);
           });
-    }else{
-      return Observable.of(null)
+    }else {
+      return Observable.of(null);
     }
   }
 }
