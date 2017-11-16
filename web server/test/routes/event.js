@@ -59,6 +59,21 @@ describe('Event API tests', function () {
         });
     });
 
+    describe('DELETE /events', function(){
+        it('should delete an event', function(done){
+
+            request.delete('/api/')
+
+
+
+        } )
+
+
+
+
+
+    })
+
 
     // it closes the server at the end
     after(function (done) {

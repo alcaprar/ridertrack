@@ -1,6 +1,10 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+const privateFields = ['__v', 'salt', 'hash', 'created_at', 'updated_at', 'googleProfile', 'facebookProfile'];
+
+
+
 var eventSchema = Schema({
     name: {
         type: String,
@@ -91,6 +95,15 @@ eventSchema.pre('save', function(next) {
     next();
 });
 
+eventSchema.methods.removePrivateFields = function (callback){
+    var event = this;
+    for (let i in privateFields){
+        delete event[privateFields[i]];
+    }
+    if (typeof callback !== 'undefined'){callback()}
+};
+
+
 /* It finds an event by name passed
  * Then, calls callback with either an error or the found event
  */
@@ -118,22 +131,23 @@ eventSchema.statics.findByEventId = function (eventId, callback ){
 
  /* It creates an event.
   * It then calls a callback passing either an error list or the created event.
- */
- //TODO removePrivateFields
+  * Removes private fields to not be sent to the frontend
+  */
 eventSchema.statics.create = function (eventJson, callback) {
     var event = new Event(eventJson);
 
     event.save(function (err, event) {
         if (err) {
+            event.removePrivateFields();
             return callback(err)
         } else {
-            //event.removePrivateFields();
+            event.removePrivateFields();
             return callback(null, event)
         }
     })
 };
 
-// Updates an event. Note: there might be an easier way of doign this looking at docs.
+// Updates an event. Note: there might be an easier way of doing this looking at docs.
 eventSchema.statics.update = function (eventId, eventJson, callback) {
 // find the right event and modify it
     this.findOne({_id: eventId}, function (err, event) {
@@ -156,8 +170,8 @@ eventSchema.statics.update = function (eventId, eventJson, callback) {
     })
 };
 
-//deletes an event
 
+//deletes an event
 eventSchema.statics.delete = function (eventId, callback){
     this.findOneAndRemove({_id: eventId}, function (err, event){
         if(err) {
