@@ -31,6 +31,7 @@ import {AuthGuard} from './shared/guards/auth.guard';
 import { FacebookModule } from 'ngx-facebook';
 import {AuthService} from 'angular2-google-login';
 import {EventService} from './shared/services/event.service';
+import { ProfilePageComponent } from './user-pages/profile-page/profile-page.component';
 
 
 
@@ -51,6 +52,7 @@ import {EventService} from './shared/services/event.service';
     PageHeaderComponent,
     EventDetailPageComponent,
     MyEventsComponent,
+    ProfilePageComponent,
   ],
   imports: [
     BrowserModule,
@@ -87,6 +89,11 @@ import {EventService} from './shared/services/event.service';
         path: 'login',
         component: LoginPageComponent,
         canActivate: [GuestGuard]
+      } ,
+      {
+        path: 'profile-page',
+        component: ProfilePageComponent,
+        canActivate: [AuthGuard]
       } ,
       {
         path: 'register',

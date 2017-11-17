@@ -8,42 +8,40 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" routerLink=""><img src="../../../../assets/img/logoRidertrack.png" alt=""></a>
+      <a class="navbar-brand" routerLink="/"><img src="../../../../assets/img/logoRidertrack.png" alt=""></a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
 
-    <div class="button navbar-right" *ngIf="!authService.isAuthenticated()">
-      <button class="navbar-btn nav-button wow bounceInRight login" routerLink="login" data-wow-delay="0.45s">Login</button>
-      <button class="navbar-btn nav-button wow fadeInRight" routerLink="register" data-wow-delay="0.48s">Register</button>
+    <div class="button navbar-right">
+      <button class="navbar-btn nav-button wow bounceInRight login" *ngIf="!isLoggedIn()" routerLink="login" data-wow-delay="0.45s">Login</button>
+      <button class="navbar-btn nav-button wow fadeInRight" *ngIf="!isLoggedIn()" routerLink="register" data-wow-delay="0.48s">Register</button>
     </div>
 
 
-    <div class="main-nav nav navbar-nav navbar-right" *ngIf="authService.isAuthenticated()">
+    <div class="main-nav nav navbar-nav navbar-right" *ngIf="isLoggedIn()">
       <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" dropdownToggle (click)="false">
         <img src="../../../../assets/img/round-account-button-with-user-inside.png"
              class="img-avatar" align="center"/>
       </a>
       <div class="dropdown-menu navbar-nav">
-        <a class="dropdown-item" >
-          <i class="fa fa-user"></i> Profile</a>
+        <a class="dropdown-item" routerLink="profile-page"><i class="fa fa-user"></i> Profile</a>
         <div class="divider"></div>
-        <a class="dropdown-item" (click)="logout()">
-          <i class="fa fa-lock"></i> Logout</a>
+        <a class="dropdown-item" (click)="logout()"><i class="fa fa-lock"></i> Logout</a>
       </div>
     </div>
 
 
     <div class="collapse navbar-collapse yamm" id="navigation">
-      <ul class="main-nav nav navbar-nav navbar-right">
+      <ul class="main-nav nav navbar-nav navbar-right" routerLinkActive="active">
         <li class="wow fadeInDown" data-wow-delay="0.2s">
-          <a class="" routerLink="events" routerLinkActive="active"> All Events</a>
+          <a class="" routerLink="events"> All Events</a>
         </li>
-        <li class="wow fadeInDown" data-wow-delay="0.3s" *ngIf="authService.isAuthenticated()">
-          <a class="" routerLink="my-events" routerLinkActive="active">My Events</a>
+        <li class="wow fadeInDown" data-wow-delay="0.3s" *ngIf="isLoggedIn()">
+          <a class="" routerLink="my-events">My Events</a>
         </li>
         <li class="wow fadeInDown" data-wow-delay="0.3s">
-          <a class="" routerLink="contacts" routerLinkActive="active">Contacts</a>
+          <a class="" routerLink="contacts">Contacts</a>
         </li>
       </ul>
     </div><!-- /.navbar-collapse -->
