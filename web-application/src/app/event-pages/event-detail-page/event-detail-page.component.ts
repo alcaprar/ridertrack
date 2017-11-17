@@ -15,29 +15,16 @@ export class EventDetailPageComponent implements OnInit {
   currentEvent: Event;
   currentUser: User;
   organizer: User;
-  errorMessage: String;
 
   constructor(private userService: UserService, private route: ActivatedRoute, private eventService: EventService) {
   }
 
+  // When the component is created catch the current event object and the current user
   ngOnInit() {
-    this.getEventDetail(this.route.snapshot.params['id']);
-    this.getCurrentUser();
+    this.eventService.getEvent(this.route.snapshot.params['id']).then((event) => this.currentEvent = event);
+    this.userService.getUser().subscribe((user) => this.currentUser = user);
   }
 
-  getEventDetail(id): void {
-    this.eventService.getEvent(id)
-      .then((event) => this.currentEvent = event,
-            (error) => this.errorMessage = <any> error
-      );
-  }
-
-  getCurrentUser() {
-    this.userService.getUser()
-      .subscribe((user) => this.currentUser = user,
-            (error) => this.errorMessage = <any> error
-      );
-  }
 
 }
 

@@ -6,23 +6,23 @@ import {Observable} from 'rxjs/Observable';
 @Injectable()
 export class EventService {
 
-  private BASE_URL = 'http://localhost:5000/api';
+  private BASE_EVENT_URL = 'http://localhost:5000/api/events';
 
   constructor(private http: Http) {
   }
 
   /**
    * Perform an HTTP GET request to the REST API to read all the events
-   * @returns {Promise<any>}
+   * @returns {Promise<Event[]>}
    */
-  getAllEvents(): Observable<Event[]> {
-    const url = `${this.BASE_URL}/events`;
+  getAllEvents(): Promise<Event[]> {
+    const url = `${this.BASE_EVENT_URL}`;
 
-    return this.http.get(url)
-        .map( (res) => {
-          console.log('[EventService][getAllEvents][success]', res);
-          const body = res.json();
-          return body.event;
+    return this.http.get(url).toPromise()
+        .then( (res) => {
+          const eventsBody = res.json().event as Event[];
+          console.log('[EventService][getAllEvents][success]', eventsBody);
+         return eventsBody;
         }, (err) => {
           console.log('[EventService][getAllEvents][error]', err);
           return Observable.of(null);
@@ -32,14 +32,14 @@ export class EventService {
   /**
    * Perform an HTTP GET request to the REST API to read a specific event by id   *
    * @param id
-   * @returns {Promise<any>} of the event
+   * @returns {Promise<Event>} of the event
    */
-  getEvent(id): Promise<any> {
-    const url = `${this.BASE_URL}/events/`;
-    return this.http.get(url + id).toPromise()
+  getEvent(id): Promise<Event> {
+    const url = `${this.BASE_EVENT_URL}/${id}`;
+    return this.http.get(url).toPromise()
       .then((res) => {
-        const body = res.json();
-        return body.event;
+        const eventBody = res.json().event as Event;
+        return eventBody;
       })
       .catch(error => {
         console.log('[EventService][getEvent][error]', error);
@@ -50,15 +50,15 @@ export class EventService {
   /**
    * Perform an HTTP POST to REST API to create an event
    * @param {Event} event
-   * @returns {Promise<any>} of the event
+   * @returns {Promise<Event>} of the event
    */
-  createEvent(event: Event): Promise<any> {
-    const url = `${this.BASE_URL}/events/`;
+  createEvent(event: Event): Promise<Event> {
+    const url = `${this.BASE_EVENT_URL}`;
     return this.http.post(url, JSON.stringify(event)).toPromise()
       .then((res) => {
-        const body = res.json();
-        console.log('[EventService][creteEvent][success]', body.data);
-        return body.event;
+        const eventBody = res.json().event as Event;
+        console.log('[EventService][creteEvent][success]', eventBody);
+        return eventBody;
       })
       .catch( error => {
         console.log('[EventService][createEvent][error]', error);
@@ -70,41 +70,31 @@ export class EventService {
    * Perform an HTTP PUT request to REST API to update a certain event   *
    * @param id of the event
    * @param {Event} data of the event
-   * @returns {Promise<any>} of the event updated
+   * @returns {Promise<Event>} of the event updated
    */
-  updateEvent(id, data: Event) {
-    const url = `${this.BASE_URL}/events/`;
-    return new Promise((resolve, reject) => {
-      this.http.put(url + id, data)
-        .subscribe(res => {
-          const body = res.json();
-          console.log('[EventService][updateEvent][succes]', body);
-          resolve(body.event);
-        }, (err) => {
-          console.log('[EventService][updateEvent][error]', err);
-          reject(err);
+  updateEvent(id, event: Event): Promise<Event> {
+    const url = `${this.BASE_EVENT_URL}/${id}`;
+    return this.http.put(url , JSON.stringify(event)).toPromise()
+        .then(() => event)
+      .catch(error => {
+          console.log('[EventService][updateEvent][error]', error);
+        return Promise.reject(error.message || error);
         });
-    });
-  }
+    }
 
   /**
    * Perform an HTTP DELETE request to REST API to delete a certain event
    * @param id of the event
-   * @returns {Promise<any>} of the event deleted
+   * @returns {Promise<void>} of the event deleted
    */
-  deleteEvent(id): Promise<any> {
-    const url = `${this.BASE_URL}/events/`;
-    return new Promise((resolve, reject) => {
-      this.http.delete(url + id)
-        .subscribe(res => {
-          const body = res.json();
-          console.log('[EventService][deleteEvent][success]', body.event);
-          resolve(body.event);
-        }, (err) => {
-          console.log('[EventService][deleteEvent][error]', err);
-          reject(err);
+  deleteEvent(id): Promise<void> {
+    const url = `${this.BASE_EVENT_URL}/${id}`;
+    return this.http.delete(url).toPromise()
+      .then(() => null)
+      .catch((error) => {
+          console.log('[EventService][deleteEvent][error]', error);
+        return Promise.reject(error.message || error);
         });
-    });
   }
 
 }
