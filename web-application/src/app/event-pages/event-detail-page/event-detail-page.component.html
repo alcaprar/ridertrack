@@ -9,8 +9,14 @@
       <div class="page-head-content">
         <h1 class="page-title">{{currentEvent.name}}</h1>
       </div>
-      <div class="button right">
-        <button class="navbar-btn nav-button wow fadeInRight" routerLink="login">Enroll</button>
+      <div class="button right" *ngIf="currentUser === null" >
+        <button class="navbar-btn nav-button wow fadeInRight"  routerLink="login">Enroll</button>
+      </div>
+      <div class="button right" *ngIf="currentUser !== null" >
+        <button class="navbar-btn nav-button wow fadeInRight"  routerLink="#">Enroll</button>
+      </div>
+      <div class="button right" *ngIf="currentUser === organizer" >
+        <button class="navbar-btn nav-button wow bounceInRight login"  routerLink="#">Edit</button>
       </div>
     </div>
   </div>
@@ -36,16 +42,16 @@
                     <i class="fa fa-print"></i>
                   </a>
                 </div>
-                    <img src="../../../assets/img/example_map.jpg" />
+                    <img src= ""/>
               </div>
             </div>
           </div><br>
 
           <div class="single-property-wrapper" >
             <div class="section">
-              <h4 class="s-property-title">{{currentEvent.description}}</h4>
+              <h4 class="s-property-title">Description</h4>
               <div class="s-property-content">
-                <p>Nulla quis dapibus nisl. Suspendisse ultricies Nulla quis dapibus nisl. Suspendisse ultricies commodo arcu nec pretium. Nullam sed arcu ultricies commodo arcu nec pretium. Nullam sed arcu ultricies Nulla quis dapibus nisl. Suspendisse ultricies commodo arcu nec pretium. Nullam sed arcu ultricies Nulla quis dapibus nisl. Suspendisse ultricies commodo arcu nec pretium. Nullam sed arcu ultricies                                </p>
+                <p>{{currentEvent.description}}</p>
               </div>
             </div>
             <!-- End description area  -->
@@ -57,18 +63,22 @@
               <ul class="additional-details-list clearfix">
                 <li>
                   <span class="col-xs-6 col-sm-4 col-md-4 add-d-title">Duration</span>
-                  <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry">{{currentEvent.maxDuration}}</span>
+                  <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry">{{currentEvent.maxDuration}} minutes</span>
                 </li>
 
                 <li>
                   <span class="col-xs-6 col-sm-4 col-md-4 add-d-title">Registration Period</span>
-                  <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry">{{currentEvent.enrollmentOpeningAt.getDate()}} -
-                    {{currentEvent.enrollmentOpeningAt.getDate()}}</span>
+                  <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry">
+                    {{currentEvent.enrollmentOpeningAt.getDate()}}/
+                    {{current.enrollmentOpeningAt.getMonth()}}/{{currentEvent.enrollmentOpeningAt.getFullYear()}} -
+                    {{currentEvent.enrollmentClosingAt.getDate()}}/{{current.enrollmentClosingAt.getMonth()}}/
+                    {{currentEvent.enrollmentClosingAt.getFullYear()}}
+                  </span>
                 </li>
 
                 <li>
                   <span class="col-xs-6 col-sm-4 col-md-4 add-d-title">City</span>
-                  <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry">{{currentEvent.city}}</span>
+                  <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry"><p>{{currentEvent.city}}, {{currentEvent.country}}</p></span>
                 </li>
               </ul>
             </div>
@@ -103,10 +113,19 @@
                   <ul>
                     <li>
                        <span class="property-info-entry">
-                         <span class="property-info-value">Registration Period</span>
-                         <span class="property-info-label">Open</span>
+                         <span class="property-info-value">Registration Status</span>
+                         <span class="property-info-label"><p>{{enrollement}}</p></span>
                        </span>
                     </li>
+                  </ul>
+                    <div class="property-meta entry-meta clearfix ">
+                      <ul>
+                        <li>
+                       <span class="property-info-entry">
+                         <span class="property-info-value">Date</span>
+                         <span class="property-info-label"><p>{{this.currentEvent.startingTime.toString()}}</p></span>
+                       </span>
+                        </li>
                     <!-- TO ADD *nfIf TO MANAGE THE TRACKING
                     <li >
                        <span class="property-info-entry">
@@ -116,6 +135,7 @@
                     </li>
                     -->
                   </ul>
+                    </div>
                 </div>
                 <!--end Information area-->
 
@@ -128,12 +148,12 @@
                 <div class="clear">
                   <div class="col-xs-4 col-sm-4 dealer-face">
                     <a href="">
-                      <img src='{{organizer.profilePicture}}' class="img-circle">
+                      <img src='http://static.tvtropes.org/pmwiki/pub/images/Russell-Crowe_5961.jpg' class="img-circle">
                     </a>
                   </div>
                   <div class="col-xs-8 col-sm-8 ">
                     <h3 class="dealer-name">
-                      <a href="">{{organizer.name}} {{organizer.surname}}</a>
+                      <a>{{organizer.name}} {{organizer.surname}}</a>
                       <span>Event Organizer</span>
                     </h3>
                   </div>
