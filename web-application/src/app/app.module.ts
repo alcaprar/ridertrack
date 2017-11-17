@@ -30,6 +30,7 @@ import { MyDatePickerModule } from 'mydatepicker';
 import { FacebookModule } from 'ngx-facebook';
 import { MyEventsComponent } from './event-pages/my-events/my-events.component';
 import {GuestGuard} from "./shared/guards/guest.guard";
+import {EventService} from "./shared/services/event.service";
 
 
 @NgModule({
@@ -102,7 +103,8 @@ import {GuestGuard} from "./shared/guards/guest.guard";
     UserService,
     AuthGuard,
     GuestGuard,
-    AuthenticationService
+    AuthenticationService,
+    EventService
   ],
   bootstrap: [AppComponent]
 })
