@@ -1,0 +1,32 @@
+.slider-area {
+  background: url("../../assets/img/trail.jpg");
+  background-size: cover;
+  background-position: center;
+
+}
+.slider-content h2 {
+  color: #d30000;
+  font-size: 4em;
+  float: right;
+}
+p {
+  color: #000;
+  font-size: 1.5em;
+  text-align: right;
+  float: right;
+  display: block;
+}
+.toggle-btn search-btn{
+  background-color: #DAA520;
+  background-color: white;
+}
+.search-form {
+  background-color: transparent;
+  border:transparent;
+  display: block;
+  float: none;
+  margin: auto;
+  width:100%;
+}
+
+

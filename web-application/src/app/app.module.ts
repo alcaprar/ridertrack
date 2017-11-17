@@ -2,8 +2,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpModule } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './home-page/home-page.component';
@@ -18,21 +20,17 @@ import { EventsListPageComponent } from './event-pages/events-list-page/events-l
 import { FooterComponent } from './shared/layout/footer/footer.component';
 import { ContactsPageComponent } from './contacts-page/contacts-page.component';
 import { PageHeaderComponent } from './shared/layout/page-header/page-header.component';
-import {EventDetailPageComponent} from './event-pages/event-detail-page/event-detail-page.component';
-import { MyEventsComponent } from './event-pages/my-events/my-events.component';
-
 import {UserService} from './shared/services/user.service';
-import {AuthenticationService} from './authentication/authentication.service';
-
-import {GuestGuard} from './shared/guards/guest.guard';
 import {AuthGuard} from './shared/guards/auth.guard';
+import {AuthenticationService} from "./authentication/authentication.service";
+import {EventDetailPageComponent} from './event-pages/event-detail-page/event-detail-page.component';
+import { MyDatePickerModule } from 'mydatepicker';
+
 
 
 import { FacebookModule } from 'ngx-facebook';
-import {AuthService} from 'angular2-google-login';
-import {EventService} from './shared/services/event.service';
-import { ProfilePageComponent } from './user-pages/profile-page/profile-page.component';
-
+import { MyEventsComponent } from './event-pages/my-events/my-events.component';
+import {GuestGuard} from "./shared/guards/guest.guard";
 
 
 @NgModule({
@@ -51,14 +49,14 @@ import { ProfilePageComponent } from './user-pages/profile-page/profile-page.com
     ContactsPageComponent,
     PageHeaderComponent,
     EventDetailPageComponent,
-    MyEventsComponent,
-    ProfilePageComponent,
+    MyEventsComponent
   ],
   imports: [
     BrowserModule,
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
+    MyDatePickerModule,
     FacebookModule.forRoot(),
     RouterModule.forRoot([
       {
@@ -71,14 +69,7 @@ import { ProfilePageComponent } from './user-pages/profile-page/profile-page.com
         component: EventsListPageComponent
       },
       {
-        /*when you call this routing inside the event list page you
-        have to add something like this:
-        <a *ngFor="let event of eventList"
-              [routerLink]="['/event-details', event.id]">
-              {{ event.name }}
-          </a>
-         */
-        path: 'event-details/:id',
+        path: 'event',
         component: EventDetailPageComponent
       },
       {
@@ -89,11 +80,6 @@ import { ProfilePageComponent } from './user-pages/profile-page/profile-page.com
         path: 'login',
         component: LoginPageComponent,
         canActivate: [GuestGuard]
-      } ,
-      {
-        path: 'profile-page',
-        component: ProfilePageComponent,
-        canActivate: [AuthGuard]
       } ,
       {
         path: 'register',
@@ -115,13 +101,10 @@ import { ProfilePageComponent } from './user-pages/profile-page/profile-page.com
   ],
   providers: [
     UserService,
-    EventService,
     AuthGuard,
     GuestGuard,
-    AuthenticationService,
-    AuthService
-   ],
+    AuthenticationService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
-

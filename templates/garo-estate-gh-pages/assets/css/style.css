@@ -325,7 +325,7 @@ input[type="search"]::-webkit-search-decoration {
 }
 
 .form-inline .form-control, .form-inline .form-control {
-    background: rgba(252, 252, 252, 0.35);
+    background: rgba(252, 252, 252, 1);
     border-radius: 1px;
     color: #ADADAD;
     height: 40px;
