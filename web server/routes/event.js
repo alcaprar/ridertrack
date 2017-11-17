@@ -52,7 +52,7 @@ router.get('/:eventId', function (req, res) {
 });
 
 /** 
- * It creates the event passed in the body.
+ * It creates the event passed in the body after checking the user is logged in.
  * It returns the detail of the event just created.
  */
 router.post('/', authMiddleware.hasValidToken, function (req, res) {
