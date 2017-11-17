@@ -27,7 +27,6 @@ import {EventDetailPageComponent} from './event-pages/event-detail-page/event-de
 import { MyDatePickerModule } from 'mydatepicker';
 
 
-
 import { FacebookModule } from 'ngx-facebook';
 import { MyEventsComponent } from './event-pages/my-events/my-events.component';
 import {GuestGuard} from "./shared/guards/guest.guard";
