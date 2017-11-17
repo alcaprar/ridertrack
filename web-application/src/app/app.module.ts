@@ -24,7 +24,7 @@ import {UserService} from './shared/services/user.service';
 import {AuthGuard} from './shared/guards/auth.guard';
 import {AuthenticationService} from "./authentication/authentication.service";
 import {EventDetailPageComponent} from './event-pages/event-detail-page/event-detail-page.component';
-import { MyDatePickerModule } from 'mydatepicker';
+import { ProfilePageComponent} from "./user-pages/profile-page/profile-page.component";
 
 
 import { FacebookModule } from 'ngx-facebook';
@@ -49,14 +49,14 @@ import {EventService} from "./shared/services/event.service";
     ContactsPageComponent,
     PageHeaderComponent,
     EventDetailPageComponent,
-    MyEventsComponent
+    MyEventsComponent,
+    ProfilePageComponent
   ],
   imports: [
     BrowserModule,
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
-    MyDatePickerModule,
     FacebookModule.forRoot(),
     RouterModule.forRoot([
       {
@@ -75,6 +75,11 @@ import {EventService} from "./shared/services/event.service";
       {
         path: 'contacts',
         component: ContactsPageComponent
+      },
+      {
+        path: 'my-profile',
+        component: ProfilePageComponent,
+        //canActivate: [AuthGuard]
       },
       {
         path: 'login',
