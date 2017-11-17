@@ -15,18 +15,27 @@ p {
   text-align: right;
   float: right;
   display: block;
+  width: 80%;
 }
 .toggle-btn search-btn{
   background-color: #DAA520;
   background-color: white;
 }
 .search-form {
-  background-color: transparent;
+  background-color: rgba(255, 255, 255, 0.5);
   border:transparent;
   display: block;
-  float: none;
+  width:50%;
   margin: auto;
-  width:100%;
+  border-radius: 0.5em;
 }
-
+img {
+  max-width:100%;
+  height: 10em;
+}
+.Welcome-area{
+  background: url("../../assets/img/trail-presentation.jpg");
+  background-position: center;
+  background-size: cover;
+}
 
