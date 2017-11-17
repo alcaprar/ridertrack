@@ -21,7 +21,9 @@ describe('Event model test', function () {
         });
     });
 
-    it('should be invalid if name is empty', function(done) {
+
+
+    it('should create an event', function(done) {
         var event = new Event();
 
         event.validate(function(err) {

@@ -84,6 +84,71 @@ describe('Event API tests', function () {
     });
 
 
+    //Testing the endpoint to the events
+    describe('POST /events', function () {
+
+        before(function(done) {
+            var userPost ={
+                "id":"",
+                "email":"testUser@gmail.com",
+                "name":"Mariano",
+                "surname":"Etchart",
+                "password":"password",
+                "role":"user",
+                "jwtToken":""
+            };
+            User.create(userPost, function (err, returnedUser) {
+                userPost.id = returnedUser._id;
+
+                //login and get userToken
+                request.post('/api/auth/login').send(userPost)
+                    .end(function (req, res) {
+                        userPost.jwtToken = "JWT " + res.body.jwtToken;
+                        console.log("Token that user has iiiiiis" + userPost.jwtToken);
+                        done();
+                    });
+            });
+
+        });
+
+
+
+        it('it should create an event', function(done) {
+                let eventPost =  new Event({
+                    name: "London Marathon",
+                    organizerId: "Organizer1",
+                    type:"Marathon",
+                    description: "Marathon in London",
+                    country: "United Kingdom",
+                    city: "London",
+                    startingTime: "2011-05-26T07:56:00.123Z",
+                    maxDuration: 15,
+                    enrollmentOpeningAt: "2011-05-26T07:56:00.123Z",
+                    enrollmentClosingAt:"2011-05-28T07:56:00.123Z",
+                    participantsList: [],
+                    logo: "logo",
+                    routes: [],
+                    created_at: "2011-05-28T07:56:00.123Z",
+                    updated_at: "2011-05-28T07:56:00.123Z"
+                });
+                eventPost.save(function(err, eventPost){
+                    request.post('/api/events')
+                    .send(eventPost)
+                    .end(function(err, res)  {
+                        //expect(res.status).to.be.eql(200);
+                    expect(res.body).to.be.a('object');
+                    expect(res.body).to.have.property('name');
+                    expect(res.body).to.have.property('organizerId');
+                    expect(res.body).to.have.property('type');
+                    expect(res.body).to.have.property('description');
+                    done();
+                    });
+            });
+        });
+    });
+
+
+
     //TODO update,delete operations can be tested here
     //Testing the endpoint to the events
     describe('delete and update of events', function () {
