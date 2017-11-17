@@ -1,7 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+
 import { EventDetailPageComponent } from './event-detail-page.component';
 
-
+import { MockBackend } from '@angular/http/testing';
 
 describe('EventDetailPageComponent', () => {
   let component: EventDetailPageComponent;
@@ -9,9 +10,9 @@ describe('EventDetailPageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [EventDetailPageComponent]
+      declarations: [ EventDetailPageComponent ]
     })
-      .compileComponents();
+    .compileComponents();
   }));
 
   beforeEach(() => {
@@ -22,6 +23,5 @@ describe('EventDetailPageComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  })
-
+  });
 });
