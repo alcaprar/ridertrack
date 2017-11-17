@@ -22,7 +22,6 @@ describe('Event model test', function () {
     });
 
 
-
     it('should create an event', function(done) {
         var event = new Event();
 

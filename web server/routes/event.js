@@ -7,7 +7,7 @@ var authMiddleware = require('../middlewares/auth');
 
 /**
  * It returns the list of all the events.
- * It accepts query params for filtering the events: name, type....
+ * It accepts query params for filtering the events: name, type, country, city.
  */
 router.get('/', function(req, res) {
     var conditions = {};
@@ -19,6 +19,12 @@ router.get('/', function(req, res) {
     }
     if(req.query.type){
         conditions.type = req.query.type
+    }
+    if(req.query.country){
+        conditions.country = req.query.country
+    }
+    if(req.query.city){
+        conditions.city = req.query.city;
     }
     
     Event.find(conditions, function(err, event){

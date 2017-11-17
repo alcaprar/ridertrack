@@ -1,9 +1,5 @@
 var config = {
-    port: 5000,
     rootFolder: __dirname + '/../',
-    mongodb: {
-        uri: 'mongodb://localhost/my_database'
-    },
     passport: {
         facebookAuth: {
             clientID: '278876872621248',
@@ -28,5 +24,13 @@ var config = {
         }
     }
 };
+
+config.port = process.env.PORT || 5000;
+
+config.mongodb = {};
+config.mongodb.host = process.env.MONGODB_HOST || 'localhost';
+config.mongodb.port = process.env.MONGODB_HOST || 27017;
+config.mongodb.database_name = 'riderrack';
+config.mongodb.uri =  'mongodb://' + config.mongodb.host + '/' + config.mongodb.database_name; 
 
 module.exports = config;
