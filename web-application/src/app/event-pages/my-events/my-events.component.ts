@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {UserService} from "../../shared/services/user.service";
-import {User} from "../../shared/models/user";
+import {UserService} from '../../shared/services/user.service';
+import {ActivatedRoute} from '@angular/router';
+import {Location} from '@angular/common';
+import {EventService} from '../../shared/services/event.service';
+import {User} from '../../shared/models/user';
+import {Event} from '../../shared/models/event';
 
 @Component({
   selector: 'app-my-events',
@@ -9,10 +13,12 @@ import {User} from "../../shared/models/user";
 })
 export class MyEventsComponent implements OnInit {
 
-  constructor(private userService: UserService) { }
+  constructor(/*private userService: UserService, private route: ActivatedRoute,
+  private eventService: EventService, private location: Location*/) { }
 
   ngOnInit() {
-
+    /*this.getEvent();
+    this.userService.getUser().subscribe((user) => this.currentUser = user);*/
   }
 
 }
