@@ -29,13 +29,19 @@ p {
   margin: auto;
   border-radius: 0.5em;
 }
-img {
+.event-image {
   max-width:100%;
-  height: 10em;
+  height: 15em;
+  background-position: center;
+  background-size: cover;
 }
 .Welcome-area{
   background: url("../../assets/img/trail-presentation.jpg");
   background-position: center;
   background-size: cover;
+}
+.item-thumb{
+  width:100%;
+  height:100%;
 }
 

@@ -35,149 +35,6 @@
 
             <button class="btn search-btn" type="submit"><i class="fa fa-search"></i></button>
 
-            <div style="display: none;" class="search-toggle">
-
-              <div class="search-row">
-
-                <div class="form-group mar-r-20">
-                  <label for="price-range">Price range ($):</label>
-                  <input type="text" class="span2" value="" data-slider-min="0"
-                         data-slider-max="600" data-slider-step="5"
-                         data-slider-value="[0,450]" id="price-range" ><br />
-                  <b class="pull-left color">2000$</b>
-                  <b class="pull-right color">100000$</b>
-                </div>
-                <!-- End of  -->
-
-                <div class="form-group mar-l-20">
-                  <label for="property-geo">Property geo (m2) :</label>
-                  <input type="text" class="span2" value="" data-slider-min="0"
-                         data-slider-max="600" data-slider-step="5"
-                         data-slider-value="[50,450]" id="property-geo" ><br />
-                  <b class="pull-left color">40m</b>
-                  <b class="pull-right color">12000m</b>
-                </div>
-                <!-- End of  -->
-              </div>
-
-              <div class="search-row">
-
-                <div class="form-group mar-r-20">
-                  <label for="price-range">Min baths :</label>
-                  <input type="text" class="span2" value="" data-slider-min="0"
-                         data-slider-max="600" data-slider-step="5"
-                         data-slider-value="[250,450]" id="min-baths" ><br />
-                  <b class="pull-left color">1</b>
-                  <b class="pull-right color">120</b>
-                </div>
-                <!-- End of  -->
-
-                <div class="form-group mar-l-20">
-                  <label for="property-geo">Min bed :</label>
-                  <input type="text" class="span2" value="" data-slider-min="0"
-                         data-slider-max="600" data-slider-step="5"
-                         data-slider-value="[250,450]" id="min-bed" ><br />
-                  <b class="pull-left color">1</b>
-                  <b class="pull-right color">120</b>
-                </div>
-                <!-- End of  -->
-
-              </div>
-              <br>
-              <div class="search-row">
-
-                <div class="form-group">
-                  <div class="checkbox">
-                    <label>
-                      <input type="checkbox"> Fire Place(3100)
-                    </label>
-                  </div>
-                </div>
-                <!-- End of  -->
-
-                <div class="form-group">
-                  <div class="checkbox">
-                    <label>
-                      <input type="checkbox"> Dual Sinks(500)
-                    </label>
-                  </div>
-                </div>
-                <!-- End of  -->
-
-                <div class="form-group">
-                  <div class="checkbox">
-                    <label>
-                      <input type="checkbox"> Hurricane Shutters(99)
-                    </label>
-                  </div>
-                </div>
-                <!-- End of  -->
-              </div>
-
-              <div class="search-row">
-
-                <div class="form-group">
-                  <div class="checkbox">
-                    <label>
-                      <input type="checkbox"> Swimming Pool(1190)
-                    </label>
-                  </div>
-                </div>
-                <!-- End of  -->
-
-                <div class="form-group">
-                  <div class="checkbox">
-                    <label>
-                      <input type="checkbox"> 2 Stories(4600)
-                    </label>
-                  </div>
-                </div>
-                <!-- End of  -->
-
-                <div class="form-group">
-                  <div class="checkbox">
-                    <label>
-                      <input type="checkbox"> Emergency Exit(200)
-                    </label>
-                  </div>
-                </div>
-                <!-- End of  -->
-              </div>
-
-              <div class="search-row">
-
-                <div class="form-group">
-                  <div class="checkbox">
-                    <label>
-                      <input type="checkbox"> Laundry Room(10073)
-                    </label>
-                  </div>
-                </div>
-                <!-- End of  -->
-
-                <div class="form-group">
-                  <div class="checkbox">
-                    <label>
-                      <input type="checkbox"> Jog Path(1503)
-                    </label>
-                  </div>
-                </div>
-                <!-- End of  -->
-
-                <div class="form-group">
-                  <div class="checkbox">
-                    <label>
-                      <input type="checkbox"> 26' Ceilings(1200)
-                    </label>
-                  </div>
-                </div>
-                <!-- End of  -->
-                <br>
-                <hr>
-              </div>
-              <button class="btn search-btn prop-btm-sheaerch" type="submit"><i class="fa fa-search"></i></button>
-            </div>
-
           </form>
         </div>
       </div>
@@ -200,10 +57,12 @@
         <div class="col-sm-6 col-md-3 p0">
           <div class="box-two proerty-item">
             <div class="item-thumb">
-              <a href="../event-pages/event-detail-page/event-detail-page.component.html"><img class= "event-image" src="../../assets/img/ny-marathon.jpg"></a>
+              <a routerLink="event/:id">
+                <div class="event-image" style="background-image: url('../../assets/img/ny-marathon.jpg')"></div>
+              </a>
             </div>
             <div class="item-entry overflow">
-              <h5><a href="property-1.html"> New York Marathon </a></h5>
+              <h5><a routerLink="event/:id"> New York Marathon </a></h5>
               <div class="dot-hr"></div>
               <span class="pull-left"><b>Length :</b> 42.195 km </span>
               <span class="location pull-right">New York</span>
@@ -214,10 +73,12 @@
         <div class="col-sm-6 col-md-3 p0">
           <div class="box-two proerty-item">
             <div class="item-thumb">
-              <a href="property-2.html" ><img src="../../assets/img/stan-siejka-classic.jpg"></a>
+              <a routerLink="event/:id" >
+                <div class="event-image" style="background-image: url('../../assets/img/stan-siejka-classic.jpg')"></div>
+              </a>
             </div>
             <div class="item-entry overflow">
-              <h5><a href="property-2.html" > Stan Siejka Classic </a></h5>
+              <h5><a routerLink="event/:id" > Stan Siejka Classic </a></h5>
               <div class="dot-hr"></div>
               <span class="pull-left"><b>Length : </b> 150 km </span>
               <span class="location pull-right">Launceston</span>
@@ -228,11 +89,12 @@
         <div class="col-sm-6 col-md-3 p0">
           <div class="box-two proerty-item">
             <div class="item-thumb">
-              <a href="property-3.html" ><img src="../../assets/img/tour-de-france.jpg"></a>
-
+              <a routerLink="event/:id" >
+                <div class="event-image" style="background-image: url('../../assets/img/tour-de-france.jpg')"></div>
+              </a>
             </div>
             <div class="item-entry overflow">
-              <h5><a href="property-3.html" >Tour de France </a></h5>
+              <h5><a routerLink="event/:id" >Tour de France </a></h5>
               <div class="dot-hr"></div>
               <span class="pull-left"><b>Length :</b> 3,500 km </span>
               <span class="location pull-right"> France </span>
@@ -243,11 +105,12 @@
         <div class="col-sm-6 col-md-3 p0">
           <div class="box-two proerty-item">
             <div class="item-thumb">
-              <a href="property-1.html" ><img src="../../assets/img/boa-vista.jpg"></a>
-
+              <a routerLink="event/:id" >
+                <div class="event-image" style="background-image: url('../../assets/img/boa-vista.jpg')"></div>
+              </a>
             </div>
             <div class="item-entry overflow">
-              <h5><a href="property-1.html" >Boa Vista Ultra Trail </a></h5>
+              <h5><a routerLink="event/:id">Boa Vista Ultra Trail </a></h5>
               <div class="dot-hr"></div>
               <span class="pull-left"><b>Length :</b> 150 km </span>
               <span class="location pull-right"> Boa Vista</span>
@@ -259,10 +122,12 @@
         <div class="col-sm-6 col-md-3 p0">
           <div class="box-two proerty-item">
             <div class="item-thumb">
-              <a href="property-3.html" ><img src="../../assets/img/vialattea-trail.jpg"></a>
+              <a routerLink="event/:id" >
+                <div class="event-image" style="background-image: url('../../assets/img/vialattea-trail.jpg')"></div>
+              </a>
             </div>
             <div class="item-entry overflow">
-              <h5><a href="property-3.html" >Vialatteatrail </a></h5>
+              <h5><a routerLink="event/:id" >Vialatteatrail </a></h5>
               <div class="dot-hr"></div>
               <span class="pull-left"><b>Length :</b> 25 km </span>
               <span class="location pull-right">Saulze D'Oulx</span>
@@ -273,10 +138,12 @@
         <div class="col-sm-6 col-md-3 p0">
           <div class="box-two proerty-item">
             <div class="item-thumb">
-              <a href="property-2.html" ><img src="../../assets/img/sardinia-trail.jpg"></a>
+              <a routerLink="event/:id" >
+                <div class="event-image" style="background-image: url('../../assets/img/sardinia-trail.jpg')"></div>
+              </a>
             </div>
             <div class="item-entry overflow">
-              <h5><a href="property-2.html" >Sardinia Trail </a></h5>
+              <h5><a routerLink="event/:id" >Sardinia Trail </a></h5>
               <div class="dot-hr"></div>
               <span class="pull-left"><b>Length :</b> 100 km </span>
               <span class="location pull-right"> Ogliastra</span>
@@ -287,10 +154,12 @@
         <div class="col-sm-6 col-md-3 p0">
           <div class="box-two proerty-item">
             <div class="item-thumb">
-              <a href="property-1.html" ><img src="../../assets/img/london-duathlon.jpg"></a>
+              <a routerLink="event/:id" >
+                <div class="event-image" style="background-image: url('../../assets/img/london-duathlon.jpg')"></div>
+              </a>
             </div>
             <div class="item-entry overflow">
-              <h5><a href="property-1.html" >London </a></h5>
+              <h5><a routerLink="event/:id" >London </a></h5>
               <div class="dot-hr"></div>
               <span class="pull-left"><b>Length :</b> 110 km </span>
               <span class="proerty-price pull-right">London</span>

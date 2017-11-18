@@ -1,0 +1,21 @@
+.logo {
+  width: 5em;
+  height:auto;
+}
+#title-label {
+  display: block;
+  padding:15px 15px 10px 15px;
+}
+.proerty-th-list .property-icon{
+  background: white;
+}
+.item-thumb{
+  width:100%;
+  height:100%;
+}
+.event-image {
+  max-width:100%;
+  height: 15em;
+  background-position: center;
+  background-size: cover;
+}
