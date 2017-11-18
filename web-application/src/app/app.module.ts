@@ -68,8 +68,13 @@ import {EventService} from "./shared/services/event.service";
         path: 'events',
         component: EventsListPageComponent
       },
+      /**
+       *  when you want to redirect to the event detail page,
+       *  you have to call: routerLink= "/event/{{event.id}}" for each single event
+       *  so if you have a list of events: *ngFor="let event of events" routerLink="/event/{{event.id}}"
+       */
       {
-        path: 'event',
+        path: 'event/:id',
         component: EventDetailPageComponent
       },
       {
