@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {UserService} from '../../shared/services/user.service';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
+import {Location} from '@angular/common';
 import {EventService} from '../../shared/services/event.service';
 import {User} from '../../shared/models/user';
 import {Event} from '../../shared/models/event';
@@ -16,15 +17,26 @@ export class EventDetailPageComponent implements OnInit {
   currentUser: User;
   organizer: User;
 
-  constructor(private userService: UserService, private route: ActivatedRoute, private eventService: EventService) {
+  constructor(private userService: UserService, private route: ActivatedRoute,
+              private eventService: EventService, private location: Location) {
   }
 
   // When the component is created catch the current event object and the current user
   ngOnInit() {
-    this.eventService.getEvent(this.route.snapshot.params['id']).then((event) => this.currentEvent = event);
+    this.getEvent();
     this.userService.getUser().subscribe((user) => this.currentUser = user);
   }
 
+  /**
+   *  Get the event from the server calling the associated method in the EventService
+   *  and stores it in the 'currentEvent' variable.
+   *  id: it is taken from the url of the route /event/:id
+   */
+  getEvent() :void {
+    const id= +this.route.snapshot.paramMap.get('id');
+    this.eventService.getEvent(id).then((event) => this.currentEvent = event);
+    console.log('[EventDetailComponent][getEvent][success]', this.currentEvent);
+  }
 
 }
 
