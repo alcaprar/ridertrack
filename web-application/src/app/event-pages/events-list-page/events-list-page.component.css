@@ -10,12 +10,25 @@
   background: white;
 }
 .item-thumb{
-  width:100%;
-  height:100%;
+  max-width:100%;
+  height: 20em;
 }
 .event-image {
   max-width:100%;
-  height: 15em;
+  height: 100%;
   background-position: center;
   background-size: cover;
+}
+.line{
+  display: flow-root;
+  margin-bottom: 0.5em;
+}
+.proerty-th-list .col-md-3 .item-entry {
+  padding-left: 15px;
+}
+h5 {
+  padding:1em 0em 0.5em 0em;
+}
+.proerty-th-list .col-md-3 .item-entry {
+  height: 30em !important;
 }
