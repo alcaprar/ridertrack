@@ -13,7 +13,7 @@ var authMiddlewares = {
         var authHeader = req.get('Authorization');
         if(typeof authHeader === 'undefined'){
             return res.status(401).send({
-                errros: ['Unauthorized']
+                errors: ['Unauthorized']
             })
         }else{
             if(authHeader.split(' ')[0] === 'JWT'){

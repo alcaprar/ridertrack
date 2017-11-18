@@ -6,7 +6,6 @@ var chai = require('chai');
 var server = require('../../index');
 var uuid = require('uuid');
 var supertest = require('supertest');
-var path = require('path')
 
 global.server = server;
 global.uuid = uuid;
@@ -49,8 +48,6 @@ describe('Event API tests', function () {
         "jwtToken":""
     };
 
-    var userToken = "";
-
     var event = {
         "name":"TestEvent",
         "eventId":"",
@@ -87,62 +84,52 @@ describe('Event API tests', function () {
     //Testing the endpoint to the events
     describe('POST /events', function () {
 
-        before(function(done) {
-            var userPost ={
-                "id":"",
-                "email":"testUser@gmail.com",
-                "name":"Mariano",
-                "surname":"Etchart",
-                "password":"password",
-                "role":"user",
-                "jwtToken":""
-            };
-            User.create(userPost, function (err, returnedUser) {
-                userPost.id = returnedUser._id;
+        var userPost ={
+            "id":"",
+            "email":"testUser@gmail.com",
+            "name":"Mariano",
+            "surname":"Etchart",
+            "password":"password",
+            "role":"user",
+            "jwtToken":""
+        };
 
-                //login and get userToken
-                request.post('/api/auth/login').send(userPost)
+        before(function(done) {
+            request.post('/api/auth/register').send(userPost)
                     .end(function (req, res) {
+                        userPost.id = res.body.userId;
                         userPost.jwtToken = "JWT " + res.body.jwtToken;
-                        console.log("Token that user has iiiiiis" + userPost.jwtToken);
                         done();
                     });
             });
 
-        });
-
 
 
         it('it should create an event', function(done) {
-                let eventPost =  new Event({
+                let eventPost = {
                     name: "London Marathon",
-                    organizerId: "Organizer1",
+                    organizerId: userPost.id,
                     type:"Marathon",
                     description: "Marathon in London",
                     country: "United Kingdom",
                     city: "London",
-                    startingTime: "2011-05-26T07:56:00.123Z",
+                    startingTime: "2012-05-26T07:56:00.123Z",
                     maxDuration: 15,
                     enrollmentOpeningAt: "2011-05-26T07:56:00.123Z",
                     enrollmentClosingAt:"2011-05-28T07:56:00.123Z",
-                    participantsList: [],
+                    participantsList: [20],
                     logo: "logo",
-                    routes: [],
-                    created_at: "2011-05-28T07:56:00.123Z",
-                    updated_at: "2011-05-28T07:56:00.123Z"
-                });
-                eventPost.save(function(err, eventPost){
+                    routes: ["Route1"]
+                };
                     request.post('/api/events')
-                    .send(eventPost)
-                    .end(function(err, res)  {
-                        //expect(res.status).to.be.eql(200);
-                    expect(res.body).to.be.a('object');
-                    expect(res.body).to.have.property('name');
-                    expect(res.body).to.have.property('organizerId');
-                    expect(res.body).to.have.property('type');
-                    expect(res.body).to.have.property('description');
-                    done();
-                    });
+                        .set('Authorization',userPost.jwtToken)
+                        .send(eventPost)
+                        .end(function(req, res)  {
+                            expect(res.status).to.be.eql(200);
+                            expect(res.body).to.be.a('object');
+                            expect(res.body).to.have.property('event');
+                            expect(res.body.event.type).to.be.eql(eventPost.type);
+                            done();
             });
         });
     });
@@ -154,38 +141,34 @@ describe('Event API tests', function () {
     describe('delete and update of events', function () {
 
         //create an user function
-        var userCreationFunc = function(user,next){
-            User.create(user, function (err, returnedUser) {
-                user.id = returnedUser._id;
+        var userCreationFunc = function (user, next) {
+            request.post('/api/auth/register')
+                .send(user)
+                .end(function (req, res) {
 
-                //login and get userToken
-                request.post('/api/auth/login').send(user)
-                    .end(function (req, res) {
-                        user.jwtToken = "JWT " + res.body.jwtToken;
-                       // console.log("Token that user has iiiiiis" + user.jwtToken);
-                        next();
-                    });
-            });
-
-        }
+                    user.jwtToken = "JWT " + res.body.jwtToken;
+                    user.id = res.body.userId;
+                    next();
+                });
+        };
         //create an user before tests start
-        before(function(done) {
+        before(function (done) {
             //I don't now how to use promises so for now it will be like this
-            userCreationFunc(userCreator,function(){
-                userCreationFunc(userNotCreator,done);
+            return userCreationFunc(userCreator, function () {
+                event.organizerId = userCreator.id;
+                userCreationFunc(userNotCreator, done);
             });
         });
 
-        describe('event creation',function() {
+        describe('event creation', function () {
             //create new event first
             before(function (done) {
-                User.findByEmail(userCreator.email, function (err, returnedUser) {
-                    event.organizerId = returnedUser._id;
-                    Event.create(event, function (err, newEvent) {
-                        //console.log("New event: " + newEvent);
+                request.post('/api/events')
+                    .set('Authorization', userCreator.jwtToken)
+                    .send(event)
+                    .end(function (req, res) {
                         done();
-                    });
-                });
+                    })
             });
 
             it('should update an event', function (done) {
@@ -193,8 +176,7 @@ describe('Event API tests', function () {
                 var changedData = {
                     "maxDuration": 1500
                 };
-                Event.findByName(event.name,function(err,resEvent) {
-                  //  console.log("Token user got is " + userCreator.jwtToken + "and eventId" + resEvent.id);
+                Event.findByName(event.name, function (err, resEvent) {
 
                     request.put('/api/events/' + resEvent.id)
                         .set('Authorization', userCreator.jwtToken)
@@ -202,19 +184,19 @@ describe('Event API tests', function () {
                         .end(function (req, res) {
                             expect(res.status).to.be.eql(200);
                             Event.findByEventId(resEvent.id, function (err,eventResponse) {
-                                expect(eventResponse.maxDuration).to.be.eql(1500);
+                                expect(eventResponse.maxDuration).to.be.eql(changedData.maxDuration);
                                 done();
                             });
                         });
                 });
             });
 
-            it ('should not update an event',function(done){
-               var changedData = {
-                   "maxDuration":250
-               } ;
+            it('should not update an event',function(done){
+                var changedData = {
+                    "maxDuration":250
+                };
 
-                Event.findByName(event.name,function(err,resEvent) {
+                Event.findByName(event.name,function (err, resEvent) {
                     //  console.log("Token user got is " + userCreator.jwtToken + "and eventId" + resEvent.id);
 
                     request.put('/api/events/' + resEvent.id)
@@ -222,8 +204,8 @@ describe('Event API tests', function () {
                         .send(changedData)
                         .end(function (req, res) {
                             expect(res.status).to.be.eql(401);
-                            Event.findByEventId(resEvent.id, function (err,eventResponse) {
-                                expect(eventResponse.maxDuration).to.be.eql(1500);
+                            Event.findByEventId(resEvent.id, function (err, eventResponse) {
+                                expect(eventResponse.maxDuration).not.to.be.eql(changedData.maxDuration);
                                 done();
                             });
                         });
@@ -232,15 +214,13 @@ describe('Event API tests', function () {
             });
 
 
-            it ('should not delete an event',function(done){
-                Event.findByName(event.name,function(err,resEvent) {
-                      //console.log("Token user got is " + userNotCreator.jwtToken + "and eventId" + resEvent.id);
-
+            it('should not delete an event', function (done) {
+                Event.findByName(event.name, function (err, resEvent) {
                     request.delete('/api/events/' + resEvent.id)
                         .set('Authorization', userNotCreator.jwtToken)
                         .end(function (req, res) {
                             expect(res.status).to.be.eql(401);
-                            Event.findByEventId(resEvent.id, function (err,eventResponse) {
+                            Event.findByEventId(resEvent.id, function (err, eventResponse) {
                                 expect(eventResponse).to.not.equal(null);
                                 done();
                             });
@@ -249,31 +229,23 @@ describe('Event API tests', function () {
             });
 
             //for now this should fail
-            it ('should delete an event',function(done){
-                Event.findByName(event.name,function(err,resEvent) {
+            it('should delete an event', function (done) {
+                Event.findByName(event.name, function (err, resEvent) {
                     //  console.log("Token user got is " + userCreator.jwtToken + "and eventId" + resEvent.id);
 
                     request.delete('/api/events/' + resEvent.id)
                         .set('Authorization', userCreator.jwtToken)
                         .end(function (req, res) {
                             expect(res.status).to.be.eql(200);
-                            Event.findByEventId(resEvent.id, function (err,eventResponse) {
-                                console.log("Ispiši eventResponse");
+                            Event.findByEventId(resEvent.id, function (err, eventResponse) {
                                 expect(eventResponse).to.equal(null);
                                 done();
                             });
                         });
-
                 });
             });
-
         });
-
-        after(function(done){
-            done();
-        });
-
-        });
+    });
 
     // it closes the server at the end
     after(function (done) {

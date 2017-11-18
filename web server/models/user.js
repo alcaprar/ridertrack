@@ -151,6 +151,21 @@ userSchema.statics.findByUserId = function (userId, callback) {
 };
 
 /**
+ * It search for an user given the mail
+ * @param email
+ * @param callback
+ */
+userSchema.statics.findByEmail = function (email, callback) {
+    User.findOne({email: email}, function (err, user) {
+        if(err){
+            return callback(err)
+        }else{
+            return callback(null, user)
+        }
+    })
+};
+
+/**
  * It search for user with the given googleId.
  * @param googleId
  * @param callback

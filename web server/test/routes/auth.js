@@ -8,7 +8,6 @@ var uuid = require('uuid');
 var supertest = require('supertest');
 
 var Browser = require('zombie');
-var path = require('path');
 
 global.server = server;
 global.uuid = uuid;
@@ -80,11 +79,11 @@ describe('Auth API tests', function () {
                     expect(res.status).to.be.eql(200);
                     expect(res.body).to.be.an('object');
                     expect(res.body).to.not.have.property('errors');
-                    expect(res.body).to.have.property('user');
+                    expect(res.body).to.have.property('userId');
                     expect(res.body).to.have.property('jwtToken');
                     expect(res.body.jwtToken).to.not.eql('');
 
-                    organizerId = res.body.user._id;
+                    organizerId = res.body.userId;
 
                     done()
                 })
@@ -121,7 +120,7 @@ describe('Auth API tests', function () {
                     expect(res.status).to.be.eql(200);
                     expect(res.body).to.be.an('object');
                     expect(res.body).to.not.have.property('errors');
-                    expect(res.body).to.have.property('user');
+                    expect(res.body).to.have.property('userId');
                     expect(res.body).to.have.property('jwtToken');
                     expect(res.body).to.have.property('expiresIn');
                     expect(res.body.jwtToken).to.not.eql('');
