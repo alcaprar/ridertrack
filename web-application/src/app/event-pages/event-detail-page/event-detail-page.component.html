@@ -10,7 +10,7 @@
         <h1 class="page-title">{{currentEvent.name}}</h1>
       </div>
       <div class="button right">
-        <button class="navbar-btn nav-button wow fadeInRight" routerLink="login">Enroll</button>
+        <button class="navbar-btn nav-button wow fadeInRight" routerLink="/login">Enroll</button>
       </div>
     </div>
   </div>
@@ -36,16 +36,16 @@
                     <i class="fa fa-print"></i>
                   </a>
                 </div>
-                    <img src="../../../assets/img/example_map.jpg" />
+               <img src="{{this.currentEvent.logo}}">
               </div>
             </div>
           </div><br>
 
           <div class="single-property-wrapper" >
             <div class="section">
-              <h4 class="s-property-title">{{currentEvent.description}}</h4>
+              <h4 class="s-property-title">Description</h4>
               <div class="s-property-content">
-                <p>Nulla quis dapibus nisl. Suspendisse ultricies Nulla quis dapibus nisl. Suspendisse ultricies commodo arcu nec pretium. Nullam sed arcu ultricies commodo arcu nec pretium. Nullam sed arcu ultricies Nulla quis dapibus nisl. Suspendisse ultricies commodo arcu nec pretium. Nullam sed arcu ultricies Nulla quis dapibus nisl. Suspendisse ultricies commodo arcu nec pretium. Nullam sed arcu ultricies                                </p>
+                <p> {{currentEvent.description}} </p>
               </div>
             </div>
             <!-- End description area  -->
@@ -59,20 +59,34 @@
                   <span class="col-xs-6 col-sm-4 col-md-4 add-d-title">Duration</span>
                   <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry">{{currentEvent.maxDuration}}</span>
                 </li>
+                <li>
+                  <span class="col-xs-6 col-sm-4 col-md-4 add-d-title">Max Participants</span>
+                  <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry"> Unlimited </span>
+                </li>
 
                 <li>
                   <span class="col-xs-6 col-sm-4 col-md-4 add-d-title">Registration Period</span>
-                  <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry">{{currentEvent.enrollmentOpeningAt.getDate()}} -
-                    {{currentEvent.enrollmentOpeningAt.getDate()}}</span>
+                  <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry">{{enrollementOpenDate}} -
+                    {{enrollementCloseDate}}</span>
                 </li>
-
                 <li>
                   <span class="col-xs-6 col-sm-4 col-md-4 add-d-title">City</span>
                   <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry">{{currentEvent.city}}</span>
                 </li>
+                <li>
+                  <span class="col-xs-6 col-sm-4 col-md-4 add-d-title">Country</span>
+                  <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry">{{currentEvent.country}}</span>
+                </li>
               </ul>
             </div>
             <!-- End additional-details area  -->
+
+            <!-- Map area-->
+            <div class="section additional-details">
+              <h4 class="s-property-title">Route</h4>
+
+            </div>
+            <!--End Map area-->
 
         <!--Share area-->
             <div class="section property-share">
@@ -103,10 +117,17 @@
                   <ul>
                     <li>
                        <span class="property-info-entry">
-                         <span class="property-info-value">Registration Period</span>
-                         <span class="property-info-label">Open</span>
+                         <span class="property-info-value">Date</span>
+                         <span class="property-info-label">{{startingDate}}</span>
                        </span>
                     </li>
+                    <li>
+                       <span class="property-info-entry">
+                         <span class="property-info-value">Registration Status</span>
+                         <span class="property-info-label">{{enrollement}}</span>
+                       </span>
+                    </li>
+
                     <!-- TO ADD *nfIf TO MANAGE THE TRACKING
                     <li >
                        <span class="property-info-entry">
@@ -128,12 +149,14 @@
                 <div class="clear">
                   <div class="col-xs-4 col-sm-4 dealer-face">
                     <a href="">
-                      <img src='{{organizer.profilePicture}}' class="img-circle">
+                      <img
+                        src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYGUCrTOnryrIanCbitS8_XW2rv8TEoNRT7xDtzf2cLFSIWCbb3Q'
+                        class="img-circle">
                     </a>
                   </div>
                   <div class="col-xs-8 col-sm-8 ">
                     <h3 class="dealer-name">
-                      <a href="">{{organizer.name}} {{organizer.surname}}</a>
+                      <a href="">{{organizer.name}} {{organizer.surname}}</a><br>
                       <span>Event Organizer</span>
                     </h3>
                   </div>
