@@ -38,6 +38,13 @@ export class EventDetailPageComponent implements OnInit {
     console.log('[EventDetailComponent][getEvent][success]', this.currentEvent);
   }
 
+  /**
+   *  function that allow to go back at the previous browser page
+   */
+  goBack(){
+    this.location.back();
+  }
+
 }
 
 
