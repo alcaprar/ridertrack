@@ -639,6 +639,20 @@ describe('Event API tests', function () {
                         done();
                     })
             });
+        });
+
+        it('it should return only 5 elements using page and itemsPerPage', function (done) {
+            createRandomEvents(20, function () {
+                request.get('/api/events?page=2&itemsPerPage=5')
+                    .end(function (err, res) {
+                        expect(res.status).to.be.eql(200);
+                        expect(res.body).to.be.an('object');
+                        expect(res.body.events).to.be.an('array');
+                        expect(res.body.events.length).to.be.eql(5);
+                        expect(res.body.totalPages).to.be.eql(4);
+                        done();
+                    })
+            });
         })
     });
 
@@ -1074,4 +1088,44 @@ describe('Event API tests', function () {
         done();
     })
 });
+
+function createRandomEvents(numberToCreate, callback) {
+    var basicEvent = {
+        "name":"TestEvent",
+        "organizerId": '',
+        "type":"Running",
+        "description":"Blablabla",
+        "country":"MyCountry",
+        "city":"MyCity",
+        "startingTime": new Date(),
+        "maxDuration":150,
+        "length": 50,
+        "price": 120,
+        "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
+        "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+        "participantsList":[255],
+        "routes":["Route1"]
+    };
+
+    var created = 0;
+    for(let i = 0; i < numberToCreate; i++){
+        (function () {
+            var event = Object.assign({}, basicEvent);
+            event.name = event.name + i;
+            event.organizerId = mongoose.Types.ObjectId();
+            event.city = event.city+i;
+            event.price = event.price + i;
+            event.length = event.length + i;
+            event.startingTime = new Date(event.startingTime.getTime() + i * 86400000);
+
+            event.enrollmentClosingAt = new Date(event.startingTime.getTime() - 3 * 86400000);
+            event.enrollmentOpeningAt = new Date(event.enrollmentClosingAt.getTime() - 3 * 86400000);
+
+            var ev = new Event(event);
+            ev.save(function () {
+                if (++created == numberToCreate) callback();
+            })
+        })()
+    }
+}
 

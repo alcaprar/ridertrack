@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
+var async = require('async');
+
 var Event = require('../models/event');
 
 var authMiddleware = require('../middlewares/auth');
@@ -12,16 +14,18 @@ var authMiddleware = require('../middlewares/auth');
  */
 router.get('/', function(req, res) {
     var conditions = {};
+    var options = {};
 
-    var pagination = {
-        page: (req.query.page) ? req.query.page : 1,
-        itemsPerPage: (req.query.page) ? req.query.itemsPerPage : 10
-    };
+    // pagination always on!!
+    var page = parseInt(req.query.page) || 1;
+    var itemsPerPage = parseInt(req.query.itemsPerPage) || 10;
+    options.skip = (parseInt(page) -1) * parseInt(itemsPerPage);
+    options.limit = itemsPerPage;
 
 
     // check sorting
-    var sort = {};
     if(req.query.sort){
+        var sort = {};
         // keys are divided by comma
         let keys = req.query.sort.split(',');
         for(let i = 0; i < keys.length; i++){
@@ -34,8 +38,9 @@ router.get('/', function(req, res) {
                 sort[key[0]] = (typeof key[1] !== 'undefined' && ['asc', 'desc'].indexOf(key[1]) > -1) ? key[1] : 'asc';
             }
         }
+        options.sort = sort
     }
-    
+
     // check for query parameters
     // if they are present, add them to the conditions
     if(req.query.name){
@@ -50,15 +55,39 @@ router.get('/', function(req, res) {
     if(req.query.city){
         conditions.city = req.query.city;
     }
-    
-    Event.find(conditions, null, {sort: sort}, function(err, events){
-        if (err) {
+
+    // using async lib to find the total number and find the events in parallel
+    var countEvents = function (callback) {
+        Event.find({}, function (err, events) {
+            if(err){
+                callback(err)
+            }else{
+                callback(null, events.length)
+            }
+        })
+    };
+
+    var findEvents = function (callback) {
+        Event.find(conditions, null, options, function(err, events){
+            if(err){
+                callback(err)
+            }else{
+                callback(null, events)
+            }
+        })
+    };
+
+    async.parallel([countEvents, findEvents], function (err, results) {
+        if(err) {
             res.status(400).send({
                 errors: err
             })
         } else {
             res.status(200).send({
-                events: events
+                events: results[1],
+                page: page,
+                itemsPerPage: itemsPerPage,
+                totalPages: results[0]/itemsPerPage
             })
         }
     })
