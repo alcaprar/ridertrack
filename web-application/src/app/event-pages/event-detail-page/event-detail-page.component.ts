@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {UserService} from '../../shared/services/user.service';
-import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
 import {EventService} from '../../shared/services/event.service';
 import {User} from '../../shared/models/user';
 import {Event} from '../../shared/models/event';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-event-detail-page',
@@ -12,6 +12,8 @@ import {Event} from '../../shared/models/event';
   styleUrls: ['./event-detail-page.component.css']
 })
 export class EventDetailPageComponent implements OnInit {
+
+  private eventId: String;
 
   //just an example then information would be take from server
   currentEvent: Event = {id: 1 , _organizerID : 2, name: 'New York Marathon',
@@ -30,14 +32,22 @@ export class EventDetailPageComponent implements OnInit {
   today: Date = new Date();
   enrollement: String;
 
-  constructor(/*private userService: UserService, private route: ActivatedRoute,
+  constructor(private route: ActivatedRoute/*private userService: UserService, private route: ActivatedRoute,
               private eventService: EventService, private location: Location*/) {
   }
 
   // When the component is created catch the current event object and the current user
   ngOnInit() {
-    /*this.getEvent();
-    this.userService.getUser().subscribe((user) => this.currentUser = user);*/
+    this.route.params.subscribe(params => {
+      this.eventId = params['eventId'];
+      console.log('[EventDetail][OnInit]', this.eventId);
+
+      // load the event using eventId
+      // load the currentUser
+      // load the organizer
+
+    });
+    // this.userService.getUser().subscribe((user) => this.currentUser = user);*/
     this.enrollementOpenDate = this.getFullDate(this.currentEvent.enrollmentOpeningAt);
     this.enrollementCloseDate = this.getFullDate(this.currentEvent.enrollmentClosingAt);
     this.startingDate = this.getFullDate(this.currentEvent.startingTime);

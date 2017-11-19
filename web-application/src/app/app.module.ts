@@ -31,6 +31,7 @@ import { FacebookModule } from 'ngx-facebook';
 import { MyEventsComponent } from './event-pages/my-events/my-events.component';
 import {GuestGuard} from "./shared/guards/guest.guard";
 import {EventService} from "./shared/services/event.service";
+import { EventBoxComponent } from './event-pages/event-box/event-box.component';
 
 
 @NgModule({
@@ -50,7 +51,8 @@ import {EventService} from "./shared/services/event.service";
     PageHeaderComponent,
     EventDetailPageComponent,
     MyEventsComponent,
-    ProfilePageComponent
+    ProfilePageComponent,
+    EventBoxComponent
   ],
   imports: [
     BrowserModule,
@@ -74,7 +76,7 @@ import {EventService} from "./shared/services/event.service";
        *  so if you have a list of events: *ngFor="let event of events" routerLink="/event/{{event.id}}"
        */
       {
-        path: 'event/:id',
+        path: 'events/:eventId',
         component: EventDetailPageComponent
       },
       {

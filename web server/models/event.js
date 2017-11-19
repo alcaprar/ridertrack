@@ -40,6 +40,10 @@ var eventSchema = Schema({
         type: Number,
         required: true
     },
+    length: {
+        type: Number,
+        required: true
+    },
     enrollmentOpeningAt: {
         type: Date,
         required: true
@@ -50,7 +54,7 @@ var eventSchema = Schema({
     },
     participantsList: {
         type: [Number],
-        required: true,
+        required: false, // TODO it has to be required
         default: []
     },
     logo: {
@@ -59,7 +63,7 @@ var eventSchema = Schema({
     },
     routes: {
         type: [String], //TODO to change with coordinates
-        required: true,
+        required: false, // TODO it has to be required
         default: []
     },
     created_at: {

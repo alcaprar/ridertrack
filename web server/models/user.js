@@ -64,6 +64,8 @@ var userSchema = Schema({
     }
 });
 
+userSchema.index({email: 1}, {name: 'email_idx', unique: true});
+
 // on every save, add the date
 userSchema.pre('save', function(next) {
     // get the current date

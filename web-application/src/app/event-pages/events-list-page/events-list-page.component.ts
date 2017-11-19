@@ -13,7 +13,7 @@ import {Router} from "@angular/router";
 export class EventsListPageComponent implements OnInit {
 
   currentUser: User;
-  eventList: Event[];
+  eventsList: Event[];
   selectedEvent: Event;
 
   constructor(private eventService: EventService, private userService: UserService, private router: Router) { }
@@ -21,7 +21,8 @@ export class EventsListPageComponent implements OnInit {
   // When the component is created saves the list of all events and the current user
   ngOnInit() {
     this.eventService.getAllEvents().then(events => {
-     this.eventList = events;
+      console.log('[AllEvents][getAllEvents]', events);
+     this.eventsList = events;
     });
     this.userService.getUser().subscribe(user => this.currentUser = user);
   }

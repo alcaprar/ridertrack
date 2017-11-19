@@ -19,7 +19,7 @@ export class HomePageComponent {
     disableUntil: {year: 2016, month: 8, day: 10},
     minYear: 2017,
     showClearDateBtn:false,
-   editableDateField:false,
+    editableDateField:false,
     openSelectorOnInputClick: true,
     ariaLabelInputField: 'Choose date',
 

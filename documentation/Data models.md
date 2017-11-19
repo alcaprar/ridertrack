@@ -45,6 +45,7 @@ Note:
     "city": String,
     "startingTime": Date,
     "maxDuration": Number,  // number of minutes??
+    "length": Number,
     "maxParticipants": Number,
     "enrollmentOpeningAt": Date,
     "enrollmentClosingAt": Date,

@@ -20,7 +20,7 @@ export class EventService {
 
     return this.http.get(url).toPromise()
         .then( (res) => {
-          const eventsBody = res.json().event as Event[];
+          const eventsBody = res.json().events as Event[];
           console.log('[EventService][getAllEvents][success]', eventsBody);
          return eventsBody;
         }, (err) => {

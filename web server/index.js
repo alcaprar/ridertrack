@@ -92,5 +92,9 @@ server.listen(config.port, function () {
     console.log('Server listening on port: ' + config.port);
 });
 
+// init DB
+var initDB = require('./initDb');
+initDB();
+
 // exporting the server only for testing purposes
 module.exports = server;
