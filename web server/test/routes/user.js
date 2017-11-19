@@ -19,7 +19,7 @@ describe('User API tests', function () {
     // this will run before every test to clear the database
     // TODO clear database
 
-    before(function (done) {
+    beforeEach(function (done) {
         User.remove({}, function (err) {
             done()
         })
@@ -35,7 +35,26 @@ describe('User API tests', function () {
                     expect(res.body.users.length).to.be.eql(0);
                     done();
                 })
-        })
+        });
+
+        it('it should return a list with one object', function (done) {
+            let user = new User({
+                name: 'name',
+                surname: 'surname',
+                email: 'test@test.it',
+                password: 'aaa'
+            });
+            user.save(function () {
+                request.get('/api/users')
+                    .end(function (err, res) {
+                        expect(res.status).to.be.eql(200);
+                        expect(res.body).to.be.an('object');
+                        expect(res.body.users).to.be.an('array');
+                        expect(res.body.users.length).to.be.eql(1);
+                        done();
+                    })
+            });
+        });
     });
 
     describe('POST /users', function () {
@@ -54,18 +73,7 @@ describe('User API tests', function () {
                     done()
                 })
         });
-        
 
-        it('it should return an empty list since the database is empty', function (done) {
-            request.get('/api/users')
-                .end(function (err, res) {
-                    expect(res.status).to.be.eql(200);
-                    expect(res.body).to.be.an('object');
-                    expect(res.body.users).to.be.an('array');
-                    expect(res.body.users.length).to.be.eql(0);
-                    done();
-                })
-        });
 
         it('it should add a user', function (done) {
             let user = {
@@ -86,19 +94,6 @@ describe('User API tests', function () {
                 })
         });
 
-        it('it should return a list with one object', function (done) {
-            request.get('/api/users')
-                .end(function (err, res) {
-                    expect(res.status).to.be.eql(200);
-                    expect(res.body).to.be.an('object');
-                    expect(res.body.users).to.be.an('array');
-                    expect(res.body.users.length).to.be.eql(1);
-                    done();
-                })
-        });
-        
-        var organizerId;
-
         it('it should add an user', function (done) {
             let user = {
                 name: 'organzer1',
@@ -115,94 +110,162 @@ describe('User API tests', function () {
                     expect(res.body).to.not.have.property('errors');
                     expect(res.body).to.have.property('user');
 
-                    organizerId = res.body.user._id;
-
                     done()
                 })
         });
 
         it('it should return a list with two object', function (done) {
-            request.get('/api/users')
-                .end(function (err, res) {
-                    expect(res.status).to.be.eql(200);
-                    expect(res.body).to.be.an('object');
-                    expect(res.body.users).to.be.an('array');
-                    expect(res.body.users.length).to.be.eql(2);
-                    done();
+            let user = new User({
+                name: 'name',
+                surname: 'surname',
+                email: 'test@test.it',
+                password: 'aaa'
+            });
+            let user2 = new User({
+                name: 'nam2e',
+                surname: 'surname2',
+                email: 'test2@test.it',
+                password: 'aaa2'
+            });
+            user.save(function () {
+                user2.save(function () {
+                    request.get('/api/users')
+                        .end(function (err, res) {
+                            expect(res.status).to.be.eql(200);
+                            expect(res.body).to.be.an('object');
+                            expect(res.body.users).to.be.an('array');
+                            expect(res.body.users.length).to.be.eql(2);
+                            done();
+                        })
                 })
+            });
         });
 
         it('it should return a list with one object', function (done) {
-            request.get('/api/users?name=organzer1')
-                .end(function (err, res) {
-                    expect(res.status).to.be.eql(200);
-                    expect(res.body).to.be.an('object');
-                    expect(res.body.users).to.be.an('array');
-                    expect(res.body.users.length).to.be.eql(1);
-                    done();
+            let user = new User({
+                name: 'name',
+                surname: 'surname',
+                email: 'test@test.it',
+                password: 'aaa'
+            });
+            let user2 = new User({
+                name: 'nam2e',
+                surname: 'surname2',
+                email: 'test2@test.it',
+                password: 'aaa2'
+            });
+            user.save(function () {
+                user2.save(function () {
+                    request.get('/api/users?name=' + user.name)
+                        .end(function (err, res) {
+                            expect(res.status).to.be.eql(200);
+                            expect(res.body).to.be.an('object');
+                            expect(res.body.users).to.be.an('array');
+                            expect(res.body.users.length).to.be.eql(1);
+                            done();
+                        })
                 })
+            });
+
         });
 
         it('it should returns ok even if we changed to ask nothing', function (done) {
-            let user = {};
+            let user = new User({
+                name: 'name',
+                surname: 'surname',
+                email: 'test@test.it',
+                password: 'aaa'
+            });
 
-            request.put('/api/users/' + organizerId)
-                .send(user)
-                .end(function (err, res) {
-                    expect(res.status).to.be.eql(200);
-                    expect(res.body).to.be.an('object');
-                    expect(res.body).to.not.have.property('errors');
-                    expect(res.body).to.have.property('user');
-                    done()
-                })
+            let change = {};
+
+            user.save(function () {
+                request.put('/api/users/' + user._id)
+                    .send(change)
+                    .end(function (err, res) {
+                        expect(res.status).to.be.eql(200);
+                        expect(res.body).to.be.an('object');
+                        expect(res.body).to.not.have.property('errors');
+                        expect(res.body).to.have.property('user');
+                        done()
+                    })
+            });
         });
 
         it('it should update the name of an user', function (done) {
-            let user = {
-                name: 'organzer2'
+            let user = new User({
+                name: 'name',
+                surname: 'surname',
+                email: 'test@test.it',
+                password: 'aaa'
+            });
+
+            let change = {
+                name: 'new name'
             };
-            
-            request.put('/api/users/' + organizerId)
-                .send(user)
-                .end(function (err, res) {
-                    expect(res.status).to.be.eql(200);
-                    expect(res.body).to.be.an('object');
-                    expect(res.body).to.not.have.property('errors');
-                    expect(res.body).to.have.property('user');
-                    done()
-                })
+
+            user.save(function () {
+                request.put('/api/users/' + user._id)
+                    .send(change)
+                    .end(function (err, res) {
+                        expect(res.status).to.be.eql(200);
+                        expect(res.body).to.be.an('object');
+                        expect(res.body).to.not.have.property('errors');
+                        expect(res.body).to.have.property('user');
+                        expect(res.body.user.name).to.be.eql(change.name);
+                        done()
+                    })
+            });
         });
         
 
         it('it should NOT update the email of an user', function (done) {
-            let user = {
-                email: 'email'
+            let user = new User({
+                name: 'name',
+                surname: 'surname',
+                email: 'test@test.it',
+                password: 'aaa'
+            });
+
+            let change = {
+                email: 'new@ename.it'
             };
 
-            request.put('/api/users/' + organizerId)
-                .send(user)
-                .end(function (err, res) {
-                    expect(res.status).to.be.eql(400);
-                    expect(res.body).to.be.an('object');
-                    expect(res.body).to.have.property('errors');
-                    done()
-                })
+            user.save(function () {
+                request.put('/api/users/' + user._id)
+                    .send(change)
+                    .end(function (err, res) {
+                        expect(res.status).to.be.eql(400);
+                        expect(res.body).to.be.an('object');
+                        expect(res.body).to.have.property('errors');
+                        done()
+                    })
+            });
         });
 
         it('it should NOT update the hash and salt of an user', function (done) {
-            let user = {
+            let user = new User({
+                name: 'name',
+                surname: 'surname',
+                email: 'test@test.it',
+                password: 'aaa'
+            });
+
+            let change = {
                 hash: 'hash',
                 salt: 'salt'
             };
 
-            request.put('/api/users/' + organizerId)
-                .send(user)
-                .end(function (err, res) {
-                    expect(res.status).to.be.eql(400);
-                    expect(res.body).to.be.an('object');
-                    expect(res.body).to.have.property('errors');
-                    done()
-                })
+            user.save(function () {
+                request.put('/api/users/' + user._id)
+                    .send(change)
+                    .end(function (err, res) {
+                        expect(res.status).to.be.eql(400);
+                        expect(res.body).to.be.an('object');
+                        expect(res.body).to.have.property('errors');
+                        done()
+                    })
+            });
         });
     });
 

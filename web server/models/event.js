@@ -44,6 +44,11 @@ var eventSchema = Schema({
         type: Number,
         required: true
     },
+    price: {
+        type: Number,
+        required: false,
+        default: 0
+    },
     enrollmentOpeningAt: {
         type: Date,
         required: true

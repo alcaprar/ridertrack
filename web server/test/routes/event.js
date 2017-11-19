@@ -6,6 +6,7 @@ var chai = require('chai');
 var server = require('../../index');
 var uuid = require('uuid');
 var supertest = require('supertest');
+var mongoose = require('mongoose')
 
 global.server = server;
 global.uuid = uuid;
@@ -18,98 +19,19 @@ var User = require('../../models/user');
 
 describe('Event API tests', function () {
 
-    var user1 = {
-        "name": "User",
-        "surname": "Surname",
-        "email": "email@domain.it",
-        "password": "AVeryStrongPasword"
-    };
-
-    var user2 = {
-        "name": "User2",
-        "surname": "Surname2",
-        "email": "email2@domain.it",
-        "password": "AVeryStrongPasword2"
-    };
-
-
-    var event1 = {
-        "name":"TestEvent",
-        "organizerId":"",
-        "type":"Running",
-        "description":"Blablabla",
-        "country":"MyCountry",
-        "city":"MyCity",
-        "startingTime":"2017-09-23T12:00:00.000Z",
-        "maxDuration":150,
-        "length": 40,
-        "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
-        "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
-        "participantsList":[255],
-        "routes":["Route1"]
-    };
-
-    var event2 = {
-        "name":"TestEvent2",
-        "organizerId":"",
-        "type":"Running",
-        "description":"Blablabla2",
-        "country":"MyCountry2",
-        "city":"MyCity2",
-        "startingTime":"2017-09-23T12:00:00.000Z",
-        "maxDuration": 150,
-        "length": 20,
-        "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
-        "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
-        "participantsList":[255],
-        "routes":["Route1"]
-    };
-
-    /**
-     * It clears the Db and register one user.
-     */
     before(function (done) {
-        Event.remove({},function(){
-            User.remove({},function(){
-                // create the user
-                request.post('/api/auth/register')
-                    .send(user1)
-                    .end(function (err, res) {
-                        user1._id = res.body.userId;
-                        user1.jwtToken = res.body.jwtToken;
-
-                        event1.organizerId = user1._id;
-                        event2.organizerId = user1._id;
-
-                        request.post('/api/auth/register')
-                            .send(user2)
-                            .end(function (err, res) {
-                                user2._id = res.body.userId;
-
-                                done()
-                            });
-                    });
-            });
-        });
+        done()
     });
 
     /**
-     * It logins the user.
+     * It clears the database.
      */
     beforeEach(function (done) {
-        request.post('/api/auth/login')
-            .send({email: user1.email, password: user1.password})
-            .end(function (err, res) {
-                user1.jwtToken = res.body.jwtToken;
-
-                request.post('/api/auth/login')
-                    .send({email: user2.email, password: user2.password})
-                    .end(function (err, res) {
-                        user2.jwtToken = res.body.jwtToken;
-
-                        done()
-                    });
+        Event.remove({},function(){
+            User.remove({},function(){
+                done()
             });
+        });
     });
 
     //Testing the endpoint to the events
@@ -126,11 +48,24 @@ describe('Event API tests', function () {
         });
         
         it('General search: it should add an event and return an array with one element', function (done) {
-            var ev = new Event(event1);
-            ev.save(function () {
-                event1._id = ev._id;
+            var event = new Event({
+                "name":"TestEvent",
+                "organizerId": mongoose.Types.ObjectId(),
+                "type":"Running",
+                "description":"Blablabla",
+                "country":"MyCountry",
+                "city":"MyCity",
+                "startingTime":"2017-09-23T12:00:00.000Z",
+                "maxDuration":150,
+                "length": 40,
+                "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
+                "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+                "participantsList":[255],
+                "routes":["Route1"]
+            });
+            event.save(function () {
                 request.get('/api/events')
-                    .end(function (err1, res) {
+                    .end(function (err, res) {
                         expect(res.status).to.be.eql(200);
                         expect(res.body).to.be.an('object');
                         expect(res.body.events).to.be.an('array');
@@ -141,195 +76,993 @@ describe('Event API tests', function () {
         });
 
         it('it should return the event', function (done) {
-            request.get('/api/events/' + event1._id)
-                .end(function (err1, res) {
-                    expect(res.status).to.be.eql(200);
-                    expect(res.body).to.be.an('object');
-                    expect(res.body.event).to.be.an('object');
-                    done();
-                })
+            var event = new Event({
+                "name":"TestEvent",
+                "organizerId": mongoose.Types.ObjectId(),
+                "type":"Running",
+                "description":"Blablabla",
+                "country":"MyCountry",
+                "city":"MyCity",
+                "startingTime":"2017-09-23T12:00:00.000Z",
+                "maxDuration":150,
+                "length": 40,
+                "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
+                "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+                "participantsList":[255],
+                "routes":["Route1"]
+            });
+            event.save(function () {
+                request.get('/api/events/' + event._id)
+                    .end(function (err1, res) {
+                        expect(res.status).to.be.eql(200);
+                        expect(res.body).to.be.an('object');
+                        expect(res.body.event).to.be.an('object');
+                        done();
+                    })
+            });
         });
 
+        it('Search using sorting by length without specifying asc or desc', function (done) {
+            var event = new Event({
+                "name":"TestEvent",
+                "organizerId": mongoose.Types.ObjectId(),
+                "type":"Running",
+                "description":"Blablabla",
+                "country":"MyCountry",
+                "city":"MyCity",
+                "startingTime":"2017-09-23T12:00:00.000Z",
+                "maxDuration":150,
+                "length": 40,
+                "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
+                "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+                "participantsList":[255],
+                "routes":["Route1"]
+            });
+            var event2 = new Event({
+                "name":"TestEvent2",
+                "organizerId": mongoose.Types.ObjectId(),
+                "type":"Running",
+                "description":"Blablabla",
+                "country":"MyCountry",
+                "city":"MyCity",
+                "startingTime":"2017-09-23T12:00:00.000Z",
+                "maxDuration":150,
+                "length": 50,
+                "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
+                "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+                "participantsList":[255],
+                "routes":["Route1"]
+            });
+            event.save(function () {
+                event2.save(function () {
+                    request.get('/api/events?sort=length')
+                        .end(function (err1, res) {
+                            expect(res.status).to.be.eql(200);
+                            expect(res.body).to.be.an('object');
+                            expect(res.body.events).to.be.an('array');
+                            expect(res.body.events.length).to.be.eql(2);
+                            expect(res.body.events[0]._id).to.be.eql(event._id.toString());
+                            done();
+                        })
+                });
+            });
+        });
+
+        it('Search using sorting by length asc', function (done) {
+            var event = new Event({
+                "name":"TestEvent",
+                "organizerId": mongoose.Types.ObjectId(),
+                "type":"Running",
+                "description":"Blablabla",
+                "country":"MyCountry",
+                "city":"MyCity",
+                "startingTime":"2017-09-23T12:00:00.000Z",
+                "maxDuration":150,
+                "length": 40,
+                "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
+                "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+                "participantsList":[255],
+                "routes":["Route1"]
+            });
+            var event2 = new Event({
+                "name":"TestEvent2",
+                "organizerId": mongoose.Types.ObjectId(),
+                "type":"Running",
+                "description":"Blablabla",
+                "country":"MyCountry",
+                "city":"MyCity",
+                "startingTime":"2017-09-23T12:00:00.000Z",
+                "maxDuration":150,
+                "length": 50,
+                "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
+                "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+                "participantsList":[255],
+                "routes":["Route1"]
+            });
+            event.save(function () {
+                event2.save(function () {
+                    request.get('/api/events?sort=length:asc')
+                        .end(function (err1, res) {
+                            expect(res.status).to.be.eql(200);
+                            expect(res.body).to.be.an('object');
+                            expect(res.body.events).to.be.an('array');
+                            expect(res.body.events.length).to.be.eql(2);
+                            expect(res.body.events[0]._id).to.be.eql(event._id.toString());
+                            done();
+                        })
+                });
+            });
+        });
+
+        it('Search using sorting by length desc', function (done) {
+            var event = new Event({
+                "name":"TestEvent",
+                "organizerId": mongoose.Types.ObjectId(),
+                "type":"Running",
+                "description":"Blablabla",
+                "country":"MyCountry",
+                "city":"MyCity",
+                "startingTime":"2017-09-23T12:00:00.000Z",
+                "maxDuration":150,
+                "length": 40,
+                "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
+                "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+                "participantsList":[255],
+                "routes":["Route1"]
+            });
+            var event2 = new Event({
+                "name":"TestEvent2",
+                "organizerId": mongoose.Types.ObjectId(),
+                "type":"Running",
+                "description":"Blablabla",
+                "country":"MyCountry",
+                "city":"MyCity",
+                "startingTime":"2017-09-23T12:00:00.000Z",
+                "maxDuration":150,
+                "length": 50,
+                "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
+                "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+                "participantsList":[255],
+                "routes":["Route1"]
+            });
+            event.save(function () {
+                event2.save(function () {
+                    request.get('/api/events?sort=length:desc')
+                        .end(function (err1, res) {
+                            expect(res.status).to.be.eql(200);
+                            expect(res.body).to.be.an('object');
+                            expect(res.body.events).to.be.an('array');
+                            expect(res.body.events.length).to.be.eql(2);
+                            expect(res.body.events[1]._id).to.be.eql(event._id.toString());
+                            done();
+                        })
+                });
+            });
+        });
+
+        it('Search using sorting by price without specifying asc or desc', function (done) {
+            var event = new Event({
+                "name":"TestEvent",
+                "organizerId": mongoose.Types.ObjectId(),
+                "type":"Running",
+                "description":"Blablabla",
+                "country":"MyCountry",
+                "city":"MyCity",
+                "startingTime":"2017-09-23T12:00:00.000Z",
+                "maxDuration":150,
+                "length": 40,
+                "price": 100,
+                "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
+                "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+                "participantsList":[255],
+                "routes":["Route1"]
+            });
+            var event2 = new Event({
+                "name":"TestEvent2",
+                "organizerId": mongoose.Types.ObjectId(),
+                "type":"Running",
+                "description":"Blablabla",
+                "country":"MyCountry",
+                "city":"MyCity",
+                "startingTime":"2017-09-23T12:00:00.000Z",
+                "maxDuration":150,
+                "length": 50,
+                "price": 120,
+                "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
+                "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+                "participantsList":[255],
+                "routes":["Route1"]
+            });
+            event.save(function () {
+                event2.save(function () {
+                    request.get('/api/events?sort=price')
+                        .end(function (err1, res) {
+                            expect(res.status).to.be.eql(200);
+                            expect(res.body).to.be.an('object');
+                            expect(res.body.events).to.be.an('array');
+                            expect(res.body.events.length).to.be.eql(2);
+                            expect(res.body.events[0]._id).to.be.eql(event._id.toString());
+                            done();
+                        })
+                });
+            });
+        });
+
+        it('Search using sorting by price asc', function (done) {
+            var event = new Event({
+                "name":"TestEvent",
+                "organizerId": mongoose.Types.ObjectId(),
+                "type":"Running",
+                "description":"Blablabla",
+                "country":"MyCountry",
+                "city":"MyCity",
+                "startingTime":"2017-09-23T12:00:00.000Z",
+                "maxDuration":150,
+                "length": 40,
+                "price": 100,
+                "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
+                "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+                "participantsList":[255],
+                "routes":["Route1"]
+            });
+            var event2 = new Event({
+                "name":"TestEvent2",
+                "organizerId": mongoose.Types.ObjectId(),
+                "type":"Running",
+                "description":"Blablabla",
+                "country":"MyCountry",
+                "city":"MyCity",
+                "startingTime":"2017-09-23T12:00:00.000Z",
+                "maxDuration":150,
+                "length": 50,
+                "price": 120,
+                "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
+                "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+                "participantsList":[255],
+                "routes":["Route1"]
+            });
+            event.save(function () {
+                event2.save(function () {
+                    request.get('/api/events?sort=price:asc')
+                        .end(function (err1, res) {
+                            expect(res.status).to.be.eql(200);
+                            expect(res.body).to.be.an('object');
+                            expect(res.body.events).to.be.an('array');
+                            expect(res.body.events.length).to.be.eql(2);
+                            expect(res.body.events[0]._id).to.be.eql(event._id.toString());
+                            done();
+                        })
+                });
+            });
+        });
+
+        it('Search using sorting by price desc', function (done) {
+            var event = new Event({
+                "name":"TestEvent",
+                "organizerId": mongoose.Types.ObjectId(),
+                "type":"Running",
+                "description":"Blablabla",
+                "country":"MyCountry",
+                "city":"MyCity",
+                "startingTime":"2017-09-23T12:00:00.000Z",
+                "maxDuration":150,
+                "length": 40,
+                "price": 100,
+                "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
+                "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+                "participantsList":[255],
+                "routes":["Route1"]
+            });
+            var event2 = new Event({
+                "name":"TestEvent2",
+                "organizerId": mongoose.Types.ObjectId(),
+                "type":"Running",
+                "description":"Blablabla",
+                "country":"MyCountry",
+                "city":"MyCity",
+                "startingTime":"2017-09-23T12:00:00.000Z",
+                "maxDuration":150,
+                "length": 50,
+                "price": 120,
+                "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
+                "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+                "participantsList":[255],
+                "routes":["Route1"]
+            });
+            event.save(function () {
+                event2.save(function () {
+                    request.get('/api/events?sort=price:desc')
+                        .end(function (err, res) {
+                            expect(res.status).to.be.eql(200);
+                            expect(res.body).to.be.an('object');
+                            expect(res.body.events).to.be.an('array');
+                            expect(res.body.events.length).to.be.eql(2);
+                            expect(res.body.events[1]._id).to.be.eql(event._id.toString());
+                            done();
+                        })
+                });
+            });
+        });
+
+        it('Search using sorting by startingTime without specifying asc or desc', function (done) {
+            var event = new Event({
+                "name":"TestEvent",
+                "organizerId": mongoose.Types.ObjectId(),
+                "type":"Running",
+                "description":"Blablabla",
+                "country":"MyCountry",
+                "city":"MyCity",
+                "startingTime":"2017-09-23T12:00:00.000Z",
+                "maxDuration":150,
+                "length": 40,
+                "price": 100,
+                "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
+                "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+                "participantsList":[255],
+                "routes":["Route1"]
+            });
+            var event2 = new Event({
+                "name":"TestEvent2",
+                "organizerId": mongoose.Types.ObjectId(),
+                "type":"Running",
+                "description":"Blablabla",
+                "country":"MyCountry",
+                "city":"MyCity",
+                "startingTime":"2017-10-24T12:00:00.000Z",
+                "maxDuration":150,
+                "length": 50,
+                "price": 120,
+                "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
+                "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+                "participantsList":[255],
+                "routes":["Route1"]
+            });
+            event.save(function () {
+                event2.save(function () {
+                    request.get('/api/events?sort=startingTime')
+                        .end(function (err1, res) {
+                            expect(res.status).to.be.eql(200);
+                            expect(res.body).to.be.an('object');
+                            expect(res.body.events).to.be.an('array');
+                            expect(res.body.events.length).to.be.eql(2);
+                            expect(res.body.events[0]._id).to.be.eql(event._id.toString());
+                            done();
+                        })
+                });
+            });
+        });
+
+        it('Search using sorting by startingTime asc', function (done) {
+            var event = new Event({
+                "name":"TestEvent",
+                "organizerId": mongoose.Types.ObjectId(),
+                "type":"Running",
+                "description":"Blablabla",
+                "country":"MyCountry",
+                "city":"MyCity",
+                "startingTime":"2017-09-23T12:00:00.000Z",
+                "maxDuration":150,
+                "length": 40,
+                "price": 100,
+                "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
+                "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+                "participantsList":[255],
+                "routes":["Route1"]
+            });
+            var event2 = new Event({
+                "name":"TestEvent2",
+                "organizerId": mongoose.Types.ObjectId(),
+                "type":"Running",
+                "description":"Blablabla",
+                "country":"MyCountry",
+                "city":"MyCity",
+                "startingTime":"2017-10-24T12:00:00.000Z",
+                "maxDuration":150,
+                "length": 50,
+                "price": 120,
+                "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
+                "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+                "participantsList":[255],
+                "routes":["Route1"]
+            });
+            event.save(function () {
+                event2.save(function () {
+                    request.get('/api/events?sort=startingTime:asc')
+                        .end(function (err1, res) {
+                            expect(res.status).to.be.eql(200);
+                            expect(res.body).to.be.an('object');
+                            expect(res.body.events).to.be.an('array');
+                            expect(res.body.events.length).to.be.eql(2);
+                            expect(res.body.events[0]._id).to.be.eql(event._id.toString());
+                            done();
+                        })
+                });
+            });
+        });
+
+        it('Search using sorting by startingTime desc', function (done) {
+            var event = new Event({
+                "name":"TestEvent",
+                "organizerId": mongoose.Types.ObjectId(),
+                "type":"Running",
+                "description":"Blablabla",
+                "country":"MyCountry",
+                "city":"MyCity",
+                "startingTime":"2017-09-23T12:00:00.000Z",
+                "maxDuration":150,
+                "length": 40,
+                "price": 100,
+                "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
+                "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+                "participantsList":[255],
+                "routes":["Route1"]
+            });
+            var event2 = new Event({
+                "name":"TestEvent2",
+                "organizerId": mongoose.Types.ObjectId(),
+                "type":"Running",
+                "description":"Blablabla",
+                "country":"MyCountry",
+                "city":"MyCity",
+                "startingTime":"2017-10-24T12:00:00.000Z",
+                "maxDuration":150,
+                "length": 50,
+                "price": 120,
+                "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
+                "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+                "participantsList":[255],
+                "routes":["Route1"]
+            });
+            event.save(function () {
+                event2.save(function () {
+                    request.get('/api/events?sort=startingTime:desc')
+                        .end(function (err, res) {
+                            expect(res.status).to.be.eql(200);
+                            expect(res.body).to.be.an('object');
+                            expect(res.body.events).to.be.an('array');
+                            expect(res.body.events.length).to.be.eql(2);
+                            expect(res.body.events[1]._id).to.be.eql(event._id.toString());
+                            done();
+                        })
+                });
+            });
+        });
+
+
         it('Search by city: it should return an array with one element', function (done) {
-            
-            request.get('/api/events?city=' + event1.city)
-                .end(function (err1, res) {
-                    expect(res.status).to.be.eql(200);
-                    expect(res.body).to.be.an('object');
-                    expect(res.body.events).to.be.an('array');
-                    expect(res.body.events.length).to.be.eql(1);
-                    done();
-                })
-            
+            var event = new Event({
+                "name":"TestEvent",
+                "organizerId": mongoose.Types.ObjectId(),
+                "type":"Running",
+                "description":"Blablabla",
+                "country":"MyCountry",
+                "city":"MyCity",
+                "startingTime":"2017-09-23T12:00:00.000Z",
+                "maxDuration":150,
+                "length": 40,
+                "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
+                "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+                "participantsList":[255],
+                "routes":["Route1"]
+            });
+            event.save(function () {
+                request.get('/api/events?city=' + event.city)
+                    .end(function (err1, res) {
+                        expect(res.status).to.be.eql(200);
+                        expect(res.body).to.be.an('object');
+                        expect(res.body.events).to.be.an('array');
+                        expect(res.body.events.length).to.be.eql(1);
+                        done();
+                    })
+            });
         });
 
         it('Search by name: it should return an array with one element', function (done) {
-
-            request.get('/api/events?name=' + event1.name)
-                .end(function (err1, res) {
-                    expect(res.status).to.be.eql(200);
-                    expect(res.body).to.be.an('object');
-                    expect(res.body.events).to.be.an('array');
-                    expect(res.body.events.length).to.be.eql(1);
-                    done();
-                })
-
+            var event = new Event({
+                "name":"TestEvent",
+                "organizerId": mongoose.Types.ObjectId(),
+                "type":"Running",
+                "description":"Blablabla",
+                "country":"MyCountry",
+                "city":"MyCity",
+                "startingTime":"2017-09-23T12:00:00.000Z",
+                "maxDuration":150,
+                "length": 40,
+                "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
+                "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+                "participantsList":[255],
+                "routes":["Route1"]
+            });
+            event.save(function () {
+                request.get('/api/events?name=' + event.name)
+                    .end(function (err1, res) {
+                        expect(res.status).to.be.eql(200);
+                        expect(res.body).to.be.an('object');
+                        expect(res.body.events).to.be.an('array');
+                        expect(res.body.events.length).to.be.eql(1);
+                        done();
+                    })
+            });
         });
 
         it('Search by type: it should return an array with one element', function (done) {
-
-            request.get('/api/events?type=' + event1.type)
-                .end(function (err1, res) {
-                    expect(res.status).to.be.eql(200);
-                    expect(res.body).to.be.an('object');
-                    expect(res.body.events).to.be.an('array');
-                    expect(res.body.events.length).to.be.eql(1);
-                    done();
-                })
-
+            var event = new Event({
+                "name":"TestEvent",
+                "organizerId": mongoose.Types.ObjectId(),
+                "type":"Running",
+                "description":"Blablabla",
+                "country":"MyCountry",
+                "city":"MyCity",
+                "startingTime":"2017-09-23T12:00:00.000Z",
+                "maxDuration":150,
+                "length": 40,
+                "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
+                "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+                "participantsList":[255],
+                "routes":["Route1"]
+            });
+            event.save(function () {
+                request.get('/api/events?type=' + event.type)
+                    .end(function (err1, res) {
+                        expect(res.status).to.be.eql(200);
+                        expect(res.body).to.be.an('object');
+                        expect(res.body.events).to.be.an('array');
+                        expect(res.body.events.length).to.be.eql(1);
+                        done();
+                    })
+            });
         });
 
         it('Search by country: it should return an array with one element', function (done) {
-
-            request.get('/api/events?country=' + event1.country)
-                .end(function (err1, res) {
-                    expect(res.status).to.be.eql(200);
-                    expect(res.body).to.be.an('object');
-                    expect(res.body.events).to.be.an('array');
-                    expect(res.body.events.length).to.be.eql(1);
-                    done();
-                })
+            var event = new Event({
+                "name":"TestEvent",
+                "organizerId": mongoose.Types.ObjectId(),
+                "type":"Running",
+                "description":"Blablabla",
+                "country":"MyCountry",
+                "city":"MyCity",
+                "startingTime":"2017-09-23T12:00:00.000Z",
+                "maxDuration":150,
+                "length": 40,
+                "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
+                "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+                "participantsList":[255],
+                "routes":["Route1"]
+            });
+            event.save(function () {
+                request.get('/api/events?country=' + event.country)
+                    .end(function (err1, res) {
+                        expect(res.status).to.be.eql(200);
+                        expect(res.body).to.be.an('object');
+                        expect(res.body.events).to.be.an('array');
+                        expect(res.body.events.length).to.be.eql(1);
+                        done();
+                    })
+            });
         })
     });
 
     describe('POST /events', function () {
         it('it should create an event', function (done) {
-            request.post('/api/events')
-                .send(event2)
-                .set('Authorization', 'JWT ' + user1.jwtToken)
+            var user = {
+                "name": "User",
+                "surname": "Surname",
+                "email": "email@domain.it",
+                "password": "AVeryStrongPasword"
+            };
+            request.post('/api/auth/register')
+                .send(user)
                 .end(function (err, res) {
-                    expect(res.status).to.be.eql(200);
-                    expect(res.body).to.be.an('object');
-                    expect(res.body.event).to.be.an('object');
-                    expect(res.body.event._id).to.not.be.eql('');
+                    user._id = res.body.userId;
+                    user.jwtToken = res.body.jwtToken;
 
-                    event2._id = res.body.event._id;
-                    done();
-                })
+                    var event = {
+                        "name":"TestEvent",
+                        "organizerId": user._id,
+                        "type":"Running",
+                        "description":"Blablabla",
+                        "country":"MyCountry",
+                        "city":"MyCity",
+                        "startingTime":"2017-09-23T12:00:00.000Z",
+                        "maxDuration":150,
+                        "length": 40,
+                        "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
+                        "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+                        "participantsList":[255],
+                        "routes":["Route1"]
+                    };
+
+                    request.post('/api/events')
+                        .send(event)
+                        .set('Authorization', 'JWT ' + user.jwtToken)
+                        .end(function (err, res) {
+                            expect(res.status).to.be.eql(200);
+                            expect(res.body).to.be.an('object');
+                            expect(res.body.event).to.be.an('object');
+                            expect(res.body.event._id).to.not.be.eql('');
+
+                            done();
+                        })
+                });
         });
 
         it('it should NOT create an event without login', function (done) {
-            request.post('/api/events')
-                .send(event2)
+            var user = {
+                "name": "User",
+                "surname": "Surname",
+                "email": "email@domain.it",
+                "password": "AVeryStrongPasword"
+            };
+            request.post('/api/auth/register')
+                .send(user)
                 .end(function (err, res) {
-                    expect(res.status).to.be.eql(401);
-                    expect(res.body).to.be.an('object');
+                    user._id = res.body.userId;
+                    user.jwtToken = res.body.jwtToken;
 
-                    done();
-                })
-        })
+                    var event = {
+                        "name":"TestEvent",
+                        "organizerId": user._id,
+                        "type":"Running",
+                        "description":"Blablabla",
+                        "country":"MyCountry",
+                        "city":"MyCity",
+                        "startingTime":"2017-09-23T12:00:00.000Z",
+                        "maxDuration":150,
+                        "length": 40,
+                        "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
+                        "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+                        "participantsList":[255],
+                        "routes":["Route1"]
+                    };
+
+                    request.post('/api/events')
+                        .send(event)
+                        .end(function (err, res) {
+                            expect(res.status).to.be.eql(401);
+                            expect(res.body).to.be.an('object');
+                            expect(res.body.errors).to.not.be.eql(undefined);
+                            done();
+                        })
+                });
+        });
     });
 
     
     describe('PUT /events', function () {
-        it('should update the name of the event', function (done) {
-            let newFields = {
-                name: 'New name of event2'
-            };
-            request.put('/api/events/' + event2._id)
-                .send(newFields)
-                .set('Authorization', 'JWT ' + user1.jwtToken)
-                .end(function (req, res) {
-                    expect(res.status).to.be.eql(200);
-                    expect(res.body).to.be.an('object');
-                    expect(res.body.event).to.be.an('object');
-                    expect(res.body.event.name).to.be.eql(newFields.name);
-
-                    done()
-                });
-        });
-
         it('it should NOT update the event if it is not the organizer', function (done) {
-            let newFields = {
-                name: 'New name of event2'
+            var user = {
+                "name": "User",
+                "surname": "Surname",
+                "email": "email@domain.it",
+                "password": "AVeryStrongPasword"
             };
-            request.put('/api/events/' + event2._id)
-                .send(newFields)
-                .set('Authorization', 'JWT ' + user2.jwtToken)
-                .end(function (req, res) {
-                    expect(res.status).to.be.eql(401);
-                    expect(res.body).to.be.an('object');
-                    expect(res.body.errors).to.be.not.eql(undefined);
+            request.post('/api/auth/register')
+                .send(user)
+                .end(function (err, res) {
+                    user._id = res.body.userId;
+                    user.jwtToken = res.body.jwtToken;
 
-                    done()
+                    var event = new Event({
+                        "name":"TestEvent",
+                        "organizerId": user._id,
+                        "type":"Running",
+                        "description":"Blablabla",
+                        "country":"MyCountry",
+                        "city":"MyCity",
+                        "startingTime":"2017-09-23T12:00:00.000Z",
+                        "maxDuration":150,
+                        "length": 40,
+                        "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
+                        "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+                        "participantsList":[255],
+                        "routes":["Route1"]
+                    });
+
+                    var user2 = {
+                        "name": "User",
+                        "surname": "Surname",
+                        "email": "email@domain.it",
+                        "password": "AVeryStrongPasword"
+                    };
+
+                    request.post('/api/auth/register')
+                        .send(user2)
+                        .end(function (err, res) {
+                            user2._id = res.body.userId;
+                            user2.jwtToken = res.body.jwtToken;
+
+                            event.save(function () {
+                                var newFields = {
+                                    name: 'newName'
+                                };
+
+                                request.put('/api/events/' + event._id)
+                                    .send(newFields)
+                                    .set('Authorization', 'JWT ' + user2.jwtToken)
+                                    .end(function (req, res) {
+                                        expect(res.status).to.be.eql(401);
+                                        expect(res.body).to.be.an('object');
+                                        expect(res.body.errors).to.not.be.eql(null);
+
+                                        done()
+                                    });
+                            });
+                        });
                 });
         });
 
         it('should NOT update the id of the event', function (done) {
-            let newFields = {
-                _id: event2._id.replace('5', '1')
+            var user = {
+                "name": "User",
+                "surname": "Surname",
+                "email": "email@domain.it",
+                "password": "AVeryStrongPasword"
             };
-            request.put('/api/events/' + event2._id)
-                .send(newFields)
-                .set('Authorization', 'JWT ' + user1.jwtToken)
-                .end(function (req, res) {
-                    expect(res.status).to.be.eql(400);
-                    expect(res.body).to.be.an('object');
-                    expect(res.body.errors).to.not.be.eql(null);
+            request.post('/api/auth/register')
+                .send(user)
+                .end(function (err, res) {
+                    user._id = res.body.userId;
+                    user.jwtToken = res.body.jwtToken;
 
-                    done()
+                    var event = new Event({
+                        "name":"TestEvent",
+                        "organizerId": user._id,
+                        "type":"Running",
+                        "description":"Blablabla",
+                        "country":"MyCountry",
+                        "city":"MyCity",
+                        "startingTime":"2017-09-23T12:00:00.000Z",
+                        "maxDuration":150,
+                        "length": 40,
+                        "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
+                        "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+                        "participantsList":[255],
+                        "routes":["Route1"]
+                    });
+
+                    event.save(function () {
+                        let newFields = {
+                            _id: mongoose.Types.ObjectId()
+                        };
+
+                        request.put('/api/events/' + event._id)
+                            .send(newFields)
+                            .set('Authorization', 'JWT ' + user.jwtToken)
+                            .end(function (req, res) {
+                                expect(res.status).to.be.eql(400);
+                                expect(res.body).to.be.an('object');
+                                expect(res.body.errors).to.not.be.eql(null);
+
+                                done()
+                            });
+                    });
                 });
         });
 
         it('should NOT update without login', function (done) {
-            let newFields = {
-                _id: event2._id.replace('5', '1')
-            };
-            request.put('/api/events/' + event2._id)
-                .send(newFields)
-                .end(function (req, res) {
-                    expect(res.status).to.be.eql(401);
-                    expect(res.body).to.be.an('object');
-                    expect(res.body.errors).to.not.be.eql(null);
+            var event = new Event({
+                "name":"TestEvent",
+                "organizerId": mongoose.Types.ObjectId(),
+                "type":"Running",
+                "description":"Blablabla",
+                "country":"MyCountry",
+                "city":"MyCity",
+                "startingTime":"2017-09-23T12:00:00.000Z",
+                "maxDuration":150,
+                "length": 40,
+                "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
+                "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+                "participantsList":[255],
+                "routes":["Route1"]
+            });
 
-                    done()
+            event.save(function () {
+                var newFields = {
+                    name: 'newName'
+                };
+
+                request.put('/api/events/' + event._id)
+                    .send(newFields)
+                    .end(function (req, res) {
+                        expect(res.status).to.be.eql(401);
+                        expect(res.body).to.be.an('object');
+                        expect(res.body.errors).to.not.be.eql(null);
+
+                        done()
+                    });
+            });
+        });
+
+        it('it should update the name of the event', function (done) {
+            var user = {
+                "name": "User",
+                "surname": "Surname",
+                "email": "email@domain.it",
+                "password": "AVeryStrongPasword"
+            };
+            request.post('/api/auth/register')
+                .send(user)
+                .end(function (err, res) {
+                    user._id = res.body.userId;
+                    user.jwtToken = res.body.jwtToken;
+
+                    var event = new Event({
+                        "name":"TestEvent",
+                        "organizerId": user._id,
+                        "type":"Running",
+                        "description":"Blablabla",
+                        "country":"MyCountry",
+                        "city":"MyCity",
+                        "startingTime":"2017-09-23T12:00:00.000Z",
+                        "maxDuration":150,
+                        "length": 40,
+                        "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
+                        "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+                        "participantsList":[255],
+                        "routes":["Route1"]
+                    });
+
+                    event.save(function () {
+                        var newFields = {
+                            name: 'newName'
+                        };
+
+                        request.put('/api/events/' + event._id)
+                            .send(newFields)
+                            .set('Authorization', 'JWT ' + user.jwtToken)
+                            .end(function (req, res) {
+                                expect(res.status).to.be.eql(200);
+                                expect(res.body).to.be.an('object');
+                                expect(res.body.errors).to.be.eql(undefined);
+                                expect(res.body.event.name).to.be.eql(newFields.name);
+
+                                done()
+                            });
+                    });
                 });
         })
     });
 
     describe('DELETE /events', function () {
         it('it should NOT delete an event without login', function (done) {
-            request.delete('/api/events/' + event2._id)
-                .end(function (req, res) {
-                    expect(res.status).to.be.eql(401);
-                    expect(res.body).to.be.an('object');
-                    expect(res.body.errors).to.not.be.eql(null);
+            var event = new Event({
+                "name":"TestEvent",
+                "organizerId": mongoose.Types.ObjectId(),
+                "type":"Running",
+                "description":"Blablabla",
+                "country":"MyCountry",
+                "city":"MyCity",
+                "startingTime":"2017-09-23T12:00:00.000Z",
+                "maxDuration":150,
+                "length": 40,
+                "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
+                "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+                "participantsList":[255],
+                "routes":["Route1"]
+            });
 
-                    done()
-                });
+            event.save(function () {
+                var newFields = {
+                    name: 'newName'
+                };
+
+                request.delete('/api/events/' + event._id)
+                    .end(function (req, res) {
+                        expect(res.status).to.be.eql(401);
+                        expect(res.body).to.be.an('object');
+                        expect(res.body.errors).to.not.be.eql(null);
+
+                        done()
+                    });
+            });
         });
 
         it('it should NOT delete the event if it is not the organizer', function (done) {
-            request.delete('/api/events/' + event2._id)
-                .set('Authorization', 'JWT ' + user2.jwtToken)
-                .end(function (req, res) {
-                    expect(res.status).to.be.eql(401);
-                    expect(res.body).to.be.an('object');
-                    expect(res.body.errors).to.not.be.eql(null);
+            var user = {
+                "name": "User",
+                "surname": "Surname",
+                "email": "email@domain.it",
+                "password": "AVeryStrongPasword"
+            };
+            request.post('/api/auth/register')
+                .send(user)
+                .end(function (err, res) {
+                    user._id = res.body.userId;
+                    user.jwtToken = res.body.jwtToken;
 
-                    done()
+                    var event = new Event({
+                        "name":"TestEvent",
+                        "organizerId": user._id,
+                        "type":"Running",
+                        "description":"Blablabla",
+                        "country":"MyCountry",
+                        "city":"MyCity",
+                        "startingTime":"2017-09-23T12:00:00.000Z",
+                        "maxDuration":150,
+                        "length": 40,
+                        "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
+                        "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+                        "participantsList":[255],
+                        "routes":["Route1"]
+                    });
+
+                    var user2 = {
+                        "name": "User",
+                        "surname": "Surname",
+                        "email": "email@domain.it",
+                        "password": "AVeryStrongPasword"
+                    };
+
+                    request.post('/api/auth/register')
+                        .send(user2)
+                        .end(function (err, res) {
+                            user2._id = res.body.userId;
+                            user2.jwtToken = res.body.jwtToken;
+
+                            event.save(function () {
+                                var newFields = {
+                                    name: 'newName'
+                                };
+
+                                request.delete('/api/events/' + event._id)
+                                    .set('Authorization', 'JWT ' + user2.jwtToken)
+                                    .end(function (req, res) {
+                                        expect(res.status).to.be.eql(401);
+                                        expect(res.body).to.be.an('object');
+                                        expect(res.body.errors).to.not.be.eql(null);
+
+                                        done()
+                                    });
+                            });
+                        });
                 });
         });
 
         it('it should delete the event', function (done) {
-            request.delete('/api/events/' + event2._id)
-                .set('Authorization', 'JWT ' + user1.jwtToken)
-                .end(function (req, res) {
-                    expect(res.status).to.be.eql(200);
-                    expect(res.body).to.be.an('object');
-                    expect(res.body.event).to.be.an('object');
+            var user = {
+                "name": "User",
+                "surname": "Surname",
+                "email": "email@domain.it",
+                "password": "AVeryStrongPasword"
+            };
+            request.post('/api/auth/register')
+                .send(user)
+                .end(function (err, res) {
+                    user._id = res.body.userId;
+                    user.jwtToken = res.body.jwtToken;
 
-                    done()
+                    var event = new Event({
+                        "name":"TestEvent",
+                        "organizerId": user._id,
+                        "type":"Running",
+                        "description":"Blablabla",
+                        "country":"MyCountry",
+                        "city":"MyCity",
+                        "startingTime":"2017-09-23T12:00:00.000Z",
+                        "maxDuration":150,
+                        "length": 40,
+                        "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
+                        "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+                        "participantsList":[255],
+                        "routes":["Route1"]
+                    });
+
+                    event.save(function () {
+                        var newFields = {
+                            name: 'newName'
+                        };
+
+                        request.delete('/api/events/' + event._id)
+                            .set('Authorization', 'JWT ' + user.jwtToken)
+                            .end(function (req, res) {
+                                expect(res.status).to.be.eql(200);
+                                expect(res.body).to.be.an('object');
+                                expect(res.body.errors).to.be.eql(undefined);
+                                expect(res.body.event).to.be.an('object');
+
+                                done()
+                            });
+                    });
                 });
         })
     });

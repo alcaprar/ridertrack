@@ -8,9 +8,33 @@ var authMiddleware = require('../middlewares/auth');
 /**
  * It returns the list of all the events.
  * It accepts query params for filtering the events: name, type, country, city.
+ * Inspired here https://specs.openstack.org/openstack/api-wg/guidelines/pagination_filter_sort.html
  */
 router.get('/', function(req, res) {
     var conditions = {};
+
+    var pagination = {
+        page: (req.query.page) ? req.query.page : 1,
+        itemsPerPage: (req.query.page) ? req.query.itemsPerPage : 10
+    };
+
+
+    // check sorting
+    var sort = {};
+    if(req.query.sort){
+        // keys are divided by comma
+        let keys = req.query.sort.split(',');
+        for(let i = 0; i < keys.length; i++){
+            // check if it is also specify the way
+            // default is ascending
+            let key = keys[i].split(':');
+
+            // sorting possible only on date, price, length
+            if(['startingTime', 'price', 'length'].indexOf(key[0]) > -1){
+                sort[key[0]] = (typeof key[1] !== 'undefined' && ['asc', 'desc'].indexOf(key[1]) > -1) ? key[1] : 'asc';
+            }
+        }
+    }
     
     // check for query parameters
     // if they are present, add them to the conditions
@@ -27,7 +51,7 @@ router.get('/', function(req, res) {
         conditions.city = req.query.city;
     }
     
-    Event.find(conditions, function(err, events){
+    Event.find(conditions, null, {sort: sort}, function(err, events){
         if (err) {
             res.status(400).send({
                 errors: err
@@ -38,6 +62,13 @@ router.get('/', function(req, res) {
             })
         }
     })
+});
+
+/**
+ * It returns the list of distinct cities of all the events.
+ */
+router.get('/allCities', function (req, res, next) {
+
 });
 
 /**

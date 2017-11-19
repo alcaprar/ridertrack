@@ -30,7 +30,7 @@ config.port = process.env.PORT || 5000;
 config.mongodb = {};
 config.mongodb.host = process.env.MONGODB_HOST || 'localhost';
 config.mongodb.port = process.env.MONGODB_HOST || 27017;
-config.mongodb.database_name = 'ridetrack';
+config.mongodb.database_name = process.env.DATABASE_NAME || 'ridetrack';
 config.mongodb.uri =  'mongodb://' + config.mongodb.host + '/' + config.mongodb.database_name; 
 
 module.exports = config;
