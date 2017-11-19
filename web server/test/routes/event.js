@@ -70,6 +70,7 @@ describe('Event API tests', function () {
                         expect(res.body).to.be.an('object');
                         expect(res.body.events).to.be.an('array');
                         expect(res.body.events.length).to.be.eql(1);
+                        expect(res.body.totalPages).to.be.eql(1);
                         done();
                     })
             })
@@ -653,6 +654,44 @@ describe('Event API tests', function () {
                         done();
                     })
             });
+        })
+
+        it('it should return the list of distinct cities', function (done) {
+            var event = {
+                "name":"TestEvent",
+                "organizerId": mongoose.Types.ObjectId(),
+                "type":"Running",
+                "description":"Blablabla",
+                "country":"MyCountry",
+                "city":"MyCity",
+                "startingTime":"2017-09-23T12:00:00.000Z",
+                "maxDuration":150,
+                "length": 40,
+                "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
+                "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+                "participantsList":[255],
+                "routes":["Route1"]
+            };
+            var event1 = new Event(event);
+            event1.save(function () {
+                event.name = event.name + 1;
+                var event2 = new Event(event);
+                event2.save(function () {
+                    event.name = event.name + 2;
+                    event.city = "Other city";
+                    var event3 = new Event(event);
+                    event3.save(function () {
+                        request.get('/api/events/allCities')
+                            .end(function (err, res) {
+                                expect(res.status).to.be.eql(200);
+                                expect(res.body).to.be.an('object');
+                                expect(res.body.cities).to.be.an('array');
+                                expect(res.body.cities.length).to.be.eql(2);
+                                done();
+                            })
+                    })
+                })
+            })
         })
     });
 

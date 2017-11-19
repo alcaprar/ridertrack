@@ -87,7 +87,7 @@ router.get('/', function(req, res) {
                 events: results[1],
                 page: page,
                 itemsPerPage: itemsPerPage,
-                totalPages: results[0]/itemsPerPage
+                totalPages: Math.ceil(results[0]/itemsPerPage)
             })
         }
     })
@@ -97,7 +97,17 @@ router.get('/', function(req, res) {
  * It returns the list of distinct cities of all the events.
  */
 router.get('/allCities', function (req, res, next) {
-
+    Event.distinct("city", function (err, cities) {
+        if(err) {
+            res.status(400).send({
+                errors: err
+            })
+        } else {
+            res.status(200).send({
+                cities: cities
+            })
+        }
+    })
 });
 
 /**
