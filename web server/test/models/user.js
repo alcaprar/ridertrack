@@ -39,7 +39,6 @@ describe('User model test', function () {
         });
 
         user.validate(function(err) {
-            console.log('sur', err);
             expect(err).to.not.be.eql(null);
             done();
         });

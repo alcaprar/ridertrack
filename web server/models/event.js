@@ -1,6 +1,9 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+// list of fields that an user can not change
+const fieldsNotChangeable = ['_id', 'organizerId', '__v', 'created_at', 'updated_at'];
+
 var eventSchema = Schema({
     name: {
         type: String,
@@ -39,21 +42,11 @@ var eventSchema = Schema({
     },
     enrollmentOpeningAt: {
         type: Date,
-        required: true,
-        validate: [
-            function (value) {
-                return this.enrollmentClosingAt > value
-            }
-        ]
+        required: true
     },
     enrollmentClosingAt: {
         type: Date,
-        required: true,
-        validate: [
-            function (value) {
-                return this.enrollmentOpeningAt < value
-            }
-        ]
+        required: true
     },
     participantsList: {
         type: [Number],
@@ -132,9 +125,20 @@ eventSchema.statics.create = function (eventJson, callback) {
     })
 };
 
-// Updates an event. Note: there might be an easier way of doign this looking at docs.
+/**
+ * It updates the event.
+ * It returns an error if some not changeable fields are requested.
+ * @param eventId
+ * @param eventJson
+ * @param callback
+ * @returns {*}
+ */
 eventSchema.statics.update = function (eventId, eventJson, callback) {
-// find the right event and modify it
+    for(let key in eventJson){
+        if(fieldsNotChangeable.indexOf(key) > -1){
+            return callback(['You can not modify ' + key])
+        }
+    }
     this.findOne({_id: eventId}, function (err, event) {
         if (err) {
             return callback(err)
@@ -165,7 +169,7 @@ eventSchema.statics.delete = function (eventId, callback){
         if(err) {
             return callback(err)
         }else{
-            event.remove({_id: eventId}, function(err, event){
+            event.remove({_id: eventId}, function(err){
                 if(err){
                     callback(err)
                 }

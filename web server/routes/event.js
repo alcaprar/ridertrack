@@ -27,14 +27,14 @@ router.get('/', function(req, res) {
         conditions.city = req.query.city;
     }
     
-    Event.find(conditions, function(err, event){
+    Event.find(conditions, function(err, events){
         if (err) {
             res.status(400).send({
                 errors: err
             })
         } else {
             res.status(200).send({
-                events: event
+                events: events
             })
         }
     })
@@ -94,14 +94,14 @@ router.put('/:eventId',authMiddleware.hasValidToken,function (req, res) {
         }
         //you have been logged in as organizer
         else {
-            Event.update(req.params.eventId, req.body, function (err, num_updated) {
+            Event.update(req.params.eventId, req.body, function (err, event) {
                 if (err) {
                     res.status(400).send({
                         errors: err
                     })
                 } else {
                     res.status(200).send({
-                        event_num_updated: num_updated
+                        event: event
                     })
                 }
             })
@@ -125,14 +125,14 @@ router.delete('/:eventId', authMiddleware.hasValidToken, function(req,res){
             })
         }
         else {
-            Event.delete(req.params.eventId, function (err, event){
+            Event.delete(req.params.eventId, function (err){
                 if (err) {
                     res.status(400).send({
                         errors: err
                     })
                 } else {
                     res.status(200).send({
-                        status: "Event successfully deleted!"
+                        event: event
                     })
                 }
             })
