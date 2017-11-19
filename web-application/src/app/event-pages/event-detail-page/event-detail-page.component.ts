@@ -20,16 +20,16 @@ export class EventDetailPageComponent implements OnInit {
   type: 'Marathon', description: 'lorem inpsum ahddhjkhekehfkjhewkjhfkh dkhefhjkfhjewhfhfhfkjh' +
     'jhebwhjfjbfewhjgfw jfgejhfgejhfgjhfjgwfwhvhje ejejndndn', city: 'New York', country: 'USA',
   maxDuration: 120, startingTime: new Date('10 january, 2018 10:30:00'), enrollmentOpeningAt:  new Date('10 december, 2017 10:30:00'),
-  enrollmentClosingAt:  new Date('30 december, 2018 10:30:00'), participantsList: null,
-    routes: [['40.715986', '-74.015343'],['40.768437', '-73.985474'], ['40.737232', '-74.005773']],
-    logo: 'http://bsnscb.com/data/out/122/27416405-marathon-wallpapers.jpg'};
+  enrollmentClosingAt:  new Date('30 december, 2018 10:30:00'), participantsList: null, routes: null,
+    logo: 'http://bsnscb.com/data/out/122/27416405-marathon-wallpapers.jpg', length: 110};
 
   currentUser: User;
   organizer: User = new User('john@mail.com','John','Smith','password');
 
   enrollementOpenDate: String;
   enrollementCloseDate: String;
-  startingDate: String;
+  fullStartingTime: String;
+  startingTime:String;
   today: Date = new Date();
   enrollement: String;
 
@@ -51,7 +51,8 @@ export class EventDetailPageComponent implements OnInit {
     // this.userService.getUser().subscribe((user) => this.currentUser = user);*/
     this.enrollementOpenDate = this.getFullDate(this.currentEvent.enrollmentOpeningAt);
     this.enrollementCloseDate = this.getFullDate(this.currentEvent.enrollmentClosingAt);
-    this.startingDate = this.getFullDate(this.currentEvent.startingTime);
+    this.startingTime = this.getDate(this.currentEvent.startingTime);
+    this.fullStartingTime = this.getFullDate(this.currentEvent.startingTime);
     this.isEnrollementAvailable();
   }
 
@@ -74,6 +75,14 @@ export class EventDetailPageComponent implements OnInit {
     const minutes = date.getMinutes();
     return (day.toString()+ '/' + month.toString()+ '/'+
       year.toString()+ ' at ' + hour.toString() +':' + minutes.toString());
+  }
+
+  getDate(date: Date): String {
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    return (day.toString()+ '/' + month.toString()+ '/'+
+      year.toString());
   }
 
   isEnrollementAvailable(): Boolean {

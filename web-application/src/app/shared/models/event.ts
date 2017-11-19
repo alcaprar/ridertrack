@@ -14,6 +14,8 @@ export  class Event {
   public participantsList: [Number];
   public logo: String;
   public routes: [[String, String]];
+  public length: number;
+
 }
 
 

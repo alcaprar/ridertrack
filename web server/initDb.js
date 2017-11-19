@@ -41,7 +41,7 @@ module.exports = function () {
         "organizerId": "",
         "startingTime": "2017-09-23T12:00:00.000Z",
         "maxDuration":150,
-        "length": 42.195,
+        "length": 110,
         "enrollmentOpeningAt": "2017-09-10T00:00:00.000Z",
         "enrollmentClosingAt": "2017-09-17T00:00:00.000Z",
         "participantsList": [255],

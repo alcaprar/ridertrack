@@ -11,11 +11,11 @@
       <h5><a [routerLink]="['/events', event._id]"> {{event.name}}</a></h5>
       <div class="line">
         <span class="property pull-left"><b> Length :</b> {{event.length}} km </span>
-        <span class="property location pull-right"><b> City :</b> New York</span>
+        <span class="property location pull-right"><b> City :</b> {{event.city}}</span>
       </div>
       <div class="line">
-        <span class="property pull-right"><b> Date :</b> 05/11/2017 </span>
-        <span class="property pull-left"><b> Price :</b> € 200</span>
+        <span class="property pull-right"><b> Date :</b> {{event.startingTime}} </span>
+        <!--<span class="property pull-left"><b> Price :</b> {{}}</span>-->
       </div>
       <p style="display: none;">The New York City Marathon has grown from a Central Park race with 55 finishers to the world's biggest and most popular marathon, with more than 51,000 finishers in 2016.</p>
       <div class="property-icon">

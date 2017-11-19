@@ -12,7 +12,5 @@ export class EventBoxComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }
