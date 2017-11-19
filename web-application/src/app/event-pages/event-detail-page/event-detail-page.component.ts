@@ -20,7 +20,8 @@ export class EventDetailPageComponent implements OnInit {
   type: 'Marathon', description: 'lorem inpsum ahddhjkhekehfkjhewkjhfkh dkhefhjkfhjewhfhfhfkjh' +
     'jhebwhjfjbfewhjgfw jfgejhfgejhfgjhfjgwfwhvhje ejejndndn', city: 'New York', country: 'USA',
   maxDuration: 120, startingTime: new Date('10 january, 2018 10:30:00'), enrollmentOpeningAt:  new Date('10 december, 2017 10:30:00'),
-  enrollmentClosingAt:  new Date('30 december, 2018 10:30:00'), participantsList: null, routes: null,
+  enrollmentClosingAt:  new Date('30 december, 2018 10:30:00'), participantsList: null,
+    routes: [['40.715986', '-74.015343'],['40.768437', '-73.985474'], ['40.737232', '-74.005773']],
     logo: 'http://bsnscb.com/data/out/122/27416405-marathon-wallpapers.jpg'};
 
   currentUser: User;

@@ -13,6 +13,7 @@ export  class Event {
   public enrollmentClosingAt: Date;
   public participantsList: [Number];
   public logo: String;
-  public routes: [String];
-
+  public routes: [[String, String]];
 }
+
+

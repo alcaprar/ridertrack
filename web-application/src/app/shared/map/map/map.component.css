@@ -1,0 +1,10 @@
+agm-map{
+  height: 300px;
+  width:auto;
+}
+@media (max-width: 480px) {
+  agm-map{
+    height: 450px;
+  }
+}
+

@@ -1,11 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
+import { AgmCoreModule, AgmMap } from '@agm/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpModule } from '@angular/http';
 import { HttpClient } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './home-page/home-page.component';
@@ -31,7 +31,7 @@ import { FacebookModule } from 'ngx-facebook';
 import { MyEventsComponent } from './event-pages/my-events/my-events.component';
 import {GuestGuard} from "./shared/guards/guest.guard";
 import {EventService} from "./shared/services/event.service";
-import { EventBoxComponent } from './event-pages/event-box/event-box.component';
+import { MapComponent } from './shared/map/map/map.component';
 
 
 @NgModule({
@@ -52,7 +52,7 @@ import { EventBoxComponent } from './event-pages/event-box/event-box.component';
     EventDetailPageComponent,
     MyEventsComponent,
     ProfilePageComponent,
-    EventBoxComponent
+    MapComponent
   ],
   imports: [
     BrowserModule,
@@ -60,6 +60,9 @@ import { EventBoxComponent } from './event-pages/event-box/event-box.component';
     FormsModule,
     HttpClientModule,
     FacebookModule.forRoot(),
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyCWY7J8-bVG3TxQbVvgXb-F5lQV6XrTM5s'
+    }),
     RouterModule.forRoot([
       {
         path: '',
@@ -76,7 +79,7 @@ import { EventBoxComponent } from './event-pages/event-box/event-box.component';
        *  so if you have a list of events: *ngFor="let event of events" routerLink="/event/{{event.id}}"
        */
       {
-        path: 'events/:eventId',
+        path: 'event/:id',
         component: EventDetailPageComponent
       },
       {
@@ -118,6 +121,7 @@ import { EventBoxComponent } from './event-pages/event-box/event-box.component';
     AuthenticationService,
     EventService
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule { }
