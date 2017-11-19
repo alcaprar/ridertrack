@@ -29,10 +29,11 @@ describe('EventService', () => {
   });
 
   // Mock event example
-  const event = {id: 1, name: 'London Marathon', _organizerID: 2, type: 'Marathon', description: 'Bla bla bla bla',
-    country: 'UK', city: 'London', startingTime: '2018-02-28', maxDuration: 120,
-    participantsList: [], enrollmentOpeningAt: '2018-02-02', enrollmentClosingAt: '2018-02-20',
-    logo: 'http:bla.bla.com', routes: []};
+  const event : Event = {id: 1, name: 'London Marathon', _organizerID: 2, type: 'Marathon', description: 'Bla bla bla bla',
+    country: 'UK', city: 'London', startingTime: new Date('21 december, 2017 10:00:00'), maxDuration: 120,
+    participantsList: null, enrollmentOpeningAt:  new Date('1 december, 2017 10:00:00'),
+    enrollmentClosingAt:  new Date('15 december, 2017 10:00:00'),
+    logo: 'http:bla.bla.com', routes: null};
 
   it('should be created', inject([EventService], (service: EventService) => {
     expect(service).toBeTruthy();
