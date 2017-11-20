@@ -115,7 +115,6 @@ describe('Auth API tests', function () {
             };
 
             User.create(user, function () {
-                console.log('User created');
                 request.post('/api/auth/login')
                     .send({email: user.email, password: user.password})
                     .end(function (err, res) {

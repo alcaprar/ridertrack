@@ -25,7 +25,6 @@ module.exports = function (passport) {
 
             // check the password
             return user.verifyPassword(password, function (err, res) {
-                console.log('Check pass', err, res)
                 if(err){
                     return callback(err)
                 }

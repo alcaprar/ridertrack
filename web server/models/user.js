@@ -159,7 +159,6 @@ userSchema.statics.findByUserId = function (userId, callback) {
  */
 userSchema.statics.findByEmail = function (email, callback) {
     User.findOne({email: email}, function (err, user) {
-        console.log('FInd By email', email, err, user)
         if(err){
             return callback(err)
         }else{

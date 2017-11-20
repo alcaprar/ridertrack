@@ -52,44 +52,36 @@ router.get('/', function(req, res) {
     }
     if(req.query.keyword){
         if(typeof req.query.keyword === 'string'){
-            let keywords = req.query.keyword.split(' ');
-            conditions.name = {
-                $in: keywords
-            };
-            conditions.description = {
-                $in: keywords
-            }
+            let keywords = req.query.keyword;
+
+            conditions['$or'] = [
+                {name: { "$regex": keywords, "$options": "i" }},
+                {description: { "$regex": keywords, "$options": "i" }}
+            ];
         }
     }
     if(req.query.length){
-        conditions.length = {};
-        if(typeof req.query.length === 'string'){
-            // there is only one length condition
-            // trying to split by column
-            // there might be some conditions like gt, lt, gte, lte
-            let cond = req.query.length.split(':');
-
-            if(cond.length === 2){
-                // if the length of the splitted params is 2 there are such conditions
-                // veryfing they are accepted
-                if(['gt', 'lt', 'gte', 'lte'].indexOf(cond[0]) > -1){
-                    // the condition passed is accepted
-                    conditions.length['$' + cond[0]] = cond[1]
-                }
-            }else{
-                // there are no conditions, it is an eql
-                conditions.length = cond[0]
-            }
-        }
-
-
+        // it must be a range so the query param must be an object
         if(typeof req.query.length === 'object' && req.query.length.length === 2){
-            // there are 2 length params, it's a range conditions
-            options.length = {};
+            let lengthConditions = {};
 
-            for(let key in req.query.length){
+            for(let i = 0; i < req.query.length.length; i++){
+                let cond = req.query.length[i].split(':');
 
+                if(cond.length === 2){
+                    // only key value are allowed: "gt:10" ...
+                    let key = cond[0];
+                    let value = cond[1];
+
+                    // check the condition key is allowed
+                    if(['gt', 'lt', 'gte', 'lte'].indexOf(key) > -1){
+                        if(!isNaN(value)){
+                            lengthConditions['$' + key] = Number(value);
+                        }
+                    }
+                }
             }
+            conditions.length = lengthConditions;
         }
     }
 
