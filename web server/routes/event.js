@@ -52,13 +52,12 @@ router.get('/', function(req, res) {
     }
     if(req.query.keyword){
         if(typeof req.query.keyword === 'string'){
-            let keywords = req.query.keyword.split(' ');
-            conditions.name = {
-                $in: keywords
-            };
-            conditions.description = {
-                $in: keywords
-            }
+            let keywords = req.query.keyword;
+
+            conditions['$or'] = [
+                {name: { "$regex": keywords, "$options": "i" }},
+                {description: { "$regex": keywords, "$options": "i" }}
+            ];
         }
     }
     if(req.query.length){
