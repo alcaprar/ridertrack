@@ -39,7 +39,7 @@ Note:
     "_id": Number,
     "organizerId": Number,
     "name" : String,
-    "type": String,
+    "type": ['running', 'cycling', 'hiking', 'triathlon', 'other'],
     "description": String,
     "country": String,
     "city": String,

@@ -51,7 +51,7 @@ describe('Event API tests', function () {
             var event = new Event({
                 "name":"TestEvent",
                 "organizerId": mongoose.Types.ObjectId(),
-                "type":"Running",
+                "type":"running",
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
@@ -80,7 +80,7 @@ describe('Event API tests', function () {
             var event = new Event({
                 "name":"TestEvent",
                 "organizerId": mongoose.Types.ObjectId(),
-                "type":"Running",
+                "type":"running",
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
@@ -114,7 +114,7 @@ describe('Event API tests', function () {
                 var event = new Event({
                     "name":"TestEvent",
                     "organizerId": user._id,
-                    "type":"Running",
+                    "type":"running",
                     "description":"Blablabla",
                     "country":"MyCountry",
                     "city":"MyCity",
@@ -149,7 +149,7 @@ describe('Event API tests', function () {
             var event = new Event({
                 "name":"TestEvent",
                 "organizerId": mongoose.Types.ObjectId(),
-                "type":"Running",
+                "type":"running",
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
@@ -164,7 +164,7 @@ describe('Event API tests', function () {
             var event2 = new Event({
                 "name":"TestEvent2",
                 "organizerId": mongoose.Types.ObjectId(),
-                "type":"Running",
+                "type":"running",
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
@@ -195,7 +195,7 @@ describe('Event API tests', function () {
             var event = new Event({
                 "name":"TestEvent",
                 "organizerId": mongoose.Types.ObjectId(),
-                "type":"Running",
+                "type":"running",
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
@@ -210,7 +210,7 @@ describe('Event API tests', function () {
             var event2 = new Event({
                 "name":"TestEvent2",
                 "organizerId": mongoose.Types.ObjectId(),
-                "type":"Running",
+                "type":"running",
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
@@ -241,7 +241,7 @@ describe('Event API tests', function () {
             var event = new Event({
                 "name":"TestEvent",
                 "organizerId": mongoose.Types.ObjectId(),
-                "type":"Running",
+                "type":"running",
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
@@ -256,7 +256,7 @@ describe('Event API tests', function () {
             var event2 = new Event({
                 "name":"TestEvent2",
                 "organizerId": mongoose.Types.ObjectId(),
-                "type":"Running",
+                "type":"running",
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
@@ -287,7 +287,7 @@ describe('Event API tests', function () {
             var event = new Event({
                 "name":"TestEvent",
                 "organizerId": mongoose.Types.ObjectId(),
-                "type":"Running",
+                "type":"running",
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
@@ -303,7 +303,7 @@ describe('Event API tests', function () {
             var event2 = new Event({
                 "name":"TestEvent2",
                 "organizerId": mongoose.Types.ObjectId(),
-                "type":"Running",
+                "type":"running",
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
@@ -335,7 +335,7 @@ describe('Event API tests', function () {
             var event = new Event({
                 "name":"TestEvent",
                 "organizerId": mongoose.Types.ObjectId(),
-                "type":"Running",
+                "type":"running",
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
@@ -351,7 +351,7 @@ describe('Event API tests', function () {
             var event2 = new Event({
                 "name":"TestEvent2",
                 "organizerId": mongoose.Types.ObjectId(),
-                "type":"Running",
+                "type":"running",
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
@@ -383,7 +383,7 @@ describe('Event API tests', function () {
             var event = new Event({
                 "name":"TestEvent",
                 "organizerId": mongoose.Types.ObjectId(),
-                "type":"Running",
+                "type":"running",
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
@@ -399,7 +399,7 @@ describe('Event API tests', function () {
             var event2 = new Event({
                 "name":"TestEvent2",
                 "organizerId": mongoose.Types.ObjectId(),
-                "type":"Running",
+                "type":"running",
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
@@ -431,7 +431,7 @@ describe('Event API tests', function () {
             var event = new Event({
                 "name":"TestEvent",
                 "organizerId": mongoose.Types.ObjectId(),
-                "type":"Running",
+                "type":"running",
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
@@ -447,7 +447,7 @@ describe('Event API tests', function () {
             var event2 = new Event({
                 "name":"TestEvent2",
                 "organizerId": mongoose.Types.ObjectId(),
-                "type":"Running",
+                "type":"running",
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
@@ -479,7 +479,7 @@ describe('Event API tests', function () {
             var event = new Event({
                 "name":"TestEvent",
                 "organizerId": mongoose.Types.ObjectId(),
-                "type":"Running",
+                "type":"running",
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
@@ -495,7 +495,7 @@ describe('Event API tests', function () {
             var event2 = new Event({
                 "name":"TestEvent2",
                 "organizerId": mongoose.Types.ObjectId(),
-                "type":"Running",
+                "type":"running",
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
@@ -527,7 +527,7 @@ describe('Event API tests', function () {
             var event = new Event({
                 "name":"TestEvent",
                 "organizerId": mongoose.Types.ObjectId(),
-                "type":"Running",
+                "type":"running",
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
@@ -543,7 +543,7 @@ describe('Event API tests', function () {
             var event2 = new Event({
                 "name":"TestEvent2",
                 "organizerId": mongoose.Types.ObjectId(),
-                "type":"Running",
+                "type":"running",
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
@@ -576,7 +576,7 @@ describe('Event API tests', function () {
             var event = new Event({
                 "name":"TestEvent",
                 "organizerId": mongoose.Types.ObjectId(),
-                "type":"Running",
+                "type":"running",
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
@@ -604,7 +604,7 @@ describe('Event API tests', function () {
             var event = new Event({
                 "name":"TestEvent",
                 "organizerId": mongoose.Types.ObjectId(),
-                "type":"Running",
+                "type":"running",
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
@@ -632,7 +632,7 @@ describe('Event API tests', function () {
             var event = new Event({
                 "name":"TestEvent",
                 "organizerId": mongoose.Types.ObjectId(),
-                "type":"Running",
+                "type":"running",
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
@@ -660,7 +660,7 @@ describe('Event API tests', function () {
             var event = new Event({
                 "name":"TestEvent",
                 "organizerId": mongoose.Types.ObjectId(),
-                "type":"Running",
+                "type":"running",
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
@@ -702,7 +702,7 @@ describe('Event API tests', function () {
             var event = {
                 "name":"TestEvent",
                 "organizerId": mongoose.Types.ObjectId(),
-                "type":"Running",
+                "type":"running",
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
@@ -754,7 +754,7 @@ describe('Event API tests', function () {
                     var event = {
                         "name":"TestEvent",
                         "organizerId": user._id,
-                        "type":"Running",
+                        "type":"running",
                         "description":"Blablabla",
                         "country":"MyCountry",
                         "city":"MyCity",
@@ -797,7 +797,7 @@ describe('Event API tests', function () {
                     var event = {
                         "name":"TestEvent",
                         "organizerId": user._id,
-                        "type":"Running",
+                        "type":"running",
                         "description":"Blablabla",
                         "country":"MyCountry",
                         "city":"MyCity",
@@ -840,7 +840,7 @@ describe('Event API tests', function () {
                     var event = new Event({
                         "name":"TestEvent",
                         "organizerId": user._id,
-                        "type":"Running",
+                        "type":"running",
                         "description":"Blablabla",
                         "country":"MyCountry",
                         "city":"MyCity",
@@ -902,7 +902,7 @@ describe('Event API tests', function () {
                     var event = new Event({
                         "name":"TestEvent",
                         "organizerId": user._id,
-                        "type":"Running",
+                        "type":"running",
                         "description":"Blablabla",
                         "country":"MyCountry",
                         "city":"MyCity",
@@ -938,7 +938,7 @@ describe('Event API tests', function () {
             var event = new Event({
                 "name":"TestEvent",
                 "organizerId": mongoose.Types.ObjectId(),
-                "type":"Running",
+                "type":"running",
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
@@ -984,7 +984,7 @@ describe('Event API tests', function () {
                     var event = new Event({
                         "name":"TestEvent",
                         "organizerId": user._id,
-                        "type":"Running",
+                        "type":"running",
                         "description":"Blablabla",
                         "country":"MyCountry",
                         "city":"MyCity",
@@ -1023,7 +1023,7 @@ describe('Event API tests', function () {
             var event = new Event({
                 "name":"TestEvent",
                 "organizerId": mongoose.Types.ObjectId(),
-                "type":"Running",
+                "type":"running",
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
@@ -1068,7 +1068,7 @@ describe('Event API tests', function () {
                     var event = new Event({
                         "name":"TestEvent",
                         "organizerId": user._id,
-                        "type":"Running",
+                        "type":"running",
                         "description":"Blablabla",
                         "country":"MyCountry",
                         "city":"MyCity",
@@ -1129,7 +1129,7 @@ describe('Event API tests', function () {
                     var event = new Event({
                         "name":"TestEvent",
                         "organizerId": user._id,
-                        "type":"Running",
+                        "type":"running",
                         "description":"Blablabla",
                         "country":"MyCountry",
                         "city":"MyCity",
@@ -1174,7 +1174,7 @@ function createRandomEvents(numberToCreate, callback) {
     var basicEvent = {
         "name":"TestEvent",
         "organizerId": '',
-        "type":"Running",
+        "type":"running",
         "description":"Blablabla",
         "country":"MyCountry",
         "city":"MyCity",

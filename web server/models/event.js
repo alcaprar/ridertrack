@@ -18,6 +18,7 @@ var eventSchema = Schema({
     },
     type: {
         type: String,
+        enum: ['running', 'cycling', 'hiking', 'triathlon', 'other'],
         required: [true, 'Type of the event is required.']
     },
     description: {

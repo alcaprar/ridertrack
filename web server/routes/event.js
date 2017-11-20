@@ -11,7 +11,7 @@ var authMiddleware = require('../middlewares/auth');
 /**
  * It returns the list of all the events.
  * It accepts query params for filtering the events: name, type, country, city.
- * Inspired here https://specs.openstack.org/openstack/api-wg/guidelines/pagination_filter_sort.html
+ * Inspired here: https://specs.openstack.org/openstack/api-wg/guidelines/pagination_filter_sort.html
  */
 router.get('/', function(req, res) {
     var conditions = {};
@@ -133,10 +133,8 @@ router.get('/:eventId', function (req, res) {
  */
 router.get('/:eventId/organizer', function (req, res) {
     Event.findByEventId(req.params.eventId, function (err, event) {
-        console.log('Event', err, event);
         if(!err && event) {
             return User.findById(event.organizerId, function (err, user) {
-                console.log('Organizer', err, user);
                 if(err){
                     return res.status(400).send({
                         errors: err
