@@ -44,17 +44,42 @@ router.get('/', function(req, res) {
 
     // check for query parameters
     // if they are present, add them to the conditions
-    if(req.query.name){
-        conditions.name = req.query.name
-    }
     if(req.query.type){
         conditions.type = req.query.type
     }
-    if(req.query.country){
-        conditions.country = req.query.country
-    }
     if(req.query.city){
         conditions.city = req.query.city;
+    }
+    if(req.query.length){
+        conditions.length = {};
+        if(typeof req.query.length === 'string'){
+            // there is only one length condition
+            // trying to split by column
+            // there might be some conditions like gt, lt, gte, lte
+            let cond = req.query.length.split(':');
+
+            if(cond.length === 2){
+                // if the length of the splitted params is 2 there are such conditions
+                // veryfing they are accepted
+                if(['gt', 'lt', 'gte', 'lte'].indexOf(cond[0]) > -1){
+                    // the condition passed is accepted
+                    conditions.length['$' + cond[0]] = cond[1]
+                }
+            }else{
+                // there are no conditions, it is an eql
+                conditions.length = cond[0]
+            }
+        }
+
+
+        if(typeof req.query.length === 'object' && req.query.length.length === 2){
+            // there are 2 length params, it's a range conditions
+            options.length = {};
+
+            for(let key in req.query.length){
+
+            }
+        }
     }
 
     // using async lib to find the total number and find the events in parallel

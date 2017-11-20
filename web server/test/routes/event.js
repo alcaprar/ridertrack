@@ -145,6 +145,52 @@ describe('Event API tests', function () {
             });
         });
 
+        it('Search using filtering by length range', function (done) {
+            var event = new Event({
+                "name":"TestEvent",
+                "organizerId": mongoose.Types.ObjectId(),
+                "type":"running",
+                "description":"Blablabla",
+                "country":"MyCountry",
+                "city":"MyCity",
+                "startingTime":"2017-09-23T12:00:00.000Z",
+                "maxDuration":150,
+                "length": 40,
+                "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
+                "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+                "participantsList":[255],
+                "routes":["Route1"]
+            });
+            var event2 = new Event({
+                "name":"TestEvent2",
+                "organizerId": mongoose.Types.ObjectId(),
+                "type":"running",
+                "description":"Blablabla",
+                "country":"MyCountry",
+                "city":"MyCity",
+                "startingTime":"2017-09-23T12:00:00.000Z",
+                "maxDuration":150,
+                "length": 50,
+                "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
+                "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+                "participantsList":[255],
+                "routes":["Route1"]
+            });
+            event.save(function () {
+                event2.save(function () {
+                    request.get('/api/events?sort=length&length=gt:10&length=lt:40')
+                        .end(function (err1, res) {
+                            expect(res.status).to.be.eql(200);
+                            expect(res.body).to.be.an('object');
+                            expect(res.body.events).to.be.an('array');
+                            expect(res.body.events.length).to.be.eql(2);
+                            expect(res.body.events[0]._id).to.be.eql(event._id.toString());
+                            done();
+                        })
+                });
+            });
+        });
+
         it('Search using sorting by length without specifying asc or desc', function (done) {
             var event = new Event({
                 "name":"TestEvent",

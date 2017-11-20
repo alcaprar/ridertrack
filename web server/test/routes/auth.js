@@ -19,7 +19,7 @@ describe('Auth API tests', function () {
     // this will run before every test to clear the database
     // TODO clear database
 
-    before(function (done) {
+    beforeEach(function (done) {
         User.remove({}, function (err) {
             done()
         })
@@ -108,24 +108,29 @@ describe('Auth API tests', function () {
         
         it('it should login and get a jwtToken', function (done) {
             let user = {
-                email: 'organizer2@test.it',
-                password: 'aaa'
+                name: 'TestName',
+                surname: 'TestSurname',
+                email: 'testuser@ridertrack.com',
+                password: 'AVeryStrongPassword'
             };
 
-            request.post('/api/auth/login')
-                .send(user)
-                .end(function (err, res) {
-                    expect(res.status).to.be.eql(200);
-                    expect(res.body).to.be.an('object');
-                    expect(res.body).to.not.have.property('errors');
-                    expect(res.body).to.have.property('userId');
-                    expect(res.body).to.have.property('jwtToken');
-                    expect(res.body).to.have.property('expiresIn');
-                    expect(res.body.jwtToken).to.not.eql('');
-                    expect(res.body.expiresIn).to.be.above(0);
+            User.create(user, function () {
+                console.log('User created');
+                request.post('/api/auth/login')
+                    .send({email: user.email, password: user.password})
+                    .end(function (err, res) {
+                        expect(res.status).to.be.eql(200);
+                        expect(res.body).to.be.an('object');
+                        expect(res.body).to.not.have.property('errors');
+                        expect(res.body).to.have.property('userId');
+                        expect(res.body).to.have.property('jwtToken');
+                        expect(res.body).to.have.property('expiresIn');
+                        expect(res.body.jwtToken).to.not.eql('');
+                        expect(res.body.expiresIn).to.be.above(0);
 
-                    done()
-                })
+                        done()
+                    })
+            });
         });
     });
 
