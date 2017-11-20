@@ -2,7 +2,7 @@ import { Injectable, ApplicationRef  } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Response } from '@angular/http';
-import { FacebookService, InitParams, LoginResponse} from 'ngx-facebook';
+import { FacebookService, InitParams, LoginResponse,LoginOptions} from 'ngx-facebook';
 import { Router } from '@angular/router';
 import { User } from '../shared/models/user';
 import 'rxjs/add/operator/catch.js';
@@ -17,7 +17,7 @@ export const USERID = 'USERID';
 export const ROLE = 'ROLE';
 
 @Injectable()
-export class AuthenticationService {
+export class AuthenticationService{
   private BASE_AUTH_URL = 'http://localhost:5000/api/auth';
 
   public auth2: any;
@@ -32,7 +32,7 @@ export class AuthenticationService {
     const initParams: InitParams = {
       appId: '278876872621248',
       xfbml: true,
-      version: 'v2.8'
+      version: 'v2.11'
     };
     fb.init(initParams);
 
@@ -163,8 +163,13 @@ export class AuthenticationService {
    */
   loginWithFacebook(){
     console.log('[AuthS][FB]');
+    const options: LoginOptions = {
+      scope: 'public_profile,user_friends,email,pages_show_list',
+      return_scopes: true,
+      enable_profile_selector: true
+    };
     // call the login method of Facebook SDK
-    this.fb.login()
+    this.fb.login(options)
       .then((response: LoginResponse) => {
         // facebook login is successful and returned a token
         // we send this token to our web server
