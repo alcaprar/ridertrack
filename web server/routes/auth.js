@@ -82,7 +82,7 @@ router.post('/login', function (req, res, next) {
 });
 
 router.get('/login/facebook', function (req, res, next) {
-    passport.authenticate('facebook-token', function (err, user, info) {
+    passport.authenticate('facebook-token', { scope: ['id', 'displayName', 'name', 'email'] }, function (err, user, info) {
         if(err || !user){
             return res.status(400).send({
                 errors: [err]

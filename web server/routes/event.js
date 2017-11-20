@@ -50,6 +50,17 @@ router.get('/', function(req, res) {
     if(req.query.city){
         conditions.city = req.query.city;
     }
+    if(req.query.keyword){
+        if(typeof req.query.keyword === 'string'){
+            let keywords = req.query.keyword.split(' ');
+            conditions.name = {
+                $in: keywords
+            };
+            conditions.description = {
+                $in: keywords
+            }
+        }
+    }
     if(req.query.length){
         conditions.length = {};
         if(typeof req.query.length === 'string'){
