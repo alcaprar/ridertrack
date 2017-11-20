@@ -164,37 +164,47 @@ export class AuthenticationService{
   loginWithFacebook(){
     console.log('[AuthS][FB]');
     const options: LoginOptions = {
-      scope: 'public_profile,user_friends,email,pages_show_list',
-      return_scopes: true,
-      enable_profile_selector: true
+      auth_type: 'rerequest', // it should re request the permissions that the user did not granted
+      scope: 'public_profile,email',
+      return_scopes: true
     };
     // call the login method of Facebook SDK
     this.fb.login(options)
       .then((response: LoginResponse) => {
-        // facebook login is successful and returned a token
-        // we send this token to our web server
-        console.log('[AuthS][FB][success]', response);
-        const url = `${this.BASE_AUTH_URL}/login/facebook?access_token=${response.authResponse.accessToken}`;
-        this.http.get(url)
-          .subscribe(
-            data => {
-              console.log('[AuthS][FB][login/facebook][success]', data);
-              // the Facebook token was successfully received by the web server
-              // and it has sent a jwt token
-              const body = data.json();
-              this.storeResponse(body.userId, body.role, body.jwtToken);
+        // check if he/she gave enough permissions
 
-              // route to my-events
-              this.router.navigate(['my-events']);
+        var grantedPermissions = response.authResponse.grantedScopes.split(',');
 
-              // to force angular to update the views
-              this.appRef.tick();
-            },
-            error => {
-              console.log('[AuthS][FB][login/facebook][error]', error);
-              // something went wrong with the sending of the facebook token
-            }
-          );
+        if(grantedPermissions.indexOf('email') > -1 && grantedPermissions.indexOf('public_profile') > -1){
+          // the user has granted enough permission
+
+          // facebook login is successful and returned a token
+          // we send this token to our web server
+          console.log('[AuthS][FB][success]', response);
+          const url = `${this.BASE_AUTH_URL}/login/facebook?access_token=${response.authResponse.accessToken}`;
+          this.http.get(url)
+            .subscribe(
+              data => {
+                console.log('[AuthS][FB][login/facebook][success]', data);
+                // the Facebook token was successfully received by the web server
+                // and it has sent a jwt token
+                const body = data.json();
+                this.storeResponse(body.userId, body.role, body.jwtToken);
+
+                // route to my-events
+                this.router.navigate(['my-events']);
+
+                // to force angular to update the views
+                this.appRef.tick();
+              },
+              error => {
+                console.log('[AuthS][FB][login/facebook][error]', error);
+                // something went wrong with the sending of the facebook token
+              }
+            );
+        }else{
+          console.log('[AuthS][FB][error] not enough permissions', grantedPermissions);
+        }
       })
       .catch((error: any) => {
         console.log('[AuthS][FB][error]', error);
