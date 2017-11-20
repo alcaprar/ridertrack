@@ -11,9 +11,18 @@ var User = require('../models/user');
  */
 
 router.post('/', function(req, res){
-
-
-
+    Enrollment.create(req.body, function (err, user) {
+        if(err){
+            res.status(400).send({
+                errors: err
+            })
+        }else{
+            res.status(200).send({
+                message: 'User enrolled successfully!',
+                enrollment: enrollment
+            })
+        }
+    });
 });
 
 module.exports = router;
