@@ -30,5 +30,17 @@ var enrollmentSchema = Schema({
     }
 });
 
+
+enrollmentSchema.statics.create = function(enrollmentJson, callback){
+    var enrollment = new Enrollment(enrollmentJson);
+    enrollment.save(function(err, enrollment){
+        if(err) {return callback(err, null)}
+        else {return callback(null, enrollment) }
+    });
+};
+
+
+
+
 var Enrollment = mongoose.model('Enrollment', enrollmentSchema);
 module.exports = Enrollment;
