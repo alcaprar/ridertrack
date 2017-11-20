@@ -326,6 +326,16 @@ export class AuthenticationService {
     // redirect to the home page
     this.router.navigate(['']);
 
+    // force logout from Facebook SDK
+    this.fb.getLoginStatus()
+      .then(
+        (response) => {
+          if(response.status === 'connected'){
+            this.fb.logout()
+          }
+        }
+      );
+
     // to force angular to update the views
     this.appRef.tick();
   }
