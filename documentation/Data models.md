@@ -66,8 +66,8 @@ Note:
 
 ```
 {
-    "eventId": Number,
-    "userId": Number,
+    "eventId": String,
+    "userId": String,
     "additionalInfo": Object,
     "trackingSources" [TrackingSource],
     "created_at": Date,
