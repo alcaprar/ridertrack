@@ -33,7 +33,7 @@ describe('EventService', () => {
     country: 'UK', city: 'London', startingTime: new Date('21 december, 2017 10:00:00'), maxDuration: 120,
     participantsList: null, enrollmentOpeningAt:  new Date('1 december, 2017 10:00:00'),
     enrollmentClosingAt:  new Date('15 december, 2017 10:00:00'),
-    logo: 'http:bla.bla.com', routes: null};
+    logo: 'http:bla.bla.com', routes: [[0,0]], length: 120};
 
   it('should be created', inject([EventService], (service: EventService) => {
     expect(service).toBeTruthy();

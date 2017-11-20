@@ -1,8 +1,8 @@
 
-  <agm-map >
+  <agm-map [longitude]=initLong [latitude]="initLat" [zoom]="13"  >
     <agm-marker *ngFor="let route of routes"
-                [latitude]="route[0]"
-                [longitude]="route[1]">
+                [latitude]= route[0]
+                [longitude]=route[1]>
 
    </agm-marker>
  </agm-map>

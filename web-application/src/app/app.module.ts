@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
-import { AgmCoreModule, AgmMap } from '@agm/core';
+import {AgmCoreModule, AgmMap, GoogleMapsAPIWrapper} from '@agm/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpModule } from '@angular/http';
 import { HttpClient } from '@angular/common/http';
@@ -119,7 +119,8 @@ import { MapComponent } from './shared/map/map/map.component';
     AuthGuard,
     GuestGuard,
     AuthenticationService,
-    EventService
+    EventService,
+    GoogleMapsAPIWrapper
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

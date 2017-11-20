@@ -20,7 +20,8 @@ export class EventDetailPageComponent implements OnInit {
   type: 'Marathon', description: 'lorem inpsum ahddhjkhekehfkjhewkjhfkh dkhefhjkfhjewhfhfhfkjh' +
     'jhebwhjfjbfewhjgfw jfgejhfgejhfgjhfjgwfwhvhje ejejndndn', city: 'New York', country: 'USA',
   maxDuration: 120, startingTime: new Date('10 january, 2018 10:30:00'), enrollmentOpeningAt:  new Date('10 december, 2017 10:30:00'),
-  enrollmentClosingAt:  new Date('30 december, 2018 10:30:00'), participantsList: null, routes: null,
+  enrollmentClosingAt:  new Date('30 december, 2018 10:30:00'), participantsList: null,
+    routes: [[40.661390, -73.979641],[40.675814, -73.971487],[40.670806, -73.957754]],
     logo: 'http://bsnscb.com/data/out/122/27416405-marathon-wallpapers.jpg', length: 110};
 
   currentUser: User;
@@ -39,6 +40,7 @@ export class EventDetailPageComponent implements OnInit {
 
   // When the component is created catch the current event object and the current user
   ngOnInit() {
+
     this.route.params.subscribe(params => {
       this.eventId = params['eventId'];
       console.log('[EventDetail][OnInit]', this.eventId);

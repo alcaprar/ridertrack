@@ -36,7 +36,7 @@
                     <i class="fa fa-print"></i>
                   </a>
                 </div>
-               <img src="{{this.currentEvent.logo}}">
+               <img [src]="currentEvent.logo">
               </div>
             </div>
           </div><br>
@@ -118,7 +118,7 @@
                     <li>
                        <span class="property-info-entry">
                          <span class="property-info-value">Date</span>
-                         <span class="property-info-label">{{startingDate}}</span>
+                         <span class="property-info-label">{{startingTime}}</span>
                        </span>
                     </li>
                     <li>
@@ -128,7 +128,7 @@
                        </span>
                     </li>
 
-                    <!-- TO ADD *nfIf TO MANAGE THE TRACKING
+                    <!-- TO ADD *ngIf TO MANAGE THE TRACKING
                     <li >
                        <span class="property-info-entry">
                          <span class="property-info-value">Event On Going</span>
