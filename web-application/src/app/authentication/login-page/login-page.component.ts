@@ -24,7 +24,7 @@ export class LoginPageComponent implements OnInit {
    this.setFormLogin();
   }
 
-  
+
   ngAfterViewInit(){
     // it attaches a listener on the google button
     this.authService.attachGoogleSignIn(document.getElementById('google-signin'));
@@ -46,12 +46,12 @@ export class LoginPageComponent implements OnInit {
   login() {
     this.error = '';
     this.loading = true;
-
+    
     var user = new User(
       this.loginForm.get('email').value,
-      this.loginForm.get('password').value,
       '',
-      ''
+      '',
+      this.loginForm.get('password').value
     );
     console.log('[LoginComponent][Login]', user);
     this.authService.login(user)
