@@ -60,9 +60,9 @@ export class RegistrationPageComponent implements OnInit {
     // create an instance if user model
     var user = new User(
       this.registerForm.get('email').value,
-      this.registerForm.get('password').value,
       this.registerForm.get('name').value,
-      this.registerForm.get('surname').value
+      this.registerForm.get('surname').value,
+      this.registerForm.get('password').value
     );
 
     console.log('[RegistrationComponent][Register]', user);
