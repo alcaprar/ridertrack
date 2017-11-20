@@ -4,6 +4,7 @@ var router = express.Router();
 var async = require('async');
 
 var Event = require('../models/event');
+var User = require('../models/user');
 
 var authMiddleware = require('../middlewares/auth');
 
@@ -123,6 +124,33 @@ router.get('/:eventId', function (req, res) {
             res.status(200).send({
                 event: event
             })
+        }
+    })
+});
+
+/**
+ * It returns the detail of the organizer of the event.
+ */
+router.get('/:eventId/organizer', function (req, res) {
+    Event.findByEventId(req.params.eventId, function (err, event) {
+        console.log('Event', err, event);
+        if(!err && event) {
+            return User.findById(event.organizerId, function (err, user) {
+                console.log('Organizer', err, user);
+                if(err){
+                    return res.status(400).send({
+                        errors: err
+                    })
+                }else{
+                    return res.status(200).send({
+                        organizer: user
+                    })
+                }
+            });
+        }else{
+            return res.status(400).send({
+                errors: err || ['Event does not exist.']
+            });
         }
     })
 });

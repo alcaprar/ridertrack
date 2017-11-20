@@ -102,6 +102,48 @@ describe('Event API tests', function () {
                     })
             });
         });
+        
+        it('it should return the organizer of the event', function (done) {
+            var user = new User({
+                "name": "User",
+                "surname": "Surname",
+                "email": "email@domain.it",
+                "password": "AVeryStrongPasword"
+            });
+            user.save(function () {
+                var event = new Event({
+                    "name":"TestEvent",
+                    "organizerId": user._id,
+                    "type":"Running",
+                    "description":"Blablabla",
+                    "country":"MyCountry",
+                    "city":"MyCity",
+                    "startingTime":"2017-09-23T12:00:00.000Z",
+                    "maxDuration":150,
+                    "length": 40,
+                    "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
+                    "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+                    "participantsList":[255],
+                    "routes":["Route1"]
+                });
+                event.save(function () {
+                    request.get('/api/events/' + event._id + '/organizer')
+                        .end(function (err, res) {
+                            expect(res.status).to.be.eql(200);
+                            expect(res.body).to.be.an('object');
+                            expect(res.body.organizer).to.be.an('object');
+                            expect(res.body.organizer._id).to.be.eql(user._id.toString());
+                            expect(res.body.organizer.email).to.be.eql(user.email);
+                            expect(res.body.organizer.salt).to.be.eql(undefined);
+                            expect(res.body.organizer.hash).to.be.eql(undefined);
+                            expect(res.body.organizer.googleProfile).to.be.eql(undefined);
+                            expect(res.body.organizer.facebookProfile).to.be.eql(undefined);
+
+                            done();
+                        })
+                })
+            });
+        });
 
         it('Search using sorting by length without specifying asc or desc', function (done) {
             var event = new Event({
