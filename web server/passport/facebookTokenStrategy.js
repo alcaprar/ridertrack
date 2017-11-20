@@ -6,7 +6,8 @@ var config = require('../config');
 module.exports = function(passport) {
     passport.use('facebook-token', new FacebookStrategy({
             clientID: config.passport.facebookAuth.clientID,
-            clientSecret: config.passport.facebookAuth.clientSecret
+            clientSecret: config.passport.facebookAuth.clientSecret,
+            profileFields: ['id', 'displayName', 'name', 'email']
         },
         function (accessToken, refreshToken, profile, done) {
             // check if the user has already registered with this social
@@ -20,7 +21,7 @@ module.exports = function(passport) {
                 if(!user){
                     console.log('[FacebookStrategy]', '[user not found]', 'creating it...', profile);
                     // instanciate a new User
-                    user = {
+                    user = new User({
                         name: profile.name.givenName,
                         surname: profile.name.familyName,
                         email: profile.emails[0].value,
@@ -28,22 +29,6 @@ module.exports = function(passport) {
                             id: profile.id,
                             token: accessToken
                         }
-                    };
-
-                    return User.create(user, function (err, user) {
-                        if(err){
-                            console.log('[FacebookStrategy]', '[user not' +
-                                ' found]', 'Error while creating it', err);
-                            // can't register the user
-                            // the email might be already registered
-                            // TODO check the error and send a nice message
-                            return done(err);
-                        }
-
-                        console.log('[FacebookStrategy]', '[user not found]', 'user successfully created');
-
-                        // user has been correctly save
-                        return done(null, user)
                     });
 
                     // save the new user
