@@ -17,6 +17,11 @@ module.exports = function(passport) {
                     return done(err)
                 }
 
+                if(!profile.emails){
+                    console.log('FacebookStrategy', 'no emails provided', profile);
+                    return done('No email provided.')
+                }
+
                 // user not found with this social, try to register it
                 if(!user){
                     console.log('[FacebookStrategy]', '[user not found]', 'creating it...', profile);

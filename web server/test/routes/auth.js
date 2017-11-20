@@ -136,8 +136,7 @@ describe('Auth API tests', function () {
     describe('GET /auth/login/facebook', function () {
 
         it('it should login with facebook', function (done) {
-            var accessToken = 'EAAD9oxTtvMABAOolzeV8Ych9jyuh8ijQESLxJTzUObTJxpB0e2MZCyZBUXuVYGPmkS0RUmJziYjAY3YXZAdNyDxn0c7T1drB3ZC0fMwnCgRA49dZAMlrlgopMiDuqVl9j3Sn2mL27BdCrPj41QWiPwNCBf5rm0hfJfWm4WYPZAZBYgZArT6ZC1HYaRWzKepGCQZCdIz18A3h7NEjwVx3WywjYqPSwFhxuZCgUvmXMpMYO5JfQZDZD';
-
+            var accessToken = 'EAAD9oxTtvMABACYcZC2Xd7xr3rEjhegPmpG5OELsNQZBxo1FczinXG0hZCxquQle1GzPe2ZALWQEcOUtEQLvwom240ydtwsBcz7VxIln3XUjXFeG5vrlldQefIWJgZAv5gLTtPZAbpVQoASH1jJHZBNGPccJPmo3wotMGzqzN2cfYF9tqSyJOaGarUwC2KMrbLqQW7SUQzAZBe9i3KEnzJ7NelrB1bZBPt5DuweZCMnsKAZBQZDZD'
             request.get('/api/auth/login/facebook?access_token=' + accessToken)
                 .end(function (err, res) {
                     console.log(res.body);
