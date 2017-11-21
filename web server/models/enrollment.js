@@ -52,6 +52,9 @@ enrollmentSchema.statics.findAllByEventId = function (eventId, callback ){
     })
 };
 
+/**
+ * Static method to find an enrollment and delete it.
+ */
 enrollmentSchema.statics.delete = function (enrollmentId, callback){
     this.FindOneAndDelete(enrollmentId , function(err, enrollment){
         if(err) {
