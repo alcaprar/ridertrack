@@ -25,8 +25,6 @@ describe('Enrollment API tests', function () {
         })
     });
 
-
-
     describe('POST /enrollments', function () {
         it('it should NOT add a new enrollment because eventId field is missing', function (done) {
             let enrollment =  new Enrollment({
@@ -187,6 +185,46 @@ describe('Enrollment API tests', function () {
         });
 
     });
+    describe('DELETE /enrollments', function () {
+        it('it should add a new enrollment then delete it!', function (done) {
+
+            let enrollment = new Enrollment({
+
+                eventId: "eventId1",
+                userId :"userId1",
+                additionalInfo : Object,
+                trackingSources: [Object],
+                created_at: "2017-09-10T00:00:00.000Z",
+                updated_at: "2017-09-10T00:00:00.000Z"
+            });
+
+            request.post('/api/enrollments')
+                .send(enrollment)
+                .end(function (err, res) {
+                    expect(res.status).to.be.eql(200);
+                    expect(res.body).to.be.an('object');
+                    expect(res.body).to.not.have.property('errors');
+                    expect(res.body).to.have.property('enrollment');
+
+                })
+
+            request.delete('/api/enrollments')
+                .send(enrollment)
+                .end(function (err, res){
+                    expect(res.status).to.be.eql(200);
+                    expect(res.body).to.be.an('object');
+                    expect(res.body).to.not.have.property('errors');
+                    expect(res.body).to.have.property('deleted_enrollment');
+
+
+
+
+                })
+
+
+        });
+    });
+
 
     // it closes the server at the end
     after(function (done) {
