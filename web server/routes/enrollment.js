@@ -92,6 +92,30 @@ router.put('/:enrollmentId', function (req, res) {
 });
 
 
+/**
+ * It deletes the given enrollment by eventId and userId
+ * Can be called only by the given user if he/she is enrollment on the envent.
+ * This will delete permanently everything related to it.
+ */
+router.delete('/:eventId/:userId', function (req, res) {
+    User.delete(req.params.eventId, req.params.userId, function (err, enrollment) {
+        if(err){
+            res.status(400).send({
+                errors: err
+            })
+        }else {
+            res.status(200).send({
+                enrollment: enrollment,
+                message: 'Enrollment successfully deleted'
+            })
+        }
+    })
+});
+
+
+
+
+
 
 
 
