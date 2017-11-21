@@ -12,6 +12,9 @@ router.use('/api/users', require('./user'));
 // require event endpoint
 router.use('/api/events', require('./event'));
 
+// require enrollment endpoint
+router.use('/api/enrollments', require('./enrollment'));
+
 // it sends the angular app
 router.get('*', function (req, res) {
     return res.sendFile(path.join(config.rootFolder,'public/index.html'));

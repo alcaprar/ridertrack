@@ -3,6 +3,7 @@ var express = require('express'),
     favicon = require('serve-favicon'),
     User = require('./models/user'),
     Event = require('./models/event'),
+    Enrollment = require('./models/enrollment'),
     cors = require('cors');
 
 var app = express();
