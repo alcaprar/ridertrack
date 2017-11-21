@@ -22,7 +22,7 @@ export class EventDetailPageComponent implements OnInit {
   maxDuration: 120, startingTime: new Date('10 january, 2018 10:30:00'), enrollmentOpeningAt:  new Date('10 december, 2017 10:30:00'),
   enrollmentClosingAt:  new Date('30 december, 2018 10:30:00'), participantsList: null,
     routes: [[40.661390, -73.979641],[40.675814, -73.971487],[40.670806, -73.957754]],
-    logo: 'http://bsnscb.com/data/out/122/27416405-marathon-wallpapers.jpg', length: 110};
+    logo: 'https://assets.bwbx.io/images/users/iqjWHBFdfxIU/i54IjlJe6So0/v1/-1x-1.jpg', length: 30};
 
   currentUser: User;
   organizer: User = new User('john@mail.com','John','Smith','password');
@@ -34,13 +34,14 @@ export class EventDetailPageComponent implements OnInit {
   today: Date = new Date();
   enrollement: String;
 
-  constructor(private route: ActivatedRoute/*private userService: UserService, private route: ActivatedRoute,
+  constructor(/*private route: ActivatedRoute private userService: UserService, private route: ActivatedRoute,
               private eventService: EventService, private location: Location*/) {
   }
 
   // When the component is created catch the current event object and the current user
   ngOnInit() {
 
+    /*
     this.route.params.subscribe(params => {
       this.eventId = params['eventId'];
       console.log('[EventDetail][OnInit]', this.eventId);
@@ -49,13 +50,14 @@ export class EventDetailPageComponent implements OnInit {
       // load the currentUser
       // load the organizer
 
-    });
+    });*/
     // this.userService.getUser().subscribe((user) => this.currentUser = user);*/
     this.enrollementOpenDate = this.getFullDate(this.currentEvent.enrollmentOpeningAt);
     this.enrollementCloseDate = this.getFullDate(this.currentEvent.enrollmentClosingAt);
     this.startingTime = this.getDate(this.currentEvent.startingTime);
     this.fullStartingTime = this.getFullDate(this.currentEvent.startingTime);
     this.isEnrollementAvailable();
+    console.log('[Event-Detail-Component][OnInit][Event]', this.currentEvent);
   }
 
   /**
