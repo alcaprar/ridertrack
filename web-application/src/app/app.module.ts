@@ -25,6 +25,7 @@ import {AuthGuard} from './shared/guards/auth.guard';
 import {AuthenticationService} from "./authentication/authentication.service";
 import {EventDetailPageComponent} from './event-pages/event-detail-page/event-detail-page.component';
 import { ProfilePageComponent} from "./user-pages/profile-page/profile-page.component";
+import {EventCreatePageComponent} from "./event-pages/create-event-page/event-create-page.component";
 
 
 import { FacebookModule } from 'ngx-facebook';
@@ -52,7 +53,8 @@ import { MapComponent } from './shared/map/map/map.component';
     EventDetailPageComponent,
     MyEventsComponent,
     ProfilePageComponent,
-    MapComponent
+    MapComponent,
+    EventCreatePageComponent
   ],
   imports: [
     BrowserModule,
@@ -72,6 +74,11 @@ import { MapComponent } from './shared/map/map/map.component';
       {
         path: 'events',
         component: EventsListPageComponent
+      },
+      {
+        path: 'create-event',
+        component: EventCreatePageComponent,
+        //canActivate: [AuthGuard]
       },
       /**
        *  when you want to redirect to the event detail page,
