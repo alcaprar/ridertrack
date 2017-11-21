@@ -2,7 +2,6 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var enrollmentSchema = Schema({
-
     eventId: {
         type: String,
         required: true
@@ -46,6 +45,16 @@ enrollmentSchema.statics.create = function(enrollmentJson, callback){
 enrollmentSchema.statics.findAllByEventId = function (eventId, callback ){
     this.find({eventId: eventId}, function (err, enrollment) {
         if(err){
+            return callback(err)
+        }else{
+            return callback(null, enrollment)
+        }
+    })
+};
+
+enrollmentSchema.statics.delete = function (enrollmentId, callback){
+    this.FindOneAndDelete(enrollmentId , function(err, enrollment){
+        if(err) {
             return callback(err)
         }else{
             return callback(null, enrollment)
