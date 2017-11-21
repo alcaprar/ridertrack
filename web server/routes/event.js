@@ -186,7 +186,8 @@ router.get('/:eventId/organizer', function (req, res) {
  * It returns the detail of the event just created.
  */
 router.post('/', authMiddleware.hasValidToken, function (req, res) {
-    Event.create(req.body, function (err, event) {
+    console.log('[POST /events]', req.userId, req.body);
+    Event.create(req.userId, req.body, function (err, event) {
         if (err) {
             res.status(400).send({
                 errors: err

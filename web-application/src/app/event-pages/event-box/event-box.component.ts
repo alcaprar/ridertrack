@@ -8,9 +8,11 @@ import { Component, OnInit, Input } from '@angular/core';
 export class EventBoxComponent implements OnInit {
 
   @Input()
-  private event: Event;
+  event: any;
 
   constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log('[EventBox][Init]', this.event)
+  }
 }

@@ -33,6 +33,8 @@ import { MyEventsComponent } from './event-pages/my-events/my-events.component';
 import {GuestGuard} from "./shared/guards/guest.guard";
 import {EventService} from "./shared/services/event.service";
 import { MapComponent } from './shared/map/display_map/map.component';
+import {HttpClientService} from "./shared/services/http-client.service";
+import {EventBoxComponent} from "./event-pages/event-box/event-box.component";
 
 
 @NgModule({
@@ -54,7 +56,8 @@ import { MapComponent } from './shared/map/display_map/map.component';
     MyEventsComponent,
     ProfilePageComponent,
     MapComponent,
-    EventCreatePageComponent
+    EventCreatePageComponent,
+    EventBoxComponent
   ],
   imports: [
     BrowserModule,
@@ -115,7 +118,7 @@ import { MapComponent } from './shared/map/display_map/map.component';
       },
       {
         path: '**',
-        redirectTo: '/home',
+        redirectTo: '/',
         pathMatch: 'full'
       }
     ]),
@@ -127,7 +130,8 @@ import { MapComponent } from './shared/map/display_map/map.component';
     GuestGuard,
     AuthenticationService,
     EventService,
-    GoogleMapsAPIWrapper
+    GoogleMapsAPIWrapper,
+    HttpClientService
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

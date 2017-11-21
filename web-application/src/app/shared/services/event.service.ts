@@ -1,14 +1,22 @@
 import { Injectable } from '@angular/core';
-import {Http} from '@angular/http';
+import {Router} from '@angular/router';
 import {Event} from '../models/event';
 import {Observable} from 'rxjs/Observable';
+import {EventToCreate} from "../models/eventToCreate";
+import {HttpClientService} from "./http-client.service";
 
 @Injectable()
 export class EventService {
 
   private BASE_EVENT_URL = 'http://localhost:5000/api/events';
 
-  constructor(private http: Http) {
+  private eventTypes: [String] = ['running', 'cycling', 'hiking', 'thriatlon', 'other'];
+
+  constructor(private http: HttpClientService, private router: Router) {
+  }
+
+  getEventTypes(){
+    return this.eventTypes;
   }
 
   /**
@@ -52,17 +60,24 @@ export class EventService {
    * @param {Event} event
    * @returns {Promise<Event>} of the event
    */
-  createEvent(event: Event): Promise<Event> {
+  createEvent(event: EventToCreate): Promise<Event> {
     const url = `${this.BASE_EVENT_URL}`;
-    return this.http.post(url, JSON.stringify(event)).toPromise()
-      .then((res) => {
-        const eventBody = res.json().event as Event;
-        console.log('[EventService][creteEvent][success]', eventBody);
-        return eventBody;
+
+    // unset the logo field only for now
+    event.logo = null;
+
+    return this.http.post(url, event).toPromise()
+      .then(
+        (res) => {
+          const eventBody = res.json().event as Event;
+          console.log('[EventService][creteEvent][success]', eventBody);
+          this.router.navigate(['my-events']);
+          return eventBody;
       })
-      .catch( error => {
-        console.log('[EventService][createEvent][error]', error);
-        return Promise.reject(error.message || error);
+      .catch(
+        (error) => {
+          console.log('[EventService][createEvent][error]', error);
+          return Promise.reject(error.json());
       });
   }
 

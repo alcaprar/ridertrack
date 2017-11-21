@@ -1,21 +1,20 @@
 export  class Event {
 
-  public id: Number;
+  public _id: String;
   public name: String;
-  public _organizerID: Number;
+  public organizerId: String;
   public type: String;
   public description: String;
   public country: String;
   public city: String;
+  public startingDate: String;
   public startingTime: Date;
   public maxDuration: Number;
   public enrollmentOpeningAt: Date;
   public enrollmentClosingAt: Date;
-  public participantsList: [Number];
   public logo: String;
-  public routes: [[Number, Number]];
-  public length: number;
-
+  public length: Number;
+  public routes;
 }
 
 
