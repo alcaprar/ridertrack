@@ -98,14 +98,14 @@ router.put('/:enrollmentId', function (req, res) {
  * This will delete permanently everything related to it.
  */
 router.delete('/:eventId/:userId', function (req, res) {
-    User.delete(req.params.eventId, req.params.userId, function (err, enrollment) {
+    User.delete(req.params.eventId, req.params.userId, function (err, deleted_enrollment) {
         if(err){
             res.status(400).send({
                 errors: err
             })
         }else {
             res.status(200).send({
-                enrollment: enrollment,
+                enrollment: deleted_enrollment,
                 message: 'Enrollment successfully deleted'
             })
         }

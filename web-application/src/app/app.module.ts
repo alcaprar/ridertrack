@@ -32,7 +32,7 @@ import { FacebookModule } from 'ngx-facebook';
 import { MyEventsComponent } from './event-pages/my-events/my-events.component';
 import {GuestGuard} from "./shared/guards/guest.guard";
 import {EventService} from "./shared/services/event.service";
-import { MapComponent } from './shared/map/map/map.component';
+import { MapComponent } from './shared/map/display_map/map.component';
 
 
 @NgModule({
