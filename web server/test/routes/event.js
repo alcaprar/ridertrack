@@ -1350,6 +1350,120 @@ describe('Event API tests', function () {
         })
     });
 
+    describe('GET /organizedEvents',function(){
+
+        var firstUser = {
+            "userId":'',
+            "email":"firstUser@user.com",
+            "password":'firstUser',
+            "name":"First",
+            "surname":"User",
+            "role":"user",
+            "userToken":''
+        };
+
+        var secondUser = {
+            "userId":'',
+            "email":'secondUser@user.com',
+            "password":'secondUser',
+            "name":'Second',
+            "surname":'User',
+            "role":'user',
+            "userToken":''
+        };
+        
+        //login users
+        before (function(done){
+            request.post('/api/auth/register')
+                .send(firstUser)
+                .end(function(err,res){
+                    firstUser.userToken = 'JWT ' + res.body.jwtToken;
+                    firstUser.userId = res.body.userId;
+                    
+                    request.post('/api/auth/register')
+                        .send(secondUser)
+                        .end(function(err,res){
+                           secondUser.userToken = 'JWT ' + res.body.jwtToken;
+                           secondUser.userId = res.body.userId;
+                           done();
+                        });
+                });
+        });
+
+        it('should return 2 user events',function(done) {
+
+            //console.log("Usertoken " + firstUser.userToken + " userId " + firstUser.userId);
+            var myEvent = new Event({
+                "name": "First event I created",
+                "organizerId": firstUser.userId,
+                "type": "running",
+                "description": "Blablabla",
+                "country": "MyCountry",
+                "city": "MyCity",
+                "startingTime": "2017-09-23T12:00:00.000Z",
+                "maxDuration": 150,
+                "length": 40,
+                "enrollmentOpeningAt": "2017-09-10T00:00:00.000Z",
+                "enrollmentClosingAt": "2017-09-17T00:00:00.000Z",
+                "participantsList": [255],
+                "routes": ["Route1"]
+            });
+
+            var alsoMyEvent = new Event({
+                "name": "Second event I created",
+                "organizerId": firstUser.userId,
+                "type": "running",
+                "description": "Blablabla",
+                "country": "MyCountry",
+                "city": "MyCity",
+                "startingTime": "2017-09-23T12:00:00.000Z",
+                "maxDuration": 150,
+                "length": 40,
+                "enrollmentOpeningAt": "2017-09-10T00:00:00.000Z",
+                "enrollmentClosingAt": "2017-09-17T00:00:00.000Z",
+                "participantsList": [255],
+                "routes": ["Route1"]
+            });
+
+            var notMyEvent = new Event({
+                "name": "Not my event",
+                "organizerId": secondUser.userId,
+                "type": "running",
+                "description": "Blablabla",
+                "country": "MyCountry",
+                "city": "MyCity",
+                "startingTime": "2017-09-23T12:00:00.000Z",
+                "maxDuration": 150,
+                "length": 40,
+                "enrollmentOpeningAt": "2017-09-10T00:00:00.000Z",
+                "enrollmentClosingAt": "2017-09-17T00:00:00.000Z",
+                "participantsList": [255],
+                "routes": ["Route1"]
+            });
+
+            //create 3 events
+            myEvent.save(function() {
+                notMyEvent.save(function() {
+                    alsoMyEvent.save(function() {
+                        request.get('/api/events/' + firstUser.userId + '/organizedEvents')
+                            .set('Authorization', firstUser.userToken)
+                            .end(function (err, res) {
+                                var resultedEvents = res.body.events;
+
+                               // console.log(resultedEvents);
+                                expect(resultedEvents.length).to.be.eql(2);
+                                for (var i in resultedEvents){
+                                    expect(resultedEvents[i].organizerId).to.be.eql(firstUser.userId);
+                                    expect(resultedEvents[i].name).not.to.be.eql(notMyEvent.name);
+                                }
+                                done();
+                            });
+                    });
+                });
+            });
+        });
+
+    });
 
     // it closes the server at the end
     after(function (done) {
