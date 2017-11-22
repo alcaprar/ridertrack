@@ -14,9 +14,10 @@ export class EventManagePageComponent implements OnInit {
 
   private eventTypes;
 
-  @Input() event:Event;
+  event:Event = new Event();
 
   constructor(private eventService: EventService, private router: Router) {
+
   }
 
   ngOnInit() {

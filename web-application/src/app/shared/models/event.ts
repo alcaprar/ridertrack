@@ -1,20 +1,12 @@
-export  class Event {
+export class Event{
 
-  public _id: String;
-  public name: String;
-  public organizerId: String;
-  public type: String;
-  public description: String;
-  public country: String;
-  public city: String;
-  public startingDate: String;
-  public startingTime: Date;
-  public maxDuration: Number;
-  public enrollmentOpeningAt: Date;
-  public enrollmentClosingAt: Date;
-  public logo: String;
-  public length: Number;
-  public routes;
+  constructor(
+    public name?: string,
+    public type?: string,
+    public startingDate?: string,
+    public country?: string,
+    public city?: string,
+    public logo?: File,
+    public length?: number
+  ){}
 }
-
-
