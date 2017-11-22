@@ -24,8 +24,8 @@ export class MapComponent implements OnInit {
   }
 
   initializeMap(){
-     this.initLat = this.routes[1][0];
-     this.initLong = this.routes [1][1];
+     this.initLat = this.routes[0][0];
+     this.initLong = this.routes [0][1];
    }
 
   getRoutes() {
