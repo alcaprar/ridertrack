@@ -188,23 +188,19 @@ describe('Enrollment API tests', function () {
 
     });
     describe('DELETE /enrollments', function () {
+        // TODO Same test but without specifying one, should return an error, currently does not.
         it('it should add a new enrollment then delete it!', function (done) {
-
-
             var user = {
                 "name": "userId1",
                 "surname": "Surname",
                 "email": "email@domain.it",
                 "password": "AVeryStrongPasword"
             };
-
             request.post('/api/auth/register')
                 .send(user)
                 .end(function (err, res) {
                     user._id = res.body.userId;
                     user.jwtToken = res.body.jwtToken;
-
-                    console.log("Post USER done...................");
 
                     var event = {
                         "name": "TestEvent",
@@ -221,7 +217,6 @@ describe('Enrollment API tests', function () {
                         "participantsList": [255],
                         "routes": ["Route1"]
                     };
-
                     request.post('/api/events')
                         .send(event)
                         .set('Authorization', 'JWT ' + user.jwtToken)
@@ -230,9 +225,6 @@ describe('Enrollment API tests', function () {
                             expect(res.body).to.be.an('object');
                             expect(res.body.event).to.be.an('object');
                             expect(res.body.event._id).to.not.be.eql('');
-                            console.log("Post EVENT done.................");
-
-
 
                             var enrollment = {
                                 eventId: event.organizerId,
@@ -252,11 +244,6 @@ describe('Enrollment API tests', function () {
                                         expect(res.body).to.not.have.property('errors');
                                         expect(res.body).to.have.property('enrollment');
 
-                                        console.log("Post ENROLLMENT done.................")
-
-
-                                        console.log(event);
-                                        console.log(user);
 
                                         request.delete('/api/enrollments/?eventId='+event.organizerId + '\&userId=' + user._id)
                                             .send(enrollment)
@@ -267,15 +254,11 @@ describe('Enrollment API tests', function () {
                                                 expect(res.body).to.not.have.property('errors');
                                                 expect(res.body).to.have.property('deleted_enrollment');
                                                 done();
-
                                             })
                                     })
                         });
-
                 });
-
         });
-
     });
 
 

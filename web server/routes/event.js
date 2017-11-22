@@ -189,7 +189,6 @@ router.post('/', authMiddleware.hasValidToken, function (req, res) {
     console.log('[POST /events]', req.userId, req.body);
     Event.create(req.userId, req.body, function (err, event) {
         if (err) {
-            console.log(err);
             res.status(400).send({
                 errors: err
             })

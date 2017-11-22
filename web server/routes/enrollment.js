@@ -44,12 +44,10 @@ router.get('/', function (req, res) {
 router.post('/', function(req, res){
     Enrollment.create(req.body, function (err, enrollment) {
         if(err){
-            console.log("POST ERROR: " + err)
             res.status(400).send({
                 errors: err
             })
         }else{
-            console.log("POST SUCCESS: ")
             res.status(200).send({
                 message: 'User enrolled successfully!',
                 enrollment: enrollment
@@ -113,12 +111,11 @@ router.delete('/', function (req, res) {
 
     Enrollment.delete(conditions, function (err, deleted_enrollment) {
         if(err){
-            console.log("DELETE ERROR: " + err)
             res.status(400).send({
                 errors: err
             })
         }else {
-            console.log("DELETE Success");
+
             res.status(200).send({
                 deleted_enrollment: deleted_enrollment,
                 message: 'Enrollment successfully deleted'
