@@ -1,29 +1,32 @@
 <app-page-header title="Register"></app-page-header>
+
 <div class="register-area" style="background-color: rgb(249, 249, 249);">
   <div class="container">
     <div class="col-md-6 col-md-offset-3">
       <div class="box-for overflow">
         <div class="col-md-12 col-xs-12 register-blocks">
           <h2>New account : </h2>
-          <form [formGroup]="registerForm" #f="ngForm">
+          <form novalidate [formGroup]="registerForm" #f="ngForm">
             <div class="form-group">
               <label for="name">Name</label>
-              <input type="text" class="form-control" formControlName="name">
+              <input type="text" class="form-control" id="name"  formControlName="name" #spy>
             </div>
             <div class="form-group">
               <label for="surname">Surname</label>
-              <input type="text" class="form-control" formControlName="surname">
+              <input type="text" class="form-control" id="surname" formControlName="surname" #spy>
             </div>
             <div class="form-group">
               <label for="email">Email</label>
-              <input type="text" class="form-control" formControlName="email">
+              <input type="text" class="form-control" id="email" formControlName="email" #spy>
             </div>
             <div class="form-group">
               <label for="password">Password</label>
-              <input type="password" class="form-control" formControlName="password">
+              <input type="password" class="form-control" id="password" formControlName="password" #spy>
             </div>
+
             <div class="text-center">
-              <button type="button" class="btn btn-default" (click)="register()">Register</button>
+              <button type="submit" class="btn btn-default"
+                      (click)="register()" [disabled]="!registerForm.valid">Register</button>
             </div>
             <h2>Social registration :  </h2>
 
