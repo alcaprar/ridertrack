@@ -67,7 +67,6 @@ var userSchema = Schema({
         select: true,
         default : ['LjubljanskiMaraton123!!','ZagrebMarathon123']
     }
-
 });
 
 userSchema.index({email: 1}, {name: 'email_idx', unique: true});

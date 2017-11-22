@@ -59,8 +59,9 @@ router.get('/:userId', function (req, res) {
  * TODO authorization
  */
 
-router.get('/:userId/enrolledEvents', function (req, res){
-    User.findByUserId(req.params.userId, function (err, user){
+router.get('/:userId/enrolledEvents',authMiddleware.hasValidToken, function (req, res){
+    var userId = req.userId;
+    User.findByUserId(userId, function (err, user){
         if (err)
             return res.status(400).send({
                 errors: err
@@ -68,6 +69,24 @@ router.get('/:userId/enrolledEvents', function (req, res){
         else{
             return res.status(200).send({
                 enrolledEvents: user.enrolledEvents
+            });
+        }
+    });
+});
+
+/**
+ * It returns the events organized by the user.
+ */
+router.get('/:userId/organizedEvents', authMiddleware.hasValidToken, function(req,res){
+    var userId = req.userId;
+    Event.find({organizerId:userId},function(err,events){
+        if (err)
+            return res.status(400).send({
+                errors:err
+            });
+        else{
+            return res.status(200).send({
+                events:events
             });
         }
     });
