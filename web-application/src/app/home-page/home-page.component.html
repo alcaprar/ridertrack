@@ -25,11 +25,7 @@
             </div>
             <div class="form-group">
               <select id="race" class="selectpicker" data-live-search="true" data-live-search-style="begins" title="Select race">
-
-                <option>Running</option>
-                <option>Biking</option>
-                <option>Marathon</option>
-                <option>Triathlon</option>
+                <option *ngFor="let type of eventTypes" [value]="type" style="text-transform: capitalize">{{type}}</option>
               </select>
             </div>
 
@@ -39,8 +35,6 @@
         </div>
       </div>
     </div>
-
-
 
 <!-- property area -->
 <div class="content-area home-area-1 recent-property" style="background-color: #FCFCFC; padding-bottom: 55px;">
@@ -54,119 +48,9 @@
 
     <div class="row">
       <div class="proerty-th">
-        <div class="col-sm-6 col-md-3 p0">
-          <div class="box-two proerty-item">
-            <div class="item-thumb">
-              <a routerLink="event/:id">
-                <div class="event-image" style="background-image: url('../../assets/img/ny-marathon.jpg')"></div>
-              </a>
-            </div>
-            <div class="item-entry overflow">
-              <h5><a routerLink="event/:id"> New York Marathon </a></h5>
-              <div class="dot-hr"></div>
-              <span class="pull-left"><b>Length :</b> 42.195 km </span>
-              <span class="location pull-right">New York</span>
-            </div>
-          </div>
+        <div class="col-sm-6 col-md-3 p0" *ngFor="let event of lastEvents">
+          <app-home-event-box [event]="event"></app-home-event-box>
         </div>
-
-        <div class="col-sm-6 col-md-3 p0">
-          <div class="box-two proerty-item">
-            <div class="item-thumb">
-              <a routerLink="event/:id" >
-                <div class="event-image" style="background-image: url('../../assets/img/stan-siejka-classic.jpg')"></div>
-              </a>
-            </div>
-            <div class="item-entry overflow">
-              <h5><a routerLink="event/:id" > Stan Siejka Classic </a></h5>
-              <div class="dot-hr"></div>
-              <span class="pull-left"><b>Length : </b> 150 km </span>
-              <span class="location pull-right">Launceston</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-sm-6 col-md-3 p0">
-          <div class="box-two proerty-item">
-            <div class="item-thumb">
-              <a routerLink="event/:id" >
-                <div class="event-image" style="background-image: url('../../assets/img/tour-de-france.jpg')"></div>
-              </a>
-            </div>
-            <div class="item-entry overflow">
-              <h5><a routerLink="event/:id" >Tour de France </a></h5>
-              <div class="dot-hr"></div>
-              <span class="pull-left"><b>Length :</b> 3,500 km </span>
-              <span class="location pull-right"> France </span>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-sm-6 col-md-3 p0">
-          <div class="box-two proerty-item">
-            <div class="item-thumb">
-              <a routerLink="event/:id" >
-                <div class="event-image" style="background-image: url('../../assets/img/boa-vista.jpg')"></div>
-              </a>
-            </div>
-            <div class="item-entry overflow">
-              <h5><a routerLink="event/:id">Boa Vista Ultra Trail </a></h5>
-              <div class="dot-hr"></div>
-              <span class="pull-left"><b>Length :</b> 150 km </span>
-              <span class="location pull-right"> Boa Vista</span>
-            </div>
-          </div>
-        </div>
-
-
-        <div class="col-sm-6 col-md-3 p0">
-          <div class="box-two proerty-item">
-            <div class="item-thumb">
-              <a routerLink="event/:id" >
-                <div class="event-image" style="background-image: url('../../assets/img/vialattea-trail.jpg')"></div>
-              </a>
-            </div>
-            <div class="item-entry overflow">
-              <h5><a routerLink="event/:id" >Vialatteatrail </a></h5>
-              <div class="dot-hr"></div>
-              <span class="pull-left"><b>Length :</b> 25 km </span>
-              <span class="location pull-right">Saulze D'Oulx</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-sm-6 col-md-3 p0">
-          <div class="box-two proerty-item">
-            <div class="item-thumb">
-              <a routerLink="event/:id" >
-                <div class="event-image" style="background-image: url('../../assets/img/sardinia-trail.jpg')"></div>
-              </a>
-            </div>
-            <div class="item-entry overflow">
-              <h5><a routerLink="event/:id" >Sardinia Trail </a></h5>
-              <div class="dot-hr"></div>
-              <span class="pull-left"><b>Length :</b> 100 km </span>
-              <span class="location pull-right"> Ogliastra</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-sm-6 col-md-3 p0">
-          <div class="box-two proerty-item">
-            <div class="item-thumb">
-              <a routerLink="event/:id" >
-                <div class="event-image" style="background-image: url('../../assets/img/london-duathlon.jpg')"></div>
-              </a>
-            </div>
-            <div class="item-entry overflow">
-              <h5><a routerLink="event/:id" >London Duathlon </a></h5>
-              <div class="dot-hr"></div>
-              <span class="pull-left"><b>Length :</b> 110 km </span>
-              <span class="property pull-right">London</span>
-            </div>
-          </div>
-        </div>
-
         <div class="col-sm-6 col-md-3 p0">
           <div class="box-tree more-proerty text-center">
             <a routerLink="events" ><div class="item-tree-icon">

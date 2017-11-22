@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {IMyDpOptions} from 'mydatepicker';
+import {EventService} from "../shared/services/event.service";
+import {Event} from '../shared/models/event'
 declare var $:any;
 
 @Component({
@@ -9,10 +11,29 @@ declare var $:any;
 })
 export class HomePageComponent {
 
+  private lastEvents: Event[];
+  private eventTypes: String[];
+
   // Initialized to specific date (09.10.2018).
   public model: any = { date: { year: 2018, month: 10, day: 9 } };
 
-  constructor() { }
+  constructor(private eventService: EventService) {
+    // retrieve the event types
+    this.eventTypes = this.eventService.getEventTypes();
+    // retrive the last 7 events
+    this.eventService.getLastEvents(7)
+      .then(
+        (events) =>{
+          console.log('[HomePage][getLastEvents][success]', events);
+          this.lastEvents = events
+        }
+      )
+      .catch(
+        (error) =>{
+          console.log('[HomePage][getLastEvents][error]', error);
+        }
+      )
+  }
 
   ngAfterViewInit(){
     $('.selectpicker').selectpicker()

@@ -104,7 +104,7 @@ describe('Event API tests', function () {
                     })
             });
         });
-        
+
         it('it should return the organizer of the event', function (done) {
             var user = new User({
                 "name": "User",
@@ -1047,7 +1047,7 @@ describe('Event API tests', function () {
         });
     });
 
-    
+
     describe('PUT /events', function () {
         it('it should NOT update the event if it is not the organizer', function (done) {
             var user = {
@@ -1415,7 +1415,7 @@ describe('Event API tests', function () {
             "role":'user',
             "userToken":''
         };
-        
+
         //login users
         before (function(done){
             request.post('/api/auth/register')
@@ -1423,7 +1423,7 @@ describe('Event API tests', function () {
                 .end(function(err,res){
                     firstUser.userToken = 'JWT ' + res.body.jwtToken;
                     firstUser.userId = res.body.userId;
-                    
+
                     request.post('/api/auth/register')
                         .send(secondUser)
                         .end(function(err,res){

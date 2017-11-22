@@ -26,9 +26,9 @@ import {AuthenticationService} from "./authentication/authentication.service";
 import {EventDetailPageComponent} from './event-pages/event-detail-page/event-detail-page.component';
 import { ProfilePageComponent} from "./user-pages/profile-page/profile-page.component";
 import {EventCreatePageComponent} from "./event-pages/event-create-page/event-create-page.component";
-import {EventManagePageComponent} from "./event-pages/event-manage-page/event-manage-page.component";
-import { DateTimePickerModule } from 'ng-pick-datetime';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {EventManagePageComponent} from "./event-pages/event-manage-page/event-manage-page.component"
+
+
 
 import { FacebookModule } from 'ngx-facebook';
 import { MyEventsComponent } from './event-pages/my-events/my-events.component';
@@ -37,6 +37,7 @@ import {EventService} from "./shared/services/event.service";
 import { MapComponent } from './shared/map/display_map/map.component';
 import {HttpClientService} from "./shared/services/http-client.service";
 import {EventBoxComponent} from "./event-pages/event-box/event-box.component";
+import {HomeEventBoxComponent} from "./home-page/home-event-box/home-event-box.component";
 
 
 @NgModule({
@@ -60,15 +61,14 @@ import {EventBoxComponent} from "./event-pages/event-box/event-box.component";
     MapComponent,
     EventCreatePageComponent,
     EventBoxComponent,
-    EventManagePageComponent
+    EventManagePageComponent,
+    HomeEventBoxComponent
   ],
   imports: [
     BrowserModule,
-    BrowserAnimationsModule,
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
-    DateTimePickerModule,
     FacebookModule.forRoot(),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyCWY7J8-bVG3TxQbVvgXb-F5lQV6XrTM5s',
@@ -96,11 +96,11 @@ import {EventBoxComponent} from "./event-pages/event-box/event-box.component";
       },
       /**
        *  when you want to redirect to the event detail page,
-       *  you have to call: routerLink= "/event/{{event.id}}" for each single event
-       *  so if you have a list of events: *ngFor="let event of events" routerLink="/event/{{event.id}}"
+       *  you have to call: routerLink= "/events/{{event._id}}" for each single event
+       *  so if you have a list of events: *ngFor="let event of events" routerLink="/events/{{event._id}}"
        */
       {
-        path: 'event/:id',
+        path: 'events/:eventId',
         component: EventDetailPageComponent
       },
       {

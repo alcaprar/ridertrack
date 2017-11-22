@@ -15,44 +15,54 @@ export class EventDetailPageComponent implements OnInit {
 
   private eventId: String;
 
-  //just an example then information would be take from server
-  /*currentEvent: Event = {_id: '455d485' , organizerId : '24567', name: 'New York Marathon',
-  type: 'Marathon', description: 'lorem inpsum ahddhjkhekehfkjhewkjhfkh dkhefhjkfhjewhfhfhfkjh' +
-    'jhebwhjfjbfewhjgfw jfgejhfgejhfgjhfjgwfwhvhje ejejndndn', city: 'New York', country: 'USA',
-  maxDuration: 120, startingDate: '10 January 2018',
-    startingTime: new Date('10 january,2018 10:00'), enrollmentOpeningAt:  new Date('10 december, 2017 10:30:00'),
-  enrollmentClosingAt:  new Date('30 december, 2018 10:30:00'),
-    routes: [[40.661390, -73.979641],[40.675814, -73.971487],[40.670806, -73.957754]],
-    logo: 'https://assets.bwbx.io/images/users/iqjWHBFdfxIU/i54IjlJe6So0/v1/-1x-1.jpg', length: 30};*/
-  currentEvent: Event;
-  currentUser: User;
-  organizer: User = new User('john@mail.com','John','Smith','password');
+  private event: Event = new Event();
+  private currentUser: User = new User();
+  private organizer: User = new User();
 
-  enrollementOpenDate: String;
-  enrollementCloseDate: String;
-  fullStartingTime: String;
-  startingTime:String;
-  today: Date = new Date();
-  enrollement: String;
-
-  constructor(/*private route: ActivatedRoute private userService: UserService, private route: ActivatedRoute,
-              private eventService: EventService, private location: Location*/) {
+  constructor(private route: ActivatedRoute, private userService: UserService, private eventService: EventService) {
   }
 
-  // When the component is created catch the current event object and the current user
-  ngOnInit() {
 
-    /*
+  ngOnInit() {
+    // catch the event id
     this.route.params.subscribe(params => {
       this.eventId = params['eventId'];
       console.log('[EventDetail][OnInit]', this.eventId);
 
-      // load the event using eventId
-      // load the currentUser
-      // load the organizer
+      this.eventService.getEvent(this.eventId)
+        .then(
+          (event) =>{
+            console.log('[EventDetail][OnInit][EventService.getEvent][success]', event);
+            // TODO add a check: if the event is null redirect somewhere maybe showing an alert
+            this.event = event;
+          }
+        )
+        .catch(
+          (error) =>{
+            console.log('[EventDetail][OnInit][EventService.getEvent][error]', error);
+          }
+        );
 
-    });*/
-    // this.userService.getUser().subscribe((user) => this.currentUser = user);*/
+      this.userService.getUser()
+        .subscribe(
+          (user) => {
+            this.currentUser = user
+          });
+
+      this.eventService.getOrganizer(this.eventId)
+        .then(
+          (organizer) =>{
+            console.log('[EventDetail][OnInit][EventService.getOrganizer][success]', organizer);
+            this.organizer = organizer;
+          }
+        )
+        .catch(
+          (error) =>{
+            console.log('[EventDetail][OnInit][EventService.getOrganizer][error]', error);
+          }
+        )
+    });
+
     /*this.enrollementOpenDate = this.getFullDate(this.currentEvent.enrollmentOpeningAt);
     this.enrollementCloseDate = this.getFullDate(this.currentEvent.enrollmentClosingAt);
     this.startingTime = this.getDate(this.currentEvent.startingTime);
@@ -90,7 +100,7 @@ export class EventDetailPageComponent implements OnInit {
       year.toString());
   }
 
-  isEnrollementAvailable(): Boolean {
+  /*isEnrollementAvailable(): Boolean {
    if(this.today.getTime() <= this.currentEvent.enrollmentClosingAt.getTime()
     && this.today.getTime() >= this.currentEvent.enrollmentOpeningAt.getTime()){
      this.enrollement = "Open";
@@ -99,7 +109,7 @@ export class EventDetailPageComponent implements OnInit {
      this.enrollement = "Close";
      return false;
    }
-  }
+  }*/
 
   /**
    *  function that allow to go back at the previous browser page
