@@ -22,8 +22,7 @@ var eventSchema = Schema({
         required: [true, 'Type of the event is required.']
     },
     description: {
-        type: String,
-        required: [true, 'A short description of the event is required.']
+        type: String
     },
     country: {
         type: String,
@@ -31,45 +30,40 @@ var eventSchema = Schema({
     },
     city: {
         type: String,
-        required: true
+        required: [true, 'City is required.']
+    },
+    startingDate: {
+        type: String,
+        required: [true, 'A date is required.']
     },
     startingTime: {
-        type: Date,
-        required: true
+        type: String
     },
     maxDuration: {
-        type: Number,
-        required: true
+        type: Number
     },
     length: {
-        type: Number,
-        required: true
+        type: Number
     },
     price: {
         type: Number,
-        required: false,
         default: 0
     },
     enrollmentOpeningAt: {
-        type: Date,
-        required: true
+        type: Date
     },
     enrollmentClosingAt: {
-        type: Date,
-        required: true
+        type: Date
     },
     participantsList: {
         type: [Number],
-        required: false, // TODO it has to be required
         default: []
     },
     logo: {
-        type: String,
-        required: false
+        type: String
     },
     routes: {
         type: [String], //TODO to change with coordinates
-        required: false, // TODO it has to be required
         default: []
     },
     created_at: {
@@ -120,11 +114,12 @@ eventSchema.statics.findByEventId = function (eventId, callback ){
     })
 };
 
- /* It creates an event.
-  * It then calls a callback passing either an error list or the created event.
+ /** It creates an event.
+  *  It then calls a callback passing either an error list or the created event.
  */
-eventSchema.statics.create = function (eventJson, callback) {
+eventSchema.statics.create = function (organizerId, eventJson, callback) {
     var event = new Event(eventJson);
+    event.organizerId = organizerId;
 
     event.save(function (err, event) {
         if (err) {

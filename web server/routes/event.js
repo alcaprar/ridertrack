@@ -186,7 +186,8 @@ router.get('/:eventId/organizer', function (req, res) {
  * It returns the detail of the event just created.
  */
 router.post('/', authMiddleware.hasValidToken, function (req, res) {
-    Event.create(req.body, function (err, event) {
+    console.log('[POST /events]', req.userId, req.body);
+    Event.create(req.userId, req.body, function (err, event) {
         if (err) {
             console.log(err);
             res.status(400).send({
@@ -264,5 +265,21 @@ router.delete('/:eventId', authMiddleware.hasValidToken, function(req,res){
         }
     });
 });
+
+router.get('/:userId' + '/organizedEvents',authMiddleware.hasValidToken,function(req,res){
+   var userId = req.params.userId;
+   Event.find({organizerId:userId},function(err,events){
+       if (err)
+           return res.status(400).send({
+               errors:err
+           });
+       else{
+           return res.status(200).send({
+               events:events
+           });
+       }
+   });
+});
+
 
 module.exports = router;

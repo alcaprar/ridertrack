@@ -7,7 +7,6 @@ import { Router } from '@angular/router';
 import { User } from '../shared/models/user';
 import 'rxjs/add/operator/catch.js';
 import 'rxjs/Rx';
-import {UserService} from '../shared/services/user.service';
 import * as jwt_decode from 'jwt-decode';
 
 declare const gapi: any;

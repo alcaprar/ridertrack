@@ -55,7 +55,8 @@ describe('Event API tests', function () {
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
-                "startingTime":"2017-09-23T12:00:00.000Z",
+                "startingDate":"2017-09-23",
+                "startingTime":"12:00:00.000",
                 "maxDuration":150,
                 "length": 40,
                 "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
@@ -78,19 +79,20 @@ describe('Event API tests', function () {
 
         it('it should return the event', function (done) {
             var event = new Event({
-                "name":"TestEvent",
+                "name": "TestEvent",
                 "organizerId": mongoose.Types.ObjectId(),
-                "type":"running",
-                "description":"Blablabla",
-                "country":"MyCountry",
-                "city":"MyCity",
-                "startingTime":"2017-09-23T12:00:00.000Z",
-                "maxDuration":150,
+                "type": "running",
+                "description": "Blablabla",
+                "country": "MyCountry",
+                "city": "MyCity",
+                "startingDate": "2017-09-23",
+                "startingTime": "12:00:00.000",
+                "maxDuration": 150,
                 "length": 40,
-                "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
-                "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
-                "participantsList":[255],
-                "routes":["Route1"]
+                "enrollmentOpeningAt": "2017-09-10T00:00:00.000Z",
+                "enrollmentClosingAt": "2017-09-17T00:00:00.000Z",
+                "participantsList": [255],
+                "routes": ["Route1"]
             });
             event.save(function () {
                 request.get('/api/events/' + event._id)
@@ -118,7 +120,8 @@ describe('Event API tests', function () {
                     "description":"Blablabla",
                     "country":"MyCountry",
                     "city":"MyCity",
-                    "startingTime":"2017-09-23T12:00:00.000Z",
+                    "startingDate":"2017-09-23",
+                    "startingTime":"12:00:00.000",
                     "maxDuration":150,
                     "length": 40,
                     "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
@@ -153,7 +156,8 @@ describe('Event API tests', function () {
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
-                "startingTime":"2017-09-23T12:00:00.000Z",
+                "startingDate":"2017-09-23",
+                "startingTime":"12:00:00.000",
                 "maxDuration":150,
                 "length": 40,
                 "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
@@ -168,7 +172,8 @@ describe('Event API tests', function () {
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
-                "startingTime":"2017-09-23T12:00:00.000Z",
+                "startingDate":"2017-09-23",
+                "startingTime":"12:00:00.000",
                 "maxDuration":150,
                 "length": 50,
                 "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
@@ -183,7 +188,8 @@ describe('Event API tests', function () {
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
-                "startingTime":"2017-09-23T12:00:00.000Z",
+                "startingDate":"2017-09-23",
+                "startingTime":"12:00:00.000",
                 "maxDuration":150,
                 "length": 60,
                 "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
@@ -216,7 +222,8 @@ describe('Event API tests', function () {
                 "description":"The right one",
                 "country":"MyCountry",
                 "city":"MyCity",
-                "startingTime":"2017-09-23T12:00:00.000Z",
+                "startingDate":"2017-09-23",
+                "startingTime":"12:00:00.000",
                 "maxDuration":150,
                 "length": 40,
                 "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
@@ -231,7 +238,8 @@ describe('Event API tests', function () {
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
-                "startingTime":"2017-09-23T12:00:00.000Z",
+                "startingDate":"2017-09-23",
+                "startingTime":"12:00:00.000",
                 "maxDuration":150,
                 "length": 50,
                 "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
@@ -246,7 +254,8 @@ describe('Event API tests', function () {
                 "description":"Blablabla222",
                 "country":"MyCountry",
                 "city":"MyCity",
-                "startingTime":"2017-09-23T12:00:00.000Z",
+                "startingDate":"2017-09-23",
+                "startingTime":"12:00:00.000",
                 "maxDuration":150,
                 "length": 60,
                 "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
@@ -279,7 +288,8 @@ describe('Event API tests', function () {
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
-                "startingTime":"2017-09-23T12:00:00.000Z",
+                "startingDate":"2017-09-23",
+                "startingTime":"12:00:00.000",
                 "maxDuration":150,
                 "length": 40,
                 "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
@@ -294,7 +304,8 @@ describe('Event API tests', function () {
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
-                "startingTime":"2017-09-23T12:00:00.000Z",
+                "startingDate":"2017-09-23",
+                "startingTime":"12:00:00.000",
                 "maxDuration":150,
                 "length": 50,
                 "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
@@ -325,7 +336,8 @@ describe('Event API tests', function () {
                 "description":"The right one",
                 "country":"MyCountry",
                 "city":"MyCity",
-                "startingTime":"2017-09-23T12:00:00.000Z",
+                "startingDate":"2017-09-23",
+                "startingTime":"12:00:00.000",
                 "maxDuration":150,
                 "length": 40,
                 "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
@@ -340,7 +352,8 @@ describe('Event API tests', function () {
                 "description":"Blablabla in Italy",
                 "country":"MyCountry",
                 "city":"MyCity",
-                "startingTime":"2017-09-23T12:00:00.000Z",
+                "startingDate":"2017-09-23",
+                "startingTime":"12:00:00.000",
                 "maxDuration":150,
                 "length": 50,
                 "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
@@ -355,7 +368,8 @@ describe('Event API tests', function () {
                 "description":"Blablabla222",
                 "country":"MyCountry",
                 "city":"MyCity",
-                "startingTime":"2017-09-23T12:00:00.000Z",
+                "startingDate":"2017-09-23",
+                "startingTime":"12:00:00.000",
                 "maxDuration":150,
                 "length": 60,
                 "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
@@ -387,7 +401,8 @@ describe('Event API tests', function () {
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
-                "startingTime":"2017-09-23T12:00:00.000Z",
+                "startingDate":"2017-09-23",
+                "startingTime":"12:00:00.000",
                 "maxDuration":150,
                 "length": 40,
                 "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
@@ -402,7 +417,8 @@ describe('Event API tests', function () {
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
-                "startingTime":"2017-09-23T12:00:00.000Z",
+                "startingDate":"2017-09-23",
+                "startingTime":"12:00:00.000",
                 "maxDuration":150,
                 "length": 50,
                 "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
@@ -433,7 +449,8 @@ describe('Event API tests', function () {
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
-                "startingTime":"2017-09-23T12:00:00.000Z",
+                "startingDate":"2017-09-23",
+                "startingTime":"12:00:00.000",
                 "maxDuration":150,
                 "length": 40,
                 "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
@@ -448,7 +465,8 @@ describe('Event API tests', function () {
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
-                "startingTime":"2017-09-23T12:00:00.000Z",
+                "startingDate":"2017-09-23",
+                "startingTime":"12:00:00.000",
                 "maxDuration":150,
                 "length": 50,
                 "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
@@ -479,7 +497,8 @@ describe('Event API tests', function () {
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
-                "startingTime":"2017-09-23T12:00:00.000Z",
+                "startingDate":"2017-09-23",
+                "startingTime":"12:00:00.000",
                 "maxDuration":150,
                 "length": 40,
                 "price": 100,
@@ -495,7 +514,8 @@ describe('Event API tests', function () {
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
-                "startingTime":"2017-09-23T12:00:00.000Z",
+                "startingDate":"2017-09-23",
+                "startingTime":"12:00:00.000",
                 "maxDuration":150,
                 "length": 50,
                 "price": 120,
@@ -527,7 +547,8 @@ describe('Event API tests', function () {
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
-                "startingTime":"2017-09-23T12:00:00.000Z",
+                "startingDate":"2017-09-23",
+                "startingTime":"12:00:00.000",
                 "maxDuration":150,
                 "length": 40,
                 "price": 100,
@@ -543,7 +564,8 @@ describe('Event API tests', function () {
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
-                "startingTime":"2017-09-23T12:00:00.000Z",
+                "startingDate":"2017-09-23",
+                "startingTime":"12:00:00.000",
                 "maxDuration":150,
                 "length": 50,
                 "price": 120,
@@ -575,7 +597,8 @@ describe('Event API tests', function () {
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
-                "startingTime":"2017-09-23T12:00:00.000Z",
+                "startingDate":"2017-09-23",
+                "startingTime":"12:00:00.000",
                 "maxDuration":150,
                 "length": 40,
                 "price": 100,
@@ -591,7 +614,8 @@ describe('Event API tests', function () {
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
-                "startingTime":"2017-09-23T12:00:00.000Z",
+                "startingDate":"2017-09-23",
+                "startingTime":"12:00:00.000",
                 "maxDuration":150,
                 "length": 50,
                 "price": 120,
@@ -623,7 +647,8 @@ describe('Event API tests', function () {
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
-                "startingTime":"2017-09-23T12:00:00.000Z",
+                "startingDate":"2017-09-23",
+                "startingTime":"12:00:00.000",
                 "maxDuration":150,
                 "length": 40,
                 "price": 100,
@@ -639,7 +664,8 @@ describe('Event API tests', function () {
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
-                "startingTime":"2017-10-24T12:00:00.000Z",
+                "startingDate":"2017-10-24",
+                "startingTime":"12:00:00.000",
                 "maxDuration":150,
                 "length": 50,
                 "price": 120,
@@ -671,7 +697,8 @@ describe('Event API tests', function () {
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
-                "startingTime":"2017-09-23T12:00:00.000Z",
+                "startingDate":"2017-09-23",
+                "startingTime":"12:00:00.000",
                 "maxDuration":150,
                 "length": 40,
                 "price": 100,
@@ -687,7 +714,8 @@ describe('Event API tests', function () {
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
-                "startingTime":"2017-10-24T12:00:00.000Z",
+                "startingDate":"2017-10-24",
+                "startingTime":"12:00:00.000",
                 "maxDuration":150,
                 "length": 50,
                 "price": 120,
@@ -719,7 +747,8 @@ describe('Event API tests', function () {
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
-                "startingTime":"2017-09-23T12:00:00.000Z",
+                "startingDate":"2017-09-23",
+                "startingTime":"12:00:00.000",
                 "maxDuration":150,
                 "length": 40,
                 "price": 100,
@@ -735,7 +764,8 @@ describe('Event API tests', function () {
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
-                "startingTime":"2017-10-24T12:00:00.000Z",
+                "startingDate":"2017-10-24",
+                "startingTime":"12:00:00.000",
                 "maxDuration":150,
                 "length": 50,
                 "price": 120,
@@ -768,7 +798,8 @@ describe('Event API tests', function () {
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
-                "startingTime":"2017-09-23T12:00:00.000Z",
+                "startingDate":"2017-09-23",
+                "startingTime":"12:00:00.000",
                 "maxDuration":150,
                 "length": 40,
                 "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
@@ -796,7 +827,8 @@ describe('Event API tests', function () {
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
-                "startingTime":"2017-09-23T12:00:00.000Z",
+                "startingDate":"2017-09-23",
+                "startingTime":"12:00:00.000",
                 "maxDuration":150,
                 "length": 40,
                 "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
@@ -824,7 +856,8 @@ describe('Event API tests', function () {
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
-                "startingTime":"2017-09-23T12:00:00.000Z",
+                "startingDate":"2017-09-23",
+                "startingTime":"12:00:00.000",
                 "maxDuration":150,
                 "length": 40,
                 "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
@@ -852,7 +885,8 @@ describe('Event API tests', function () {
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
-                "startingTime":"2017-09-23T12:00:00.000Z",
+                "startingDate":"2017-09-23",
+                "startingTime":"12:00:00.000",
                 "maxDuration":150,
                 "length": 40,
                 "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
@@ -894,7 +928,8 @@ describe('Event API tests', function () {
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
-                "startingTime":"2017-09-23T12:00:00.000Z",
+                "startingDate":"2017-09-23",
+                "startingTime":"12:00:00.000",
                 "maxDuration":150,
                 "length": 40,
                 "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
@@ -936,17 +971,18 @@ describe('Event API tests', function () {
             request.post('/api/auth/register')
                 .send(user)
                 .end(function (err, res) {
-                    user._id = res.body.userId;
-                    user.jwtToken = res.body.jwtToken;
+                    var userId = res.body.userId;
+                    var userToken = res.body.jwtToken;
 
                     var event = {
                         "name":"TestEvent",
-                        "organizerId": user._id,
+                        "organizerId": userId,
                         "type":"running",
                         "description":"Blablabla",
                         "country":"MyCountry",
                         "city":"MyCity",
-                        "startingTime":"2017-09-23T12:00:00.000Z",
+                        "startingDate":"2017-09-23",
+                        "startingTime":"12:00:00.000",
                         "maxDuration":150,
                         "length": 40,
                         "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
@@ -957,7 +993,7 @@ describe('Event API tests', function () {
 
                     request.post('/api/events')
                         .send(event)
-                        .set('Authorization', 'JWT ' + user.jwtToken)
+                        .set('Authorization', 'JWT ' + userToken)
                         .end(function (err, res) {
                             expect(res.status).to.be.eql(200);
                             expect(res.body).to.be.an('object');
@@ -989,7 +1025,8 @@ describe('Event API tests', function () {
                         "description":"Blablabla",
                         "country":"MyCountry",
                         "city":"MyCity",
-                        "startingTime":"2017-09-23T12:00:00.000Z",
+                        "startingDate":"2017-09-23",
+                        "startingTime":"12:00:00.000",
                         "maxDuration":150,
                         "length": 40,
                         "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
@@ -1032,7 +1069,8 @@ describe('Event API tests', function () {
                         "description":"Blablabla",
                         "country":"MyCountry",
                         "city":"MyCity",
-                        "startingTime":"2017-09-23T12:00:00.000Z",
+                        "startingDate":"2017-09-23",
+                        "startingTime":"12:00:00.000",
                         "maxDuration":150,
                         "length": 40,
                         "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
@@ -1094,7 +1132,8 @@ describe('Event API tests', function () {
                         "description":"Blablabla",
                         "country":"MyCountry",
                         "city":"MyCity",
-                        "startingTime":"2017-09-23T12:00:00.000Z",
+                        "startingDate":"2017-09-23",
+                        "startingTime":"12:00:00.000",
                         "maxDuration":150,
                         "length": 40,
                         "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
@@ -1130,7 +1169,8 @@ describe('Event API tests', function () {
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
-                "startingTime":"2017-09-23T12:00:00.000Z",
+                "startingDate":"2017-09-23",
+                "startingTime":"12:00:00.000",
                 "maxDuration":150,
                 "length": 40,
                 "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
@@ -1176,7 +1216,8 @@ describe('Event API tests', function () {
                         "description":"Blablabla",
                         "country":"MyCountry",
                         "city":"MyCity",
-                        "startingTime":"2017-09-23T12:00:00.000Z",
+                        "startingDate":"2017-09-23",
+                        "startingTime":"12:00:00.000",
                         "maxDuration":150,
                         "length": 40,
                         "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
@@ -1215,7 +1256,8 @@ describe('Event API tests', function () {
                 "description":"Blablabla",
                 "country":"MyCountry",
                 "city":"MyCity",
-                "startingTime":"2017-09-23T12:00:00.000Z",
+                "startingDate":"2017-09-23",
+                "startingTime":"12:00:00.000",
                 "maxDuration":150,
                 "length": 40,
                 "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
@@ -1260,7 +1302,8 @@ describe('Event API tests', function () {
                         "description":"Blablabla",
                         "country":"MyCountry",
                         "city":"MyCity",
-                        "startingTime":"2017-09-23T12:00:00.000Z",
+                        "startingDate":"2017-09-23",
+                        "startingTime":"12:00:00.000",
                         "maxDuration":150,
                         "length": 40,
                         "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
@@ -1321,7 +1364,8 @@ describe('Event API tests', function () {
                         "description":"Blablabla",
                         "country":"MyCountry",
                         "city":"MyCity",
-                        "startingTime":"2017-09-23T12:00:00.000Z",
+                        "startingDate":"2017-09-23",
+                        "startingTime":"12:00:00.000",
                         "maxDuration":150,
                         "length": 40,
                         "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
@@ -1350,6 +1394,123 @@ describe('Event API tests', function () {
         })
     });
 
+    describe('GET /organizedEvents',function(){
+
+        var firstUser = {
+            "userId":'',
+            "email":"firstUser@user.com",
+            "password":'firstUser',
+            "name":"First",
+            "surname":"User",
+            "role":"user",
+            "userToken":''
+        };
+
+        var secondUser = {
+            "userId":'',
+            "email":'secondUser@user.com',
+            "password":'secondUser',
+            "name":'Second',
+            "surname":'User',
+            "role":'user',
+            "userToken":''
+        };
+        
+        //login users
+        before (function(done){
+            request.post('/api/auth/register')
+                .send(firstUser)
+                .end(function(err,res){
+                    firstUser.userToken = 'JWT ' + res.body.jwtToken;
+                    firstUser.userId = res.body.userId;
+                    
+                    request.post('/api/auth/register')
+                        .send(secondUser)
+                        .end(function(err,res){
+                           secondUser.userToken = 'JWT ' + res.body.jwtToken;
+                           secondUser.userId = res.body.userId;
+                           done();
+                        });
+                });
+        });
+
+        it('should return 2 user events',function(done) {
+
+            //console.log("Usertoken " + firstUser.userToken + " userId " + firstUser.userId);
+            var myEvent = new Event({
+                "name": "First event I created",
+                "organizerId": firstUser.userId,
+                "type": "running",
+                "description": "Blablabla",
+                "country": "MyCountry",
+                "city": "MyCity",
+                "startingDate":"2017-09-23",
+                "startingTime": "12:00:00.000",
+                "maxDuration": 150,
+                "length": 40,
+                "enrollmentOpeningAt": "2017-09-10T00:00:00.000Z",
+                "enrollmentClosingAt": "2017-09-17T00:00:00.000Z",
+                "participantsList": [255],
+                "routes": ["Route1"]
+            });
+
+            var alsoMyEvent = new Event({
+                "name": "Second event I created",
+                "organizerId": firstUser.userId,
+                "type": "running",
+                "description": "Blablabla",
+                "country": "MyCountry",
+                "city": "MyCity",
+                "startingDate":"2017-09-23",
+                "startingTime": "12:00:00.000",
+                "maxDuration": 150,
+                "length": 40,
+                "enrollmentOpeningAt": "2017-09-10T00:00:00.000Z",
+                "enrollmentClosingAt": "2017-09-17T00:00:00.000Z",
+                "participantsList": [255],
+                "routes": ["Route1"]
+            });
+
+            var notMyEvent = new Event({
+                "name": "Not my event",
+                "organizerId": secondUser.userId,
+                "type": "running",
+                "description": "Blablabla",
+                "country": "MyCountry",
+                "city": "MyCity",
+                "startingDate":"2017-09-23",
+                "startingTime": "12:00:00.000",
+                "maxDuration": 150,
+                "length": 40,
+                "enrollmentOpeningAt": "2017-09-10T00:00:00.000Z",
+                "enrollmentClosingAt": "2017-09-17T00:00:00.000Z",
+                "participantsList": [255],
+                "routes": ["Route1"]
+            });
+
+            //create 3 events
+            myEvent.save(function() {
+                notMyEvent.save(function() {
+                    alsoMyEvent.save(function() {
+                        request.get('/api/events/' + firstUser.userId + '/organizedEvents')
+                            .set('Authorization', firstUser.userToken)
+                            .end(function (err, res) {
+                                var resultedEvents = res.body.events;
+
+                               // console.log(resultedEvents);
+                                expect(resultedEvents.length).to.be.eql(2);
+                                for (var i in resultedEvents){
+                                    expect(resultedEvents[i].organizerId).to.be.eql(firstUser.userId);
+                                    expect(resultedEvents[i].name).not.to.be.eql(notMyEvent.name);
+                                }
+                                done();
+                            });
+                    });
+                });
+            });
+        });
+
+    });
 
     // it closes the server at the end
     after(function (done) {
@@ -1366,6 +1527,7 @@ function createRandomEvents(numberToCreate, callback) {
         "description":"Blablabla",
         "country":"MyCountry",
         "city":"MyCity",
+        "startingDate":"2017-01-01",
         "startingTime": new Date(),
         "maxDuration":150,
         "length": 50,

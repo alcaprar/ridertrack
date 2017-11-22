@@ -1,7 +1,7 @@
-import {Component, OnInit, Input, ViewChild, NgZone} from '@angular/core';
+import {Component, OnInit, Input, ViewChild, ElementRef} from '@angular/core';
 import {Event} from '../../models/event';
-import {AgmMap, GoogleMapsAPIWrapper, MapsAPILoader} from '@agm/core';
-import {google} from '@agm/core/services/google-maps-types';
+import {} from '@agm/core';
+
 
 @Component({
   selector: 'app-map',
@@ -38,10 +38,6 @@ export class MapComponent implements OnInit {
       console.log('[MapComponent][getRoutes][routes]', this.routes);
     }
   }
-
-    calculateAndDisplayRoute() {
-
-    }
 
 
 }
