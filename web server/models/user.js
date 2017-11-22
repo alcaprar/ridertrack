@@ -144,7 +144,8 @@ userSchema.methods.verifyPassword = function (password, callback) {
 };
 
 /**
- * It search for an user given the id.
+ * It adds events to user enrolled events linked with enrollment.
+ * TODO check if a event exists in this list of enrolled events
  * @param userId
  * @param eventId
  * @param callback
@@ -154,8 +155,14 @@ userSchema.statics.addToEnrolledEvents = function (userId, eventId, callback ){
         if(err){
             return callback(err)
         }else{
-            user.enrolledEvents.push('2');
-            return callback(null, user)
+            user.enrolledEvents.push(eventId);
+            user.save(function (err) {
+                if (err) {
+                    return callback(err)
+                } else {
+                    return callback(null, user)
+                }
+            })
         }
     })
 };
@@ -235,7 +242,6 @@ userSchema.statics.create = function (userJson, callback) {
             if(err){
                 return callback(err)
             }
-
             user.removePrivateFields();
             return callback(null, user);
         })

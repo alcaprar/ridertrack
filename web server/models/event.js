@@ -115,7 +115,12 @@ eventSchema.statics.findByEventId = function (eventId, callback ){
     })
 };
 
-//adds a user to participant list of an event after an enrollment is done
+/* It adds an user to event participants list
+ * TODO check if a participant exists in this list
+ * @param userId
+ * @param eventId
+ * @param callback
+*/
 
 eventSchema.statics.addToParticipantList = function (userId, eventId, callback ){
     this.findOne({_id: eventId}, function (err, event) {
@@ -130,7 +135,6 @@ eventSchema.statics.addToParticipantList = function (userId, eventId, callback )
                     return callback(null, event)
                 }
             })
-            return callback(null, event)
         }
     })
 };
