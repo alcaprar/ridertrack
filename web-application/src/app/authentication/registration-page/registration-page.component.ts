@@ -33,8 +33,8 @@ export class RegistrationPageComponent implements OnInit {
   setFormRegister() {
     this.registerForm = this.formBuilderLogin.group({
       name: ['',[Validators.required, Validators.minLength(2)]],
-      surname:  ['',[Validators.required]],
-      email:  ['',[Validators.required]],
+      surname:  ['',[Validators.required, Validators.minLength(2)]],
+      email:  ['',[Validators.required, Validators.email]],
       password:['',[Validators.required, Validators.minLength(5)]]
       });
   }
@@ -72,8 +72,8 @@ export class RegistrationPageComponent implements OnInit {
         this.loading = false;
         if(result){
           console.log('[RegistrationComponent][Register]', result);
-        }else{
-          this.error = 'Registration failed.';
+        }else {
+          this.error = 'The email address already exist, please insert valid credentials';
         }
       }
     )

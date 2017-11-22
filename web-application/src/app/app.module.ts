@@ -38,6 +38,9 @@ import { MapComponent } from './shared/map/display_map/map.component';
 import {HttpClientService} from "./shared/services/http-client.service";
 import {EventBoxComponent} from "./event-pages/event-box/event-box.component";
 import {HomeEventBoxComponent} from "./home-page/home-event-box/home-event-box.component";
+import { InvalidMessageDirective } from './authentication/invalid-message.directive';
+import {InvalidTypeDirective} from "./authentication/invalid-type.directive";
+
 
 
 @NgModule({
@@ -62,7 +65,9 @@ import {HomeEventBoxComponent} from "./home-page/home-event-box/home-event-box.c
     EventCreatePageComponent,
     EventBoxComponent,
     EventManagePageComponent,
-    HomeEventBoxComponent
+    HomeEventBoxComponent,
+    InvalidMessageDirective,
+    InvalidTypeDirective
   ],
   imports: [
     BrowserModule,
