@@ -56,8 +56,9 @@ var eventSchema = Schema({
         type: Date
     },
     participantsList: {
-        type: [Number],
-        default: []
+        type: [String],
+        default: [],
+        select: true
     },
     logo: {
         type: String
@@ -109,6 +110,26 @@ eventSchema.statics.findByEventId = function (eventId, callback ){
         if(err){
             return callback(err)
         }else{
+            return callback(null, event)
+        }
+    })
+};
+
+//adds a user to participant list of an event after an enrollment is done
+
+eventSchema.statics.addToParticipantList = function (userId, eventId, callback ){
+    this.findOne({_id: eventId}, function (err, event) {
+        if(err){
+            return callback(err)
+        }else{
+            event.participantsList.push(userId);
+            event.save(function (err) {
+                if (err) {
+                    return callback(err)
+                } else {
+                    return callback(null, event)
+                }
+            })
             return callback(null, event)
         }
     })

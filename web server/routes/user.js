@@ -3,6 +3,7 @@ var router = express.Router();
 var config = require('../config');
 
 var User = require('../models/user');
+var Event = require('../models/event');
 
 /**
  * It returns the list of all the users.
@@ -52,6 +53,26 @@ router.get('/:userId', function (req, res) {
         }
     })
 });
+
+/**
+ * It return the enrolled events of an user for his Id.
+ * TODO authorization
+ */
+
+router.get('/:userId/enrolledEvents', function (req, res){
+    User.findByUserId(req.params.userId, function (err, user){
+        if (err)
+            return res.status(400).send({
+                errors: err
+            });
+        else{
+            return res.status(200).send({
+                enrolledEvents: user.enrolledEvents
+            });
+        }
+    });
+});
+
 
 /**
  * It creates the user passed in the body.

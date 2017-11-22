@@ -5,6 +5,8 @@ var Enrollment = require('../models/enrollment');
 var Event = require('../models/event');
 var User = require('../models/user');
 
+var authMiddleware = require('../middlewares/auth');
+
 /**
  * It returns the list of all the enrollments.
  * It accepts query params for filtering the enrollments: eventId, userId
@@ -41,13 +43,31 @@ router.get('/', function (req, res) {
  * TODO verify that userID and eventID exist in the database
  */
 
-router.post('/', function(req, res){
-    Enrollment.create(req.body, function (err, enrollment) {
+router.post('/', authMiddleware.hasValidToken, function(req, res){
+
+    Enrollment.create(req.userId, req.body, function (err, enrollment) {
         if(err){
             res.status(400).send({
                 errors: err
             })
         }else{
+            Event.addToParticipantList(req.userId, enrollment.eventId, function (err, event) {
+                if (err) {
+                    res.status(400).send({
+                        message: 'Error in adding to participant list',
+                        errors: err
+                    })
+                }
+            })
+            User.addToEnrolledEvents(req.userId, enrollment.eventId, function (err, user) {
+                if (err) {
+                    res.status(400).send({
+                        message: 'Error in adding to users enrolled events',
+                        errors: err
+                    })
+                }
+            })
+
             res.status(200).send({
                 message: 'User enrolled successfully!',
                 enrollment: enrollment
@@ -94,35 +114,22 @@ router.put('/:enrollmentId', function (req, res) {
 
 /**
  * It deletes the given enrollment by eventId and userId
- * Can be called only by the given user if he/she is enrolled on the envent.
+ * Can be called only by the given user if he/she is enrollment on the envent.
  * This will delete permanently everything related to it.
  */
-router.delete('/', function (req, res) {
-    var conditions = {};
-
-    // check for query parameters
-    // if they are present, add them to the conditions
-    if(req.query.eventId){
-        conditions.eventId = req.query.eventId
-    }
-    if(req.query.userId){
-        conditions.userId = req.query.userId
-    }
-
-    Enrollment.delete(conditions, function (err, deleted_enrollment) {
+router.delete('/:eventId/:userId', function (req, res) {
+    User.delete(req.params.eventId, req.params.userId, function (err, deleted_enrollment) {
         if(err){
             res.status(400).send({
                 errors: err
             })
         }else {
-
             res.status(200).send({
-                deleted_enrollment: deleted_enrollment,
+                enrollment: deleted_enrollment,
                 message: 'Enrollment successfully deleted'
             })
         }
     })
 });
-
 
 module.exports = router;

@@ -29,8 +29,10 @@ var enrollmentSchema = Schema({
     }
 });
 
-enrollmentSchema.statics.create = function(enrollmentJson, callback){
+enrollmentSchema.statics.create = function(userId, enrollmentJson, callback){
     var enrollment = new Enrollment(enrollmentJson);
+    enrollment.userId = userId;
+
     enrollment.save(function(err, enrollment){
         if(err) {
             console.log("Error Here!");

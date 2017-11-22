@@ -61,7 +61,13 @@ var userSchema = Schema({
     updated_at: {
         type: Date,
         select: false
+    },
+    enrolledEvents: {
+        type: [String],
+        select: true,
+        default : ['LjubljanskiMaraton123!!','ZagrebMarathon123']
     }
+
 });
 
 userSchema.index({email: 1}, {name: 'email_idx', unique: true});
@@ -140,6 +146,22 @@ userSchema.methods.verifyPassword = function (password, callback) {
 /**
  * It search for an user given the id.
  * @param userId
+ * @param eventId
+ * @param callback
+ */
+userSchema.statics.addToEnrolledEvents = function (userId, eventId, callback ){
+    this.findOne({_id: userId}, function (err, user) {
+        if(err){
+            return callback(err)
+        }else{
+            user.enrolledEvents.push('2');
+            return callback(null, user)
+        }
+    })
+};
+/**
+ * It search for an user given the id.
+ * @param userId
  * @param callback
  */
 userSchema.statics.findByUserId = function (userId, callback) {
@@ -147,6 +169,7 @@ userSchema.statics.findByUserId = function (userId, callback) {
         if(err){
             return callback(err)
         }else{
+            //return list of events
             return callback(null, user)
         }
     })
