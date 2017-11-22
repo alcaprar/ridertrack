@@ -33,7 +33,7 @@ export class LoginPageComponent implements OnInit {
   // setting the login form
   setFormLogin() {
     this.loginForm = this.fbLogin.group({
-      email: [this.user ? this.user.email : ''],
+      email: [this.user ? this.user.email :''],
       password: [this.user ? this.user.password : '']
       });
   }
@@ -46,7 +46,7 @@ export class LoginPageComponent implements OnInit {
   login() {
     this.error = '';
     this.loading = true;
-    
+
     var user = new User(
       this.loginForm.get('email').value,
       '',
@@ -60,7 +60,7 @@ export class LoginPageComponent implements OnInit {
           console.log('[LoginComponent][Login result]', result);
           this.loading = false;
           if(!result){
-            this.error = 'Invalid credentals. Try again.';
+            this.error = 'Invalid email or password. Try again.';
           }
         }
       )
