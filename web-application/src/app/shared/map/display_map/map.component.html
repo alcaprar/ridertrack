@@ -1,10 +1,16 @@
 
-  <agm-map [longitude]=initLong [latitude]="initLat" [zoom]="13"  >
-    <agm-marker *ngFor="let route of routes"
-                [latitude]= route[0]
-                [longitude]=route[1]>
+  <agm-map #map [longitude]="initLong" [latitude]="initLat" [zoom]="13"  >
+    <ng-container *ngIf="routes === null">
+    <agm-marker  [longitude]= "initLong" [latitude]="initLat"></agm-marker>
+      <agm-circle></agm-circle>
+    </ng-container>
+     <agm-polyline   [strokeColor]="'red'" >
+       <ng-container *ngFor="let route of routes" >
+       <agm-polyline-point [latitude]=route[0] [longitude]=route[1] >
 
-   </agm-marker>
+       </agm-polyline-point>
+       </ng-container>
+     </agm-polyline>
  </agm-map>
 
   <script src="http://maps.googleapis.com/maps/api/js"></script>

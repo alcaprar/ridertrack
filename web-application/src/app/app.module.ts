@@ -66,7 +66,8 @@ import {EventBoxComponent} from "./event-pages/event-box/event-box.component";
     HttpClientModule,
     FacebookModule.forRoot(),
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyCWY7J8-bVG3TxQbVvgXb-F5lQV6XrTM5s'
+      apiKey: 'AIzaSyCWY7J8-bVG3TxQbVvgXb-F5lQV6XrTM5s',
+      libraries: ["places"]
     }),
     RouterModule.forRoot([
       {

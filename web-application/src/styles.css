@@ -935,7 +935,7 @@ page-header
   no-repeat scroll center top / cover;
   color:#FFF;
   position: relative;
-  min-height: 140px;
+  max-height: 140px;
 }
 .page-head-content {
   padding-top: 52px;
@@ -1931,7 +1931,7 @@ single property page
 }
 
 .sidebar-property{
-  background-color:#EEE;
+  background-color:white;
   padding: 15px 25px 25px;
 }
 .dealer-widget {
@@ -2360,7 +2360,7 @@ blog
 */
 .blog-asside-right{
   padding-right: 15px;
-  padding-left: 15px;
+  padding-left: 20px;
   padding-top: 15px;
   padding-bottom: 15px;
 }

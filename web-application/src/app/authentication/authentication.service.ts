@@ -353,4 +353,6 @@ export class AuthenticationService{
     // to force angular to update the views
     this.appRef.tick();
   }
+
+
 }

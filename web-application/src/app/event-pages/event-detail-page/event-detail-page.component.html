@@ -1,13 +1,18 @@
 
 <!-- Body content -->
-<div class="page-head">
+<div class="page-head" >
   <div class="container">
     <div class="row">
       <div class="page-head-content">
+        <div class="col-lg-6">
         <h1 class="page-title">{{currentEvent.name}}</h1>
-      </div>
-      <div class="button right">
-        <button class="navbar-btn nav-button wow fadeInRight" routerLink="/login">Enroll</button>
+        </div>
+        <div class="col-lg-4">
+        <div class="button right">
+          <button class="navbar-btn nav-button wow bounceInRight header"  routerLink="/login">Enroll</button>
+          <button class="navbar-btn nav-button wow fadeInRight" >Edit</button>
+        </div>
+        </div>
       </div>
     </div>
   </div>
@@ -36,7 +41,7 @@
                <img [src]="currentEvent.logo">
               </div>
             </div>
-          </div>
+          </div><br>
 
           <div class="single-property-wrapper" >
             <div class="section">
@@ -90,8 +95,8 @@
               <h4 class="s-property-title">Share width your friends </h4>
               <div class="roperty-social">
                 <ul>
-                  <li><a title="Share this on facebook " href="#"><img src="../../../assets/img/social_big/facebook_grey.png"></a></li>
-                  <li><a title="Share this on twitter " href="#"><img src="../../../assets/img/social_big/twitter_grey.png"></a></li>
+                  <li><a title="Share this on facebook " >
+                    <img src="../../../assets/img/social_big/facebook_grey.png"></a></li>
                 </ul>
               </div>
             </div>
