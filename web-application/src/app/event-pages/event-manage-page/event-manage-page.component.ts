@@ -1,6 +1,6 @@
 ///<reference path="../../shared/models/event.ts"/>
 import {Component, Input, OnInit} from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import {EventService} from "../../shared/services/event.service";
 import {Event} from "../../shared/models/event";
 declare var $: any;
@@ -14,14 +14,28 @@ export class EventManagePageComponent implements OnInit {
 
   private eventTypes;
 
+  eventId: string;
   event:Event = new Event();
 
-  constructor(private eventService: EventService, private router: Router) {
-
+  constructor(private eventService: EventService, private router: Router, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
-    this.eventTypes = this.eventService.getEventTypes()
+    this.eventTypes = this.eventService.getEventTypes();
+
+    this.route.params.subscribe(params => {
+      this.eventId = params['id'];
+      console.log('[EventManage][OnInit]', this.eventId);
+
+      // load the event using eventId
+      this.eventService.getEvent(this.eventId)
+        .then(
+          (event) => {
+            console.log('[EventManage][OnInit][getEvent][success]', event);
+            this.event = event;
+          }
+        )
+    })
   }
 
   /**
@@ -32,9 +46,10 @@ export class EventManagePageComponent implements OnInit {
     // set the placeholder the date of today
     var todayDate = new Date();
     var today = todayDate.getDate() + '/' + (todayDate.getMonth() < 12 ? todayDate.getMonth() + 1 : 1) + '/' + todayDate.getFullYear();
-    $('#startingDate.datepicker').attr('placeholder', today);
+    console.log('[EventManage][ngAfterViewInit]', $('.datepicker'));
+    $('.datepicker').attr('placeholder', today);
     // init the plugin datepicker on the element
-    $('#startingDate.datepicker').datepicker({
+    $('.datepicker').datepicker({
       format: 'dd/mm/yyyy',
       todayHighlight: true,
       startDate: today,

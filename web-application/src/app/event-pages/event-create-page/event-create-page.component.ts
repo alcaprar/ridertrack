@@ -67,13 +67,14 @@ export class EventCreatePageComponent implements OnInit {
     this.eventService.createEvent(this.event)
       .then(
         (response) => {
-          console.log('Create event', response);
-          // TODO show an alert saying that the event has been created
+          console.log('[CreateEvent][onSubmit][success]', response);
+          var eventId = response._id;
+          this.router.navigate(['/manage-event/' + eventId]);
         }
       )
       .catch(
         (error) => {
-          console.log('Create event err', error);
+          console.log('[CreateEvent][onSubmit][error]', error);
           // TODO show errors
         }
       )

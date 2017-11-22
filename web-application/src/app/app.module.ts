@@ -88,7 +88,7 @@ import {EventBoxComponent} from "./event-pages/event-box/event-box.component";
         //canActivate: [AuthGuard]
       },
       {
-        path: 'manage-event',
+        path: 'manage-event/:id',
         component: EventManagePageComponent,
         //canActivate: [AuthGuard]
       },

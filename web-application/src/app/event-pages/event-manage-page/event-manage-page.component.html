@@ -32,12 +32,12 @@
                   <div class="form-group">
                     <label for="type">Type <small>(required)</small></label>
                     <select [(ngModel)]="event.type" #type="ngModel" id="type"  name="type" class="selectpicker" data-live-search="true" data-live-search-style="begins" title="Select type">
-                      <option *ngFor="let type of eventTypes" [value]="type" style="text-transform: capitalize" required>{{type}}</option>
+                      <option *ngFor="let type of eventTypes" [ngValue]="type" style="text-transform: capitalize" required>{{type}}</option>
                     </select>
                   </div>
                   <div class="form-group">
                     <label>Date <small>(required)</small></label>
-                    <input [(ngModel)]="event.startingDate" #startingDate="ngModel" id="startingDate" name="startingDate" type="text" class="form-control datepicker" placeholder="15/12/2017">
+                    <input [(ngModel)]="event.startingDate" #startingDate="ngModel" id="startingDate" name="startingDate" type="text" class="form-control datepicker">
                     <div [hidden]="startingDate.valid || startingDate.pristine" class="alert alert-danger">Date is required.</div>
                   </div>
                   <div class="form-group">
@@ -53,7 +53,6 @@
                   <div class="form-group">
                     <label for="length">Length</label>
                     <input [(ngModel)]="event.length" #description="ngModel" id="length" name="length" type="text" class="form-control" placeholder="42.195 km" >
-                    <div [hidden]="length.valid || length.pristine" class="alert alert-danger">Length is required.</div>
                   </div>
                   <div class="form-group">
                     <label for="description">Description</label>

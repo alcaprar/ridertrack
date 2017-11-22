@@ -16,15 +16,15 @@ export class EventDetailPageComponent implements OnInit {
   private eventId: String;
 
   //just an example then information would be take from server
-  currentEvent: Event = {_id: '455d485' , organizerId : '24567', name: 'New York Marathon',
+  /*currentEvent: Event = {_id: '455d485' , organizerId : '24567', name: 'New York Marathon',
   type: 'Marathon', description: 'lorem inpsum ahddhjkhekehfkjhewkjhfkh dkhefhjkfhjewhfhfhfkjh' +
     'jhebwhjfjbfewhjgfw jfgejhfgejhfgjhfjgwfwhvhje ejejndndn', city: 'New York', country: 'USA',
   maxDuration: 120, startingDate: '10 January 2018',
     startingTime: new Date('10 january,2018 10:00'), enrollmentOpeningAt:  new Date('10 december, 2017 10:30:00'),
   enrollmentClosingAt:  new Date('30 december, 2018 10:30:00'),
     routes: [[40.661390, -73.979641],[40.675814, -73.971487],[40.670806, -73.957754]],
-    logo: 'https://assets.bwbx.io/images/users/iqjWHBFdfxIU/i54IjlJe6So0/v1/-1x-1.jpg', length: 30};
-  //currentEvent: Event;
+    logo: 'https://assets.bwbx.io/images/users/iqjWHBFdfxIU/i54IjlJe6So0/v1/-1x-1.jpg', length: 30};*/
+  currentEvent: Event;
   currentUser: User;
   organizer: User = new User('john@mail.com','John','Smith','password');
 
@@ -53,12 +53,12 @@ export class EventDetailPageComponent implements OnInit {
 
     });*/
     // this.userService.getUser().subscribe((user) => this.currentUser = user);*/
-    this.enrollementOpenDate = this.getFullDate(this.currentEvent.enrollmentOpeningAt);
+    /*this.enrollementOpenDate = this.getFullDate(this.currentEvent.enrollmentOpeningAt);
     this.enrollementCloseDate = this.getFullDate(this.currentEvent.enrollmentClosingAt);
     this.startingTime = this.getDate(this.currentEvent.startingTime);
     this.fullStartingTime = this.getFullDate(this.currentEvent.startingTime);
     this.isEnrollementAvailable();
-    console.log('[Event-Detail-Component][OnInit][Event]', this.currentEvent);
+    console.log('[Event-Detail-Component][OnInit][Event]', this.currentEvent);*/
   }
 
   /**
