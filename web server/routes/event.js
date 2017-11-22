@@ -35,7 +35,7 @@ router.get('/', function(req, res) {
             let key = keys[i].split(':');
 
             // sorting possible only on date, price, length
-            if(['startingTime', 'price', 'length'].indexOf(key[0]) > -1){
+            if(['startingDate', 'price', 'length'].indexOf(key[0]) > -1){
                 sort[key[0]] = (typeof key[1] !== 'undefined' && ['asc', 'desc'].indexOf(key[1]) > -1) ? key[1] : 'asc';
             }
         }

@@ -5,6 +5,8 @@ var config = require('../config');
 var User = require('../models/user');
 var Event = require('../models/event');
 
+var authMiddleware = require('../middlewares/auth');
+
 /**
  * It returns the list of all the users.
  * It accepts query params for filtering the users: email, name, surname.

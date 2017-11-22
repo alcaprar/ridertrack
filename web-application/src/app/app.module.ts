@@ -37,6 +37,7 @@ import {EventService} from "./shared/services/event.service";
 import { MapComponent } from './shared/map/display_map/map.component';
 import {HttpClientService} from "./shared/services/http-client.service";
 import {EventBoxComponent} from "./event-pages/event-box/event-box.component";
+import {HomeEventBoxComponent} from "./home-page/home-event-box/home-event-box.component";
 
 
 @NgModule({
@@ -60,7 +61,8 @@ import {EventBoxComponent} from "./event-pages/event-box/event-box.component";
     MapComponent,
     EventCreatePageComponent,
     EventBoxComponent,
-    EventManagePageComponent
+    EventManagePageComponent,
+    HomeEventBoxComponent
   ],
   imports: [
     BrowserModule,
@@ -96,11 +98,11 @@ import {EventBoxComponent} from "./event-pages/event-box/event-box.component";
       },
       /**
        *  when you want to redirect to the event detail page,
-       *  you have to call: routerLink= "/event/{{event.id}}" for each single event
-       *  so if you have a list of events: *ngFor="let event of events" routerLink="/event/{{event.id}}"
+       *  you have to call: routerLink= "/events/{{event._id}}" for each single event
+       *  so if you have a list of events: *ngFor="let event of events" routerLink="/events/{{event._id}}"
        */
       {
-        path: 'event/:id',
+        path: 'events/:eventId',
         component: EventDetailPageComponent
       },
       {

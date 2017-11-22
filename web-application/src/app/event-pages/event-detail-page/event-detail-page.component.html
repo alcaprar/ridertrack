@@ -1,11 +1,11 @@
-
+<app-page-header title="{{event.name}}"></app-page-header>
 <!-- Body content -->
-<div class="page-head" >
+<!--<div class="page-head" >
   <div class="container">
     <div class="row">
       <div class="page-head-content">
         <div class="col-lg-6">
-        <h1 class="page-title">{{currentEvent.name}}</h1>
+        <h1 class="page-title">{{event.name}}</h1>
         </div>
         <div class="col-lg-4">
         <div class="button right">
@@ -16,7 +16,7 @@
       </div>
     </div>
   </div>
-</div>
+</div>-->
 <!-- End page header -->
 
 <!-- event content area -->
@@ -38,16 +38,16 @@
                     <i class="fa fa-print"></i>
                   </a>
                 </div>
-               <img [src]="currentEvent.logo">
+               <img *ngIf="event.logo" [src]="event.logo">
               </div>
             </div>
           </div><br>
 
           <div class="single-property-wrapper" >
-            <div class="section">
+            <div class="section" *ngIf="event.description">
               <h4 class="s-property-title">Description</h4>
               <div class="s-property-content">
-                <p> {{currentEvent.description}} </p>
+                <p> {{event.description}} </p>
               </div>
             </div>
             <!-- End description area  -->
@@ -57,37 +57,37 @@
               <h4 class="s-property-title">Additional Details</h4>
 
               <ul class="additional-details-list clearfix">
-                <li>
+                <li *ngIf="event.maxDuration">
                   <span class="col-xs-6 col-sm-4 col-md-4 add-d-title">Duration</span>
-                  <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry">{{currentEvent.maxDuration}}</span>
+                  <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry">{{event.maxDuration}}</span>
                 </li>
-                <li>
+                <li *ngIf="event.length">
                   <span class="col-xs-6 col-sm-4 col-md-4 add-d-title">Length</span>
-                  <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry"> {{currentEvent.length}} KM </span>
+                  <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry"> {{event.length}} KM </span>
                 </li>
 
                 <li>
                   <span class="col-xs-6 col-sm-4 col-md-4 add-d-title">Registration Period</span>
-                  <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry">{{enrollementOpenDate}} -
-                    {{enrollementCloseDate}}</span>
+                  <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry"> -
+                    </span>
                 </li>
                 <li>
                   <span class="col-xs-6 col-sm-4 col-md-4 add-d-title">City</span>
-                  <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry">{{currentEvent.city}}</span>
+                  <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry">{{event.city}}</span>
                 </li>
                 <li>
                   <span class="col-xs-6 col-sm-4 col-md-4 add-d-title">Country</span>
-                  <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry">{{currentEvent.country}}</span>
+                  <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry">{{event.country}}</span>
                 </li>
               </ul>
             </div>
             <!-- End additional-details area  -->
 
             <!-- Map area-->
-            <div class="section additional-details">
+            <!--<div class="section additional-details">
               <h4 class="s-property-title">Route</h4>
-              <app-map [currentEvent] = "this.currentEvent"></app-map>
-            </div>
+              <app-map [event] = "this.event"></app-map>
+            </div>-->
             <!--End Map area-->
 
         <!--Share area-->
@@ -112,7 +112,7 @@
             <div class="dealer-content">
               <div class="inner-wrapper">
                 <div class="single-property-header">
-                  <h1 class="property-title">{{currentEvent.name}}</h1>
+                  <h1 class="property-title">{{event.name}}</h1>
                 </div>
 
                 <div class="property-meta entry-meta clearfix ">
@@ -120,13 +120,13 @@
                     <li>
                        <span class="property-info-entry">
                          <span class="property-info-value">Date</span>
-                         <span class="property-info-label">{{startingTime}}</span>
+                         <span class="property-info-label">{{event.startingDate}}</span>
                        </span>
                     </li>
                     <li>
                        <span class="property-info-entry">
                          <span class="property-info-value">Registration Status</span>
-                         <span class="property-info-label">{{enrollement}}</span>
+                         <span class="property-info-label"></span>
                        </span>
                     </li>
 

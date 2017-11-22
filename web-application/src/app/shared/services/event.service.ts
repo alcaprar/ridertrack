@@ -5,6 +5,7 @@ import {Observable} from 'rxjs/Observable';
 import {EventToCreate} from "../models/eventToCreate";
 import {HttpClientService} from "./http-client.service";
 import {environment} from '../../../environments/environment'
+import {User} from "../models/user";
 
 @Injectable()
 export class EventService {
@@ -36,6 +37,38 @@ export class EventService {
           console.log('[EventService][getAllEvents][error]', err);
           return Observable.of(null);
         });
+  }
+
+  /**
+   * It retrieves a certain amount of events ordered by date ascending.
+   * @param amount
+     */
+  getLastEvents(amount): Promise<Event[]> {
+    const url = `${this.BASE_EVENT_URL}?sort=startingDate=asc&page=1&itemsPerPage=7`;
+
+    return this.http.get(url).toPromise()
+      .then( (res) => {
+        const eventsBody = res.json().events as Event[];
+        console.log('[EventService][getLastEvents][success]', eventsBody);
+        return eventsBody;
+      }, (err) => {
+        console.log('[EventService][getLastEvents][error]', err);
+        return Observable.of(null);
+      });
+  }
+  
+  getOrganizer(eventId): Promise<User>{
+    const url = `${this.BASE_EVENT_URL}/${eventId}/organizer`;
+
+    return this.http.get(url).toPromise()
+      .then( (res) => {
+        const organizer = res.json().organizer as User;
+        console.log('[EventService][getOrganizer][success]', organizer);
+        return organizer;
+      }, (err) => {
+        console.log('[EventService][getOrganizer][error]', err);
+        return Observable.of(null);
+      });
   }
 
   /**
