@@ -71,16 +71,6 @@ export class EventDetailPageComponent implements OnInit {
     console.log('[Event-Detail-Component][OnInit][Event]', this.currentEvent);*/
   }
 
-  /**
-   *  Get the event from the server calling the associated method in the EventService
-   *  and stores it in the 'currentEvent' variable.
-   *  id: it is taken from the url of the route /event/:id
-
-  getEvent() :void {
-    const id= +this.route.snapshot.paramMap.get('id');
-    this.eventService.getEvent(id).then((event) => this.currentEvent = event);
-    console.log('[EventDetailComponent][getEvent][success]', this.currentEvent);
-  }*/
 
  getFullDate(date: Date): String {
     const day = date.getDate();
