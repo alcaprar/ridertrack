@@ -66,6 +66,11 @@ var userSchema = Schema({
         type: [String],
         select: true,
         default : ['LjubljanskiMaraton123!!','ZagrebMarathon123']
+    },
+    organizedEvents: {
+        type: [String],
+        select: true,
+        default : ['id1','id2']
     }
 
 });
@@ -144,7 +149,7 @@ userSchema.methods.verifyPassword = function (password, callback) {
 };
 
 /**
- * It adds events to user enrolled events linked with enrollment.
+ * It adds events to users enrolled events when creating an enrollment.
  * TODO check if a event exists in this list of enrolled events
  * @param userId
  * @param eventId
@@ -156,6 +161,30 @@ userSchema.statics.addToEnrolledEvents = function (userId, eventId, callback ){
             return callback(err)
         }else{
             user.enrolledEvents.push(eventId);
+            user.save(function (err) {
+                if (err) {
+                    return callback(err)
+                } else {
+                    return callback(null, user)
+                }
+            })
+        }
+    })
+};
+
+/**
+ * It adds events to users organized events whem creating an event.
+ * TODO check if a event exists in this list of enrolled events
+ * @param userId
+ * @param eventId
+ * @param callback
+ */
+userSchema.statics.addToOrganizedEvents = function (userId, eventId, callback ){
+    this.findOne({_id: userId}, function (err, user) {
+        if(err){
+            return callback(err)
+        }else{
+            user.organizedEvents.push(eventId);
             user.save(function (err) {
                 if (err) {
                     return callback(err)
