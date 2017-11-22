@@ -1,7 +1,13 @@
 version: '3'
 services:
-  web:
-    build: ./web server
+  webapplication:
+    build: "./web-application"
+    ports:
+      - "80:80"
+    links:
+      - webserver
+  webserver:
+    build: "./web server"
     ports:
         - "5000:5000"
     links:
@@ -11,6 +17,7 @@ services:
         - ENV=production
         - MONGODB_HOST=mongodb
         - MONGODB_PORT=27017
+    command: bash -c "/wait-for-it.sh mongodb:27017 -- sleep 10; gulp"
   mongodb:
     image: mongo:3.4.9
     ports:

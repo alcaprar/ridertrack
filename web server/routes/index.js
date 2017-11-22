@@ -17,7 +17,7 @@ router.use('/api/enrollments', require('./enrollment'));
 
 // it sends the angular app
 router.get('*', function (req, res) {
-    return res.sendFile(path.join(config.rootFolder,'public/index.html'));
+    return res.status(404).send('Endpoint not found.');
 });
 
 module.exports = router;

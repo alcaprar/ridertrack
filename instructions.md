@@ -17,4 +17,4 @@ To install a dependency you should just run "npm install --save depName".
 Remember the flag --save, it is fundamental to update the package.json.
 
 ## Angular
-In order to install the Angular CLI(command line interface) you should run "npm install -g angular-cli".
+In order to install the Angular CLI(command line interface) you should run "npm install -g @angular-cli".

@@ -11,6 +11,7 @@ var User = require('../models/user');
  * immediately login the user.
  */
 router.post('/register', function (req, res) {
+    console.log('[POST /register]');
     if(typeof req.body.email === 'undefined' || typeof req.body.password === 'undefined'){
         return res.status(400).send({
             errors: ['Email and/or password missing.']

@@ -8,6 +8,7 @@ import { User } from '../shared/models/user';
 import 'rxjs/add/operator/catch.js';
 import 'rxjs/Rx';
 import * as jwt_decode from 'jwt-decode';
+import {environment} from '../../environments/environment'
 
 declare const gapi: any;
 
@@ -17,13 +18,14 @@ export const ROLE = 'ROLE';
 
 @Injectable()
 export class AuthenticationService{
-  private BASE_AUTH_URL = 'http://localhost:5000/api/auth';
+  private BASE_AUTH_URL = environment.baseAPI + '/auth';
 
   public auth2: any;
 
   private gapiPromise: any;
 
   constructor(private http: Http, private fb: FacebookService, private router: Router, private appRef: ApplicationRef) {
+    console.log('[AuthService]', environment)
     // check the token stored in localStorage
     this.isAuthenticated();
 

@@ -3,10 +3,11 @@ import {Http} from '@angular/http';
 import {User} from '../models/user';
 import {AuthenticationService} from '../../authentication/authentication.service';
 import {Observable} from 'rxjs/Observable';
+import {environment} from '../../../environments/environment'
 
 @Injectable()
 export class UserService {
-  private BASE_USERS_URL = 'http://localhost:5000/api/users/';
+  private BASE_USERS_URL = environment.baseAPI + '/users/';
 
   constructor(private http: Http, private authService: AuthenticationService) {
 

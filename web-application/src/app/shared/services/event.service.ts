@@ -4,11 +4,12 @@ import {Event} from '../models/event';
 import {Observable} from 'rxjs/Observable';
 import {EventToCreate} from "../models/eventToCreate";
 import {HttpClientService} from "./http-client.service";
+import {environment} from '../../../environments/environment'
 
 @Injectable()
 export class EventService {
 
-  private BASE_EVENT_URL = 'http://localhost:5000/api/events';
+  private BASE_EVENT_URL = environment.baseAPI + '/events';
 
   private eventTypes: [String] = ['running', 'cycling', 'hiking', 'thriatlon', 'other'];
 
