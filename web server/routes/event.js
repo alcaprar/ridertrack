@@ -188,6 +188,7 @@ router.get('/:eventId/organizer', function (req, res) {
 router.post('/', authMiddleware.hasValidToken, function (req, res) {
     Event.create(req.body, function (err, event) {
         if (err) {
+            console.log(err);
             res.status(400).send({
                 errors: err
             })

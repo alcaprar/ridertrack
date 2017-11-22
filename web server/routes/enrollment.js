@@ -44,10 +44,12 @@ router.get('/', function (req, res) {
 router.post('/', function(req, res){
     Enrollment.create(req.body, function (err, enrollment) {
         if(err){
+            console.log("POST ERROR: " + err)
             res.status(400).send({
                 errors: err
             })
         }else{
+            console.log("POST SUCCESS: ")
             res.status(200).send({
                 message: 'User enrolled successfully!',
                 enrollment: enrollment
@@ -94,32 +96,36 @@ router.put('/:enrollmentId', function (req, res) {
 
 /**
  * It deletes the given enrollment by eventId and userId
- * Can be called only by the given user if he/she is enrollment on the envent.
+ * Can be called only by the given user if he/she is enrolled on the envent.
  * This will delete permanently everything related to it.
  */
-router.delete('/:eventId/:userId', function (req, res) {
-    User.delete(req.params.eventId, req.params.userId, function (err, deleted_enrollment) {
+router.delete('/', function (req, res) {
+    var conditions = {};
+
+    // check for query parameters
+    // if they are present, add them to the conditions
+    if(req.query.eventId){
+        conditions.eventId = req.query.eventId
+    }
+    if(req.query.userId){
+        conditions.userId = req.query.userId
+    }
+
+    Enrollment.delete(conditions, function (err, deleted_enrollment) {
         if(err){
+            console.log("DELETE ERROR: " + err)
             res.status(400).send({
                 errors: err
             })
         }else {
+            console.log("DELETE Success");
             res.status(200).send({
-                enrollment: deleted_enrollment,
+                deleted_enrollment: deleted_enrollment,
                 message: 'Enrollment successfully deleted'
             })
         }
     })
 });
-
-
-
-
-
-
-
-
-
 
 
 module.exports = router;

@@ -13,6 +13,8 @@ global.expect = chai.expect;
 global.request = supertest(server);
 
 var Enrollment = require('../../models/enrollment');
+var User = require('../../models/user');
+var Event = require('../../models/event');
 
 
 describe('Enrollment API tests', function () {
@@ -188,41 +190,92 @@ describe('Enrollment API tests', function () {
     describe('DELETE /enrollments', function () {
         it('it should add a new enrollment then delete it!', function (done) {
 
-            let enrollment = new Enrollment({
 
-                eventId: "eventId1",
-                userId :"userId1",
-                additionalInfo : Object,
-                trackingSources: [Object],
-                created_at: "2017-09-10T00:00:00.000Z",
-                updated_at: "2017-09-10T00:00:00.000Z"
-            });
+            var user = {
+                "name": "userId1",
+                "surname": "Surname",
+                "email": "email@domain.it",
+                "password": "AVeryStrongPasword"
+            };
 
-            request.post('/api/enrollments')
-                .send(enrollment)
+            request.post('/api/auth/register')
+                .send(user)
                 .end(function (err, res) {
-                    expect(res.status).to.be.eql(200);
-                    expect(res.body).to.be.an('object');
-                    expect(res.body).to.not.have.property('errors');
-                    expect(res.body).to.have.property('enrollment');
+                    user._id = res.body.userId;
+                    user.jwtToken = res.body.jwtToken;
 
-                })
+                    console.log("Post USER done...................");
 
-            request.delete('/api/enrollments')
-                .send(enrollment)
-                .end(function (err, res){
-                    expect(res.status).to.be.eql(200);
-                    expect(res.body).to.be.an('object');
-                    expect(res.body).to.not.have.property('errors');
-                    expect(res.body).to.have.property('deleted_enrollment');
+                    var event = {
+                        "name": "TestEvent",
+                        "organizerId": user._id,
+                        "type": "running",
+                        "description": "Blablabla",
+                        "country": "MyCountry",
+                        "city": "MyCity",
+                        "startingTime": "2017-09-23T12:00:00.000Z",
+                        "maxDuration": 150,
+                        "length": 40,
+                        "enrollmentOpeningAt": "2017-09-10T00:00:00.000Z",
+                        "enrollmentClosingAt": "2017-09-17T00:00:00.000Z",
+                        "participantsList": [255],
+                        "routes": ["Route1"]
+                    };
+
+                    request.post('/api/events')
+                        .send(event)
+                        .set('Authorization', 'JWT ' + user.jwtToken)
+                        .end(function (err, res) {
+                            expect(res.status).to.be.eql(200);
+                            expect(res.body).to.be.an('object');
+                            expect(res.body.event).to.be.an('object');
+                            expect(res.body.event._id).to.not.be.eql('');
+                            console.log("Post EVENT done.................");
 
 
 
+                            var enrollment = {
+                                eventId: event.organizerId,
+                                userId: user._id,
+                                additionalInfo: Object,
+                                trackingSources: [],
+                                created_at: "2017-09-10T00:00:00.000Z",
+                                updated_at: "2017-09-10T00:00:00.000Z"
+                            };
 
-                })
+                            request.post('/api/enrollments')
+                                    .send(enrollment)
+                                    .set('Authorization', 'JWT ' + user.jwtToken)
+                                    .end(function (err, res) {
+                                        expect(res.status).to.be.eql(200);
+                                        expect(res.body).to.be.an('object');
+                                        expect(res.body).to.not.have.property('errors');
+                                        expect(res.body).to.have.property('enrollment');
 
+                                        console.log("Post ENROLLMENT done.................")
+
+
+                                        console.log(event);
+                                        console.log(user);
+
+                                        request.delete('/api/enrollments/?eventId='+event.organizerId + '\&userId=' + user._id)
+                                            .send(enrollment)
+                                            .set('Authorization', 'JWT ' + user.jwtToken)
+                                            .end(function (err, res) {
+                                                expect(res.status).to.be.eql(200);
+                                                expect(res.body).to.be.an('object');
+                                                expect(res.body).to.not.have.property('errors');
+                                                expect(res.body).to.have.property('deleted_enrollment');
+                                                done();
+
+                                            })
+                                    })
+                        });
+
+                });
 
         });
+
     });
 
 
