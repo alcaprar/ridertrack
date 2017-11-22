@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {constructDependencies} from '@angular/core/src/di/reflective_provider';
 import {UserService} from './shared/services/user.service';
+import { Router, NavigationEnd } from '@angular/router';
 declare var $:any;
 
 @Component({
@@ -11,7 +12,16 @@ declare var $:any;
 export class AppComponent {
   title = 'app';
 
-  constructor(private auth: UserService) { }
+  constructor(private router: Router) { }
+
+  ngOnInit() {
+    this.router.events.subscribe((evt) => {
+      if (!(evt instanceof NavigationEnd)) {
+        return;
+      }
+      window.scrollTo(0, 0)
+    });
+  }
 
   ngAfterViewInit(){
     $('#status').fadeOut(); // will first fade out the loading animation
