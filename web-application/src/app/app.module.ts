@@ -25,7 +25,9 @@ import {AuthGuard} from './shared/guards/auth.guard';
 import {AuthenticationService} from "./authentication/authentication.service";
 import {EventDetailPageComponent} from './event-pages/event-detail-page/event-detail-page.component';
 import { ProfilePageComponent} from "./user-pages/profile-page/profile-page.component";
-import {EventCreatePageComponent} from "./event-pages/create-event-page/event-create-page.component";
+import {EventCreatePageComponent} from "./event-pages/event-create-page/event-create-page.component";
+import {EventManagePageComponent} from "./event-pages/event-manage-page/event-manage-page.component"
+
 
 
 import { FacebookModule } from 'ngx-facebook';
@@ -57,7 +59,8 @@ import {EventBoxComponent} from "./event-pages/event-box/event-box.component";
     ProfilePageComponent,
     MapComponent,
     EventCreatePageComponent,
-    EventBoxComponent
+    EventBoxComponent,
+    EventManagePageComponent
   ],
   imports: [
     BrowserModule,
@@ -82,6 +85,11 @@ import {EventBoxComponent} from "./event-pages/event-box/event-box.component";
       {
         path: 'create-event',
         component: EventCreatePageComponent,
+        //canActivate: [AuthGuard]
+      },
+      {
+        path: 'manage-event',
+        component: EventManagePageComponent,
         //canActivate: [AuthGuard]
       },
       /**
