@@ -1,13 +1,15 @@
 <div class="box-two proerty-item">
   <div class="item-thumb">
     <a routerLink="events/{{event._id}}">
-      <div class="event-image" style="background-image: url('../../../assets/img/ny-marathon.jpg')"></div>
+      <div class="event-image" *ngIf="event.logo" style="background-image: url('../../../assets/img/ny-marathon.jpg')"></div>
+      <div class="event-image" *ngIf="!event.logo" style="background-image: url('../../../assets/img/logoRidertrack.png')"></div>
     </a>
   </div>
   <div class="item-entry overflow">
     <h5><a routerLink="events/{{event._id}}"> {{event.name}} </a></h5>
     <div class="dot-hr"></div>
-    <span class="pull-left" *ngIf="event.length"><b>Length :</b> {{event.length}} km </span>
-    <span class="location pull-right">{{event.country}} | {{event.city}}</span>
+    <span class="pull-left" ><b><i class="fa fa-calendar"></i></b> {{event.startingDate}}</span>
+    <span class="pull-left" *ngIf="event.length"><b><i class="fa fa-arrows-h"></i></b> {{event.length}} km </span>
+    <span class="location pull-right"><i class="fa fa-map-marker"></i> {{event.country}} | {{event.city}}</span>
   </div>
 </div>
