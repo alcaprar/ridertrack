@@ -273,20 +273,4 @@ router.delete('/:eventId', authMiddleware.hasValidToken, function(req,res){
     });
 });
 
-router.get('/:userId' + '/organizedEvents',authMiddleware.hasValidToken,function(req,res){
-   var userId = req.params.userId;
-   Event.find({organizerId:userId},function(err,events){
-       if (err)
-           return res.status(400).send({
-               errors:err
-           });
-       else{
-           return res.status(200).send({
-               events:events
-           });
-       }
-   });
-});
-
-
 module.exports = router;

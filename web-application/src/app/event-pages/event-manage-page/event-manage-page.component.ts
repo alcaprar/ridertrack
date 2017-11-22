@@ -1,5 +1,5 @@
 ///<reference path="../../shared/models/event.ts"/>
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Injectable, OnInit} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {EventService} from "../../shared/services/event.service";
 import {Event} from "../../shared/models/event";
@@ -16,6 +16,7 @@ export class EventManagePageComponent implements OnInit {
 
   eventId: string;
   event:Event = new Event();
+
 
   constructor(private eventService: EventService, private router: Router, private route: ActivatedRoute) {
   }

@@ -26,9 +26,9 @@ import {AuthenticationService} from "./authentication/authentication.service";
 import {EventDetailPageComponent} from './event-pages/event-detail-page/event-detail-page.component';
 import { ProfilePageComponent} from "./user-pages/profile-page/profile-page.component";
 import {EventCreatePageComponent} from "./event-pages/event-create-page/event-create-page.component";
-import {EventManagePageComponent} from "./event-pages/event-manage-page/event-manage-page.component"
-
-
+import {EventManagePageComponent} from "./event-pages/event-manage-page/event-manage-page.component";
+import { DateTimePickerModule } from 'ng-pick-datetime';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import { FacebookModule } from 'ngx-facebook';
 import { MyEventsComponent } from './event-pages/my-events/my-events.component';
@@ -64,9 +64,11 @@ import {EventBoxComponent} from "./event-pages/event-box/event-box.component";
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
+    DateTimePickerModule,
     FacebookModule.forRoot(),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyCWY7J8-bVG3TxQbVvgXb-F5lQV6XrTM5s',

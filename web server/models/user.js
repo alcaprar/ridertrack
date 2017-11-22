@@ -72,7 +72,6 @@ var userSchema = Schema({
         select: true,
         default : ['id1','id2']
     }
-
 });
 
 userSchema.index({email: 1}, {name: 'email_idx', unique: true});
