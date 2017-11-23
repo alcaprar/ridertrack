@@ -43,7 +43,7 @@ import { InvalidMessageDirective } from './authentication/invalid-message.direct
 import {InvalidTypeDirective} from "./authentication/invalid-type.directive";
 import {FooterEventBoxComponent} from "./shared/layout/footer/footer-event-box/footer-event-box.component";
 import { FaqPageComponent } from './faq-page/faq-page.component';
-
+import {WhyRidertrackBestPageComponent} from "./why-ridertrack-best-page/why-ridertrack-best-page.component";
 
 
 @NgModule({
@@ -71,6 +71,8 @@ import { FaqPageComponent } from './faq-page/faq-page.component';
     HomeEventBoxComponent,
     InvalidMessageDirective,
     InvalidTypeDirective,
+    FooterEventBoxComponent,
+    WhyRidertrackBestPageComponent,
     FooterEventBoxComponent,
     FaqPageComponent
   ],
@@ -121,6 +123,10 @@ import { FaqPageComponent } from './faq-page/faq-page.component';
       {
         path: 'contacts',
         component: ContactsPageComponent
+      },
+      {
+        path: 'why-best',
+        component: WhyRidertrackBestPageComponent
       },
       {
         path: 'my-profile',
