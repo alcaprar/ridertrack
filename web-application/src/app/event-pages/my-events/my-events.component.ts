@@ -14,22 +14,29 @@ import {Event} from '../../shared/models/event';
 })
 export class MyEventsComponent implements OnInit {
 
-  // currentUserId: any;
   organizedEvents: any;
 
   constructor(private userService: UserService, private route: ActivatedRoute,
      private eventService: EventService, private authService: AuthenticationService) { }
 
   ngOnInit() {
-    // this.currentUserId = this.authService.getUserId();
     this.getOrganizedEvents(this.authService.getUserId());
   }
 
   getOrganizedEvents(id){
-    this.organizedEvents = this.eventService.getOrganizedEventsForUser(id);
-    console.log(this.eventService.getOrganizedEventsForUser(id));
-    console.log(this.organizedEvents);
-
+    this.organizedEvents = this.eventService.getOrganizedEventsForUser(id).then(
+      (events) =>{
+        console.log('[My-Events][OnInit][getOrganizedEventsForUser][success]', events);
+        this.organizedEvents = events
+      }
+    )
+    .catch(
+      (error) =>{
+        console.log('[My-Events][OnInit][getOrganizedEventsForUser][error]', error);
+      }
+    )
   }
+
+  
 
 }
