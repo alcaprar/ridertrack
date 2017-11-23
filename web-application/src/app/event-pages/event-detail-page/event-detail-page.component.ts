@@ -5,6 +5,7 @@ import {EventService} from '../../shared/services/event.service';
 import {User} from '../../shared/models/user';
 import {Event} from '../../shared/models/event';
 import { ActivatedRoute } from '@angular/router';
+import {AuthenticationService} from '../../authentication/authentication.service';
 
 @Component({
   selector: 'app-event-detail-page',
@@ -19,12 +20,14 @@ export class EventDetailPageComponent implements OnInit {
   private currentUser: User = new User();
   private organizer: User = new User();
 
-  constructor(private route: ActivatedRoute, private userService: UserService, private eventService: EventService) {
+  constructor(private route: ActivatedRoute, private userService: UserService, private eventService: EventService
+    , private authService: AuthenticationService) {
   }
 
 
   ngOnInit() {
     // catch the event id
+    console.log(this.userService.getUser);
     this.route.params.subscribe(params => {
       this.eventId = params['eventId'];
       console.log('[EventDetail][OnInit]', this.eventId);
@@ -88,6 +91,10 @@ export class EventDetailPageComponent implements OnInit {
     const year = date.getFullYear();
     return (day.toString()+ '/' + month.toString()+ '/'+
       year.toString());
+  }
+
+  enroll(){
+    console.log(this.eventService.enrollToEvent(this.eventId));
   }
 
   /*isEnrollementAvailable(): Boolean {

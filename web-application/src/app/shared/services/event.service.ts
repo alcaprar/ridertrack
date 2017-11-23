@@ -147,7 +147,7 @@ export class EventService {
       .then(
         (res) => {
           const eventBody = res.json().event as Event;
-          console.log('[EventService][creteEvent][success]', eventBody);
+          console.log('[EventService][enroll][success]', eventBody);
           this.router.navigate(['my-events']);
           return eventBody;
       })
@@ -189,6 +189,28 @@ export class EventService {
         });
   }
 
+  /**
+   * Perform an HTTP POST to REST API to enroll to an event
+   * @param eventid
+   * @returns enrollment message
+   */
+  enrollToEvent(eventid){
+    const url = `${this.BASE_URL}/enrollments`;
+    var body = {eventId: eventid}
+
+    return this.http.post(url, body).toPromise()
+      .then(
+        (res) => {
+          const eventBody = res.json();
+          console.log('[EventService][enroll][success]', eventBody);
+          return eventBody;
+      })
+      .catch(
+        (error) => {
+          console.log('[EventService][enroll][error]', error);
+          return Promise.reject(error.json());
+      });
+  }
 
 
 }
