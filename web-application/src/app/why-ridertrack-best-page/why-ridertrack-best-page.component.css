@@ -1,0 +1,9 @@
+#runner-smartphone {
+  width:60%;
+  display: inline-block;
+}
+#decription-why {
+  width:35%;
+  display: inline-block;
+  vertical-align: middle;
+}
