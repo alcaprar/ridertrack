@@ -11,20 +11,22 @@
     </div>
         <div class="search-form wow pulse" data-wow-delay="0.8s">
 
-          <form action="" class=" form-inline">
+          <form class=" form-inline">
 
             <div class="form-group">
-              <select id="city" class="selectpicker" data-live-search="true" data-live-search-style="begins" title="Select city">
+              <input type="text" id="search-city" class="form-control" placeholder="Type a keyword..">
+              <!--<select id="city" class="selectpicker" data-live-search="true" data-live-search-style="begins" title="Select city">-->
 
-                <option>New york</option>
-                <option>Paris</option>
-                <option>Casablanca</option>
-                <option>Tokyo</option>
-                <option>Marraekch</option>
-              </select>
+                <!--<option>New york</option>-->
+                <!--<option>Paris</option>-->
+                <!--<option>Casablanca</option>-->
+                <!--<option>Tokyo</option>-->
+                <!--<option>Marraekch</option>-->
+              <!--</select>-->
             </div>
             <div class="form-group">
               <select id="race" class="selectpicker" data-live-search="true" data-live-search-style="begins" title="Select race">
+                <option value="">All types</option>
                 <option *ngFor="let type of eventTypes" [value]="type" style="text-transform: capitalize">{{type}}</option>
               </select>
             </div>
