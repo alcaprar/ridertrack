@@ -9,25 +9,22 @@
           <form action="" class=" form-inline">
             <div class="col-md-12">
               <div class="col-md-4">
-                <input type="text" class="form-control" placeholder="Key word">
+                <input type="text" id="search-keyword" class="form-control" placeholder="Key word">
               </div>
               <div class="col-md-4">
-                <select id="lunchBegins" class="selectpicker" data-live-search="true" data-live-search-style="begins" title="Select your city">
+                <input type="text" id="search-city" class="form-control" placeholder="City">
+                <!--<select id="lunchBegins" class="selectpicker" data-live-search="true" data-live-search-style="begins" title="Select your city">
                   <option>New york</option>
                   <option>Paris</option>
                   <option>Casablanca</option>
                   <option>Tokyo</option>
                   <option>Marraekch</option>
-                </select>
+                </select>-->
               </div>
               <div class="col-md-4">
                 <select id="basic" class="selectpicker show-tick form-control">
-                  <option> Select race </option>
-                  <option>Running</option>
-                  <option>Biking</option>
-                  <option>Marathon</option>
-                  <option>Triathlon</option>
-
+                  <option value="-1" [selected]="queryParams.type === ''">All types</option>
+                  <option *ngFor="let type of eventTypes" [value]="type" [selected]="queryParams.type !== '' && queryParams.type === type" style="text-transform: capitalize">{{type}}</option>
                 </select>
               </div>
             </div>
@@ -37,20 +34,20 @@
                 <div class="col-sm-3">
                   <label for="price-range">Price range (€):</label>
                   <input type="text" class="span2" value="" data-slider-min="0"
-                         data-slider-max="600" data-slider-step="5"
-                         data-slider-value="[0,450]" id="price-range" ><br />
+                         data-slider-max="500" data-slider-step="0"
+                         data-slider-value="[0,500]" id="price-range" ><br />
                   <b class="pull-left color">€ 0</b>
-                  <b class="pull-right color">€ 100000</b>
+                  <b class="pull-right color">€ 500</b>
                 </div>
                 <!-- End of  -->
 
                 <div class="col-sm-3">
                   <label for="property-geo">Length :</label>
                   <input type="text" class="span2" value="" data-slider-min="0"
-                         data-slider-max="600" data-slider-step="5"
-                         data-slider-value="[50,450]" id="property-geo" ><br />
-                  <b class="pull-left color">10 km</b>
-                  <b class="pull-right color">12000 km</b>
+                         data-slider-max="300" data-slider-step="5"
+                         data-slider-value="[0,300]" id="property-geo" ><br />
+                  <b class="pull-left color">0 km</b>
+                  <b class="pull-right color">300 km</b>
                 </div>
                 <!-- End of  -->
               </div>
@@ -113,9 +110,6 @@
                 <option value="9">9</option>
                 <option selected="selected" value="12">12</option>
                 <option value="15">15</option>
-                <option value="30">30</option>
-                <option value="45">45</option>
-                <option value="60">60</option>
               </select>
             </div><!--/ .sel-->
           </div><!--/ .items-per-page-->
@@ -131,9 +125,10 @@
         <div id="list-type" class="proerty-th" *ngFor="let event of eventsList">
           <app-event-box [event]="event"></app-event-box>
         </div>
+        <div *ngIf="eventsList.length === 0">
+
+        </div>
       </div>
-
-
 
       <div class="col-md-12 clear">
         <div class="pull-right">
@@ -142,7 +137,7 @@
               <li><a href="#">Prev</a></li>
               <li><a href="#">1</a></li>
               <li><a href="#">2</a></li>
-              <li><a href="#">3</a></li>
+              <li class="active"><a >3</a></li>
               <li><a href="#">4</a></li>
               <li><a href="#">Next</a></li>
             </ul>

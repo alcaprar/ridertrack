@@ -11,18 +11,18 @@
       <h5><a [routerLink]="['/events', event._id]"> {{event.name}}</a></h5>
       <div class="line">
         <span class="property pull-left" *ngIf="event.length"><b> Length :</b> {{event.length}} km </span>
-        <span class="property location pull-right"><b> Location :</b> {{event.country}} | {{event.city}}</span>
+        <span class="property location pull-right"><b><i class="fa fa-map-marker"></i></b> {{event.country}} | {{event.city}}</span>
       </div>
       <div class="line">
-        <span class="property pull-right"><b> Date :</b> {{event.startingDate}} </span>
+        <span class="property pull-right"><b><i class="fa fa-calendar"></i></b> {{event.startingDate}} </span>
         <!--<span class="property pull-left"><b> Price :</b> {{}}</span>-->
       </div>
-      <p style="display: none;">The New York City Marathon has grown from a Central Park race with 55 finishers to the world's biggest and most popular marathon, with more than 51,000 finishers in 2016.</p>
-      <div class="property-icon">
+      <p style="display: none;">{{event.description}}</p>
+      <!--<div class="property-icon">
         <img class="logo" src="../../../assets/img/garmin-logo.jpg">|
         <img class="logo" src="../../../assets/img/spot-logo.png">|
         <img class="logo" src="../../../assets/img/maprogress-logo.jpg">
-      </div>
+      </div>-->
     </div>
 
 
