@@ -1,4 +1,4 @@
-<app-page-header title="Edit personal info"></app-page-header>
+<app-page-header title="Hello: {{user.name}}"></app-page-header>
 <div class="register-area" style="background-color: rgb(249, 249, 249);">
   <div class="container">
     <div class="col-md-6 col-md-offset-3">
@@ -8,15 +8,15 @@
           <form [formGroup]="editForm" #f="ngForm">
             <div class="form-group">
               <label for="name">Name</label>
-              <input type="text" class="form-control" formControlName="name" placeholder={{this.name}}>
+              <input type="text" id="name" class="form-control" formControlName="name" placeholder={{user.name}}>
             </div>
             <div class="form-group">
               <label for="surname">Surname</label>
-              <input type="text" class="form-control" formControlName="surname" placeholder={{this.surname}}>
+              <input type="text" id="surname" class="form-control" formControlName="surname" placeholder={{user.surname}}>
             </div>
             <div class="form-group">
               <label for="email">Email</label>
-              <input type="text" class="form-control" formControlName="email" placeholder={{this.email}}>
+              <input type="text" id="email" class="form-control" formControlName="email" placeholder={{user.email}} disabled>
             </div>
             <!--<div class="form-group">
               <label for="password">Password</label>

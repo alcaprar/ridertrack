@@ -13,6 +13,8 @@ export class EventCreatePageComponent implements OnInit {
 
   private eventTypes;
 
+  private errors: string[] = [];
+
   event = new EventToCreate();
 
   constructor(private eventService: EventService, private router: Router) {
@@ -59,24 +61,39 @@ export class EventCreatePageComponent implements OnInit {
    * It calls the method of event service waiting for a response.
    */
   onSubmit(){
+    // clean the errors
+    this.errors = [];
+
     // the datepicker is not detected by angular form
     this.event.startingDate = $('#startingDate.datepicker').val();
-    this.event.logo = $('#logo').prop('files')[0];
-    console.log('Submitted', this.event);
 
-    this.eventService.createEvent(this.event)
-      .then(
-        (response) => {
-          console.log('[CreateEvent][onSubmit][success]', response);
-          var eventId = response._id;
-          this.router.navigate(['/manage-event/' + eventId]);
-        }
-      )
-      .catch(
-        (error) => {
-          console.log('[CreateEvent][onSubmit][error]', error);
-          // TODO show errors
-        }
-      )
+    // get the logo from the input image
+    var logo = $('#logo').prop('files')[0];
+
+    console.log('[EventCreate][onSubmit]', this.event);
+
+    if(!logo) {
+      // if logo is missing show an error
+      var error = 'Logo is missing.';
+      this.errors.push(error);
+    }else{
+      // add the logo to the event
+      this.event.logo = logo;
+      // call the service to create the event
+      this.eventService.createEvent(this.event)
+        .then(
+          (event) => {
+            console.log('[CreateEvent][onSubmit][success]', event);
+            // TODO show a dialog that says "event successfully created"
+            this.router.navigate(['/manage-event/' + event._id]);
+          }
+        )
+        .catch(
+          (error) => {
+            console.log('[CreateEvent][onSubmit][error]', error);
+            // TODO show errors
+          }
+        )
+    }
   }
 }

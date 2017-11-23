@@ -50,6 +50,9 @@
                     <input [(ngModel)]="event.city" #city="ngModel" id="city" name="city" type="text" class="form-control" placeholder="Milano" required>
                     <div [hidden]="city.valid || city.pristine" class="alert alert-danger">City is required.</div>
                   </div>
+                  <div *ngIf="errors.length > 0" class="alert alert-danger">
+                    <span *ngFor="let error of errors">{{error}}</span>
+                  </div>
                 </div>
               </div>
             </div>

@@ -927,28 +927,6 @@ label small{
 }
 
 
-/*====================================================
-page-header
-======================================================*/
-.page-head{
-  background: #494C53 url("./assets/img/page-header.jpg")
-  no-repeat scroll center top / cover;
-  color:#FFF;
-  position: relative;
-  max-height: 140px;
-}
-.page-head-content {
-  padding-top: 52px;
-  padding-bottom: 52px;
-}
-.page-head-content .page-title {
-  margin: 0px;
-  padding: 10px 16px;
-  font-size: 30px;
-  font-weight: 300;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-}
 .content-area{
   background-color: #FCFCFC; padding-bottom: 55px;
 }

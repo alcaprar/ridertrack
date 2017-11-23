@@ -10,8 +10,8 @@ import { User } from '../../shared/models/user';
 })
 export class ProfilePageComponent implements OnInit {
 
+  private user: User = new User();
   editForm: FormGroup;
-  user: any;
   name: String;
   surname: String;
   email: String;
@@ -23,11 +23,7 @@ export class ProfilePageComponent implements OnInit {
   ngOnInit() {
     this.userService.getUser().subscribe(
       (user: User) =>{
-        // here you have the user
-        console.log(user);
-        this.name = user.name;
-        this.surname = user.surname;
-        this.email = user.email;
+        this.user = user;
       }
     );
     this.setFormEdit();
