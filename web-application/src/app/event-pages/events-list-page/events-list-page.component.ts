@@ -1,4 +1,4 @@
-import { Component, OnInit, ApplicationRef } from '@angular/core';
+import { Component, OnInit, ApplicationRef, ViewChild, ElementRef } from '@angular/core';
 import {EventService} from '../../shared/services/event.service';
 import {UserService} from '../../shared/services/user.service';
 import {User} from '../../shared/models/user';
@@ -13,6 +13,10 @@ declare var $: any;
   styleUrls: ['./events-list-page.component.css']
 })
 export class EventsListPageComponent implements OnInit {
+
+  @ViewChild('searchKeyword') searchKeyword: ElementRef;
+  @ViewChild('searchCity') searchCity: ElementRef;
+  @ViewChild('searchType') searchType: ElementRef;
 
   private currentUser: User;
   private eventsList: Event[] = [];
@@ -51,6 +55,7 @@ export class EventsListPageComponent implements OnInit {
           this.queryParams.type = params['type'] || '';
           this.queryParams.length = +params['length'] || 0;
           this.queryParams.city = params['city'] || '';
+          this.queryParams.country = params['country'] || '';
 
           console.log('[EventList][ngOnInit]', this.queryParams)
         }
@@ -82,6 +87,24 @@ export class EventsListPageComponent implements OnInit {
       $('#list-type').addClass('proerty-th-list');
       $('#list-type').removeClass('proerty-th');
 
+    });
+  }
+
+  /**
+   * It is called when the search button is clicked.
+   */
+  search(){
+    this.queryParams.keyword = this.searchKeyword.nativeElement.value;
+    this.queryParams.city = this.searchCity.nativeElement.value;
+    this.queryParams.type = (this.searchType.nativeElement.value == -1) ? '' : this.searchType.nativeElement.value;
+    this.queryParams.page = 1;
+
+    this.queryParams.sort = '';
+
+    console.log('[EventsList][search]', this.queryParams);
+
+    this.router.navigate([ '/events' ], {
+      queryParams: this.queryParams
     });
   }
 
