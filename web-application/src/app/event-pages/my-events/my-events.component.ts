@@ -14,8 +14,8 @@ import {Event} from '../../shared/models/event';
 })
 export class MyEventsComponent implements OnInit {
 
-  enrolledEvents: any;
-  organizedEvents: any;
+  enrolledEvents: Event[] = [];
+  organizedEvents: Event[] = [];
 
   constructor(private userService: UserService, private route: ActivatedRoute,
      private eventService: EventService, private authService: AuthenticationService) { }
@@ -26,7 +26,7 @@ export class MyEventsComponent implements OnInit {
   }
 
   getOrganizedEvents(id){
-    this.organizedEvents = this.eventService.getOrganizedEventsForUser(id).then(
+    this.eventService.getOrganizedEventsForUser(id).then(
       (events) =>{
         console.log('[My-Events][OnInit][getOrganizedEventsForUser][success]', events);
         this.organizedEvents = events
@@ -40,7 +40,7 @@ export class MyEventsComponent implements OnInit {
   }
 
   getEnrolledEvents(id){
-    this.enrolledEvents = this.eventService.getEnrolledEventsForUser(id).then(
+    this.eventService.getEnrolledEventsForUser(id).then(
       (events) =>{
         console.log('[My-Events][OnInit][getEnrolledEventsForUser][success]', events);
         this.enrolledEvents = events

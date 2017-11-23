@@ -1,5 +1,7 @@
 var express = require('express');
 var router = express.Router();
+var config = require('../config')
+var fs = require('fs');
 
 var async = require('async');
 
@@ -7,6 +9,10 @@ var Event = require('../models/event');
 var User = require('../models/user');
 
 var authMiddleware = require('../middlewares/auth');
+var multipart = require('connect-multiparty')({
+    uploadDir: config.uploadImageFolder,
+    maxFilesSize: 1024 * 1000 // 1 MB
+});
 
 /**
  * It returns the list of all the events.
@@ -142,7 +148,7 @@ router.get('/allCities', function (req, res, next) {
 /**
  * It returns the detail of the given eventId
  */
-router.get('/:eventId', function (req, res) {
+router.get('/:eventId',  function (req, res) {
     Event.findByEventId(req.params.eventId, function (err, event) {
         if (err) {
             res.status(400).send({
@@ -184,19 +190,38 @@ router.get('/:eventId/organizer', function (req, res) {
 /** 
  * It creates the event passed in the body after checking the user is logged in.
  * It returns the detail of the event just created.
+ * Multipart middleware allows the upload of files.
  */
-router.post('/', authMiddleware.hasValidToken, function (req, res) {
-    console.log('[POST /events]', req.userId, req.body);
+router.post('/', authMiddleware.hasValidToken, multipart, function (req, res) {
+    console.log('[POST /events]', req.userId, req.body, req.files);
+
     Event.create(req.userId, req.body, function (err, event) {
         if (err) {
             res.status(400).send({
                 errors: err
             })
         }else{
-            res.status(200).send({
-                event: event
-            })
+            // rename the logo with the id
+            var tempPath = req.files.logo.path;
+            var logoExtension = tempPath.split('.').pop();
+            var newFilename = event._id + '.' + logoExtension;
+            var newPath = config.uploadImageFolder + '/' + newFilename;
+
+            fs.rename(tempPath, newPath, function (err) {
+                // TODO check the err. it might be thrown when the file is not saved properly
+                // TODO the event should be deleted and an error to the user should be sent
+
+                // saving the logo path
+                event.logo = '/img/' + newFilename;
+                event.save(function (err) {
+                    res.status(200).send({
+                        event: event
+                    })
+                })
+            });
         }
+
+        // TODO delete the temp file in any case
     })
 });
 

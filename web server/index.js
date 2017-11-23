@@ -10,7 +10,7 @@ var app = express();
 
 app.use(cors());
 
-// Creating http server and socket.io server
+// Creating http server
 var server = require('http').Server(app);
 
 app.use(function(req, res, next) {
@@ -49,6 +49,15 @@ mongoose.connect(config.mongodb.uri, {
         console.log('[MDB] Successfully connected to MongoDB')
     }
 });
+
+// create public folder if does not exist
+var fs = require('fs');
+if (!fs.existsSync(config.publicFolder)){
+    fs.mkdirSync(config.publicFolder);
+}
+if (!fs.existsSync(config.uploadImageFolder)){
+    fs.mkdirSync(config.uploadImageFolder);
+}
 
 // Public folders
 app.use(express.static(__dirname + '/public'));

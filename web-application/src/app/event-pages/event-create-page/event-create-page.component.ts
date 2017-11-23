@@ -70,8 +70,6 @@ export class EventCreatePageComponent implements OnInit {
     // get the logo from the input image
     var logo = $('#logo').prop('files')[0];
 
-    console.log('[EventCreate][onSubmit]', this.event);
-
     if(!logo) {
       // if logo is missing show an error
       var error = 'Logo is missing.';
@@ -80,6 +78,7 @@ export class EventCreatePageComponent implements OnInit {
       // add the logo to the event
       this.event.logo = logo;
       // call the service to create the event
+      console.log('[EventCreate][onSubmit]', this.event);
       this.eventService.createEvent(this.event)
         .then(
           (event) => {

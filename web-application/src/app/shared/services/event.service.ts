@@ -93,7 +93,7 @@ export class EventService {
         return Observable.of(null);
       });
   }
-  
+
   getOrganizer(eventId): Promise<User>{
     const url = `${this.BASE_EVENT_URL}/${eventId}/organizer`;
 
@@ -134,10 +134,16 @@ export class EventService {
   createEvent(event: EventToCreate): Promise<Event> {
     const url = `${this.BASE_EVENT_URL}`;
 
-    // unset the logo field only for now
-    event.logo = null;
+    // create form data in order to pass an image
+    var formData = new FormData();
+    formData.append('logo', event.logo);
+    formData.append('name', event.name);
+    formData.append('type', event.type);
+    formData.append('startingDate', event.startingDate);
+    formData.append('country', event.country);
+    formData.append('city', event.city);
 
-    return this.http.post(url, event).toPromise()
+    return this.http.post(url, formData).toPromise()
       .then(
         (res) => {
           const eventBody = res.json().event as Event;

@@ -1,5 +1,4 @@
 var config = {
-    rootFolder: __dirname + '/../',
     passport: {
         facebookAuth: {
             clientID: '278876872621248',
@@ -24,6 +23,10 @@ var config = {
         }
     }
 };
+
+config.rootFolder=  __dirname + '/../';
+config.publicFolder = config.rootFolder + '/public';
+config.uploadImageFolder = config.publicFolder + '/img';
 
 config.port = process.env.PORT || 5000;
 
