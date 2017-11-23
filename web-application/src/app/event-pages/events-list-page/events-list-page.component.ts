@@ -99,6 +99,31 @@ export class EventsListPageComponent implements OnInit {
   }
 
   /**
+   * It is called when the user clicks on the prev page.
+   */
+  prevPage(){
+    if(this.queryParams.page > 1){
+      this.queryParams.page--;
+      this.updateEventsList()
+    }
+  }
+
+  /**
+   * It is called when the user clicks on the next page.
+   */
+  nextPage(){
+    if(this.queryParams.page < this.totalPages){
+      this.queryParams.page++;
+      this.updateEventsList();
+    }
+  }
+
+  changePage(page){
+    this.queryParams.page = page;
+    this.updateEventsList()
+  }
+
+  /**
    * Triggered when the dropdown chages the selection.
    */
   onItemsPerPageChanged(){
