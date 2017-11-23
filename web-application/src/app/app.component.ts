@@ -3,6 +3,7 @@ import {constructDependencies} from '@angular/core/src/di/reflective_provider';
 import {UserService} from './shared/services/user.service';
 import { Router, NavigationEnd } from '@angular/router';
 declare var $:any;
+declare var WOW: any;
 
 @Component({
   selector: 'app-root',
@@ -27,6 +28,9 @@ export class AppComponent {
     $('#status').fadeOut(); // will first fade out the loading animation
     $('#preloader').delay(350).fadeOut('slow'); // will fade out the white DIV that covers the website.
     $('body').delay(350).css({'overflow': 'visible'});
+
+    // init wow for animation
+    new WOW().init();
   }
 }
 
