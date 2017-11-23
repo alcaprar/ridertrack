@@ -11,83 +11,24 @@
 
     <div class="row">
       <div class="proerty-th">
-        <div class="col-sm-6 col-md-3 p0">
-          <div class="box-two proerty-item">
-            <div class="item-thumb">
-              <a href="../event-pages/event-detail-page/event-detail-page.component.html">
-                <img class="event-image" src="../../assets/img/ny-marathon.jpg">
-              </a>
+          <div class="col-sm-6 col-md-3 p0" *ngFor="let enrolled_event of enrolledEvents">
+              <div class="box-two proerty-item">
+                <div class="item-thumb">
+                  <a routerLink="../events/{{enrolled_event._id}}">
+                    <img src="../../assets/img/stan-siejka-classic.jpg">
+                  </a>
+                </div>
+                <div class="item-entry overflow">
+                  <h5>
+                    <a href="../events/{{enrolled_event._id}}"> {{enrolled_event.name}} </a>
+                  </h5>
+                  <div class="dot-hr"></div>
+                  <span class="pull-left">
+                    <b>Length : </b> 150 km </span>
+                  <span class="location pull-right"> {{enrolled_event.city}}</span>
+                </div>
+              </div>
             </div>
-            <div class="item-entry overflow">
-              <h5>
-                <a href="property-1.html"> New York Marathon </a>
-              </h5>
-              <div class="dot-hr"></div>
-              <span class="pull-left">
-                <b>Length :</b> 42.195 km </span>
-              <span class="location pull-right">New York</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-sm-6 col-md-3 p0">
-          <div class="box-two proerty-item">
-            <div class="item-thumb">
-              <a href="../event-pages/event-detail-page/event-detail-page.component.html">
-                <img src="../../assets/img/stan-siejka-classic.jpg">
-              </a>
-            </div>
-            <div class="item-entry overflow">
-              <h5>
-                <a href="../event-pages/event-detail-page/event-detail-page.component.html"> Stan Siejka Classic </a>
-              </h5>
-              <div class="dot-hr"></div>
-              <span class="pull-left">
-                <b>Length : </b> 150 km </span>
-              <span class="location pull-right">Launceston</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-sm-6 col-md-3 p0">
-          <div class="box-two proerty-item">
-            <div class="item-thumb">
-              <a href="../event-pages/event-detail-page/event-detail-page.component.html">
-                <img src="../../assets/img/tour-de-france.jpg">
-              </a>
-
-            </div>
-            <div class="item-entry overflow">
-              <h5>
-                <a href="../event-pages/event-detail-page/event-detail-page.component.html">Tour de France </a>
-              </h5>
-              <div class="dot-hr"></div>
-              <span class="pull-left">
-                <b>Length :</b> 3,500 km </span>
-              <span class="location pull-right"> France </span>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-sm-6 col-md-3 p0">
-          <div class="box-two proerty-item">
-            <div class="item-thumb">
-              <a href="../event-pages/event-detail-page/event-detail-page.component.html">
-                <img src="../../assets/img/boa-vista.jpg">
-              </a>
-
-            </div>
-            <div class="item-entry overflow">
-              <h5>
-                <a href="../event-pages/event-detail-page/event-detail-page.component.html">Boa Vista Ultra Trail </a>
-              </h5>
-              <div class="dot-hr"></div>
-              <span class="pull-left">
-                <b>Length :</b> 150 km </span>
-              <span class="location pull-right"> Boa Vista</span>
-            </div>
-          </div>
-        </div>
 
 
         <div class="row">

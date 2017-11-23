@@ -58,6 +58,24 @@ export class EventService {
         });
   }
 
+/**
+   * Perform an HTTP GET request to the REST API to read all the events in which specific user has enrolled
+   * @returns {Promise<Event[]>}
+   */
+  getEnrolledEventsForUser(id): Promise<Event[]> {
+    const url = `${this.BASE_URL}/users/${id}/enrolledEvents`;
+
+    return this.http.get(url).toPromise()
+        .then( (res) => {
+          const eventsBody = res.json().events as Event[];
+          console.log('[EventService][getEnrolledEventsForUser][success]', eventsBody);
+         return eventsBody;
+        }, (err) => {
+          console.log('[EventService][getEnrolledEventsForUser][error]', err);
+          return Observable.of(null);
+        });
+  }
+
   /**
    * It retrieves a certain amount of events ordered by date ascending.
    * @param amount

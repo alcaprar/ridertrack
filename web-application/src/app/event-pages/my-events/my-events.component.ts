@@ -14,6 +14,7 @@ import {Event} from '../../shared/models/event';
 })
 export class MyEventsComponent implements OnInit {
 
+  enrolledEvents: any;
   organizedEvents: any;
 
   constructor(private userService: UserService, private route: ActivatedRoute,
@@ -21,6 +22,7 @@ export class MyEventsComponent implements OnInit {
 
   ngOnInit() {
     this.getOrganizedEvents(this.authService.getUserId());
+    this.getEnrolledEvents(this.authService.getUserId());
   }
 
   getOrganizedEvents(id){
@@ -37,6 +39,19 @@ export class MyEventsComponent implements OnInit {
     )
   }
 
-  
+  getEnrolledEvents(id){
+    this.enrolledEvents = this.eventService.getEnrolledEventsForUser(id).then(
+      (events) =>{
+        console.log('[My-Events][OnInit][getEnrolledEventsForUser][success]', events);
+        this.enrolledEvents = events
+      }
+    )
+    .catch(
+      (error) =>{
+        console.log('[My-Events][OnInit][getEnrolledEventsForUser][error]', error);
+      }
+    )
+  }
+
 
 }
