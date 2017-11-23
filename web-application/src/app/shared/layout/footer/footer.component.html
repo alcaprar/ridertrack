@@ -1,54 +1,47 @@
 <!-- Footer area-->
-<div class="footer-area" id="socket">
+<div class="footer-area">
 
-  <!--<div class=" footer " >
+  <div class=" footer">
     <div class="container">
       <div class="row">
-        <div class="col wow fadeInRight animated">
-          <div class="single-footer news-letter">
-            <h4>Stay in touch</h4>
+
+        <div class="col-md-4 col-sm-6 wow fadeInRight animated">
+          <div class="single-footer">
+            <h4>About us </h4>
             <div class="footer-title-line"></div>
-            <p>Subscribe to our newsletter to keep you updated on all the new events.</p>
 
-            <form>
-              <div class="input-group">
-                <input class="form-control" type="text" placeholder="E-mail ... ">
-                <span class="input-group-btn">
-                  <button class="btn btn-primary subscribe" type="button"><i class="pe-7s-paper-plane pe-2x"></i></button>
-                </span>
-              </div>
-
-             
-            </form>
-
-            <div class="social pull-right">
-              <ul>
-                <li><a class="wow fadeInUp animated" href="https://twitter.com/kimarotec"><i class="fa fa-twitter"></i></a></li>
-                <li><a class="wow fadeInUp animated" href="https://www.facebook.com/kimarotec" data-wow-delay="0.2s"><i class="fa fa-facebook"></i></a></li>
-                <li><a class="wow fadeInUp animated" href="https://plus.google.com/kimarotec" data-wow-delay="0.3s"><i class="fa fa-google-plus"></i></a></li>
-                <li><a class="wow fadeInUp animated" href="https://instagram.com/kimarotec" data-wow-delay="0.4s"><i class="fa fa-instagram"></i></a></li>
-              </ul>
-            </div>
+            <img src="../../../../assets/img/logoRidertrack-vector.png" alt="" id="logo-footer" class="wow pulse" data-wow-delay="1s">
+            <ul class="footer-adress">
+              <li><i class="pe-7s-map-marker strong"> </i> 20144 9-5 New Bond St</li>
+              <li><i class="pe-7s-mail strong"> </i> info@ridertrack.com</li>
+              <li><i class="pe-7s-call strong"> </i> +44 20 7946 0229</li>
+            </ul>
           </div>
         </div>
-
-      </div>
-    </div>
-  </div>-->
-
-  <div class="footer-copy text-center">
-    <div class="container">
-      <div class="row">
-        <div class="pull-left">
-          <span><img src="../../../../favicon.ico"/>
-            <a>Ridertrack   </a>
-          </span>
+        <div class="col-md-4 col-sm-6 wow fadeInRight animated">
+          <div class="single-footer">
+            <h4>Quick links </h4>
+            <div class="footer-title-line"></div>
+            <ul class="footer-menu">
+              <li><a routerLink=" ">Home Page</a>  </li>
+              <li><a href="">Services</a>  </li>
+              <li><a routerLink="events">All Events </a></li>
+              <li><a routerLink="contacts">Contact us</a></li>
+            </ul>
+          </div>
         </div>
-
-        <div class="pull-right">
-          <i class="pe-7s-mail strong"> </i> info@ridertrack.com
-          <i class="pe-7s-call strong"> </i> +1 908 967 5906
+        <div class="col-md-4 col-sm-6 wow fadeInRight animated">
+          <div class="single-footer">
+            <h4>Last Events</h4>
+            <div class="footer-title-line"></div>
+            <ul class="footer-blog">
+              <li class="col-sm-6 col-md-3 p0" *ngFor="let event of lastEvents">
+                <app-footer-event-box [event]="event"></app-footer-event-box>
+              </li>
+            </ul>
+          </div>
         </div>
+              <!-- /input-group -->
       </div>
     </div>
   </div>

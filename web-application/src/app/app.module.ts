@@ -26,7 +26,8 @@ import {AuthenticationService} from "./authentication/authentication.service";
 import {EventDetailPageComponent} from './event-pages/event-detail-page/event-detail-page.component';
 import { ProfilePageComponent} from "./user-pages/profile-page/profile-page.component";
 import {EventCreatePageComponent} from "./event-pages/event-create-page/event-create-page.component";
-import {EventManagePageComponent} from "./event-pages/event-manage-page/event-manage-page.component"
+import {EventManagePageComponent} from "./event-pages/event-manage-page/event-manage-page.component";
+
 
 
 
@@ -40,6 +41,7 @@ import {EventBoxComponent} from "./event-pages/event-box/event-box.component";
 import {HomeEventBoxComponent} from "./home-page/home-event-box/home-event-box.component";
 import { InvalidMessageDirective } from './authentication/invalid-message.directive';
 import {InvalidTypeDirective} from "./authentication/invalid-type.directive";
+import {FooterEventBoxComponent} from "./shared/layout/footer/footer-event-box/footer-event-box.component";
 
 
 
@@ -67,7 +69,8 @@ import {InvalidTypeDirective} from "./authentication/invalid-type.directive";
     EventManagePageComponent,
     HomeEventBoxComponent,
     InvalidMessageDirective,
-    InvalidTypeDirective
+    InvalidTypeDirective,
+    FooterEventBoxComponent
   ],
   imports: [
     BrowserModule,

@@ -3,6 +3,7 @@ import {Component, Injectable, OnInit} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {EventService} from "../../shared/services/event.service";
 import {Event} from "../../shared/models/event";
+import { DatePipe } from '@angular/common';
 declare var $: any;
 
 @Component({
@@ -16,6 +17,7 @@ export class EventManagePageComponent implements OnInit {
 
   eventId: string;
   event:Event = new Event();
+  time:Date = new Date();
 
 
   constructor(private eventService: EventService, private router: Router, private route: ActivatedRoute) {
