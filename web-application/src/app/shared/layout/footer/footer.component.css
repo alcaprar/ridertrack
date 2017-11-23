@@ -42,12 +42,12 @@
   letter-spacing: 2px;
 }
 .footer h4 span{
-  border-bottom: 3px solid #FDC600;
+  border-bottom: 3px solid #d30000;
 }
 .footer-title-line {
   width: 100px;
   height: 2px;
-  background: #FFA600;
+  background: #d30000;
   margin: 0px 0px 33px;
   position: relative;
   top: -2px;
@@ -81,7 +81,7 @@ ul.footer-adress li {
   font-size: 13px;
 }
 .footer ul li a:hover{
-  color: #FDC600;
+  color: #d30000;
   text-decoration: none;
 }
 .footer-menu li{
@@ -113,11 +113,12 @@ ul.footer-blog li {
   font-size: 13px;
   text-transform: capitalize;
   font-weight: 600;
-  color: #FFA600;
+  color: #535353;
 }
 .footer-blog .blg-entry h6 {
   padding: 2px 0px;
   margin: 0px;
+
 }
 .footer-blog .blg-date {
   color: #FFF;
@@ -127,9 +128,6 @@ ul.footer-blog li {
   position: relative;
   top: -22px;
   width: 100%;
-}
-.footer-blog .blg-thumb img{
-
 }
 
 .footer-blog p {
@@ -153,19 +151,10 @@ ul.footer-blog li {
 .news-letter .form-control:hover ,.news-letter .form-control:focus{
   background-color: rgba(0, 0, 0, 0.1);
 }
-.footer .subscribe{
-  display: inline-block;
-  padding: 5px 10px;
-  margin-bottom: 22px;
-  font-size: 14px;
-  margin-left: -17px;
-  z-index: 99;
-  background-color: #FFA600;
-  border-color: #FFA600;
-}
-.footer .subscribe:hover{
-  background-color: #2D2D2D;
-  border-color: #2D2D2D;
+#logo-footer {
+  width:50%;
+  height: 50%;
+  margin-bottom: 2em;;
 }
 
 /*FOOOTER RESPONSIVITY*/
