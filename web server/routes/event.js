@@ -193,14 +193,6 @@ router.post('/', authMiddleware.hasValidToken, function (req, res) {
                 errors: err
             })
         }else{
-            User.addToOrganizedEvents(req.userId, event._id, function (err, user) {
-                if (err) {
-                    res.status(400).send({
-                        message: 'Error in adding to users organized events',
-                        errors: err
-                    })
-                }
-            });
             res.status(200).send({
                 event: event
             })

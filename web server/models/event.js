@@ -55,11 +55,6 @@ var eventSchema = Schema({
     enrollmentClosingAt: {
         type: Date
     },
-    participantsList: {
-        type: [String],
-        default: [],
-        select: true
-    },
     logo: {
         type: String
     },
@@ -102,7 +97,7 @@ eventSchema.statics.findByName = function (name, callback ){
         }
     })
 };
-/* It finds an event by name passed
+/* It finds an event by id passed
  * Then, calls callback with either an error or the found event
  */
 eventSchema.statics.findByEventId = function (eventId, callback ){
@@ -115,26 +110,16 @@ eventSchema.statics.findByEventId = function (eventId, callback ){
     })
 };
 
-/* It adds an user to event participants list
- * TODO check if a participant exists in this list
- * @param userId
- * @param eventId
- * @param callback
-*/
-
-eventSchema.statics.addToParticipantList = function (userId, eventId, callback ){
-    this.findOne({_id: eventId}, function (err, event) {
+/*
+ * It finds events by passed list of eventsId
+ */
+eventSchema.statics.findEventsFromList = function (eventsIdList, callback ){
+    this.find(
+            {_id: {$in: eventsIdList}}, function (err, event) {
         if(err){
             return callback(err)
         }else{
-            event.participantsList.push(userId);
-            event.save(function (err) {
-                if (err) {
-                    return callback(err)
-                } else {
-                    return callback(null, event)
-                }
-            })
+            return callback(null, event)
         }
     })
 };

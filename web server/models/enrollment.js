@@ -18,7 +18,6 @@ var enrollmentSchema = Schema({
         type: [Object],
         required: false
     },
-
     created_at: {
         type: Date,
         select: false
@@ -29,6 +28,9 @@ var enrollmentSchema = Schema({
     }
 });
 
+/**
+ * Static method to create an enrollment.
+ */
 enrollmentSchema.statics.create = function(userId, enrollmentJson, callback){
     var enrollment = new Enrollment(enrollmentJson);
     enrollment.userId = userId;
@@ -44,6 +46,9 @@ enrollmentSchema.statics.create = function(userId, enrollmentJson, callback){
     });
 };
 
+/**
+ * Static method to find all enrollments by id .
+ */
 enrollmentSchema.statics.findAllByEventId = function (eventId, callback ){
     this.find({eventId: eventId}, function (err, enrollment) {
         if(err){
@@ -55,7 +60,7 @@ enrollmentSchema.statics.findAllByEventId = function (eventId, callback ){
 };
 
 /**
- * Static method to find an enrollment and delete it.
+ * Static method to delete an enrollment.
  */
 enrollmentSchema.statics.delete = function (conditions,callback){
     this.findOneAndRemove(conditions, function(err, enrollment){

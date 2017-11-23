@@ -61,16 +61,6 @@ var userSchema = Schema({
     updated_at: {
         type: Date,
         select: false
-    },
-    enrolledEvents: {
-        type: [String],
-        select: true,
-        default : ['LjubljanskiMaraton123!!','ZagrebMarathon123']
-    },
-    organizedEvents: {
-        type: [String],
-        select: true,
-        default : ['id1','id2']
     }
 });
 
@@ -103,7 +93,6 @@ userSchema.methods.removePrivateFields = function (callback) {
         callback();
     }
 };
-
 
 /**
  * It generates the hash of the password.
@@ -147,53 +136,6 @@ userSchema.methods.verifyPassword = function (password, callback) {
     })
 };
 
-/**
- * It adds events to users enrolled events when creating an enrollment.
- * TODO check if a event exists in this list of enrolled events
- * @param userId
- * @param eventId
- * @param callback
- */
-userSchema.statics.addToEnrolledEvents = function (userId, eventId, callback ){
-    this.findOne({_id: userId}, function (err, user) {
-        if(err){
-            return callback(err)
-        }else{
-            user.enrolledEvents.push(eventId);
-            user.save(function (err) {
-                if (err) {
-                    return callback(err)
-                } else {
-                    return callback(null, user)
-                }
-            })
-        }
-    })
-};
-
-/**
- * It adds events to users organized events whem creating an event.
- * TODO check if a event exists in this list of enrolled events
- * @param userId
- * @param eventId
- * @param callback
- */
-userSchema.statics.addToOrganizedEvents = function (userId, eventId, callback ){
-    this.findOne({_id: userId}, function (err, user) {
-        if(err){
-            return callback(err)
-        }else{
-            user.organizedEvents.push(eventId);
-            user.save(function (err) {
-                if (err) {
-                    return callback(err)
-                } else {
-                    return callback(null, user)
-                }
-            })
-        }
-    })
-};
 /**
  * It search for an user given the id.
  * @param userId
@@ -305,7 +247,7 @@ userSchema.statics.update = function (userId, userJson, callback) {
             return callback('You can not modify ' + key)
         }
     }
-    
+
     // find the right user and modify it
     this.findOne({_id: userId}, function (err, user) {
         if(err){
