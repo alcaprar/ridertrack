@@ -44,30 +44,12 @@ router.get('/', function (req, res) {
  */
 
 router.post('/', authMiddleware.hasValidToken, function(req, res){
-
     Enrollment.create(req.userId, req.body, function (err, enrollment) {
         if(err){
             res.status(400).send({
                 errors: err
             })
         }else{
-            Event.addToParticipantList(req.userId, enrollment.eventId, function (err, event) {
-                if (err) {
-                    res.status(400).send({
-                        message: 'Error in adding to participant list',
-                        errors: err
-                    })
-                }
-            })
-            User.addToEnrolledEvents(req.userId, enrollment.eventId, function (err, user) {
-                if (err) {
-                    res.status(400).send({
-                        message: 'Error in adding to users enrolled events',
-                        errors: err
-                    })
-                }
-            })
-
             res.status(200).send({
                 message: 'User enrolled successfully!',
                 enrollment: enrollment

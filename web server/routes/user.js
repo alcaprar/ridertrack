@@ -4,6 +4,7 @@ var config = require('../config');
 
 var User = require('../models/user');
 var Event = require('../models/event');
+var Enrollment = require('../models/enrollment');
 
 var authMiddleware = require('../middlewares/auth');
 
@@ -57,43 +58,54 @@ router.get('/:userId', function (req, res) {
 });
 
 /**
- * It return the enrolled events of an user for his Id.
- * TODO authorization
+ * It returns the events enrolled by the user.
  */
+router.get('/:userId/enrolledEvents', authMiddleware.hasValidToken, function (req, res){
+    let enrolledEventsIdList=[];
+    Enrollment.find({userId: req.userId}, function (err, enrollment){
+        if (err) {
+            res.status(400).send({
+                errors: err,
+                message: 'Error in finding an enrollment in getting enrolled events'
 
-router.get('/:userId/enrolledEvents',authMiddleware.hasValidToken, function (req, res){
-    var userId = req.userId;
-    User.findByUserId(userId, function (err, user){
-        if (err)
-            return res.status(400).send({
-                errors: err
-            });
-        else{
-            return res.status(200).send({
-                enrolledEvents: user.enrolledEvents
-            });
+            })
+        }else{
+            for(let key in enrollment){
+                enrolledEventsIdList.push(enrollment[key].eventId);
+            }
+            Event.findEventsFromList(enrolledEventsIdList, function(err, events){
+                if(err){
+                    res.status(400).send({
+                        errors: err,
+                        message: 'Error in finding events in getting enrolled events'
+                    })
+                }else{
+                    res.status(200).send({
+                        events: events
+                    })
+                }
+            })
         }
-    });
+    })
 });
 
 /**
  * It returns the events organized by the user.
+ *
  */
 router.get('/:userId/organizedEvents', authMiddleware.hasValidToken, function(req,res){
-    var userId = req.userId;
-    Event.find({organizerId:userId},function(err,events){
-        if (err)
+    Event.find({organizerId: req.userId}, function(err, events){
+        if (err) {
             return res.status(400).send({
-                errors:err
+                errors: err
             });
-        else{
+        }else{
             return res.status(200).send({
-                events:events
+                events: events
             });
         }
     });
 });
-
 
 /**
  * It creates the user passed in the body.
