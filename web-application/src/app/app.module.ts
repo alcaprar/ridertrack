@@ -42,7 +42,8 @@ import {HomeEventBoxComponent} from "./home-page/home-event-box/home-event-box.c
 import { InvalidMessageDirective } from './authentication/invalid-message.directive';
 import {InvalidTypeDirective} from "./authentication/invalid-type.directive";
 import {FooterEventBoxComponent} from "./shared/layout/footer/footer-event-box/footer-event-box.component";
-
+import { FaqPageComponent } from './faq-page/faq-page.component';
+import {WhyRidertrackBestPageComponent} from "./why-ridertrack-best-page/why-ridertrack-best-page.component";
 
 
 @NgModule({
@@ -70,7 +71,10 @@ import {FooterEventBoxComponent} from "./shared/layout/footer/footer-event-box/f
     HomeEventBoxComponent,
     InvalidMessageDirective,
     InvalidTypeDirective,
-    FooterEventBoxComponent
+    FooterEventBoxComponent,
+    WhyRidertrackBestPageComponent,
+    FooterEventBoxComponent,
+    FaqPageComponent
   ],
   imports: [
     BrowserModule,
@@ -88,6 +92,11 @@ import {FooterEventBoxComponent} from "./shared/layout/footer/footer-event-box/f
         component:  HomePageComponent,
         pathMatch: 'full'
       } ,
+      {
+        path: 'faq',
+        component: FaqPageComponent,
+        pathMatch: 'full'
+      },
       {
         path: 'events',
         component: EventsListPageComponent
@@ -114,6 +123,10 @@ import {FooterEventBoxComponent} from "./shared/layout/footer/footer-event-box/f
       {
         path: 'contacts',
         component: ContactsPageComponent
+      },
+      {
+        path: 'why-best',
+        component: WhyRidertrackBestPageComponent
       },
       {
         path: 'my-profile',
