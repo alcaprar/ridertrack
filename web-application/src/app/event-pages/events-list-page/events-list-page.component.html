@@ -9,10 +9,10 @@
           <form (ngSubmit)="search()" class="form-inline">
             <div class="col-md-12">
               <div class="col-md-4">
-                <input type="text" #searchKeyword class="form-control" [value]="queryParams.keyword" placeholder="Key word">
+                <input type="text" #searchKeyword class="form-control" [value]="(queryParams.keyword === undefined) ? '' : queryParams.keyword" placeholder="Key word">
               </div>
               <div class="col-md-4">
-                <input type="text" #searchCity class="form-control" [value]="queryParams.city" placeholder="City">
+                <input type="text" #searchCity class="form-control" [value]="(queryParams.city === undefined) ? '' : queryParams.city" placeholder="City">
                 <!--<select id="lunchBegins" class="selectpicker" data-live-search="true" data-live-search-style="begins" title="Select your city">
                   <option>New york</option>
                   <option>Paris</option>
@@ -23,8 +23,8 @@
               </div>
               <div class="col-md-4">
                 <select #searchType class="selectpicker show-tick form-control">
-                  <option value="-1" [selected]="queryParams.type === ''">All types</option>
-                  <option *ngFor="let type of eventTypes" [value]="type" [selected]="queryParams.type !== '' && queryParams.type === type" style="text-transform: capitalize">{{type}}</option>
+                  <option value="-1" [selected]="queryParams.type === undefined">All types</option>
+                  <option *ngFor="let type of eventTypes" [value]="type" [selected]="queryParams.type !== undefined && queryParams.type === type" style="text-transform: capitalize">{{type}}</option>
                 </select>
               </div>
             </div>
@@ -110,7 +110,7 @@
           <div class="items-per-page">
             <label for="items_per_page"><b>Events per page :</b></label>
             <div class="sel">
-              <select id="items_per_page" name="per_page">
+              <select #itemsPerPage id="items_per_page" name="per_page" (change)="onItemsPerPageChanged()">
                 <option *ngFor="let itemsPerPage of allowedItemsPerPage" [value]="itemsPerPage" [selected]="queryParams.itemsPerPage === itemsPerPage">{{itemsPerPage}}</option>
               </select>
             </div><!--/ .sel-->
@@ -136,13 +136,13 @@
         <div class="pull-right">
           <div class="pagination">
             <ul>
-              <li><a [ngClass]="{'disabled': queryParams.page == 1}">Prev</a></li>
-              <li *ngIf="queryParams.page > 2"><a>{{queryParams.page - 2}}</a></li>
-              <li *ngIf="queryParams.page > 1"><a>{{queryParams.page - 1}}</a></li>
+              <li><a [ngClass]="{'disabled': queryParams.page == 1}" (click)="prevPage()">Prev</a></li>
+              <li *ngIf="queryParams.page > 2"><a (click)="changePage(queryParams.page - 2)">{{queryParams.page - 2}}</a></li>
+              <li *ngIf="queryParams.page > 1"><a (click)="changePage(queryParams.page - 1)">{{queryParams.page - 1}}</a></li>
               <li class="active"><a>{{queryParams.page}}</a></li>
-              <li *ngIf="totalPages !== 0 && queryParams.page < totalPages"><a>{{queryParams.page + 1}}</a></li>
-              <li *ngIf="totalPages !== 0 && queryParams.page < totalPages - 1"><a>{{queryParams.page + 2}}</a></li>
-              <li><a [ngClass]="{'disabled': totalPages == 0 || queryParams.page == totalPages}">Next</a></li>
+              <li *ngIf="totalPages !== 0 && queryParams.page < totalPages"><a (click)="changePage(queryParams.page + 1)">{{queryParams.page + 1}}</a></li>
+              <li *ngIf="totalPages !== 0 && queryParams.page < totalPages - 1"><a (click)="changePage(queryParams.page + 2)">{{queryParams.page + 2}}</a></li>
+              <li><a [ngClass]="{'disabled': totalPages == 0 || queryParams.page == totalPages}" (click)="nextPage()">Next</a></li>
             </ul>
           </div>
         </div>

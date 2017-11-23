@@ -118,6 +118,12 @@ router.get('/', function(req, res) {
                 errors: err
             })
         } else {
+            console.log('[GET /events]', {
+                events: results[1],
+                page: page,
+                itemsPerPage: itemsPerPage,
+                totalPages: Math.ceil(results[0]/itemsPerPage)
+            });
             res.status(200).send({
                 events: results[1],
                 page: page,

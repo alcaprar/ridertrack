@@ -6,6 +6,7 @@ import {EventToCreate} from "../models/eventToCreate";
 import {HttpClientService} from "./http-client.service";
 import {environment} from '../../../environments/environment'
 import {User} from "../models/user";
+import {EventsListQueryParams} from "../models/eventsListQueryParams";
 
 @Injectable()
 export class EventService {
@@ -26,14 +27,17 @@ export class EventService {
    * Perform an HTTP GET request to the REST API to read all the events
    * @returns {Promise<Event[]>}
    */
-  getAllEvents(): Promise<Event[]> {
-    const url = `${this.BASE_EVENT_URL}`;
+  getAllEvents(queryParams: EventsListQueryParams): Promise<[Event[], number, number, number]> {
+    const url = `${this.BASE_EVENT_URL}?${this.serializeQueryString(queryParams)}`;
+
+    console.log('[EventService][getAllEvents]', url);
 
     return this.http.get(url).toPromise()
-        .then( (res) => {
-          const eventsBody = res.json().events as Event[];
-          console.log('[EventService][getAllEvents][success]', eventsBody);
-         return eventsBody;
+        .then( (response) => {
+          const body = response.json();
+          const events = body.events as Event[];
+          console.log('[EventService][getAllEvents][success]', body);
+         return [events, body.page, body.itemsPerPage, body.totalPages];
         }, (err) => {
           console.log('[EventService][getAllEvents][error]', err);
           return Observable.of(null);
@@ -81,7 +85,7 @@ export class EventService {
    * @param amount
      */
   getLastEvents(amount): Promise<Event[]> {
-    const url = `${this.BASE_EVENT_URL}?sort=startingDate=asc&page=1&itemsPerPage=7`;
+    const url = `${this.BASE_EVENT_URL}?sort=startingDate=asc&page=1&itemsPerPage=${amount}`;
 
     return this.http.get(url).toPromise()
       .then( (res) => {
@@ -212,6 +216,14 @@ export class EventService {
       });
   }
 
+  private serializeQueryString(obj) {
+    var str = [];
+    for(var p in obj)
+      if (obj[p] !== undefined) {
+        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+      }
+    return str.join("&");
+  }
 
 }
 

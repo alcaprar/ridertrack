@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import {IMyDpOptions} from 'mydatepicker';
+import {Router} from "@angular/router";
 import {EventService} from "../shared/services/event.service";
 import {Event} from '../shared/models/event'
 declare var $:any;
@@ -11,13 +12,16 @@ declare var $:any;
 })
 export class HomePageComponent {
 
+  @ViewChild('searchKeyword') searchKeyword: ElementRef;
+  @ViewChild('searchType') searchType: ElementRef;
+
   private lastEvents: Event[];
   private eventTypes: String[];
 
   // Initialized to specific date (09.10.2018).
   public model: any = { date: { year: 2018, month: 10, day: 9 } };
 
-  constructor(private eventService: EventService) {
+  constructor(private eventService: EventService, private router: Router) {
     // retrieve the event types
     this.eventTypes = this.eventService.getEventTypes();
     // retrive the last 7 events
@@ -75,6 +79,24 @@ export class HomePageComponent {
 
       return r;
     }
+  }
+
+  /**
+   * It is called when the search button is clicked.
+   */
+  search(){
+    var keyword = (this.searchKeyword.nativeElement.value === '') ? undefined : this.searchKeyword.nativeElement.value;
+    var type = (this.searchType.nativeElement.value == -1) ? undefined : this.searchType.nativeElement.value;
+
+
+    console.log('[HomePage][search]',this.searchType.nativeElement.value, 'keyword ', keyword, 'type: ', type);
+
+    this.router.navigate([ '/events' ], {
+      queryParams: {
+        keyword: keyword,
+        type: type
+      }
+    });
   }
 
 }
