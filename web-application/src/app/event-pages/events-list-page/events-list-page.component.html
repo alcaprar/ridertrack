@@ -9,10 +9,10 @@
           <form action="" class=" form-inline">
             <div class="col-md-12">
               <div class="col-md-4">
-                <input type="text" id="search-keyword" class="form-control" placeholder="Key word">
+                <input type="text" id="search-keyword" class="form-control" [value]="queryParams.keyword" placeholder="Key word">
               </div>
               <div class="col-md-4">
-                <input type="text" id="search-city" class="form-control" placeholder="City">
+                <input type="text" id="search-city" class="form-control" [value]="queryParams.city" placeholder="City">
                 <!--<select id="lunchBegins" class="selectpicker" data-live-search="true" data-live-search-style="begins" title="Select your city">
                   <option>New york</option>
                   <option>Paris</option>
@@ -32,7 +32,7 @@
               <div class="search-row">
 
                 <div class="col-sm-3">
-                  <label for="price-range">Price range (€):</label>
+                  <label for="price-range">Price (€):</label>
                   <input type="text" class="span2" value="" data-slider-min="0"
                          data-slider-max="500" data-slider-step="0"
                          data-slider-value="[0,500]" id="price-range" ><br />
@@ -42,14 +42,13 @@
                 <!-- End of  -->
 
                 <div class="col-sm-3">
-                  <label for="property-geo">Length :</label>
+                  <label for="length-range">Length :</label>
                   <input type="text" class="span2" value="" data-slider-min="0"
                          data-slider-max="300" data-slider-step="5"
-                         data-slider-value="[0,300]" id="property-geo" ><br />
+                         data-slider-value="[0,300]" id="length-range" ><br />
                   <b class="pull-left color">0 km</b>
                   <b class="pull-right color">300 km</b>
                 </div>
-                <!-- End of  -->
               </div>
 
               <!--<div class="search-row">
@@ -105,11 +104,7 @@
             <label for="items_per_page"><b>Events per page :</b></label>
             <div class="sel">
               <select id="items_per_page" name="per_page">
-                <option value="3">3</option>
-                <option value="6">6</option>
-                <option value="9">9</option>
-                <option selected="selected" value="12">12</option>
-                <option value="15">15</option>
+                <option *ngFor="let itemsPerPage of allowedItemsPerPage" [value]="itemsPerPage" [selected]="queryParams.itemsPerPage === itemsPerPage">{{itemsPerPage}}</option>
               </select>
             </div><!--/ .sel-->
           </div><!--/ .items-per-page-->
@@ -126,7 +121,7 @@
           <app-event-box [event]="event"></app-event-box>
         </div>
         <div *ngIf="eventsList.length === 0">
-
+          No events with those criteria.
         </div>
       </div>
 
@@ -134,12 +129,13 @@
         <div class="pull-right">
           <div class="pagination">
             <ul>
-              <li><a href="#">Prev</a></li>
-              <li><a href="#">1</a></li>
-              <li><a href="#">2</a></li>
-              <li class="active"><a >3</a></li>
-              <li><a href="#">4</a></li>
-              <li><a href="#">Next</a></li>
+              <li><a [ngClass]="{'disabled': queryParams.page == 1}">Prev</a></li>
+              <li *ngIf="queryParams.page > 2"><a>{{queryParams.page - 2}}</a></li>
+              <li *ngIf="queryParams.page > 1"><a>{{queryParams.page - 1}}</a></li>
+              <li class="active"><a>{{queryParams.page}}</a></li>
+              <li *ngIf="totalPages !== 0 && queryParams.page < totalPages"><a>{{queryParams.page + 1}}</a></li>
+              <li *ngIf="totalPages !== 0 && queryParams.page < totalPages - 1"><a>{{queryParams.page + 2}}</a></li>
+              <li><a [ngClass]="{'disabled': totalPages == 0 || queryParams.page == totalPages}">Next</a></li>
             </ul>
           </div>
         </div>

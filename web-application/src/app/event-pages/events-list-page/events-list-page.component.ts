@@ -14,13 +14,13 @@ declare var $: any;
 })
 export class EventsListPageComponent implements OnInit {
 
-  currentUser: User;
-  eventsList: Event[] = [];
+  private currentUser: User;
+  private eventsList: Event[] = [];
   private eventTypes: String[];
-  selectedEvent: Event;
+  private allowedItemsPerPage = [3, 6, 9, 12, 15];
 
   private queryParams: EventsListQueryParams = new EventsListQueryParams;
-  totalPages = 0;
+  private totalPages: number = 0;
 
   constructor(private eventService: EventService, private route: ActivatedRoute, private userService: UserService, private router: Router, private appRef: ApplicationRef) {
     // retrieve the event types
@@ -44,8 +44,8 @@ export class EventsListPageComponent implements OnInit {
       .subscribe(
         params=> {
 
-          this.queryParams.page = +params['page'] || 0; // the plus before params is used to cast it to a number
-          this.queryParams.itemsPerPage = +params['itemsPerPage'] || 12;
+          this.queryParams.page = +params['page'] || 1; // the plus before params is used to cast it to a number
+          this.queryParams.itemsPerPage = (this.allowedItemsPerPage.indexOf(+params['itemsPerPage']) > -1) ? +params['itemsPerPage'] : 12;
           this.queryParams.keyword = params['keyword'] || '';
           this.queryParams.sort = params['sort'] || '';
           this.queryParams.type = params['type'] || '';
@@ -59,9 +59,7 @@ export class EventsListPageComponent implements OnInit {
 
   ngAfterViewInit(){
     $('#price-range').slider();
-    $('#property-geo').slider();
-    $('#min-baths').slider();
-    $('#min-bed').slider();
+    $('#length-range').slider();
     $('.selectpicker').selectpicker();
     $('input').iCheck({
       checkboxClass: 'icheckbox_square-yellow',
