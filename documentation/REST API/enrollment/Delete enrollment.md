@@ -4,7 +4,7 @@ It deletes the enrollment in database.
 
 ## URL
 
-/api/enrollments/:enrollmentId
+/api/enrollments/:eventId/:userId
 
 ## Method
 
@@ -12,9 +12,8 @@ DELETE
 
 ## Url params
 
-userId
-&
-eventId
+- userId
+- eventId
 
 ## Data Params
 
