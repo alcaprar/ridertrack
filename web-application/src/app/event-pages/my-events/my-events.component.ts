@@ -3,6 +3,7 @@ import {UserService} from '../../shared/services/user.service';
 import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
 import {EventService} from '../../shared/services/event.service';
+import {AuthenticationService} from '../../authentication/authentication.service';
 import {User} from '../../shared/models/user';
 import {Event} from '../../shared/models/event';
 
@@ -13,12 +14,22 @@ import {Event} from '../../shared/models/event';
 })
 export class MyEventsComponent implements OnInit {
 
-  constructor(/*private userService: UserService, private route: ActivatedRoute,
-  private eventService: EventService, private location: Location*/) { }
+  // currentUserId: any;
+  organizedEvents: any;
+
+  constructor(private userService: UserService, private route: ActivatedRoute,
+     private eventService: EventService, private authService: AuthenticationService) { }
 
   ngOnInit() {
-    /*this.getEvent();
-    this.userService.getUser().subscribe((user) => this.currentUser = user);*/
+    // this.currentUserId = this.authService.getUserId();
+    this.getOrganizedEvents(this.authService.getUserId());
+  }
+
+  getOrganizedEvents(id){
+    this.organizedEvents = this.eventService.getOrganizedEventsForUser(id);
+    console.log(this.eventService.getOrganizedEventsForUser(id));
+    console.log(this.organizedEvents);
+
   }
 
 }

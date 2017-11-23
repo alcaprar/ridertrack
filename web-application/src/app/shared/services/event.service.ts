@@ -10,6 +10,7 @@ import {User} from "../models/user";
 @Injectable()
 export class EventService {
 
+  private BASE_URL = environment.baseAPI;
   private BASE_EVENT_URL = environment.baseAPI + '/events';
 
   private eventTypes: [String] = ['running', 'cycling', 'hiking', 'triathlon', 'other'];
@@ -35,6 +36,24 @@ export class EventService {
          return eventsBody;
         }, (err) => {
           console.log('[EventService][getAllEvents][error]', err);
+          return Observable.of(null);
+        });
+  }
+
+  /**
+   * Perform an HTTP GET request to the REST API to read all the events that specific user has organized
+   * @returns {Promise<Event[]>}
+   */
+  getOrganizedEventsForUser(id): Promise<Event[]> {
+    const url = `${this.BASE_URL}/users/${id}/organizedEvents`;
+
+    return this.http.get(url).toPromise()
+        .then( (res) => {
+          const eventsBody = res.json().events as Event[];
+          console.log('[EventService][getOrganizedEventsForUser][success]', eventsBody);
+         return eventsBody;
+        }, (err) => {
+          console.log('[EventService][getOrganizedEventsForUser][error]', err);
           return Observable.of(null);
         });
   }
