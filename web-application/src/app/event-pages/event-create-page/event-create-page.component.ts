@@ -17,6 +17,9 @@ export class EventCreatePageComponent implements OnInit {
 
   event = new EventToCreate();
 
+  private urlImage: any;
+  private urlNoImage = '../../../assets/img/logofoto.png';
+
   constructor(private eventService: EventService, private router: Router) {
   }
 
@@ -48,6 +51,16 @@ export class EventCreatePageComponent implements OnInit {
     }
   }
 
+  readUrl(event: any) {
+    if(event.target.files && event.target.files[0]) {
+      var reader = new FileReader();
+
+      reader.onload = (event: any) => {
+        this.urlImage = event.target.result;
+      },
+      reader.readAsDataURL(event.target.files[0]);
+    }
+  }
   /**
    * It is called when the user clicks on the cancel button.
    * It redirects the user at my-events page.
