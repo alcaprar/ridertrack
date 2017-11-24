@@ -23,6 +23,7 @@ export class EventDetailPageComponent implements OnInit {
   private enrollement: String;
   private enrollementOpenDate: String;
   private enrollementCloseDate: String;
+  private eventLogo: any;
 
   constructor(private route: ActivatedRoute, private userService: UserService, private eventService: EventService
     , private authService: AuthenticationService) {
@@ -73,6 +74,7 @@ export class EventDetailPageComponent implements OnInit {
     this.enrollementOpenDate = this.getFullDate(this.event.enrollmentOpeningAt);
     this.enrollementCloseDate = this.getFullDate(this.event.enrollmentClosingAt);
     this.isEnrollementAvailable();
+    this.getImageToShow();
     console.log('[Event-Detail-Component][OnInit][Event]', this.event);
   }
 
@@ -109,6 +111,16 @@ export class EventDetailPageComponent implements OnInit {
      this.enrollement = "Close";
      return false;
    }
+  }
+
+  getImageToShow(){
+    let reader = new FileReader();
+    reader.addEventListener("load", () => {
+      this.eventLogo = reader.result;
+    }, false);
+    if(this.event.logo) {
+      reader.readAsDataURL(this.event.logo);
+    }
   }
 
   /**
