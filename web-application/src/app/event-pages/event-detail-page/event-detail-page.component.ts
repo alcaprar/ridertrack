@@ -15,12 +15,15 @@ import {AuthenticationService} from '../../authentication/authentication.service
 export class EventDetailPageComponent implements OnInit {
 
   private eventId: String;
+  private alreadyEnrolled: boolean;
 
   private event: Event = new Event();
   private currentUser: User = new User();
   private organizer: User = new User();
 
+  private enrolledEvents: any;
   private enrollement: String;
+  private enrollements = [];
   private enrollementOpenDate: String;
   private enrollementCloseDate: String;
   private eventLogo: any;
@@ -32,11 +35,13 @@ export class EventDetailPageComponent implements OnInit {
 
   ngOnInit() {
     // catch the event id
-
+    // this.getEnrolledEvents;
+    this.getEnrolledEvents(this.authService.getUserId());
     console.log(this.userService.getUser);
     this.route.params.subscribe(params => {
       this.eventId = params['eventId'];
       console.log('[EventDetail][OnInit]', this.eventId);
+      
 
       this.eventService.getEvent(this.eventId)
         .then(
@@ -92,6 +97,41 @@ export class EventDetailPageComponent implements OnInit {
 
   enroll(){
     console.log(this.eventService.enrollToEvent(this.eventId));
+    this.alreadyEnrolled = true;
+  }
+
+  withdrawEnrollment(){
+    console.log(this.eventService.withdrawEnrollment(this.eventId, this.currentUser.id));
+    this.alreadyEnrolled = false;
+  }
+  
+
+  getEnrolledEvents(id){
+    this.eventService.getEnrolledEventsForUser(id).then(
+      (events) =>{
+        console.log('[EventDetail][OnInit][getEnrolledEventsForUser][success]', events);
+        this.enrolledEvents = events;
+        for(let event of this.enrolledEvents){
+          this.enrollements.push(event._id);
+        }
+        console.log('[EventDetail][Enrolled events id]: '+ this.enrollements);
+        this.isAlreadyEnrolled();
+      }
+    )
+    .catch(
+      (error) =>{
+        console.log('[EventDetail][OnInit][getEnrolledEventsForUser][error]', error);
+      }
+    )
+  }
+
+  isAlreadyEnrolled() {
+    if(this.enrollements.includes(this.eventId)) {
+      this.alreadyEnrolled = true;
+    }
+    else {
+      this.alreadyEnrolled = false;
+    }
   }
 
   /*
@@ -113,8 +153,8 @@ export class EventDetailPageComponent implements OnInit {
         return false;
       }
     }
-  }*/
-
+  }
+*/
 
   /**
    *  function that allow to go back at the previous browser page
