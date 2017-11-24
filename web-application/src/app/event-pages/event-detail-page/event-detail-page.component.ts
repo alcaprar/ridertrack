@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {UserService} from '../../shared/services/user.service';
 import {Location} from '@angular/common';
 import {EventService} from '../../shared/services/event.service';
@@ -32,6 +32,7 @@ export class EventDetailPageComponent implements OnInit {
 
   ngOnInit() {
     // catch the event id
+
     console.log(this.userService.getUser);
     this.route.params.subscribe(params => {
       this.eventId = params['eventId'];

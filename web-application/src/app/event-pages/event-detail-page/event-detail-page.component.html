@@ -4,11 +4,16 @@
 <!-- event content area -->
 <div class="content-area single-property" style="background-color: #FCFCFC;">&nbsp;
   <div class="container">
+    <div class="row">
+      <div class="col-lg-6">
       <button class="navbar-btn nav-button wow bounceInRight header" (click)="enroll()">Enroll</button>
       <button class="navbar-btn nav-button wow fadeInRight" (click)="withdrawEnrollment()">Withdraw enrollment</button>
-      <button class="navbar-btn nav-button wow bounceInRight header" *ngIf="currentUser === organizer"
+      </div>
+      <div class="col-md-2 right">
+      <button class="navbar-btn nav-button navbar-right wow bounceInRight header" *ngIf="currentUser.email === organizer.email"
               [routerLink]="['/manage-event', event._id]">Edit</button>
-
+      </div>
+    </div>
     <div class="clearfix padding-top-40" >
 
       <div class="col-md-8 single-property-content prp-style-2">
@@ -109,7 +114,7 @@
                          <span class="property-info-label">{{event.startingDate}}</span>
                        </span>
                     </li>
-                    <li >
+                    <li *ngIf="enrollementOpenDate && enrollementOpenDate">
                        <span class="property-info-entry">
                          <span class="property-info-value">Registration Status</span>
                          <span class="property-info-label">{{enrollement}}</span>
