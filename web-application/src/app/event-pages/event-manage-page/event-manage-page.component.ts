@@ -20,6 +20,8 @@ export class EventManagePageComponent implements OnInit {
   time:Date = new Date();
   message: string;
 
+  private urlImage: any;
+  private urlNoImage = '../../../assets/img/logofoto.png';
 
   constructor(private eventService: EventService, private router: Router, private route: ActivatedRoute) {
   }
@@ -37,6 +39,7 @@ export class EventManagePageComponent implements OnInit {
           (event) => {
             console.log('[EventManage][OnInit][getEvent][success]', event);
             this.event = event;
+
           }
         )
     })
@@ -64,6 +67,22 @@ export class EventManagePageComponent implements OnInit {
 
     function formatDate(date){
       return date.getDate() + '/' + (date.getMonth() < 12 ? date.getMonth() + 1 : 1) + '/' + date.getFullYear()
+    }
+  }
+
+
+  /**
+   *  When a new image is uploaded is uploaded, it reads the url and save the image
+   * @param event
+   */
+  urlChanged(event: any) {
+    if(event.target.files && event.target.files[0]) {
+      var reader = new FileReader();
+
+      reader.onload = (event: any) => {
+        this.urlImage = event.target.result;
+      },
+        reader.readAsDataURL(event.target.files[0]);
     }
   }
 

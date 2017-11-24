@@ -51,6 +51,10 @@ export class EventCreatePageComponent implements OnInit {
     }
   }
 
+  /**
+   *  When an image is uploaded, it reads the url and save the image
+   * @param event
+   */
   readUrl(event: any) {
     if(event.target.files && event.target.files[0]) {
       var reader = new FileReader();
