@@ -233,14 +233,14 @@ export class EventService {
    * @returns enrollment message
    */
   withdrawEnrollment(eventId, userId){
-    const url = `${this.BASE_URL}/enrollments/${eventId}}/${userId}}`;
+    const url = `${this.BASE_URL}/enrollments/${eventId}/${userId}`;
 
     return this.http.delete(url).toPromise()
       .then(
         (res) => {
-          const eventBody = res.json();
-          console.log('[EventService][deleteEnrollment][success]', eventBody);
-          return eventBody;
+          const respondMessage = res.json();
+          console.log('[EventService][deleteEnrollment][success]', respondMessage);
+          return respondMessage;
       })
       .catch(
         (error) => {
