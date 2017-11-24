@@ -175,19 +175,8 @@ export class EventService {
 
     console.log("[EventService][UpdateEvent][eventToPass]", event);
     // create form data in order to pass an image
-    var formData = new FormData();
-    formData.append('logo', event.logo);
-    formData.append('name', event.name);
-    formData.append('type', event.type);
-    formData.append('startingDate', event.startingDate);
-    formData.append('country', event.country);
-    formData.append('city', event.city);
-    formData.append("enrollmentOpeningAt", event.enrollmentOpeningAt.toDateString());
-    formData.append( "enrollmentClosingAt", event.enrollmentClosingAt.toDateString());
-    formData.append("description", event.description);
-    formData.append("maxDuration", event.maxDuration.toString());
 
-    return this.http.put(url , formData).toPromise()
+    return this.http.put(url , JSON.stringify(event)).toPromise()
       .then(
         (res) => {
           const eventBody = res.json().event as Event;
