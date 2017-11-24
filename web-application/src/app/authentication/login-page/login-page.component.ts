@@ -59,9 +59,9 @@ export class LoginPageComponent implements OnInit {
         result => {
           console.log('[LoginComponent][Login result]', result);
           this.loading = false;
-          if(!result){
-            this.error = 'Invalid email or password. Try again.';
-          }
+        }, error => {
+          console.log('[LoginComponent][Login error]', error);
+          this.error = error;
         }
       )
   }

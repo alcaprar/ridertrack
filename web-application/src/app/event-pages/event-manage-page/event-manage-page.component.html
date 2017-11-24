@@ -12,6 +12,7 @@
               <small>Add as many details as possibile to make your own event intriguing and reliable</small>
             </h3>
           </div>
+          <div [hidden]="message !== null" class="alert alert-danger">{{message}}</div>
           <form (ngSubmit)="onSubmit()" #updateEventForm="ngForm">
             <div id="create">
               <div class="row p-b-15  ">
@@ -36,8 +37,9 @@
                     </select>
                   </div>
                   <div class="form-group">
-                    <label>Date <small>(required)</small></label>
-                    <input [(ngModel)]="event.startingDate" #startingDate="ngModel" id="startingDate" name="startingDate" type="text" class="form-control datepicker">
+                    <label for="startingDate">Date <small>(required)</small></label>
+                    <input [(ngModel)]="event.startingDate" #startingDate="ngModel" id="startingDate" name="startingDate" type="text"
+                           class="form-control datepicker">
                     <div [hidden]="startingDate.valid || startingDate.pristine" class="alert alert-danger">Date is required.</div>
                   </div>
                   <div class="form-group">
@@ -58,26 +60,33 @@
                     <label for="description">Description</label>
                     <input [(ngModel)]="event.description" #description="ngModel" id="description" name="decription" type="text" class="form-control" placeholder="Write here your description..." >
                   </div>
-                  <div class="form-group">
+                  <!--<div class="form-group">
                     <label for="startingTime">Starting Time</label>
-                    <input [(ngModel)]="event.startingTime" #description="ngModel" id="startingTime" name="startingTime" type="text" class="form-control" placeholder="12:00" required >
-                  </div>
+                    <input [(ngModel)]="event.startingTime" #description="ngModel"
+                           id="startingTime" name="startingTime" type="text" class="form-control"
+                           placeholder="12:00" required >
+                  </div>-->
                   <div class="form-group">
                     <label for="maxDuration">Maximum Duration</label>
                     <input [(ngModel)]="event.maxDuration" #description="ngModel" id="maxDuration" name="maxDuration" type="text" class="form-control" placeholder="3:00" required>
                   </div>
                   <div class="form-group">
                     <label for="enrollmentOpeningAt">Enrollment Opening At</label>
-                    <input [(ngModel)]="event.enrollmentOpeningAt" #description="ngModel" id="enrollmentOpeningAt" name="enrollmentOpeningAt" type="text" class="form-control datepicker" placeholder=" 15/12/2017" required>
+                    <input [(ngModel)]="event.enrollmentOpeningAt"
+                           #description="ngModel" id="enrollmentOpeningAt" name="enrollmentOpeningAt"
+                           type="text" class="form-control datepicker" placeholder=" 15/12/2017" >
                   </div>
                   <div class="form-group">
                     <label for="enrollmentClosingAt">Enrollment Closing At</label>
-                    <input [(ngModel)]="event.enrollmentClosingAt" #description="ngModel" id="enrollmentClosingAt" name="enrollmentClosingAt" type="text" class="form-control datepicker" placeholder=" 15/1/2018" required>
+                    <input [(ngModel)]="event.enrollmentClosingAt" #description="ngModel" id="enrollmentClosingAt"
+                           name="enrollmentClosingAt" type="text" class="form-control datepicker"
+                           placeholder=" 15/1/2018" >
                   </div>
                 </div>
               </div>
             </div>
             <!--  End step 1 -->
+
 
             <div class="wizard-footer">
               <div class="pull-right">
@@ -96,5 +105,5 @@
     </div>
   </div>
 </div>
-
+-->
 

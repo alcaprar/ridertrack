@@ -71,25 +71,16 @@ export class EventDetailPageComponent implements OnInit {
         )
     });
 
-    this.enrollementOpenDate = this.getFullDate(this.event.enrollmentOpeningAt);
-    this.enrollementCloseDate = this.getFullDate(this.event.enrollmentClosingAt);
+    this.enrollementOpenDate = this.getDate(this.event.enrollmentOpeningAt);
+    this.enrollementCloseDate = this.getDate(this.event.enrollmentClosingAt);
     this.isEnrollementAvailable();
-    this.getImageToShow();
     console.log('[Event-Detail-Component][OnInit][Event]', this.event);
   }
 
 
- getFullDate(date: Date): String {
-    const day = date.getDate();
-    const month = date.getMonth() + 1;
-    const year = date.getFullYear();
-    const hour = date.getHours();
-    const minutes = date.getMinutes();
-    return (day.toString()+ '/' + month.toString()+ '/'+
-      year.toString()+ ' at ' + hour.toString() +':' + minutes.toString());
-  }
 
   getDate(date: Date): String {
+    if(date == null) return null;
     const day = date.getDate();
     const month = date.getMonth() + 1;
     const year = date.getFullYear();
@@ -113,15 +104,6 @@ export class EventDetailPageComponent implements OnInit {
    }
   }
 
-  getImageToShow(){
-    let reader = new FileReader();
-    reader.addEventListener("load", () => {
-      this.eventLogo = reader.result;
-    }, false);
-    if(this.event.logo) {
-      reader.readAsDataURL(this.event.logo);
-    }
-  }
 
   /**
    *  function that allow to go back at the previous browser page
