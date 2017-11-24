@@ -12,7 +12,7 @@ import {EventsListQueryParams} from "../models/eventsListQueryParams";
 export class EventService {
 
   private BASE_URL = environment.baseAPI;
-  private BASE_EVENT_URL = environment.baseAPI + '/events';
+  private BASE_EVENT_URL = '/api/events';
 
   private eventTypes: [String] = ['running', 'cycling', 'hiking', 'triathlon', 'other'];
 

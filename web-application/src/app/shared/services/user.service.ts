@@ -7,7 +7,7 @@ import {environment} from '../../../environments/environment'
 
 @Injectable()
 export class UserService {
-  private BASE_USERS_URL = environment.baseAPI + '/users/';
+  private BASE_USERS_URL = '/api/users/';
 
   constructor(private http: Http, private authService: AuthenticationService) {
 
