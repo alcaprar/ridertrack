@@ -20,6 +20,10 @@ export class EventDetailPageComponent implements OnInit {
   private currentUser: User = new User();
   private organizer: User = new User();
 
+  private enrollement: String;
+  private enrollementOpenDate: String;
+  private enrollementCloseDate: String;
+
   constructor(private route: ActivatedRoute, private userService: UserService, private eventService: EventService
     , private authService: AuthenticationService) {
   }
@@ -66,12 +70,10 @@ export class EventDetailPageComponent implements OnInit {
         )
     });
 
-    /*this.enrollementOpenDate = this.getFullDate(this.currentEvent.enrollmentOpeningAt);
-    this.enrollementCloseDate = this.getFullDate(this.currentEvent.enrollmentClosingAt);
-    this.startingTime = this.getDate(this.currentEvent.startingTime);
-    this.fullStartingTime = this.getFullDate(this.currentEvent.startingTime);
+    this.enrollementOpenDate = this.getFullDate(this.event.enrollmentOpeningAt);
+    this.enrollementCloseDate = this.getFullDate(this.event.enrollmentClosingAt);
     this.isEnrollementAvailable();
-    console.log('[Event-Detail-Component][OnInit][Event]', this.currentEvent);*/
+    console.log('[Event-Detail-Component][OnInit][Event]', this.event);
   }
 
 
@@ -97,16 +99,17 @@ export class EventDetailPageComponent implements OnInit {
     console.log(this.eventService.enrollToEvent(this.eventId));
   }
 
-  /*isEnrollementAvailable(): Boolean {
-   if(this.today.getTime() <= this.currentEvent.enrollmentClosingAt.getTime()
-    && this.today.getTime() >= this.currentEvent.enrollmentOpeningAt.getTime()){
+  isEnrollementAvailable(): Boolean {
+    var today= new Date();
+   if(today.getTime() <= this.event.enrollmentClosingAt.getTime()
+    && today.getTime() >= this.event.enrollmentOpeningAt.getTime()){
      this.enrollement = "Open";
      return true;
    }else {
      this.enrollement = "Close";
      return false;
    }
-  }*/
+  }
 
   /**
    *  function that allow to go back at the previous browser page

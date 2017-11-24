@@ -1,23 +1,5 @@
 <app-page-header title="{{event.name}}"></app-page-header>
 <!-- Body content -->
-<!--<div class="page-head" >
-  <div class="container">
-    <div class="row">
-      <div class="page-head-content">
-        <div class="col-lg-6">
-        <h1 class="page-title">{{event.name}}</h1>
-        </div>
-        <div class="col-lg-4">
-        <div class="button right">
-          <button class="navbar-btn nav-button wow bounceInRight header"  routerLink="/login">Enroll</button>
-          <button class="navbar-btn nav-button wow fadeInRight" >Edit</button>
-        </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>-->
-<!-- End page header -->
 
 <!-- event content area -->
 <div class="content-area single-property" style="background-color: #FCFCFC;">&nbsp;
@@ -68,9 +50,9 @@
                   <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry"> {{event.length}} KM </span>
                 </li>
 
-                <li>
+                <li *ngIf ="enrollementOpenDate && enrollementCloseDate">
                   <span class="col-xs-6 col-sm-4 col-md-4 add-d-title">Registration Period</span>
-                  <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry"> -
+                  <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry"> {{enrollementOpenDate}} - {{enrollementOpenDate}}
                     </span>
                 </li>
                 <li>
@@ -125,10 +107,10 @@
                          <span class="property-info-label">{{event.startingDate}}</span>
                        </span>
                     </li>
-                    <li>
+                    <li *ngIf="enrollementOpenDate && enrollementOpenDate">
                        <span class="property-info-entry">
                          <span class="property-info-value">Registration Status</span>
-                         <span class="property-info-label"></span>
+                         <span class="property-info-label">{{enrollement}}</span>
                        </span>
                     </li>
 
