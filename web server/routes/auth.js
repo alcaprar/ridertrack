@@ -6,6 +6,7 @@ var passport = require('passport');
 
 var User = require('../models/user');
 
+var standardMessage = {message:"An error occurred.Please try again"};
 /**
  * It creates the user passed in the body and return a JWT token in order to
  * immediately login the user.
@@ -14,15 +15,15 @@ router.post('/register', function (req, res) {
     console.log('[POST /register]');
     if(typeof req.body.email === 'undefined' || typeof req.body.password === 'undefined'){
         return res.status(400).send({
-            errors: ['Email and/or password missing.']
-        })
+            messages: [standardMessage, {message: "Email and/or password missing."}]
+            });
     }else{
         User.create(req.body, function (err, user) {
             // if the error throws any error, send them
             if(err){
                 return res.status(400).send({
-                    errors: err
-                })
+                    messages: [standardMessage, {message: "Error while creating an user"}]
+                });
             }else{
 
                 var userToken = {
@@ -53,13 +54,15 @@ router.post('/login', function (req, res, next) {
     passport.authenticate('local', function (err, user, info) {
         if(err){
             // it should generate a 500 error
-            return next(err);
+            return next({
+                messages: [standardMessage,err.message]
+            });
         }
 
         if(!user){
             // user is not found or password incorrect
             return res.status(400).send({
-                errors: ['Invalid credentials.']
+                messages: [standardMessage,{message:"User is not found or password is incorrect"}]
             })
         }
 
@@ -86,8 +89,8 @@ router.get('/login/facebook', function (req, res, next) {
     passport.authenticate('facebook-token', { scope: ['id', 'displayName', 'name', 'email'] }, function (err, user, info) {
         if(err || !user){
             return res.status(400).send({
-                errors: [err]
-            })
+                messages:[standardMessage,err.message]
+            });
         }
 
         // create jwt token
@@ -112,8 +115,8 @@ router.get('/login/google', function (req, res, next) {
     passport.authenticate('google-token', function (err, user, info) {
         if(err || !user){
             return res.status(400).send({
-                errors: [err]
-            })
+                messages:[standardMessage,err.message]
+            });
         }
 
         // create jwt token

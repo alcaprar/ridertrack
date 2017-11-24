@@ -14,12 +14,16 @@ module.exports = function(passport) {
             User.findByFacebookId(profile.id, function (err, user) {
                 if(err){
                     console.log('FacebookStrategy', 'findByFacebook err', err);
-                    return done(err)
+                    return done({
+                        message:err.message
+                    });
                 }
 
                 if(!profile.emails){
                     console.log('FacebookStrategy', 'no emails provided', profile);
-                    return done('No email provided.')
+                    return done({
+                        message: 'No email provided.'
+                    });
                 }
 
                 // user not found with this social, try to register it
@@ -44,7 +48,9 @@ module.exports = function(passport) {
                             // can't register the user
                             // the email might be already registered
                             // TODO check the error and send a nice message
-                            return done(err);
+                            return done({
+                                message:err.message
+                            });
                         }
 
                         console.log('[FacebookStrategy]', '[user not found]', 'user successfully created');

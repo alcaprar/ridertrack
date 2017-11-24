@@ -43,6 +43,6 @@ None
 - Content:
 ```
 {
-    "errors": [error]
+    "messages": [String]
 }
 ```

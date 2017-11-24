@@ -13,7 +13,9 @@ module.exports = function (passport) {
             User.findByGoogleId(profile.id, function (err, user) {
                 if(err){
                     console.log('GoogleStrategy', 'findByGoogle err', err);
-                    return done(err)
+                    return done({
+                        message:err.message
+                    });
                 }
 
                 // user not found with this social, try to register it
@@ -38,7 +40,9 @@ module.exports = function (passport) {
                             // can't register the user
                             // the email might be already registered
                             // TODO check the error and send a nice message
-                            return done(err);
+                            return done({
+                                message:"Cannot register user.User might be already in database"
+                            });
                         }
 
                         console.log('[GoogleStrategy]', '[user not found]', 'user successfully created');
