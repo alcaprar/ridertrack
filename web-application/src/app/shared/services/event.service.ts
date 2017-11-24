@@ -181,7 +181,6 @@ export class EventService {
         (res) => {
           const eventBody = res.json().event as Event;
           console.log('[EventService][updateEvent][success]', eventBody);
-          this.router.navigate(['/events', event._id]);
           return eventBody;
         })
       .catch(error => {

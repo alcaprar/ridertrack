@@ -18,7 +18,7 @@ export class EventManagePageComponent implements OnInit {
   eventId: string;
   event:Event = new Event();
   time:Date = new Date();
-  message: string;
+  message: string = '';
 
   private urlImage: any;
   private urlNoImage = '../../../assets/img/logofoto.png';
@@ -39,7 +39,6 @@ export class EventManagePageComponent implements OnInit {
           (event) => {
             console.log('[EventManage][OnInit][getEvent][success]', event);
             this.event = event;
-
           }
         )
     })

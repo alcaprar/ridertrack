@@ -12,7 +12,8 @@
               <small>Add as many details as possibile to make your own event intriguing and reliable</small>
             </h3>
           </div>
-          <div [hidden]="message !== null" class="alert alert-danger">{{message}}</div>
+
+
           <form (ngSubmit)="onSubmit()" #updateEventForm="ngForm">
             <div id="create">
               <div class="row p-b-15  ">
@@ -58,7 +59,8 @@
                   </div>
                   <div class="form-group">
                     <label for="description">Description</label>
-                    <input [(ngModel)]="event.description" #description="ngModel" id="description" name="decription" type="text" class="form-control" placeholder="Write here your description..." >
+                    <input [(ngModel)]="event.description" #description="ngModel" id="description" name="decription"
+                           type="text" class="form-control" placeholder="Write here your description..." >
                   </div>
                   <!--<div class="form-group">
                     <label for="startingTime">Starting Time</label>
@@ -92,7 +94,6 @@
               <div class="pull-right">
                 <button type='submit' class='btn btn-default' [disabled]="!updateEventForm.form.valid">Update</button>
               </div>
-
               <div class="pull-left">
                 <input type='button' class='btn btn-primary' value='Cancel' (click)="onCancel()" />
               </div>
