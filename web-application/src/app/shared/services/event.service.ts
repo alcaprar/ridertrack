@@ -147,11 +147,13 @@ export class EventService {
     formData.append('country', event.country);
     formData.append('city', event.city);
 
+
+
     return this.http.post(url, formData).toPromise()
       .then(
         (res) => {
           const eventBody = res.json().event as Event;
-          console.log('[EventService][enroll][success]', eventBody);
+          console.log('[EventService][createEvent][success]', eventBody);
           this.router.navigate(['my-events']);
           return eventBody;
       })
@@ -163,15 +165,36 @@ export class EventService {
   }
 
   /**
-   * Perform an HTTP PUT request to REST API to update a certain event   *
+   * Perform an HTTP PUT request to REST API to update a certain event
    * @param id of the event
-   * @param {Event} data of the event
-   * @returns {Promise<Event>} of the event updated
+   * @param {Event} event updated
+   * @returns {Promise<Event>}
    */
   updateEvent(id, event: Event): Promise<Event> {
     const url = `${this.BASE_EVENT_URL}/${id}`;
-    return this.http.put(url , JSON.stringify(event)).toPromise()
-        .then(() => event)
+
+    console.log("[EventService][UpdateEvent][eventToPass]", event);
+    // create form data in order to pass an image
+    var formData = new FormData();
+    formData.append('logo', event.logo);
+    formData.append('name', event.name);
+    formData.append('type', event.type);
+    formData.append('startingDate', event.startingDate);
+    formData.append('country', event.country);
+    formData.append('city', event.city);
+    formData.append("enrollmentOpeningAt", event.enrollmentOpeningAt.toDateString());
+    formData.append( "enrollmentClosingAt", event.enrollmentClosingAt.toDateString());
+    formData.append("description", event.description);
+    formData.append("maxDuration", event.maxDuration.toString());
+
+    return this.http.put(url , formData).toPromise()
+      .then(
+        (res) => {
+          const eventBody = res.json().event as Event;
+          console.log('[EventService][updateEvent][success]', eventBody);
+          this.router.navigate(['/events', event._id]);
+          return eventBody;
+        })
       .catch(error => {
           console.log('[EventService][updateEvent][error]', error);
         return Promise.reject(error.message || error);

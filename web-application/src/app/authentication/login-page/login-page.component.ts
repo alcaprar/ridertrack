@@ -15,7 +15,7 @@ export class LoginPageComponent implements OnInit {
   respond: any;
   @Input() user = { name: '', surname: '', email: '', password:'', role: ''};
 
-  error = '';
+  error: any = '';
   loading = false;
 
   constructor(private fbLogin: FormBuilder, private router: Router, private authService: AuthenticationService) { }
@@ -62,6 +62,7 @@ export class LoginPageComponent implements OnInit {
         }, error => {
           console.log('[LoginComponent][Login error]', error);
           this.error = error;
+          this.loading = false;
         }
       )
   }

@@ -42,7 +42,7 @@ export class EventDetailPageComponent implements OnInit {
           (event) =>{
             console.log('[EventDetail][OnInit][EventService.getEvent][success]', event);
             // TODO add a check: if the event is null redirect somewhere maybe showing an alert
-            this.event = event;
+            this.event = event ;
           }
         )
         .catch(
@@ -71,38 +71,48 @@ export class EventDetailPageComponent implements OnInit {
         )
     });
 
-    this.enrollementOpenDate = this.getDate(this.event.enrollmentOpeningAt);
-    this.enrollementCloseDate = this.getDate(this.event.enrollmentClosingAt);
-    this.isEnrollementAvailable();
+    //this.enrollementOpenDate = this.getDate(this.event.enrollmentOpeningAt);
+   //this.enrollementCloseDate = this.getDate(this.event.enrollmentClosingAt);
+    //this.isEnrollementAvailable();
     console.log('[Event-Detail-Component][OnInit][Event]', this.event);
   }
 
 
 
   getDate(date: Date): String {
-    if(date == null) return null;
-    const day = date.getDate();
-    const month = date.getMonth() + 1;
-    const year = date.getFullYear();
-    return (day.toString()+ '/' + month.toString()+ '/'+
-      year.toString());
+    if(date) {
+      console.log(date);
+      return null;
+    } else {
+      return (date.getDate().toString() + '/' + (date.getMonth()+1).toString() + '/' +
+        date.getFullYear().toString());
+    }
   }
 
   enroll(){
     console.log(this.eventService.enrollToEvent(this.eventId));
   }
 
+  /*
   isEnrollementAvailable(): Boolean {
-    var today= new Date();
-   if(today.getTime() <= this.event.enrollmentClosingAt.getTime()
-    && today.getTime() >= this.event.enrollmentOpeningAt.getTime()){
-     this.enrollement = "Open";
-     return true;
-   }else {
-     this.enrollement = "Close";
-     return false;
-   }
-  }
+    if(this.enrollementOpenDate && this.enrollementCloseDate) {
+      this.enrollement = "Not available yet: Stay tuned";
+      return false;
+    }
+    else {
+      var today = Date.now();
+      this.event.enrollmentOpeningAt.setTime(24);
+      this.event.enrollmentClosingAt.setTime(24);
+      if (today <= this.event.enrollmentClosingAt.getTime()
+        && today >= this.event.enrollmentOpeningAt.getTime()) {
+        this.enrollement = "Open";
+        return true;
+      } else {
+        this.enrollement = "Close";
+        return false;
+      }
+    }
+  }*/
 
 
   /**

@@ -6,6 +6,8 @@
   <div class="container">
       <button class="navbar-btn nav-button wow bounceInRight header" (click)="enroll()">Enroll</button>
       <button class="navbar-btn nav-button wow fadeInRight" (click)="withdrawEnrollment()">Withdraw enrollment</button>
+      <button class="navbar-btn nav-button wow bounceInRight header" *ngIf="currentUser === organizer"
+              [routerLink]="['/manage-event', event._id]">Edit</button>
 
     <div class="clearfix padding-top-40" >
 
@@ -107,7 +109,7 @@
                          <span class="property-info-label">{{event.startingDate}}</span>
                        </span>
                     </li>
-                    <li *ngIf="enrollementOpenDate && enrollementOpenDate">
+                    <li >
                        <span class="property-info-entry">
                          <span class="property-info-value">Registration Status</span>
                          <span class="property-info-label">{{enrollement}}</span>

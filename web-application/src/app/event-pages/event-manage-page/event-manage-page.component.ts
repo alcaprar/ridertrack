@@ -83,8 +83,8 @@ export class EventManagePageComponent implements OnInit {
     // the datepicker is not detected by angular form
     this.event.startingDate = $('#startingDate.datepicker').val();
     this.event.logo = $('#logo').prop('files')[0];
-    this.event.enrollmentOpeningAt = $('#enrollmentOpeningAt.datepicker').val();
-    this.event.enrollmentClosingAt = $('#enrollmentClosingAt.datepicker').val();
+    this.event.enrollmentOpeningAt =  $('#enrollmentOpeningAt').datepicker('getDate');
+    this.event.enrollmentClosingAt = $('#enrollmentClosingAt').datepicker('getDate');
     console.log('Submitted', this.event);
 
     this.eventService.updateEvent(this.event._id, this.event)
