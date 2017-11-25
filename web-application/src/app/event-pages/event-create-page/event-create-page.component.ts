@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {EventService} from "../../shared/services/event.service";
 import {EventToCreate} from "../../shared/models/eventToCreate";
+import {AlertService} from "../../shared/services/alert.service";
 declare var $: any;
 
 @Component({
@@ -20,7 +21,7 @@ export class EventCreatePageComponent implements OnInit {
   private urlImage: any;
   private urlNoImage = '../../../assets/img/logofoto.png';
 
-  constructor(private eventService: EventService, private router: Router) {
+  constructor(private eventService: EventService, private router: Router, private  alertService: AlertService) {
   }
 
   ngOnInit() {
@@ -100,14 +101,15 @@ export class EventCreatePageComponent implements OnInit {
         .then(
           (event) => {
             console.log('[CreateEvent][onSubmit][success]', event);
-            // TODO show a dialog that says "event successfully created"
-            this.router.navigate(['/manage-event/' + event._id]);
+            this.alertService.success("Event successfully created");
+            this.router.navigate(['/events/' + event._id]);
           }
         )
         .catch(
           (error) => {
             console.log('[CreateEvent][onSubmit][error]', error);
-            // TODO show errors
+            this.alertService.success("An error occured: "+ error.message);
+            this.router.navigate(['/create-event']);
           }
         )
     }
