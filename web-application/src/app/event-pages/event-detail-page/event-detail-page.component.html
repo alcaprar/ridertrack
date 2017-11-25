@@ -4,14 +4,8 @@
 <div class="content-area single-property" style="background-color: #FCFCFC;">&nbsp;
   <div class="container">
     <div class="row">
-      <div class="col-lg-6">
-      <button class="navbar-btn nav-button wow bounceInRight header" (click)="enroll()" *ngIf="!alreadyEnrolled">Enroll</button>
-      <button class="navbar-btn nav-button wow fadeInRight" (click)="withdrawEnrollment()" *ngIf="alreadyEnrolled">Withdraw enrollment</button>
-      </div>
-      <div class="col-md-2 right">
-      <button class="navbar-btn nav-button navbar-right wow bounceInRight header" *ngIf="currentUser.email === organizer.email"
-              [routerLink]="['/manage-event', event._id]">Edit</button>
-      </div>
+
+
     </div>
     <div class="clearfix padding-top-40" >
 
@@ -21,12 +15,9 @@
             <div class="light-slide-item">
               <div class="clearfix">
                 <div class="favorite-and-print">
-                  <a class="add-to-fav" href="" data-toggle="modal">
-                    <i class="fa fa-star-o"></i>
-                  </a>
-                  <a class="printer-icon " href="javascript:window.print()">
-                    <i class="fa fa-print"></i>
-                  </a>
+                  <button class="navbar-btn nav-button wow bounceInRight header" (click)="enroll()" *ngIf="!alreadyEnrolled">Enroll</button>
+                  <button class="navbar-btn nav-button wow fadeInRight" (click)="withdrawEnrollment()"
+                          *ngIf="alreadyEnrolled">Withdraw enrollment</button>
                 </div>
                <img [src]="event.logo">
               </div>
@@ -111,7 +102,11 @@
             <div class="dealer-content">
               <div class="inner-wrapper">
                 <div class="single-property-header">
-                  <h1 class="property-title">{{event.name}}</h1>
+                  <span class="property-title">{{event.name}}
+                    <button class="navbar-btn nav-button wow fadeInRight header" *ngIf="currentUser.email === organizer.email"
+                                                                   [routerLink]="['/manage-event', event._id]">Edit</button>
+                  </span>
+
                 </div>
 
                 <div class="property-meta entry-meta clearfix ">
@@ -120,6 +115,11 @@
                        <span class="property-info-entry">
                          <span class="property-info-value">Date</span>
                          <span class="property-info-label">{{event.startingDate}}</span>
+                       </span>
+                    </li>
+                    <li>
+                       <span class="property-info-entry" *ngIf="event.startingTime != null">
+                         <span class="property-info-value">Starting Time</span>
                          <span class="property-info-label" *ngIf="event.startingTime != null">{{event.startingTime}}</span>
                        </span>
                     </li>
