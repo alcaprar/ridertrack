@@ -22,7 +22,7 @@ router.post('/register', function (req, res) {
             // if the error throws any error, send them
             if(err){
                 return res.status(400).send({
-                    errors: [{message: "Error while creating an user"}]
+                    errors: [{message: err.message}]
                 });
             }else{
 
@@ -54,13 +54,13 @@ router.post('/login', function (req, res, next) {
     passport.authenticate('local', function (err, user, info) {
         if(err){
             return res.status(400).send({
-                errors: [err]
+                errors: [{message:err.message}]
             });
         }
 
         if(!user){
             return res.status(400).send({
-                errors: [standardMessage]
+                errors: [{message:"User isn't found or password is incorrect."}]
             })
         }
 
@@ -87,14 +87,14 @@ router.get('/login/facebook', function (req, res, next) {
     passport.authenticate('facebook-token', { scope: ['id', 'displayName', 'name', 'email'] }, function (err, user, info) {
         if(err){
             return res.status(400).send({
-                errors: [err]
+                errors: [err.message]
             });
         }
 
         if(!user){
             // user is not found or password incorrect
             return res.status(400).send({
-                errors: [standardMessage]
+                errors: [{message:"User is not found or password is incorrect"}]
             })
         }
 
@@ -120,7 +120,7 @@ router.get('/login/google', function (req, res, next) {
     passport.authenticate('google-token', function (err, user, info) {
         if(err){
             return res.status(400).send({
-                errors: [err]
+                errors: [err.message]
             });
         }
         
