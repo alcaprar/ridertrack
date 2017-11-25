@@ -111,8 +111,8 @@ export class EventManagePageComponent implements OnInit {
       .then(
         (response) => {
           console.log('Update event', response);
-          this.router.navigate(['/events', this.event._id]);
           this.alertService.success("The event is Updated!")
+          this.router.navigate(['/events', this.event._id]);
         }
       )
       .catch(
