@@ -53,16 +53,14 @@ router.post('/register', function (req, res) {
 router.post('/login', function (req, res, next) {
     passport.authenticate('local', function (err, user, info) {
         if(err){
-            // it should generate a 500 error
             return res.status(400).send({
-                errors: [standardMessage]
+                errors: [err]
             });
         }
 
         if(!user){
-            // user is not found or password incorrect
             return res.status(400).send({
-                errors: [{message:"User is not found or password is incorrect"}]
+                errors: [standardMessage]
             })
         }
 
@@ -87,10 +85,17 @@ router.post('/login', function (req, res, next) {
 
 router.get('/login/facebook', function (req, res, next) {
     passport.authenticate('facebook-token', { scope: ['id', 'displayName', 'name', 'email'] }, function (err, user, info) {
-        if(err || !user){
+        if(err){
             return res.status(400).send({
-                messages:[standardMessage,err.message]
+                errors: [err]
             });
+        }
+
+        if(!user){
+            // user is not found or password incorrect
+            return res.status(400).send({
+                errors: [standardMessage]
+            })
         }
 
         // create jwt token

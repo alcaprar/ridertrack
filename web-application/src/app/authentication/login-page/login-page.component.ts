@@ -58,7 +58,7 @@ export class LoginPageComponent implements OnInit {
     console.log('[LoginComponent][Login]', user);
     this.authService.login(user)
       .then(
-        (errors) => {
+        (errors: Error[]) => {
           console.log('[LoginComponent][Login result]', errors);
           this.loading = false;
 

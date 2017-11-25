@@ -129,13 +129,11 @@ export class AuthenticationService{
   /**
    * It sends a post to the web server with the user details.
    * If the registration is successfull it receives also a token and redirects to the private page.
-   * @param user
-   * @returns {any|Promise<R>|Promise<T>|Maybe<T>}
    */
-  register(user: User): Observable<boolean> {
+  register(user: User): Promise<Error[]> {
     const url = `${this.BASE_AUTH_URL}/register`;
-    return this.http.post(url, {name: user.name, surname: user.surname, email: user.email, password: user.password})
-      .map(
+    return this.http.post(url, {name: user.name, surname: user.surname, email: user.email, password: user.password}).toPromise()
+      .then(
         (response: Response) => {
           console.log('[AuthS][Register][success]', response);
           // the registration succedeed
@@ -146,22 +144,21 @@ export class AuthenticationService{
           // route to my-events
           this.router.navigate(['my-events']);
 
-          return true;
+          return null;
+        },
+        (errorResponse: any) => {
+          var errors = errorResponse.json().errors as Error[];
+          console.log('[AuthS][Register][error]', errors);
+          return errors;
         }
       )
-      .catch(
-        (error: any) => {
-          console.log('[AuthS][Registration][error]', error.json());
-          return Observable.of(false);
-        }
-      );
   }
 
   /**
    * It calls the method login of the Facebook SDK and wait for results.
    * If the login is successful it sends the received token to the web server to get a JWT token
    */
-  loginWithFacebook(){
+  loginWithFacebook(): Promise<Error[]>{
     console.log('[AuthS][FB]');
     const options: LoginOptions = {
       auth_type: 'rerequest', // it should re request the permissions that the user did not granted
@@ -169,7 +166,7 @@ export class AuthenticationService{
       return_scopes: true
     };
     // call the login method of Facebook SDK
-    this.fb.login(options)
+    return this.fb.login(options)
       .then((response: LoginResponse) => {
         // check if he/she gave enough permissions
 
@@ -182,8 +179,8 @@ export class AuthenticationService{
           // we send this token to our web server
           console.log('[AuthS][FB][success]', response);
           const url = `${this.BASE_AUTH_URL}/login/facebook?access_token=${response.authResponse.accessToken}`;
-          this.http.get(url)
-            .subscribe(
+          return this.http.get(url).toPromise()
+            .then(
               data => {
                 console.log('[AuthS][FB][login/facebook][success]', data);
                 // the Facebook token was successfully received by the web server
@@ -196,14 +193,20 @@ export class AuthenticationService{
 
                 // to force angular to update the views
                 this.appRef.tick();
+
+                return null;
               },
               error => {
                 console.log('[AuthS][FB][login/facebook][error]', error);
                 // something went wrong with the sending of the facebook token
+
+                return [];
               }
             );
         }else{
           console.log('[AuthS][FB][error] not enough permissions', grantedPermissions);
+          // TODO show an error "not enough permissions"
+          return [new Error('Not enough permissions granted. Public profile and email are mandatory.')];
         }
       })
       .catch((error: any) => {
