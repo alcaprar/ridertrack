@@ -84,6 +84,15 @@ export class LoginPageComponent implements OnInit {
     this.errors = [];
     this.loading = true;
     this.authService.loginWithFacebook()
+      .then(
+        (errors: Error[]) =>{
+          this.loading = false;
+
+          if(errors){
+            this.showErrors(errors)
+          }
+        }
+      )
   }
 
 }
