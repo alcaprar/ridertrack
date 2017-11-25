@@ -5,6 +5,7 @@ import { Response } from '@angular/http';
 import { FacebookService, InitParams, LoginResponse,LoginOptions} from 'ngx-facebook';
 import { Router } from '@angular/router';
 import { User } from '../shared/models/user';
+import {Error} from '../shared/models/error';
 import 'rxjs/add/operator/catch.js';
 import 'rxjs/Rx';
 import * as jwt_decode from 'jwt-decode';
@@ -97,15 +98,12 @@ export class AuthenticationService{
    * It calls the api passing email and password.
    * If the credentials are valid it stores the received token in localStorage and return true.
    * If they are invalid, it returns false.
-   * @param email
-   * @param password
-   * @returns {Subscription}
    */
-  login(user: User): Observable<boolean> {
+  login(user: User): Promise<Error[]> {
     console.log('[AuthS][ClassicalLogin]');
     const url = `${this.BASE_AUTH_URL}/login`;
-    return this.http.post(url, {email: user.email, password: user.password})
-      .map(
+    return this.http.post(url, {email: user.email, password: user.password}).toPromise()
+      .then(
         (response: Response) => {
           console.log('[AuthS][ClassicalLogin][success]', response.json());
 
@@ -116,15 +114,14 @@ export class AuthenticationService{
           // route to my-events
           this.router.navigate(['my-events']);
 
-          return true;
+          return null;
+        },
+        (errorResponse: any) => {
+          var errors = errorResponse.json().errors as Error[];
+          console.log('[AuthS][ClassicalLogin][error]', errors);
+          return errors;
         }
       )
-      .catch(
-        (error: any) => {
-          console.log('[AuthS][ClassicalLogin][error]', error.json());
-          return Observable.of(false);
-        }
-      );
   }
 
   /**

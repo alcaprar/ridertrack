@@ -9,7 +9,7 @@ module.exports = function (passport) {
         User.findByEmail(email, function (err, user) {
             if(err){
                 return callback({
-                    message:err.message
+                    message: err.message
                 });
             }
 

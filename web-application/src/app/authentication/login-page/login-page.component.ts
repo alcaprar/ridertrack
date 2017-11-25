@@ -15,7 +15,7 @@ export class LoginPageComponent implements OnInit {
   respond: any;
   @Input() user = { name: '', surname: '', email: '', password:'', role: ''};
 
-  error: any = '';
+  errors: Error[];
   loading = false;
 
   constructor(private fbLogin: FormBuilder, private router: Router, private authService: AuthenticationService) { }
@@ -36,6 +36,8 @@ export class LoginPageComponent implements OnInit {
       email: [this.user ? this.user.email :''],
       password: [this.user ? this.user.password : '']
       });
+    // clean the errors
+    this.errors = []
   }
 
   /**
@@ -44,7 +46,7 @@ export class LoginPageComponent implements OnInit {
    * If the login fails it shows the errors.
    */
   login() {
-    this.error = '';
+    this.errors = [];
     this.loading = true;
 
     var user = new User(
@@ -55,14 +57,16 @@ export class LoginPageComponent implements OnInit {
     );
     console.log('[LoginComponent][Login]', user);
     this.authService.login(user)
-      .subscribe(
-        result => {
-          console.log('[LoginComponent][Login result]', result);
+      .then(
+        (errors) => {
+          console.log('[LoginComponent][Login result]', errors);
           this.loading = false;
-        }, error => {
-          console.log('[LoginComponent][Login error]', error);
-          this.error = error;
-          this.loading = false;
+
+          // if errors is null, login is successful
+          if(errors){
+            // show the errors if errors is not null
+            this.errors = errors;
+          }
         }
       )
   }
@@ -72,16 +76,9 @@ export class LoginPageComponent implements OnInit {
    * It calls the method of the authservice that manages the Facebook login.
    */
   loginFB(){
-    this.error = '';
+    this.errors = [];
     this.loading = true;
     this.authService.loginWithFacebook()
-  }
-
-  /**
-   * It calls the logout method of the authservice.
-   */
-  logout(){
-    this.authService.logout();
   }
 
 }

@@ -6,7 +6,7 @@ var passport = require('passport');
 
 var User = require('../models/user');
 
-var standardMessage = {message:"An error occurred.Please try again"};
+var standardMessage = {message: 'An error occured during login. Please try again in a while. If the error persists contact an administrator'}
 /**
  * It creates the user passed in the body and return a JWT token in order to
  * immediately login the user.
@@ -15,14 +15,14 @@ router.post('/register', function (req, res) {
     console.log('[POST /register]');
     if(typeof req.body.email === 'undefined' || typeof req.body.password === 'undefined'){
         return res.status(400).send({
-            messages: [standardMessage, {message: "Email and/or password missing."}]
+            errors: [{message: "Email and/or password missing."}]
             });
     }else{
         User.create(req.body, function (err, user) {
             // if the error throws any error, send them
             if(err){
                 return res.status(400).send({
-                    messages: [standardMessage, {message: "Error while creating an user"}]
+                    errors: [{message: "Error while creating an user"}]
                 });
             }else{
 
@@ -54,15 +54,15 @@ router.post('/login', function (req, res, next) {
     passport.authenticate('local', function (err, user, info) {
         if(err){
             // it should generate a 500 error
-            return next({
-                messages: [standardMessage,err.message]
+            return res.status(400).send({
+                errors: [standardMessage]
             });
         }
 
         if(!user){
             // user is not found or password incorrect
             return res.status(400).send({
-                messages: [standardMessage,{message:"User is not found or password is incorrect"}]
+                errors: [{message:"User is not found or password is incorrect"}]
             })
         }
 
