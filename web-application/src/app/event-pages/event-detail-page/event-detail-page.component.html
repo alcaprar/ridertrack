@@ -1,4 +1,4 @@
-<app-page-header title="{{event.name}}"></app-page-header>
+<app-page-header title="{{event.name}} " subtitle="{{event.type}}"></app-page-header>
 <!-- Body content -->
 <!-- event content area -->
 <div class="content-area single-property" style="background-color: #FCFCFC;">&nbsp;
@@ -47,6 +47,10 @@
               <h4 class="s-property-title">Additional Details</h4>
 
               <ul class="additional-details-list clearfix">
+                <li>
+                  <span class="col-xs-6 col-sm-4 col-md-4 add-d-title">Category</span>
+                  <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry">{{event.type}}</span>
+                </li>
                 <li *ngIf="event.maxDuration">
                   <span class="col-xs-6 col-sm-4 col-md-4 add-d-title">Duration</span>
                   <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry">{{event.maxDuration}}</span>
