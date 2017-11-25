@@ -42,7 +42,7 @@ export class RegistrationPageComponent implements OnInit {
   }
 
   showErrors(errors: Error[]){
-    console.log('[Register COmponent][showErrors]', errors);
+    console.log('[Register Component][showErrors]', errors);
     this.errors = errors;
   }
 
