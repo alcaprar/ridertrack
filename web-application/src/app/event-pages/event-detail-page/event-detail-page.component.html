@@ -6,8 +6,8 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-6">
-      <button class="navbar-btn nav-button wow bounceInRight header" (click)="enroll()">Enroll</button>
-      <button class="navbar-btn nav-button wow fadeInRight" (click)="withdrawEnrollment()">Withdraw enrollment</button>
+      <button class="navbar-btn nav-button wow bounceInRight header" (click)="enroll()" *ngIf="!alreadyEnrolled">Enroll</button>
+      <button class="navbar-btn nav-button wow fadeInRight" (click)="withdrawEnrollment()" *ngIf="alreadyEnrolled">Withdraw enrollment</button>
       </div>
       <div class="col-md-2 right">
       <button class="navbar-btn nav-button navbar-right wow bounceInRight header" *ngIf="currentUser.email === organizer.email"

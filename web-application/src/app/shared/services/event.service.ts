@@ -227,6 +227,28 @@ export class EventService {
       });
   }
 
+  /**
+   * Perform an HTTP DELETE to REST API to withdraw enrollment to an event
+   * @param eventid
+   * @returns enrollment message
+   */
+  withdrawEnrollment(eventId, userId){
+    const url = `${this.BASE_URL}/enrollments/${eventId}}/${userId}}`;
+
+    return this.http.delete(url).toPromise()
+      .then(
+        (res) => {
+          const eventBody = res.json();
+          console.log('[EventService][deleteEnrollment][success]', eventBody);
+          return eventBody;
+      })
+      .catch(
+        (error) => {
+          console.log('[EventService][deleteEnrollment][error]', error);
+          return Promise.reject(error.json());
+      });
+  }
+
   private serializeQueryString(obj) {
     var str = [];
     for(var p in obj)
