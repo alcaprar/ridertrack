@@ -32,3 +32,6 @@ h5 {
 .proerty-th-list .col-md-3 .item-entry {
   height: 30em !important;
 }
+.btn-primary {
+  width: 100%;
+}

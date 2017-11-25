@@ -46,6 +46,8 @@ import { FaqPageComponent } from './faq-page/faq-page.component';
 import {WhyRidertrackBestPageComponent} from "./why-ridertrack-best-page/why-ridertrack-best-page.component";
 import { AlertComponent } from './shared/layout/alert/alert.component';
 import {AlertService} from "./shared/services/alert.service";
+import {TabModule} from "angular-tabs-component";
+
 
 
 @NgModule({
@@ -83,6 +85,7 @@ import {AlertService} from "./shared/services/alert.service";
     BrowserModule,
     ReactiveFormsModule,
     FormsModule,
+    TabModule,
     HttpClientModule,
     FacebookModule.forRoot(),
     AgmCoreModule.forRoot({

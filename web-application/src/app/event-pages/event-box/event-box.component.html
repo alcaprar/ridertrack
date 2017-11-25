@@ -23,8 +23,9 @@
         <img class="logo" src="../../../assets/img/spot-logo.png">|
         <img class="logo" src="../../../assets/img/maprogress-logo.jpg">
       </div>-->
+      <div *ngIf="router.url == '/my-events'">
+        <button class="btn-primary" routerLink="/manage-event/{{event._id}}">Edit event</button>
+      </div>
     </div>
-
-
   </div>
 </div>

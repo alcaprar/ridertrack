@@ -11,6 +11,9 @@ page-header
 .page-head-content {
   padding-top: 52px;
   padding-bottom: 52px;
+  width:100%;
+  margin-right: 0em;
+
 }
 .page-head-content .page-title {
   margin: 0px;
@@ -19,4 +22,12 @@ page-header
   font-weight: 300;
   text-transform: uppercase;
   letter-spacing: 2px;
+  display: inline-block;
+
+}
+.btn-primary {
+  float: right;
+  display: inline-block;
+  width:20%;
+  background-color: #d30000;
 }

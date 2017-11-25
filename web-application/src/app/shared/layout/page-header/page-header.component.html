@@ -3,6 +3,9 @@
     <div class="row">
       <div class="page-head-content">
         <h1 class="page-title">{{title}}</h1>
+        <div *ngIf="router.url == '/my-events'">
+          <button class="btn-primary navbar-btn nav-button wow bounceInRight header" routerLink="/create-event">Create event</button>
+        </div>
       </div>
     </div>
   </div>
