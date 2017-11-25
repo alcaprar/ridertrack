@@ -51,28 +51,28 @@
                   <div class="form-group">
                     <label for="city">City <small>(required)</small></label>
                     <input [(ngModel)]="event.city" #city="ngModel" id="city" name="city" type="text" class="form-control" placeholder="Milano" required>
-                    <div [hidden]="city.valid || city.pristine" class="alert alert-danger">City is required.</div>
                   </div>
                   <div class="form-group">
                     <label for="length">Length<small>(KM)</small></label>
                     <input [(ngModel)]="event.length" #description="ngModel" id="length"
-                           name="length" type="text" class="form-control" placeholder="60.125" >
+                           name="length" type="number" class="form-control" placeholder="60.125" >
                   </div>
                   <div class="form-group">
                     <label for="description">Description</label>
-                    <input [(ngModel)]="event.description" #description="ngModel" id="description" name="decription"
-                           type="text" class="form-control" placeholder="Write here your description..." >
+                    <textarea [(ngModel)]="event.description" #description="ngModel" id="description" name="decription"
+                           type="text" class="form-control" cols="40" placeholder="Write here your description..." >
+                    </textarea>
                   </div>
                   <div class="form-group">
                     <label for="startingTime">Starting Time</label>
                     <input [(ngModel)]="event.startingTime" #description="ngModel"
-                           id="startingTime" name="startingTime" type="text" class="form-control"
+                           id="startingTime" name="startingTime" type="time" class="form-control"
                            placeholder="12:00">
                   </div>
                   <div class="form-group">
                     <label for="maxDuration">Maximum Duration <small>(minutes)</small></label>
                     <input [(ngModel)]="event.maxDuration" #description="ngModel" id="maxDuration" name="maxDuration"
-                           type="text" class="form-control" placeholder="120" >
+                           type="number" class="form-control" placeholder="120" >
                   </div>
                   <div class="form-group">
                     <label for="enrollmentOpeningAt">Enrollment Opening At</label>
@@ -110,5 +110,3 @@
     </div>
   </div>
 </div>
--->
-
