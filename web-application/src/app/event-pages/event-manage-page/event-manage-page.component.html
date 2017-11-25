@@ -54,8 +54,9 @@
                     <div [hidden]="city.valid || city.pristine" class="alert alert-danger">City is required.</div>
                   </div>
                   <div class="form-group">
-                    <label for="length">Length</label>
-                    <input [(ngModel)]="event.length" #description="ngModel" id="length" name="length" type="text" class="form-control" placeholder="42.195 km" >
+                    <label for="length">Length<small>(KM)</small></label>
+                    <input [(ngModel)]="event.length" #description="ngModel" id="length"
+                           name="length" type="text" class="form-control" placeholder="60.125" >
                   </div>
                   <div class="form-group">
                     <label for="description">Description</label>
