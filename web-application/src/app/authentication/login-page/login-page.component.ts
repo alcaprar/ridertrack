@@ -15,7 +15,7 @@ export class LoginPageComponent implements OnInit {
   respond: any;
   @Input() user = { name: '', surname: '', email: '', password:'', role: ''};
 
-  errors: Error[];
+  errors: Error[] = [];
   loading = false;
 
   constructor(private fbLogin: FormBuilder, private router: Router, private authService: AuthenticationService) { }

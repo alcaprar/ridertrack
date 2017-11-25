@@ -11,7 +11,7 @@ import {User} from "../../shared/models/user";
 export class RegistrationPageComponent implements OnInit {
 
   registerForm: FormGroup;
-  errors: Error[];
+  errors: Error[]= [];
   loading = false;
 
   @Input() user = { name: '', surname: '', email: '', password:''};
