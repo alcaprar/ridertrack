@@ -6,6 +6,7 @@ export class Event{
     public type?: string,
     public description?:string,
     public startingDate?: string,
+    public startingTime?: string,
     public country?: string,
     public city?: string,
     public logo?: File,
