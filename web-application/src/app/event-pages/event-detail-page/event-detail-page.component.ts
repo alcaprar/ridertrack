@@ -6,6 +6,7 @@ import {User} from '../../shared/models/user';
 import {Event} from '../../shared/models/event';
 import { ActivatedRoute } from '@angular/router';
 import {AuthenticationService} from '../../authentication/authentication.service';
+import {AlertService} from "../../shared/services/alert.service";
 
 @Component({
   selector: 'app-event-detail-page',
@@ -29,7 +30,7 @@ export class EventDetailPageComponent implements OnInit {
   private eventLogo: any;
 
   constructor(private route: ActivatedRoute, private userService: UserService, private eventService: EventService
-    , private authService: AuthenticationService) {
+    , private authService: AuthenticationService, private alertService: AlertService) {
   }
 
 
@@ -41,7 +42,7 @@ export class EventDetailPageComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.eventId = params['eventId'];
       console.log('[EventDetail][OnInit]', this.eventId);
-      
+
 
       this.eventService.getEvent(this.eventId)
         .then(
@@ -104,7 +105,7 @@ export class EventDetailPageComponent implements OnInit {
     console.log(this.eventService.withdrawEnrollment(this.eventId, this.currentUser.id));
     this.alreadyEnrolled = false;
   }
-  
+
 
   getEnrolledEvents(id){
     this.eventService.getEnrolledEventsForUser(id).then(

@@ -25,6 +25,19 @@ page-header
   display: inline-block;
 
 }
+.page-head-content .page-subtitle {
+  margin: 0px;
+ text-align: right;
+  padding-left: 10px ;
+  font: bold 20px arial,sans-serif;
+  text-transform: uppercase;
+  display: inline-block;
+  letter-spacing: 4px;
+  float: inherit;
+  text-decoration: underline;
+
+}
+
 .btn-primary {
   float: right;
   display: inline-block;

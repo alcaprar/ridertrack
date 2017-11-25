@@ -18,6 +18,7 @@ export class AlertComponent implements OnInit {
         return;
       }
       this.alert =alert;
+      this.alertService.clear();
     })
   }
 

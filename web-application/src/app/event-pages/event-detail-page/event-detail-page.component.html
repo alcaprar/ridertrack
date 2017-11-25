@@ -1,18 +1,11 @@
-<app-page-header title="{{event.name}}"></app-page-header>
+<app-page-header title="{{event.name}} " subtitle="{{event.type}}"></app-page-header>
 <!-- Body content -->
-
 <!-- event content area -->
 <div class="content-area single-property" style="background-color: #FCFCFC;">&nbsp;
   <div class="container">
     <div class="row">
-      <div class="col-lg-6">
-      <button class="navbar-btn nav-button wow bounceInRight header" (click)="enroll()" *ngIf="!alreadyEnrolled">Enroll</button>
-      <button class="navbar-btn nav-button wow fadeInRight" (click)="withdrawEnrollment()" *ngIf="alreadyEnrolled">Withdraw enrollment</button>
-      </div>
-      <div class="col-md-2 right">
-      <button class="navbar-btn nav-button navbar-right wow bounceInRight header" *ngIf="currentUser.email === organizer.email"
-              [routerLink]="['/manage-event', event._id]">Edit</button>
-      </div>
+
+
     </div>
     <div class="clearfix padding-top-40" >
 
@@ -22,12 +15,9 @@
             <div class="light-slide-item">
               <div class="clearfix">
                 <div class="favorite-and-print">
-                  <a class="add-to-fav" href="" data-toggle="modal">
-                    <i class="fa fa-star-o"></i>
-                  </a>
-                  <a class="printer-icon " href="javascript:window.print()">
-                    <i class="fa fa-print"></i>
-                  </a>
+                  <button class="navbar-btn nav-button wow bounceInRight header" (click)="enroll()" *ngIf="!alreadyEnrolled">Enroll</button>
+                  <button class="navbar-btn nav-button wow fadeInRight" (click)="withdrawEnrollment()"
+                          *ngIf="alreadyEnrolled">Withdraw enrollment</button>
                 </div>
                <img [src]="event.logo">
               </div>
@@ -48,6 +38,10 @@
               <h4 class="s-property-title">Additional Details</h4>
 
               <ul class="additional-details-list clearfix">
+                <li>
+                  <span class="col-xs-6 col-sm-4 col-md-4 add-d-title">Category</span>
+                  <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry">{{event.type}}</span>
+                </li>
                 <li *ngIf="event.maxDuration">
                   <span class="col-xs-6 col-sm-4 col-md-4 add-d-title">Duration</span>
                   <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry">{{event.maxDuration}}</span>
@@ -57,9 +51,14 @@
                   <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry"> {{event.length}} KM </span>
                 </li>
 
-                <li *ngIf ="enrollementOpenDate && enrollementCloseDate">
-                  <span class="col-xs-6 col-sm-4 col-md-4 add-d-title">Registration Period</span>
-                  <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry"> {{enrollementOpenDate}} - {{enrollementOpenDate}}
+                <li *ngIf ="event.enrollmentOpeningAt != null">
+                  <span class="col-xs-6 col-sm-4 col-md-4 add-d-title">Registration Open</span>
+                  <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry"> {{event.enrollmentOpeningAt | date: 'longDate'}}
+                    </span>
+                </li>
+                <li *ngIf ="event.enrollmentClosingAt != null">
+                  <span class="col-xs-6 col-sm-4 col-md-4 add-d-title">Registration Close</span>
+                  <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry"> {{event.enrollmentClosingAt | date: 'longDate'}}
                     </span>
                 </li>
                 <li>
@@ -103,7 +102,11 @@
             <div class="dealer-content">
               <div class="inner-wrapper">
                 <div class="single-property-header">
-                  <h1 class="property-title">{{event.name}}</h1>
+                  <span class="property-title">{{event.name}}
+                    <button class="navbar-btn nav-button wow fadeInRight header" *ngIf="currentUser.email === organizer.email"
+                                                                   [routerLink]="['/manage-event', event._id]">Edit</button>
+                  </span>
+
                 </div>
 
                 <div class="property-meta entry-meta clearfix ">
@@ -114,10 +117,16 @@
                          <span class="property-info-label">{{event.startingDate}}</span>
                        </span>
                     </li>
-                    <li *ngIf="enrollementOpenDate && enrollementOpenDate">
-                       <span class="property-info-entry">
-                         <span class="property-info-value">Registration Status</span>
-                         <span class="property-info-label">{{enrollement}}</span>
+                    <li>
+                       <span class="property-info-entry" *ngIf="event.startingTime != null">
+                         <span class="property-info-value">Starting Time</span>
+                         <span class="property-info-label" *ngIf="event.startingTime != null">{{event.startingTime}}</span>
+                       </span>
+                    </li>
+                    <li>
+                       <span class="property-info-entry" >
+                         <span class="property-info-value">Category</span>
+                         <span class="property-info-label" >{{event.type}}</span>
                        </span>
                     </li>
 

@@ -9,6 +9,8 @@ import {Router} from "@angular/router";
 export class PageHeaderComponent implements OnInit {
 
   @Input() title: string;
+  @Input() subtitle: string;
+
 
   constructor(private router: Router) { }
 
