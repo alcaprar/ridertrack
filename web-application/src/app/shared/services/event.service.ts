@@ -176,7 +176,7 @@ export class EventService {
     console.log("[EventService][UpdateEvent][eventToPass]", event);
     // create form data in order to pass an image
 
-    return this.http.put(url , JSON.stringify(event)).toPromise()
+    return this.http.put(url , event).toPromise()
       .then(
         (res) => {
           const eventBody = res.json().event as Event;
