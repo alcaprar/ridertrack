@@ -23,6 +23,8 @@ export class EventManagePageComponent implements OnInit {
   private urlImage: any;
   private urlNoImage = '../../../assets/img/logofoto.png';
 
+  errors: Error[] = [];
+
   constructor(private eventService: EventService, private router: Router, private route: ActivatedRoute,
               private alertService: AlertService) {
   }
@@ -122,11 +124,14 @@ export class EventManagePageComponent implements OnInit {
         }
       )
       .catch(
-        (error) => {
-          console.log('Update event err', error);
-          this.router.navigate(['/manage-event', this.event._id]);
-          this.alertService.error("Something went wrong! Try again");
+        (errors: Error[]) =>{
+          this.showErrors(errors)
+          }
+      );
         }
-      )
+
+  showErrors(errors: Error[]){
+    console.log('[Login COmponent][showErrors]', errors);
+    this.errors = errors;
   }
 }

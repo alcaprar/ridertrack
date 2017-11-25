@@ -185,6 +185,7 @@ export class EventService {
         })
       .catch(error => {
           console.log('[EventService][updateEvent][error]', error);
+          this.router.navigate(['/manage-event', event._id]);
         return Promise.reject(error.message || error);
         });
     }
