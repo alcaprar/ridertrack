@@ -71,7 +71,14 @@ export class EventManagePageComponent implements OnInit {
     }
   }
 
-
+  //save the changed date
+  updateCloseDate(){
+    this.event.enrollmentClosingAt = $('#enrollmentClosingAt').datepicker('getDate');
+  }
+  //save the changed date
+  updateOpenDate(){
+    this.event.enrollmentOpeningAt =  $('#enrollmentOpeningAt').datepicker('getDate');
+  }
   /**
    *  When a new image is uploaded is uploaded, it reads the url and save the image
    * @param event
@@ -95,6 +102,7 @@ export class EventManagePageComponent implements OnInit {
     this.router.navigate(['my-events']);
   }
 
+
   /**
    * It is called when the user clicks on the create button.
    * It calls the method of event service waiting for a response.
@@ -103,8 +111,6 @@ export class EventManagePageComponent implements OnInit {
     // the datepicker is not detected by angular form
     this.event.startingDate = $('#startingDate.datepicker').val();
     this.event.logo = $('#logo').prop('files')[0];
-    this.event.enrollmentOpeningAt =  $('#enrollmentOpeningAt').datepicker('getDate');
-    this.event.enrollmentClosingAt = $('#enrollmentClosingAt').datepicker('getDate');
     console.log('Submitted', this.event);
 
     this.eventService.updateEvent(this.event._id, this.event)

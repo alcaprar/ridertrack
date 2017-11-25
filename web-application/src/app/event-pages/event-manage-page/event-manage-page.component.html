@@ -8,8 +8,7 @@
         <div class="wizard-card ct-wizard-orange" id="wizardProperty">
           <div class="wizard-header">
             <h3>
-              <b>Manage</b> YOUR EVENT <br>
-              <small>Add as many details as possibile to make your own event intriguing and reliable</small>
+              <b>Make</b> YOUR EVENT UNIQUE<br>
             </h3>
           </div>
 
@@ -33,7 +32,8 @@
                   </div>
                   <div class="form-group">
                     <label for="type">Type <small>(required)</small></label>
-                    <select [(ngModel)]="event.type" #type="ngModel" id="type"  name="type" class="selectpicker" data-live-search="true" data-live-search-style="begins" title="Select type">
+                    <select [(ngModel)]="event.type" #type="ngModel" id="type"  name="type"
+                            class="selectpicker" data-live-search="true" data-live-search-style="begins" title={{event.type}}>
                       <option *ngFor="let type of eventTypes" [ngValue]="type" style="text-transform: capitalize" required>{{type}}</option>
                     </select>
                   </div>
@@ -78,13 +78,15 @@
                     <label for="enrollmentOpeningAt">Enrollment Opening At</label>
                     <input [(ngModel)]="event.enrollmentOpeningAt"
                            #description="ngModel" id="enrollmentOpeningAt" name="enrollmentOpeningAt"
-                           type="text" class="form-control datepicker" placeholder=" 15/12/2017" >
+                           type="text" class="form-control datepicker" placeholder={{event.enrollmentOpeningAt}}
+                           (change)="updateOpenDate()">
                   </div>
                   <div class="form-group">
                     <label for="enrollmentClosingAt">Enrollment Closing At</label>
                     <input [(ngModel)]="event.enrollmentClosingAt" #description="ngModel" id="enrollmentClosingAt"
                            name="enrollmentClosingAt" type="text" class="form-control datepicker"
-                           placeholder=" 15/1/2018" >
+                           placeholder={{event.enrollmentClosingAt}}
+                           (change)="updateCloseDate()" >
                   </div>
                 </div>
               </div>
