@@ -44,6 +44,8 @@ import {InvalidTypeDirective} from "./authentication/invalid-type.directive";
 import {FooterEventBoxComponent} from "./shared/layout/footer/footer-event-box/footer-event-box.component";
 import { FaqPageComponent } from './faq-page/faq-page.component';
 import {WhyRidertrackBestPageComponent} from "./why-ridertrack-best-page/why-ridertrack-best-page.component";
+import { AlertComponent } from './shared/layout/alert/alert.component';
+import {AlertService} from "./shared/services/alert.service";
 
 
 @NgModule({
@@ -74,7 +76,8 @@ import {WhyRidertrackBestPageComponent} from "./why-ridertrack-best-page/why-rid
     FooterEventBoxComponent,
     WhyRidertrackBestPageComponent,
     FooterEventBoxComponent,
-    FaqPageComponent
+    FaqPageComponent,
+    AlertComponent
   ],
   imports: [
     BrowserModule,
@@ -163,7 +166,8 @@ import {WhyRidertrackBestPageComponent} from "./why-ridertrack-best-page/why-rid
     AuthenticationService,
     EventService,
     GoogleMapsAPIWrapper,
-    HttpClientService
+    HttpClientService,
+    AlertService
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

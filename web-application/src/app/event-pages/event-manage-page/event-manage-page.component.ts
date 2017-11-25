@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import {EventService} from "../../shared/services/event.service";
 import {Event} from "../../shared/models/event";
 import { DatePipe } from '@angular/common';
+import {AlertService} from "../../shared/services/alert.service";
 declare var $: any;
 
 @Component({
@@ -18,12 +19,12 @@ export class EventManagePageComponent implements OnInit {
   eventId: string;
   event:Event = new Event();
   time:Date = new Date();
-  message: string = '';
 
   private urlImage: any;
   private urlNoImage = '../../../assets/img/logofoto.png';
 
-  constructor(private eventService: EventService, private router: Router, private route: ActivatedRoute) {
+  constructor(private eventService: EventService, private router: Router, private route: ActivatedRoute,
+              private alertService: AlertService) {
   }
 
   ngOnInit() {
@@ -50,8 +51,8 @@ export class EventManagePageComponent implements OnInit {
    */
   ngAfterViewInit(){
     // set the placeholder the date of today
-    var todayDate = new Date();
-    var today = todayDate.getDate() + '/' + (todayDate.getMonth() < 12 ? todayDate.getMonth() + 1 : 1) + '/' + todayDate.getFullYear();
+    let todayDate = new Date();
+    let today = todayDate.getDate() + '/' + (todayDate.getMonth() < 12 ? todayDate.getMonth() + 1 : 1) + '/' + todayDate.getFullYear();
     console.log('[EventManage][ngAfterViewInit]', $('.datepicker'));
     $('.datepicker').attr('placeholder', today);
     // init the plugin datepicker on the element
@@ -109,13 +110,15 @@ export class EventManagePageComponent implements OnInit {
       .then(
         (response) => {
           console.log('Update event', response);
-          this.message = "The event is updated!!"
+          this.router.navigate(['/events', this.event._id]);
+          this.alertService.success("The event is Updated!")
         }
       )
       .catch(
         (error) => {
           console.log('Update event err', error);
-          this.message = error;
+          this.router.navigate(['/manage-event', this.event._id]);
+          this.alertService.error("Something went wrong! Try again");
         }
       )
   }
