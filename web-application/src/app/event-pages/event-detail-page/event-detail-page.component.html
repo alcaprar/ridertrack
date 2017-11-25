@@ -14,7 +14,7 @@
           <div class="row">
             <div class="light-slide-item">
               <div class="clearfix">
-                <div class="favorite-and-print">
+                <div class="favorite-and-print" *ngIf="isLogged()">
                   <button class="navbar-btn nav-button wow bounceInRight header" (click)="enroll()" *ngIf="!alreadyEnrolled">Enroll</button>
                   <button class="navbar-btn nav-button wow fadeInRight" (click)="withdrawEnrollment()"
                           *ngIf="alreadyEnrolled">Withdraw enrollment</button>

@@ -76,6 +76,10 @@ export class EventDetailPageComponent implements OnInit {
 
     console.log('[Event-Detail-Component][OnInit][Event]', this.event);
   }
+  
+  isLogged(): boolean{
+    return this.authService.isAuthenticated()
+  }
 
 
 
