@@ -1,7 +1,7 @@
 <div class="box-two proerty-item">
   <div class="item-thumb">
     <a routerLink="events/{{event._id}}">
-      <div class="event-image" *ngIf="event.logo" [ngStyle]="{ 'background-image': 'url(http://localhost:5000' + event.logo + ')'}"></div>
+      <div class="event-image" *ngIf="event.logo" [ngStyle]="{ 'background-image': 'url(' + event.logo + ')'}"></div>
       <div class="event-image" *ngIf="!event.logo" style="background-image: url('../../../assets/img/logoRidertrack.png')"></div>
     </a>
   </div>

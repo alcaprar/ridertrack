@@ -14,7 +14,7 @@ module.exports = function (passport) {
                 if(err){
                     console.log('GoogleStrategy', 'findByGoogle err', err);
                     return done({
-                        message:err.message
+                        message: err.message
                     });
                 }
 
@@ -41,7 +41,7 @@ module.exports = function (passport) {
                             // the email might be already registered
                             // TODO check the error and send a nice message
                             return done({
-                                message:"Cannot register user.User might be already in database"
+                                message: "User is already registered with classical login. Try to use the password."
                             });
                         }
 

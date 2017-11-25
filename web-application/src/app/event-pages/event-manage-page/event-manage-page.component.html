@@ -8,8 +8,7 @@
         <div class="wizard-card ct-wizard-orange" id="wizardProperty">
           <div class="wizard-header">
             <h3>
-              <b>Manage</b> YOUR EVENT <br>
-              <small>Add as many details as possibile to make your own event intriguing and reliable</small>
+              <b>Make</b> YOUR EVENT UNIQUE<br>
             </h3>
           </div>
 
@@ -33,7 +32,8 @@
                   </div>
                   <div class="form-group">
                     <label for="type">Type <small>(required)</small></label>
-                    <select [(ngModel)]="event.type" #type="ngModel" id="type"  name="type" class="selectpicker" data-live-search="true" data-live-search-style="begins" title="Select type">
+                    <select [(ngModel)]="event.type" #type="ngModel" id="type"  name="type"
+                            class="selectpicker" data-live-search="true" data-live-search-style="begins" title={{event.type}}>
                       <option *ngFor="let type of eventTypes" [ngValue]="type" style="text-transform: capitalize" required>{{type}}</option>
                     </select>
                   </div>
@@ -51,44 +51,51 @@
                   <div class="form-group">
                     <label for="city">City <small>(required)</small></label>
                     <input [(ngModel)]="event.city" #city="ngModel" id="city" name="city" type="text" class="form-control" placeholder="Milano" required>
-                    <div [hidden]="city.valid || city.pristine" class="alert alert-danger">City is required.</div>
                   </div>
                   <div class="form-group">
-                    <label for="length">Length</label>
-                    <input [(ngModel)]="event.length" #description="ngModel" id="length" name="length" type="text" class="form-control" placeholder="42.195 km" >
+                    <label for="length">Length<small>(KM)</small></label>
+                    <input [(ngModel)]="event.length" #description="ngModel" id="length"
+                           name="length" type="number" class="form-control" placeholder="60.125" >
                   </div>
                   <div class="form-group">
                     <label for="description">Description</label>
-                    <input [(ngModel)]="event.description" #description="ngModel" id="description" name="decription"
-                           type="text" class="form-control" placeholder="Write here your description..." >
+                    <textarea [(ngModel)]="event.description" #description="ngModel" id="description" name="decription"
+                           type="text" class="form-control" cols="40" placeholder="Write here your description..." >
+                    </textarea>
                   </div>
-                  <!--<div class="form-group">
+                  <div class="form-group">
                     <label for="startingTime">Starting Time</label>
                     <input [(ngModel)]="event.startingTime" #description="ngModel"
-                           id="startingTime" name="startingTime" type="text" class="form-control"
-                           placeholder="12:00" required >
-                  </div>-->
+                           id="startingTime" name="startingTime" type="time" class="form-control"
+                           placeholder="12:00">
+                  </div>
                   <div class="form-group">
-                    <label for="maxDuration">Maximum Duration</label>
-                    <input [(ngModel)]="event.maxDuration" #description="ngModel" id="maxDuration" name="maxDuration" type="text" class="form-control" placeholder="3:00" required>
+                    <label for="maxDuration">Maximum Duration <small>(minutes)</small></label>
+                    <input [(ngModel)]="event.maxDuration" #description="ngModel" id="maxDuration" name="maxDuration"
+                           type="number" class="form-control" placeholder="120" >
                   </div>
                   <div class="form-group">
                     <label for="enrollmentOpeningAt">Enrollment Opening At</label>
                     <input [(ngModel)]="event.enrollmentOpeningAt"
                            #description="ngModel" id="enrollmentOpeningAt" name="enrollmentOpeningAt"
-                           type="text" class="form-control datepicker" placeholder=" 15/12/2017" >
+                           type="text" class="form-control datepicker" placeholder={{event.enrollmentOpeningAt}}
+                           (change)="updateOpenDate()">
                   </div>
                   <div class="form-group">
                     <label for="enrollmentClosingAt">Enrollment Closing At</label>
                     <input [(ngModel)]="event.enrollmentClosingAt" #description="ngModel" id="enrollmentClosingAt"
                            name="enrollmentClosingAt" type="text" class="form-control datepicker"
-                           placeholder=" 15/1/2018" >
+                           placeholder={{event.enrollmentClosingAt}}
+                           (change)="updateCloseDate()" >
                   </div>
                 </div>
               </div>
             </div>
             <!--  End step 1 -->
 
+            <div *ngIf="errors != null && errors.length > 0" class="alert alert-danger" style="margin-top: 20px">
+              <span *ngFor="let err of errors">{{err.message}}</span>
+            </div>
 
             <div class="wizard-footer">
               <div class="pull-right">
@@ -106,5 +113,3 @@
     </div>
   </div>
 </div>
--->
-

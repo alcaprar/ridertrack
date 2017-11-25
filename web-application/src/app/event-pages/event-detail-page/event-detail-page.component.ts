@@ -1,11 +1,11 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import {UserService} from '../../shared/services/user.service';
-import {Location} from '@angular/common';
 import {EventService} from '../../shared/services/event.service';
 import {User} from '../../shared/models/user';
 import {Event} from '../../shared/models/event';
 import { ActivatedRoute } from '@angular/router';
 import {AuthenticationService} from '../../authentication/authentication.service';
+
 
 @Component({
   selector: 'app-event-detail-page',
@@ -22,10 +22,7 @@ export class EventDetailPageComponent implements OnInit {
   private organizer: User = new User();
 
   private enrolledEvents: any;
-  private enrollement: String;
   private enrollements = [];
-  private enrollementOpenDate: String;
-  private enrollementCloseDate: String;
   private eventLogo: any;
 
   constructor(private route: ActivatedRoute, private userService: UserService, private eventService: EventService
@@ -41,7 +38,7 @@ export class EventDetailPageComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.eventId = params['eventId'];
       console.log('[EventDetail][OnInit]', this.eventId);
-      
+
 
       this.eventService.getEvent(this.eventId)
         .then(
@@ -77,9 +74,6 @@ export class EventDetailPageComponent implements OnInit {
         )
     });
 
-    //this.enrollementOpenDate = this.getDate(this.event.enrollmentOpeningAt);
-   //this.enrollementCloseDate = this.getDate(this.event.enrollmentClosingAt);
-    //this.isEnrollementAvailable();
     console.log('[Event-Detail-Component][OnInit][Event]', this.event);
   }
 
@@ -104,7 +98,7 @@ export class EventDetailPageComponent implements OnInit {
     console.log(this.eventService.withdrawEnrollment(this.eventId, this.currentUser.id));
     this.alreadyEnrolled = false;
   }
-  
+
 
   getEnrolledEvents(id){
     this.eventService.getEnrolledEventsForUser(id).then(
@@ -134,34 +128,7 @@ export class EventDetailPageComponent implements OnInit {
     }
   }
 
-  /*
-  isEnrollementAvailable(): Boolean {
-    if(this.enrollementOpenDate && this.enrollementCloseDate) {
-      this.enrollement = "Not available yet: Stay tuned";
-      return false;
-    }
-    else {
-      var today = Date.now();
-      this.event.enrollmentOpeningAt.setTime(24);
-      this.event.enrollmentClosingAt.setTime(24);
-      if (today <= this.event.enrollmentClosingAt.getTime()
-        && today >= this.event.enrollmentOpeningAt.getTime()) {
-        this.enrollement = "Open";
-        return true;
-      } else {
-        this.enrollement = "Close";
-        return false;
-      }
-    }
-  }
-*/
 
-  /**
-   *  function that allow to go back at the previous browser page
-
-  goBack(){
-    this.location.back();
-  }*/
 
 }
 

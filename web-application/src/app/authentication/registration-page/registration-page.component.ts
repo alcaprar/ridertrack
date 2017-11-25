@@ -11,7 +11,7 @@ import {User} from "../../shared/models/user";
 export class RegistrationPageComponent implements OnInit {
 
   registerForm: FormGroup;
-  error = '';
+  errors: Error[]= [];
   loading = false;
 
   @Input() user = { name: '', surname: '', email: '', password:''};
@@ -24,7 +24,7 @@ export class RegistrationPageComponent implements OnInit {
 
   ngAfterViewInit(){
     // it attaches a listener on the google button
-    this.authService.attachGoogleSignIn(document.getElementById('google-register'));
+    this.authService.attachGoogleSignIn(document.getElementById('google-register'), this.showErrors.bind(this));
   }
 
   /**
@@ -37,6 +37,13 @@ export class RegistrationPageComponent implements OnInit {
       email:  ['',[Validators.required, Validators.email]],
       password:['',[Validators.required, Validators.minLength(5)]]
       });
+
+    this.errors = [];
+  }
+
+  showErrors(errors: Error[]){
+    console.log('[Register Component][showErrors]', errors);
+    this.errors = errors;
   }
 
   /**
@@ -44,9 +51,18 @@ export class RegistrationPageComponent implements OnInit {
    * It calls the method of the authservice that manages the Facebook login.
    */
   loginFB(){
-    this.error = '';
+    this.errors = [];
     this.loading = true;
     this.authService.loginWithFacebook()
+      .then(
+        (errors: Error[]) =>{
+          this.loading = false;
+
+          if(errors){
+            this.showErrors(errors)
+          }
+        }
+      )
   }
 
   /**
@@ -54,7 +70,7 @@ export class RegistrationPageComponent implements OnInit {
    * It calls the register method of the authservice and wait for the result.
    */
   register() {
-    this.error = '';
+    this.errors = [];
     this.loading = true;
 
     // create an instance if user model
@@ -67,13 +83,13 @@ export class RegistrationPageComponent implements OnInit {
 
     console.log('[RegistrationComponent][Register]', user);
     this.authService.register(user)
-    .subscribe(
-      result => {
+    .then(
+      (errors: Error[]) => {
+        console.log('[RegistrationComponent][Register] errors:', errors);
         this.loading = false;
-        if(result){
-          console.log('[RegistrationComponent][Register]', result);
-        }else {
-          this.error = 'The email address already exist, please insert valid credentials';
+
+        if(errors){
+          this.showErrors(errors)
         }
       }
     )

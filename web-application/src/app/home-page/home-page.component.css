@@ -2,6 +2,7 @@
   background: url("../../assets/img/trail.jpg");
   background-size: cover;
   background-position: center;
+  background-attachment: fixed;
 
 }
 .slider-content h2 {
@@ -39,6 +40,7 @@ p {
   background: url("../../assets/img/trail-presentation.jpg");
   background-position: center;
   background-size: cover;
+  background-attachment: fixed;
 }
 .item-thumb{
   max-width:100%;
@@ -48,4 +50,27 @@ p {
   border-left: 2px solid #FDC600;
   border-right: 2px solid #FDC600;
 }
+.form-inline .form-control, .form-inline .form-control {
+  background: rgba(252, 252, 252, 0.8);
+}
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+  color:    #A5A5A5;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+  color:    #A5A5A5;
+  opacity:  1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+  color:    #A5A5A5;
+  opacity:  1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color:    #A5A5A5;
+}
+::-ms-input-placeholder { /* Microsoft Edge */
+  color:    #A5A5A5;
+}
 
+::placeholder { /* Most modern browsers support this now. */
+  color:    #A5A5A5;
+}

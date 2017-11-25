@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-page-header',
@@ -8,8 +9,10 @@ import { Component, OnInit, Input } from '@angular/core';
 export class PageHeaderComponent implements OnInit {
 
   @Input() title: string;
-  
-  constructor() { }
+  @Input() subtitle: string;
+
+
+  constructor(private router: Router) { }
 
   ngOnInit() {
   }

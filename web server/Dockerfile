@@ -5,27 +5,26 @@ MAINTAINER Alessandro Caprarelli @ RiderTrack
 # to convert file to unix, to remove not allowed characters
 RUN apt-get update && apt-get install tofrodos
 
-# Install app dependencies
-COPY package.json package-lock.json ./
+# Create app dir
+RUN mkdir -p /home/nodejs/app
+WORKDIR /home/nodejs/app
 
-## Storing node modules on a separate layer will prevent unnecessary npm installs at each build
-RUN npm i && mkdir /ng-app && cp -R ./node_modules ./node-app
+# Install app dependencies
+COPY package.json /home/nodejs/app
+RUN npm install
 
 # Install gulp globally
 RUN npm install -g gulp
 
 # Copy app source code
-COPY . /node-app
+COPY . /home/nodejs/app
 
 # Copy gulpfile
-COPY gulpfile.js /node-app
+COPY gulpfile.js /home/nodejs/app
 
-WORKDIR /node-app
-
-RUN npm install gulp
-
-# Copy wait-for file, in order to start the app when mongodb is available
+# Copy wait-for file, in order to start the app when rabbit is available
 COPY wait-for-it.sh /wait-for-it.sh
 
-# clean the file
 RUN fromdos /wait-for-it.sh
+
+ENTRYPOINT ["gulp"]

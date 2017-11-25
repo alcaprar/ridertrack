@@ -149,19 +149,18 @@ eventSchema.statics.create = function (organizerId, eventJson, callback) {
  * @returns {*}
  */
 eventSchema.statics.update = function (eventId, eventJson, callback) {
-    for(let key in eventJson){
-        if(fieldsNotChangeable.indexOf(key) > -1){
-            return callback(['You can not modify ' + key])
-        }
-    }
     this.findOne({_id: eventId}, function (err, event) {
         if (err) {
             return callback(err)
         } else {
             // override the previous value
             for (let key in eventJson) {
-                event[key] = eventJson[key]
+                if(fieldsNotChangeable.indexOf(key) === -1){
+                    event[key] = eventJson[key]
+                }
             }
+
+            console.log('user updated', event);
 
             event.save(function (err) {
                 if (err) {

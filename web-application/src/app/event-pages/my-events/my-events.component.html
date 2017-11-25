@@ -1,63 +1,40 @@
 <app-page-header title="MY EVENTS"></app-page-header>
-<button class="navbar-btn nav-button wow bounceInRight header" routerLink="/create-event">Create Events</button>
+
 <div class="content-area home-area-1 recent-property" style="background-color: #FCFCFC; padding-bottom: 55px;">
+  <tabs>
+    <tab tabTitle="Enrolled events" active="true" style="background-color: white;">
   <div class="container">
-    <div class="row">
-      <div class="col-md-10 col-md-offset-1 col-sm-12 text-center page-title">
-        <!-- /.feature title -->
+    <div class="row  pr0 padding-top-40 properties-page">
+      <div class="text-center page-title">
         <h2>Enrolled events</h2>
       </div>
     </div>
 
-    <div class="row">
-      <div class="proerty-th">
-          <div class="col-sm-6 col-md-3 p0" *ngFor="let enrolled_event of enrolledEvents">
-              <div class="box-two proerty-item">
-                <div class="item-thumb">
-                  <a routerLink="/events/{{enrolled_event._id}}">
-                    <img src="http://localhost:5000{{enrolled_event.logo}}">
-                  </a>
-                </div>
-                <div class="item-entry overflow">
-                  <h5>
-                    <a href="/events/{{enrolled_event._id}}"> {{enrolled_event.name}} </a>
-                  </h5>
-                  <div class="dot-hr"></div>
-                  <span class="pull-left">
-                    <b>Length : </b> 150 km </span>
-                  <span class="location pull-right"> {{enrolled_event.city}}</span>
-                </div>
-              </div>
+    <div class="row  pr0 padding-top-40 properties-page">
+          <div class="col-md-12 clear">
+            <div id="list-type-enroll" class="proerty-th" *ngFor="let event of enrolledEvents">
+            <app-event-box [event]="event"></app-event-box>
             </div>
-
-
-        <div class="row">
-          <div class="col-md-10 col-md-offset-1 col-sm-12 text-center page-title">
-            <!-- /.feature title -->
-            <h2>Organized events</h2>
           </div>
-        </div>
-
-
-        <div class="col-sm-6 col-md-3 p0" *ngFor="let event of organizedEvents">
-          <div class="box-two proerty-item">
-            <div class="item-thumb">
-              <a routerLink="/events/{{event._id}}">
-                <img src="http://localhost:5000{{event.logo}}">
-              </a>
-            </div>
-            <div class="item-entry overflow">
-              <h5>
-                <a href="/events/{{event._id}}"> {{event.name}} </a>
-              </h5>
-              <div class="dot-hr"></div>
-              <span class="pull-left">
-                <b>Length : </b> 150 km </span>
-              <span class="location pull-right"> {{event.city}}</span>
-            </div>
-            <div class="dot-hr"></div>
-              <button class="btn-primary" routerLink="/manage-event/{{event._id}}">Edit event</button>
-          </div>
-        </div>
+    </div>
+  </div>
+    </tab>
+    <tab tabTitle="Organized events">
+  <div class="container">
+    <div class="row  pr0 padding-top-40 properties-page">
+      <div class="text-center page-title">
+        <h2>Organized events</h2>
       </div>
     </div>
+
+    <div class="row  pr0 padding-top-40 properties-page">
+        <div class="col-md-12 clear">
+          <div id="list-type-organize" class="proerty-th" *ngFor="let event of organizedEvents">
+          <app-event-box [event]="event"></app-event-box>
+        </div>
+        </div>
+    </div>
+  </div>
+    </tab>
+  </tabs>
+</div>

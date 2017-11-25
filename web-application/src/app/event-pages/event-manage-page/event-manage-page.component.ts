@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import {EventService} from "../../shared/services/event.service";
 import {Event} from "../../shared/models/event";
 import { DatePipe } from '@angular/common';
+import {AlertService} from "../../shared/services/alert.service";
 declare var $: any;
 
 @Component({
@@ -18,12 +19,14 @@ export class EventManagePageComponent implements OnInit {
   eventId: string;
   event:Event = new Event();
   time:Date = new Date();
-  message: string = '';
 
   private urlImage: any;
   private urlNoImage = '../../../assets/img/logofoto.png';
 
-  constructor(private eventService: EventService, private router: Router, private route: ActivatedRoute) {
+  errors: Error[] = [];
+
+  constructor(private eventService: EventService, private router: Router, private route: ActivatedRoute,
+              private alertService: AlertService) {
   }
 
   ngOnInit() {
@@ -39,6 +42,7 @@ export class EventManagePageComponent implements OnInit {
           (event) => {
             console.log('[EventManage][OnInit][getEvent][success]', event);
             this.event = event;
+            this.urlImage = this.event.logo;
           }
         )
     })
@@ -50,8 +54,8 @@ export class EventManagePageComponent implements OnInit {
    */
   ngAfterViewInit(){
     // set the placeholder the date of today
-    var todayDate = new Date();
-    var today = todayDate.getDate() + '/' + (todayDate.getMonth() < 12 ? todayDate.getMonth() + 1 : 1) + '/' + todayDate.getFullYear();
+    let todayDate = new Date();
+    let today = todayDate.getDate() + '/' + (todayDate.getMonth() < 12 ? todayDate.getMonth() + 1 : 1) + '/' + todayDate.getFullYear();
     console.log('[EventManage][ngAfterViewInit]', $('.datepicker'));
     $('.datepicker').attr('placeholder', today);
     // init the plugin datepicker on the element
@@ -69,7 +73,14 @@ export class EventManagePageComponent implements OnInit {
     }
   }
 
-
+  //save the changed date
+  updateCloseDate(){
+    this.event.enrollmentClosingAt = $('#enrollmentClosingAt').datepicker('getDate');
+  }
+  //save the changed date
+  updateOpenDate(){
+    this.event.enrollmentOpeningAt =  $('#enrollmentOpeningAt').datepicker('getDate');
+  }
   /**
    *  When a new image is uploaded is uploaded, it reads the url and save the image
    * @param event
@@ -93,6 +104,7 @@ export class EventManagePageComponent implements OnInit {
     this.router.navigate(['my-events']);
   }
 
+
   /**
    * It is called when the user clicks on the create button.
    * It calls the method of event service waiting for a response.
@@ -101,22 +113,25 @@ export class EventManagePageComponent implements OnInit {
     // the datepicker is not detected by angular form
     this.event.startingDate = $('#startingDate.datepicker').val();
     this.event.logo = $('#logo').prop('files')[0];
-    this.event.enrollmentOpeningAt =  $('#enrollmentOpeningAt').datepicker('getDate');
-    this.event.enrollmentClosingAt = $('#enrollmentClosingAt').datepicker('getDate');
     console.log('Submitted', this.event);
 
     this.eventService.updateEvent(this.event._id, this.event)
       .then(
         (response) => {
           console.log('Update event', response);
-          this.message = "The event is updated!!"
+          this.alertService.success("The event is Updated!");
+          this.router.navigate(['/events', this.event._id]);
         }
       )
       .catch(
-        (error) => {
-          console.log('Update event err', error);
-          this.message = error;
+        (errors: Error[]) =>{
+          this.showErrors(errors)
+          }
+      );
         }
-      )
+
+  showErrors(errors: Error[]){
+    console.log('[Login COmponent][showErrors]', errors);
+    this.errors = errors;
   }
 }

@@ -130,7 +130,9 @@ userSchema.methods.verifyPassword = function (password, callback) {
     var user = this;
     bcrypt.compare(password, user.hash, function (err, res) {
         if(err){
-            return callback(err)
+            return callback({
+                message:"Password doesn't match with user's password"
+            });
         }
         return callback(null, res)
     })
@@ -144,7 +146,9 @@ userSchema.methods.verifyPassword = function (password, callback) {
 userSchema.statics.findByUserId = function (userId, callback) {
     User.findById(userId, function (err, user) {
         if(err){
-            return callback(err)
+            return callback({
+                message: "User doesn't exist"
+            });
         }else{
             //return list of events
             return callback(null, user)
@@ -160,7 +164,9 @@ userSchema.statics.findByUserId = function (userId, callback) {
 userSchema.statics.findByEmail = function (email, callback) {
     User.findOne({email: email}, function (err, user) {
         if(err){
-            return callback(err)
+            return callback({
+                message:"User's email doesn't exist in database"
+            })
         }else{
             return callback(null, user)
         }
@@ -175,7 +181,9 @@ userSchema.statics.findByEmail = function (email, callback) {
 userSchema.statics.findByGoogleId = function (googleId, callback) {
     User.findOne({'googleProfile.id': googleId}, function (err, user) {
         if (err) {
-            return callback(err)
+            return callback({
+                message:"User with specified googleId can't be found"
+            })
         }
         
         return callback(null, user)
@@ -190,7 +198,9 @@ userSchema.statics.findByGoogleId = function (googleId, callback) {
 userSchema.statics.findByFacebookId = function (facebookId, callback) {
     User.findOne({'facebookProfile.id': facebookId}, function (err, user) {
         if (err) {
-            return callback(err)
+            return callback({
+                message:"User with specified facebookId can't be found"
+            })
         }
 
         return callback(null, user)
@@ -210,7 +220,10 @@ userSchema.statics.create = function (userJson, callback) {
         // social registration
         user.save(function (err) {
             if(err){
-                return callback(err)
+                return callback({
+                    message:"Error occurred during saving user from social service site." +
+                    "Maybe user has already registred in database "
+                })
             }
             user.removePrivateFields();
             return callback(null, user);
@@ -222,7 +235,10 @@ userSchema.statics.create = function (userJson, callback) {
             }
             user.save(function (err) {
                 if(err){
-                    return callback(err)
+                    return callback({
+                        message:"Error occurred during saving user account." +
+                        " Maybe user already exists as social service user"
+                    });
                 }
 
                 return user.removePrivateFields(function () {
@@ -251,7 +267,9 @@ userSchema.statics.update = function (userId, userJson, callback) {
     // find the right user and modify it
     this.findOne({_id: userId}, function (err, user) {
         if(err){
-            return callback(err)
+            return callback({
+                message:"Error occurred during finding an user.Maybe user doesn't exist"
+                });
         }else{
             // override the previous value
             for(let key in userJson){
@@ -260,7 +278,9 @@ userSchema.statics.update = function (userId, userJson, callback) {
             
             user.save(function (err) {
                 if(err){
-                    return callback(err)
+                    return callback({
+                        message:"Error occurred during updating user account."
+                    })
                 }else{
                     return callback(null, user)
                 }
@@ -277,7 +297,8 @@ userSchema.statics.update = function (userId, userJson, callback) {
 userSchema.statics.delete = function (userId, callback) {
     User.findOneAndRemove({_id: userId}, function (err, user){
         if(err) {
-            return callback(err)
+            return callback({
+                message:"Error occurred during delete of an user.Maybe user doesn't exist"})
         }else{
             return callback(null,user)
         }

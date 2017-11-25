@@ -45,6 +45,8 @@ None
 - Content:
 ```
 {
-    "messages": [String]
+    "errors": [{
+        "message": String
+    }]
 }
 ```
