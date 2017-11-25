@@ -117,16 +117,10 @@
                          <span class="property-info-label">{{event.startingDate}}</span>
                        </span>
                     </li>
-                    <li>
-                       <span class="property-info-entry" *ngIf="event.startingTime != null">
+                    <li *ngIf="event.startingTime != null">
+                       <span class="property-info-entry" >
                          <span class="property-info-value">Starting Time</span>
                          <span class="property-info-label" *ngIf="event.startingTime != null">{{event.startingTime}}</span>
-                       </span>
-                    </li>
-                    <li *ngIf="enrollement != null">
-                       <span class="property-info-entry" >
-                         <span class="property-info-value">Registration Status</span>
-                         <span class="property-info-label" >{{enrollement}}</span>
                        </span>
                     </li>
                   </ul>
