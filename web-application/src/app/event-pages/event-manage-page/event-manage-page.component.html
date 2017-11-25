@@ -66,11 +66,12 @@
                     <label for="startingTime">Starting Time</label>
                     <input [(ngModel)]="event.startingTime" #description="ngModel"
                            id="startingTime" name="startingTime" type="text" class="form-control"
-                           placeholder="12:00" required >
+                           placeholder="12:00" >
                   </div>
                   <div class="form-group">
                     <label for="maxDuration">Maximum Duration <small>(minutes)</small></label>
-                    <input [(ngModel)]="event.maxDuration" #description="ngModel" id="maxDuration" name="maxDuration" type="text" class="form-control" placeholder="120" >
+                    <input [(ngModel)]="event.maxDuration" #description="ngModel" id="maxDuration" name="maxDuration"
+                           type="text" class="form-control" placeholder="120" >
                   </div>
                   <div class="form-group">
                     <label for="enrollmentOpeningAt">Enrollment Opening At</label>

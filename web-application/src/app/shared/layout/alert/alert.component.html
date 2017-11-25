@@ -1,3 +1,4 @@
 <div *ngIf="alert != null" class="{{cssClass(alert)}} alert-dismissable">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">x</button>
   {{alert.message}}
 </div>
