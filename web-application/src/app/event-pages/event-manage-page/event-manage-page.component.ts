@@ -40,7 +40,7 @@ export class EventManagePageComponent implements OnInit {
           (event) => {
             console.log('[EventManage][OnInit][getEvent][success]', event);
             this.event = event;
-            this.urlImage = 'http://localhost:5000' + this.event.logo;
+            this.urlImage = this.event.logo;
           }
         )
     })

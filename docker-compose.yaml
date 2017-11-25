@@ -17,7 +17,7 @@ services:
         - ENV=production
         - MONGODB_HOST=mongodb
         - MONGODB_PORT=27017
-    command: bash -c "/wait-for-it.sh mongodb:27017 -- sleep 10; gulp"
+    # command: bash -c "/wait-for-it.sh mongodb:21017 -- sleep 10; gulp"
   mongodb:
     image: mongo:3.4.9
     ports:
