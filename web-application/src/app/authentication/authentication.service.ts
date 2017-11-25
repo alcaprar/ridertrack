@@ -196,11 +196,10 @@ export class AuthenticationService{
 
                 return null;
               },
-              error => {
-                console.log('[AuthS][FB][login/facebook][error]', error);
-                // something went wrong with the sending of the facebook token
-
-                return [];
+              (errorResponse: any) => {
+                var errors = errorResponse.json().errors as Error[];
+                console.log('[AuthS][FB][login/facebook][error]', errors);
+                return errors;
               }
             );
         }else{
