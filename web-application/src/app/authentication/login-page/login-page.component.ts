@@ -27,7 +27,7 @@ export class LoginPageComponent implements OnInit {
 
   ngAfterViewInit(){
     // it attaches a listener on the google button
-    this.authService.attachGoogleSignIn(document.getElementById('google-signin'));
+    this.authService.attachGoogleSignIn(document.getElementById('google-signin'), this.showErrors.bind(this));
   }
 
   // setting the login form
@@ -65,10 +65,15 @@ export class LoginPageComponent implements OnInit {
           // if errors is null, login is successful
           if(errors){
             // show the errors if errors is not null
-            this.errors = errors;
+            this.showErrors(errors);
           }
         }
       )
+  }
+
+  showErrors(errors: Error[]){
+    console.log('[Login COmponent][showErrors]', errors);
+    this.errors = errors;
   }
 
   /**

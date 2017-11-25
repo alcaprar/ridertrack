@@ -54,22 +54,21 @@ export class AuthenticationService{
    * It attached a listener to the google button.
    * When the button is clicked it calls the google api.
    * When it receives the token from the google api it sends it to the webserver and waits for a jwt token.
-   * @param element
-     */
-  attachGoogleSignIn(element){
+   */
+  attachGoogleSignIn(element, showErrorCallback){
     this.gapiPromise.then(
       data => {
         this.auth2.attachClickHandler(element, {},
           (response) => {
             console.log('[AuthService][Google login][success]', response.getAuthResponse().access_token);
             const url = `${this.BASE_AUTH_URL}/login/google?access_token=${response.getAuthResponse().access_token}`;
-            this.http.get(url)
-              .subscribe(
-                data => {
+            this.http.get(url).toPromise()
+              .then(
+                (response) => {
                   console.log('[AuthS][Google login][success]', data);
                   // the google token was successfully received by the web server
                   // and it has sent a jwt token
-                  const body = data.json();
+                  const body = response.json();
                   this.storeResponse(body.userId, body.role, body.jwtToken);
 
                   // route to my-events
@@ -78,9 +77,12 @@ export class AuthenticationService{
                   // to force angular to update the views
                   this.appRef.tick();
                 },
-                error => {
-                  console.log('[AuthS][Google login][error]', error);
+                (errorResponse) => {
                   // something went wrong with the sending of the google token
+                  var errors = errorResponse.json().errors as Error[];
+                  console.log('[AuthS][Google login][error]', errors);
+
+                  showErrorCallback(errors);
                 }
               );
 

@@ -6,7 +6,7 @@ var passport = require('passport');
 
 var User = require('../models/user');
 
-var standardMessage = {message: 'An error occured during login. Please try again in a while. If the error persists contact an administrator'}
+var standardMessage = {message: 'An error occured. Please try again in a while. If the error persists contact an administrator'};
 /**
  * It creates the user passed in the body and return a JWT token in order to
  * immediately login the user.
@@ -113,9 +113,15 @@ router.get('/login/facebook', function (req, res, next) {
 
 router.get('/login/google', function (req, res, next) {
     passport.authenticate('google-token', function (err, user, info) {
-        if(err || !user){
+        if(err){
             return res.status(400).send({
-                messages:[standardMessage,err.message]
+                errors: [err]
+            });
+        }
+        
+        if(!user){
+            return res.status(400).send({
+                errors: [standardMessage]
             });
         }
 
