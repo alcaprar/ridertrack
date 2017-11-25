@@ -60,9 +60,14 @@
                   <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry"> {{event.length}} KM </span>
                 </li>
 
-                <li *ngIf ="enrollementOpenDate && enrollementCloseDate">
-                  <span class="col-xs-6 col-sm-4 col-md-4 add-d-title">Registration Period</span>
-                  <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry"> {{enrollementOpenDate}} - {{enrollementOpenDate}}
+                <li *ngIf ="event.enrollmentOpeningAt != null">
+                  <span class="col-xs-6 col-sm-4 col-md-4 add-d-title">Registration Open</span>
+                  <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry"> {{event.enrollmentOpeningAt | date: 'longDate'}}
+                    </span>
+                </li>
+                <li *ngIf ="event.enrollmentClosingAt != null">
+                  <span class="col-xs-6 col-sm-4 col-md-4 add-d-title">Registration Close</span>
+                  <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry"> {{event.enrollmentClosingAt | date: 'longDate'}}
                     </span>
                 </li>
                 <li>
@@ -115,6 +120,7 @@
                        <span class="property-info-entry">
                          <span class="property-info-value">Date</span>
                          <span class="property-info-label">{{event.startingDate}}</span>
+                         <span class="property-info-label" *ngIf="event.startingTime != null">{{event.startingTime}}</span>
                        </span>
                     </li>
                     <li *ngIf="enrollementOpenDate && enrollementOpenDate">
