@@ -16,6 +16,7 @@ global.request = supertest(server);
 
 var Event = require('../../models/event');
 var User = require('../../models/user');
+var Enrollment = require('../../models/enrollment')
 
 describe('Event API tests', function () {
 
@@ -954,6 +955,66 @@ describe('Event API tests', function () {
                                 expect(res.body.cities.length).to.be.eql(2);
                                 done();
                             })
+                    })
+                })
+            })
+        })
+    });
+
+    describe('GET /participants', function () {
+        it('should return the participants list', function (done) {
+            var user = new User({
+                "name": "User",
+                "surname": "Surname",
+                "email": "email@domain.it",
+                "password": "AVeryStrongPasword"
+            });
+            user.save(function () {
+                var user2 = new User({
+                    "name": "User2",
+                    "surname": "Surname2",
+                    "email": "email2@domain.it",
+                    "password": "AVeryStrongPasword2"
+                });
+                user2.save(function () {
+                    var event = new Event({
+                        "name":"TestEvent",
+                        "organizerId": mongoose.Types.ObjectId(),
+                        "type":"running",
+                        "description":"Blablabla",
+                        "country":"MyCountry",
+                        "city":"MyCity",
+                        "startingDate":"2017-09-23",
+                        "startingTime":"12:00:00.000",
+                        "maxDuration":150,
+                        "length": 40,
+                        "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
+                        "enrollmentClosingAt":"2017-09-17T00:00:00.000Z"
+                    });
+                    event.save(function () {
+                        var enrollment1 = new Enrollment({
+                            userId: user._id,
+                            eventId: event._id
+                        })
+
+                        enrollment1.save(function () {
+                            var enrollment2 = new Enrollment({
+                                userId: user2._id,
+                                eventId: event._id
+                            });
+
+                            enrollment2.save(function () {
+                                request.get('/api/events/' + event._id + '/participantsList')
+                                    .end(function (err, res) {
+                                        expect(res.status).to.be.eql(200);
+                                        expect(res.body).to.be.an('object');
+                                        expect(res.body.participants).to.be.an('array');
+                                        expect(res.body.participants.length).to.be.eql(2);
+
+                                        done();
+                                    })
+                            })
+                        })
                     })
                 })
             })

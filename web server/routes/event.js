@@ -7,6 +7,7 @@ var async = require('async');
 
 var Event = require('../models/event');
 var User = require('../models/user');
+var Enrollment = require('../models/enrollment');
 
 var authMiddleware = require('../middlewares/auth');
 var multipart = require('connect-multiparty')({
@@ -143,6 +144,32 @@ router.get('/allCities', function (req, res, next) {
             })
         }
     })
+});
+
+/**
+ * It return the list of participants of the requested event.
+ */
+router.get('/:eventId/participantsList', function (req, res, next) {
+    var eventId = req.params.eventId;
+    Enrollment.find(
+        {eventId: eventId},
+        {userId: 1},
+        function (err, users) {
+            if(err) {
+                res.status(400).send({
+                    errors: err
+                })
+            } else {
+                var participants = [];
+                for(let i =0; i < users.length; i++){
+                    participants.push(users[i].userId)
+                }
+                res.status(200).send({
+                    participants: participants
+                })
+            }
+        }
+    )
 });
 
 /**

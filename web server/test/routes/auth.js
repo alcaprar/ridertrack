@@ -36,7 +36,6 @@ describe('Auth API tests', function () {
             request.post('/api/auth/register')
                 .send(user)
                 .end(function (err, res) {
-                    console.log('register ', err, res);
                     expect(res.status).to.be.eql(400);
                     expect(res.body).to.be.an('object');
                     expect(res.body).to.have.property('errors');
