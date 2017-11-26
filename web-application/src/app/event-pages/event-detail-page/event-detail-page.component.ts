@@ -15,15 +15,13 @@ import {AuthenticationService} from '../../authentication/authentication.service
 export class EventDetailPageComponent implements OnInit {
 
   private eventId: String;
-  private alreadyEnrolled: boolean;
 
   private event: Event = new Event();
   private currentUser: User = new User();
   private organizer: User = new User();
 
-  private enrolledEvents: any;
-  private enrollements = [];
-  private eventLogo: any;
+  // ids of participants
+  private participantsList = [];
 
   constructor(private route: ActivatedRoute, private userService: UserService, private eventService: EventService
     , private authService: AuthenticationService) {
@@ -31,10 +29,6 @@ export class EventDetailPageComponent implements OnInit {
 
 
   ngOnInit() {
-    // catch the event id
-    // this.getEnrolledEvents;
-    //this.getEnrolledEvents(this.authService.getUserId());
-    //console.log(this.userService.getUser);
     this.route.params.subscribe(params => {
       this.eventId = params['eventId'];
       console.log('[EventDetail][OnInit]', this.eventId);
@@ -60,28 +54,48 @@ export class EventDetailPageComponent implements OnInit {
             this.currentUser = user
           });
 
-      this.eventService.getOrganizer(this.eventId)
-        .then(
-          (organizer) =>{
-            console.log('[EventDetail][OnInit][EventService.getOrganizer][success]', organizer);
-            this.organizer = organizer;
-          }
-        )
-        .catch(
-          (error) =>{
-            console.log('[EventDetail][OnInit][EventService.getOrganizer][error]', error);
-          }
-        )
+      this.getOrganizer();
+
+      this.getParticipants()
     });
 
     console.log('[Event-Detail-Component][OnInit][Event]', this.event);
   }
 
+  /**
+   * It calls the event service in order to get the organizer profile.
+   */
+  private getOrganizer(){
+    this.eventService.getOrganizer(this.eventId)
+      .then(
+        (organizer) =>{
+          console.log('[EventDetail][OnInit][EventService.getOrganizer][success]', organizer);
+          this.organizer = organizer;
+        }
+      )
+      .catch(
+        (error) =>{
+          console.log('[EventDetail][OnInit][EventService.getOrganizer][error]', error);
+        }
+      )
+  }
+
+  /**
+   * It calls the event service in order to get the participants list.
+   */
+  private getParticipants(){
+    this.eventService.getParticipants(this.eventId)
+      .then(
+        (participants) => {
+          console.log('[EventDetail][OnInit][EventService.getParticipants]', participants);
+          this.participantsList = participants;
+        }
+      )
+  }
+
   isLogged(): boolean{
     return this.authService.isAuthenticated()
   }
-
-
 
   getDate(date: Date): String {
     if(date) {
@@ -93,47 +107,54 @@ export class EventDetailPageComponent implements OnInit {
     }
   }
 
+  /**
+   * It calls the event service to enroll the user.
+   */
   enroll(){
-    console.log(this.eventService.enrollToEvent(this.eventId));
-    this.alreadyEnrolled = true;
-  }
-
-  withdrawEnrollment(){
-    console.log(this.eventService.withdrawEnrollment(this.eventId, this.currentUser.id));
-    this.alreadyEnrolled = false;
-  }
-
-
-  getEnrolledEvents(id){
-    this.eventService.getEnrolledEventsForUser(id).then(
-      (events) =>{
-        console.log('[EventDetail][OnInit][getEnrolledEventsForUser][success]', events);
-        this.enrolledEvents = events;
-        for(let event of this.enrolledEvents){
-          this.enrollements.push(event._id);
+    this.eventService.enrollToEvent(this.eventId)
+      .then(
+        (response) => {
+          console.log('[EventDetail][enroll][success]', response);
+          // get the new list of particpants to update the buttons
+          this.getParticipants()
         }
-        console.log('[EventDetail][Enrolled events id]: '+ this.enrollements);
-        this.isAlreadyEnrolled();
-      }
-    )
-    .catch(
-      (error) =>{
-        console.log('[EventDetail][OnInit][getEnrolledEventsForUser][error]', error);
-      }
-    )
+      )
+      .catch(
+        (error) => {
+          console.log('[EventDetail][enroll][error]', error);
+          // TODO show errors
+        }
+      );
   }
 
-  isAlreadyEnrolled() {
-    if(this.enrollements.includes(this.eventId)) {
-      this.alreadyEnrolled = true;
-    }
-    else {
-      this.alreadyEnrolled = false;
-    }
+  /**
+   * It calls the event service to withdraw the enrollment of the user.
+   */
+  withdrawEnrollment(){
+    console.log('[EventDetail][withdrawEnrollment]');
+    this.eventService.withdrawEnrollment(this.eventId, this.currentUser.id)
+      .then(
+        (response) => {
+          console.log('[EventDetail][withdrawEnrollment][success]', response);
+          // get the new list of particpants to update the buttons
+          this.getParticipants()
+        }
+      )
+      .catch(
+        (error) => {
+          console.log('[EventDetail][withdrawEnrollment][error]', error);
+          // TODO show errors
+        }
+      );
   }
 
-
-
+  /**
+   * It says if the logged user, if any, is already enrolled in the events.
+   * @returns {boolean}
+     */
+  isEnrolled(){
+    return this.participantsList.includes(this.currentUser.id)
+  }
 }
 
 

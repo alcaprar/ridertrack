@@ -83,9 +83,9 @@
       <!--Information menu area-->
       <div class="col-md-4 p0">
         <div class="buttons clearfix" *ngIf="isLogged()">
-          <button class="btn-enroll navbar-btn nav-button wow bounceInRight header" (click)="enroll()" *ngIf="!alreadyEnrolled">Enroll</button>
+          <button class="btn-enroll navbar-btn nav-button wow bounceInRight header" (click)="enroll()" *ngIf="!isEnrolled()">Enroll</button>
           <button class="btn-enroll navbar-btn nav-button wow fadeInRight" (click)="withdrawEnrollment()"
-                  *ngIf="alreadyEnrolled">Withdraw enrollment</button>
+                  *ngIf="isEnrolled()">Withdraw enrollment</button>
           <button class="btn-enroll navbar-btn nav-button wow bounceInRight header" (click)="enroll()" *ngIf="currentUser.email === organizer.email" [routerLink]="['/manage-event', event._id]">Edit</button>
         </div>
         <aside class="sidebar sidebar-property blog-asside-right property-style2">

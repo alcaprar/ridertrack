@@ -205,26 +205,48 @@ export class EventService {
         });
   }
 
+  getParticipants(eventId): Promise<String[]>{
+    const url = `${this.BASE_EVENT_URL}/${eventId}/participantsList`;
+
+    console.log("[EventService][getParticipantsList]", eventId);
+
+    return this.http.get(url).toPromise()
+      .then(
+        (response) => {
+          const body = response.json();
+          var participants = body.participants as String[];
+          console.log('[EventService][updateEvent][success]', body, participants);
+          return participants;
+        })
+      .catch(
+        (error) => {
+        console.log('[EventService][updateEvent][error]', error);
+          return [];
+      });
+  }
+
   /**
    * Perform an HTTP POST to REST API to enroll to an event
    * @param eventid
    * @returns enrollment message
    */
-  enrollToEvent(eventid){
+  enrollToEvent(eventId): Promise<boolean>{
     const url = `${this.BASE_URL}/enrollments`;
-    var body = {eventId: eventid}
+    var body = {
+      eventId: eventId
+    };
 
     return this.http.post(url, body).toPromise()
       .then(
         (res) => {
           const eventBody = res.json();
           console.log('[EventService][enroll][success]', eventBody);
-          return eventBody;
+          return true;
       })
       .catch(
         (error) => {
           console.log('[EventService][enroll][error]', error);
-          return Promise.reject(error.json());
+          return false;
       });
   }
 
@@ -233,20 +255,20 @@ export class EventService {
    * @param eventid
    * @returns enrollment message
    */
-  withdrawEnrollment(eventId, userId){
+  withdrawEnrollment(eventId, userId): Promise<boolean>{
     const url = `${this.BASE_URL}/enrollments/${eventId}/${userId}`;
 
     return this.http.delete(url).toPromise()
       .then(
         (res) => {
           const respondMessage = res.json();
-          console.log('[EventService][deleteEnrollment][success]', respondMessage);
-          return respondMessage;
+          console.log('[EventService][withdrawEnrollment][success]', respondMessage);
+          return true;
       })
       .catch(
         (error) => {
-          console.log('[EventService][deleteEnrollment][error]', error);
-          return Promise.reject(error.json());
+          console.log('[EventService][withdrawEnrollment][error]', error);
+          return false;
       });
   }
 
