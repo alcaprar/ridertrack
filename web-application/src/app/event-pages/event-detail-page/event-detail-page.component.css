@@ -20,5 +20,25 @@
 .nav-button:hover{
   background-color: lightcoral;
 }
+#logo {
+  width: 100%;
+}
+.logo {
+  display: block;
+}
+.favorite-and-print {
+  width:100%;
+  padding-bottom: 5em;
+  display: block;
+  margin:2em -1em 2em -1em;
+}
+.btn-enroll {
+  width:100%;
+  display: inline;
+  margin:0 0 0.5em 0 !important;
+}
+.dealer-widget {
+  margin-bottom: 0;
+}
 
 

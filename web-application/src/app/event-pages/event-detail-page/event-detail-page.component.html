@@ -1,30 +1,15 @@
-<app-page-header title="{{event.name}} " subtitle="{{event.type}}"></app-page-header>
-<!-- Body content -->
-<!-- event content area -->
+<app-page-header title="{{event.name}}"></app-page-header>
 <div class="content-area single-property" style="background-color: #FCFCFC;">&nbsp;
   <div class="container">
-    <div class="row">
-
-
-    </div>
-    <div class="clearfix padding-top-40" >
-
       <div class="col-md-8 single-property-content prp-style-2">
         <div class="">
-          <div class="row">
-            <div class="light-slide-item">
-              <div class="clearfix">
-                <div class="favorite-and-print" *ngIf="isLogged()">
-                  <button class="navbar-btn nav-button wow bounceInRight header" (click)="enroll()" *ngIf="!alreadyEnrolled">Enroll</button>
-                  <button class="navbar-btn nav-button wow fadeInRight" (click)="withdrawEnrollment()"
-                          *ngIf="alreadyEnrolled">Withdraw enrollment</button>
-                </div>
-               <img [src]="event.logo">
-              </div>
-            </div>
-          </div><br>
 
-          <div class="single-property-wrapper" >
+
+          <div class="data" >
+            <div class="logo">
+              <img id= "logo" [src]="event.logo">
+            </div>
+
             <div class="section" *ngIf="event.description">
               <h4 class="s-property-title">Description</h4>
               <div class="s-property-content">
@@ -82,7 +67,7 @@
 
         <!--Share area-->
             <div class="section property-share">
-              <h4 class="s-property-title">Share width your friends </h4>
+              <h4 class="s-property-title">Share with your friends </h4>
               <div class="roperty-social">
                 <ul>
                   <li><a title="Share this on facebook " >
@@ -97,19 +82,22 @@
 
       <!--Information menu area-->
       <div class="col-md-4 p0">
+        <div class="buttons clearfix" *ngIf="isLogged()">
+          <button class="btn-enroll navbar-btn nav-button wow bounceInRight header" (click)="enroll()" *ngIf="!alreadyEnrolled">Enroll</button>
+          <button class="btn-enroll navbar-btn nav-button wow fadeInRight" (click)="withdrawEnrollment()"
+                  *ngIf="alreadyEnrolled">Withdraw enrollment</button>
+          <button class="btn-enroll navbar-btn nav-button wow bounceInRight header" (click)="enroll()" *ngIf="currentUser.email === organizer.email" [routerLink]="['/manage-event', event._id]">Edit</button>
+        </div>
         <aside class="sidebar sidebar-property blog-asside-right property-style2">
           <div class="dealer-widget">
             <div class="dealer-content">
               <div class="inner-wrapper">
                 <div class="single-property-header">
-                  <span class="property-title">{{event.name}}
-                    <button class="navbar-btn nav-button wow fadeInRight header" *ngIf="currentUser.email === organizer.email"
-                                                                   [routerLink]="['/manage-event', event._id]">Edit</button>
-                  </span>
+                  <span class="property-title">{{event.name}}</span>
 
                 </div>
 
-                <div class="property-meta entry-meta clearfix ">
+                <div class="property-meta entry-meta ">
                   <ul>
                     <li>
                        <span class="property-info-entry">
@@ -147,18 +135,13 @@
                       <span>Event Organizer</span>
                     </h3>
                   </div>
-
                   </div>
                 </div>
               <!--End organizer area-->
-
               </div>
             </div>
         </aside>
       </div>
-
-    </div>
-
   </div>
 </div>
 

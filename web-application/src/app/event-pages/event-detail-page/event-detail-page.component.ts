@@ -33,8 +33,8 @@ export class EventDetailPageComponent implements OnInit {
   ngOnInit() {
     // catch the event id
     // this.getEnrolledEvents;
-    this.getEnrolledEvents(this.authService.getUserId());
-    console.log(this.userService.getUser);
+    //this.getEnrolledEvents(this.authService.getUserId());
+    //console.log(this.userService.getUser);
     this.route.params.subscribe(params => {
       this.eventId = params['eventId'];
       console.log('[EventDetail][OnInit]', this.eventId);
@@ -76,7 +76,7 @@ export class EventDetailPageComponent implements OnInit {
 
     console.log('[Event-Detail-Component][OnInit][Event]', this.event);
   }
-  
+
   isLogged(): boolean{
     return this.authService.isAuthenticated()
   }
