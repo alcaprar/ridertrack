@@ -38,5 +38,12 @@ h5 {
   pointer-events: all !important;
 }
 .form-inline input[type=submit] {
-  margin: 3em 0 1em 0 ;
+  margin: 3em 2em 0em 2em;
+  float:right;
+  width:20%;
+
+}
+#search {
+  margin-left: auto !important;
+  width:100%;
 }

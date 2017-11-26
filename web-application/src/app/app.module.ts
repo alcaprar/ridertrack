@@ -47,6 +47,7 @@ import {WhyRidertrackBestPageComponent} from "./why-ridertrack-best-page/why-rid
 import { AlertComponent } from './shared/layout/alert/alert.component';
 import {AlertService} from "./shared/services/alert.service";
 import {TabModule} from "angular-tabs-component";
+import {EventBoxOrganizedComponent} from "./event-pages/event-box/event-box-organized.component";
 import {ErrorStateMatcher, ShowOnDirtyErrorStateMatcher} from "@angular/material";
 
 
@@ -72,6 +73,7 @@ import {ErrorStateMatcher, ShowOnDirtyErrorStateMatcher} from "@angular/material
     MapComponent,
     EventCreatePageComponent,
     EventBoxComponent,
+    EventBoxOrganizedComponent,
     EventManagePageComponent,
     HomeEventBoxComponent,
     InvalidMessageDirective,
