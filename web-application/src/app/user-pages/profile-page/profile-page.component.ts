@@ -15,8 +15,9 @@ export class ProfilePageComponent implements OnInit {
   name: String;
   surname: String;
   email: String;
-  
-  @Input() editData = { name: '', surname: '', email: ''};
+
+  private urlImage: any;
+  private urlNoImage = '../../../assets/img/user_fake_img.png';
 
   constructor(private formBuilderLogin: FormBuilder, private userService: UserService) { }
 
@@ -26,25 +27,22 @@ export class ProfilePageComponent implements OnInit {
         this.user = user;
       }
     );
-    this.setFormEdit();
    }
 
-   setFormEdit() {
-    this.editForm = this.formBuilderLogin.group({
-      name: '',
-      surname: '',
-      email: ''
-      });
-  }
 
   edit(){
-    // create an instance if user model
-    var editData = {
-      name:this.editForm.get('name').value,
-      surname:this.editForm.get('surname').value,
-      email:this.editForm.get('email').value
+    console.log("[User locally updated]",this.user);
+  }
+
+  urlChanged(event: any) {
+    if(event.target.files && event.target.files[0]) {
+      var reader = new FileReader();
+
+      reader.onload = (event: any) => {
+        this.urlImage = event.target.result;
+      },
+        reader.readAsDataURL(event.target.files[0]);
     }
-    console.log(editData);
   }
 
 }
