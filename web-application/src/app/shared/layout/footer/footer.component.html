@@ -31,12 +31,12 @@
             </ul>
           </div>
         </div>
-        <div class="col-md-4 col-sm-6 wow fadeInRight animated">
+        <div class="col-md-4 col-sm-6 wow fadeInRight animated animated" style="visibility: visible; animation-name: fadeInRight;">
           <div class="single-footer">
-            <h4>Next Events</h4>
+            <h4>Next events</h4>
             <div class="footer-title-line"></div>
             <ul class="footer-blog">
-              <li class="col-sm-6 col-md-3 p0" *ngFor="let event of lastEvents">
+              <li *ngFor="let event of lastEvents">
                 <app-footer-event-box [event]="event"></app-footer-event-box>
               </li>
             </ul>

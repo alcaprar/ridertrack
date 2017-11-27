@@ -3,7 +3,7 @@ import { Component, OnInit, Input } from '@angular/core';
 @Component({
   selector: 'app-footer-event-box',
   templateUrl: './footer-event-box.component.html',
-  //styleUrls: ['./footer-event-box.component.css']
+  styleUrls: ['./footer-event-box.component.css']
 })
 export class FooterEventBoxComponent implements OnInit {
 
