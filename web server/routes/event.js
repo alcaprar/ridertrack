@@ -224,8 +224,9 @@ router.post('/', authMiddleware.hasValidToken, multipart, function (req, res) {
 
     Event.create(req.userId, req.body, function (err, event) {
         if (err) {
+            console.log('[POST/events][error]', err);
             res.status(400).send({
-                errors: err
+                errors: [err]
             })
         }else{
             // rename the logo with the id

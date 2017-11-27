@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import {EventService} from "../../shared/services/event.service";
 import {EventToCreate} from "../../shared/models/eventToCreate";
 import {AlertService} from "../../shared/services/alert.service";
+import {Error} from "../../shared/models/error";
 declare var $: any;
 
 @Component({
@@ -14,7 +15,7 @@ export class EventCreatePageComponent implements OnInit {
 
   private eventTypes;
 
-  private errors: string[] = [];
+  private errors: Error[] = [];
 
   event = new EventToCreate();
 
@@ -90,7 +91,11 @@ export class EventCreatePageComponent implements OnInit {
 
     if(!logo) {
       // if logo is missing show an error
-      var error = 'Logo is missing.';
+      var error = new Error('Logo is missing.');
+      this.errors.push(error);
+    }else if(!this.event.type){
+      // if type is missing show an error
+      var error = new Error('Type is missing.');
       this.errors.push(error);
     }else{
       // add the logo to the event
@@ -99,16 +104,21 @@ export class EventCreatePageComponent implements OnInit {
       console.log('[EventCreate][onSubmit]', this.event);
       this.eventService.createEvent(this.event)
         .then(
-          (event) => {
-            console.log('[CreateEvent][onSubmit][success]', event);
-            this.alertService.success("Event successfully created");
-            this.router.navigate(['/events/' + event._id]);
+          (response) => {
+            console.log('[CreateEvent][onSubmit][success]', response);
+            if(response[0] !== null){
+              // errors occureed
+              this.errors = response[0] as Error[];
+            }else{
+              this.router.navigate(['/events/' + event._id]);
+            }
+            // this.alertService.success("Event successfully created");
           }
         )
         .catch(
           (error) => {
             console.log('[CreateEvent][onSubmit][error]', error);
-            this.alertService.error("An error occured: "+ error.message);
+            // this.alertService.error("An error occured: "+ error.message);
             this.router.navigate(['/create-event']);
           }
         )

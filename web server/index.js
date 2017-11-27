@@ -97,8 +97,8 @@ server.listen(config.port, function () {
 });
 
 // init DB
-var initDB = require('./initDb');
-initDB();
+// var initDB = require('./initDb');
+// initDB();
 
 // exporting the server only for testing purposes
 module.exports = server;

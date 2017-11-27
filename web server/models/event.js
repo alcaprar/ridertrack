@@ -85,6 +85,19 @@ eventSchema.pre('save', function(next) {
     next();
 });
 
+/**
+ * Error handler. It is executed on every save if errors occur.
+ * Inspired here. http://thecodebarbarian.com/mongoose-error-handling
+ */
+eventSchema.post('save', function (err, doc, next) {
+    console.log('[EventModel][error]', err);
+    if(err.name === 'MongoError' && err.code === 11000){
+        next({message: 'En event with this name already exists.'})
+    }else{
+        next({message: err.msg})
+    }
+});
+
 /* It finds an event by name passed
  * Then, calls callback with either an error or the found event
  */

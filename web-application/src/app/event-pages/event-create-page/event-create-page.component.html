@@ -52,7 +52,7 @@
                     <div [hidden]="city.valid || city.pristine" class="alert alert-danger">City is required.</div>
                   </div>
                   <div *ngIf="errors.length > 0" class="alert alert-danger">
-                    <span *ngFor="let error of errors">{{error}}</span>
+                    <span *ngFor="let error of errors">{{error.message}}</span>
                   </div>
                 </div>
               </div>

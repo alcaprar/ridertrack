@@ -6,6 +6,7 @@ import {EventToCreate} from "../models/eventToCreate";
 import {HttpClientService} from "./http-client.service";
 import {environment} from '../../../environments/environment'
 import {User} from "../models/user";
+import {Error} from "../models/error";
 import {EventsListQueryParams} from "../models/eventsListQueryParams";
 import {MyEventsQueryParams} from "../models/myEventsQueryParams";
 
@@ -135,11 +136,9 @@ export class EventService {
   }
 
   /**
-   * Perform an HTTP POST to REST API to create an event
-   * @param {Event} event
-   * @returns {Promise<Event>} of the event
+   * Perform an HTTP POST to REST API to create an event.
    */
-  createEvent(event: EventToCreate): Promise<Event> {
+  createEvent(event: EventToCreate): Promise<[Error[], Event]> {
     const url = `${this.BASE_EVENT_URL}`;
 
     // create form data in order to pass an image
@@ -156,16 +155,19 @@ export class EventService {
     return this.http.post(url, formData).toPromise()
       .then(
         (res) => {
-          const eventBody = res.json().event as Event;
-          console.log('[EventService][createEvent][success]', eventBody);
+          const body = res.json();
+          const event = body.event as Event;
+          console.log('[EventService][createEvent][success]', body);
           this.router.navigate(['my-events']);
-          return eventBody;
+          return [null, event];
         })
       .catch(
-        (error) => {
-          console.log('[EventService][createEvent][error]', error);
-          return Promise.reject(error.json());
-        });
+        (errorResponse: any) => {
+          var errors = errorResponse.json().errors as Error[];
+          console.log('[EventService][createEvent][error]', errors);
+          return [errors, null];
+        }
+      )
   }
 
   /**
