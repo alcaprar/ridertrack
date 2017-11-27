@@ -6,6 +6,7 @@ import {Event} from '../../shared/models/event';
 import { ActivatedRoute } from '@angular/router';
 import {AuthenticationService} from '../../authentication/authentication.service';
 import { Router } from "@angular/router";
+import {DialogService} from "../../shared/dialog/dialog.service";
 
 
 @Component({
@@ -28,7 +29,7 @@ export class EventDetailPageComponent implements OnInit {
   private participantsList = [];
 
   constructor(private route: ActivatedRoute, private userService: UserService, private eventService: EventService
-    , private authService: AuthenticationService, private router: Router) {
+    , private authService: AuthenticationService, private router: Router, private dialogService: DialogService) {
   }
 
 
@@ -168,19 +169,22 @@ export class EventDetailPageComponent implements OnInit {
    */
   deleteEvent() {
     console.log('[EventDetail][deleteEvent]');
-    this.eventService.deleteEvent(this.eventId)
-      .then(
-        (response) => {
-          console.log('[EventDetail][deleteEvent][success]', response);
-          this.router.navigate(['/my-events']);
-        }
-      )
-      .catch(
-        (error) => {
-          console.log('[EventDetail][deleteEvent][error]', error);
-          // TODO show errors
-        }
-      );
+    this.dialogService.confirmation('Delete event', 'Are you sure to delete this event?', function () {
+      console.log('[EventDetail][deleteEvent][callback]')
+      this.eventService.deleteEvent(this.eventId)
+        .then(
+          (response) => {
+            console.log('[EventDetail][deleteEvent][success]', response);
+            this.router.navigate(['/my-events']);
+          }
+        )
+        .catch(
+          (error) => {
+            console.log('[EventDetail][deleteEvent][error]', error);
+            // TODO show errors
+          }
+        );
+    }.bind(this));
   }
 
  /** similarEvent() {

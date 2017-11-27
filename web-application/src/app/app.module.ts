@@ -51,6 +51,8 @@ import {EventBoxOrganizedComponent} from "./event-pages/event-box/event-box-orga
 import {ErrorStateMatcher, ShowOnDirtyErrorStateMatcher} from "@angular/material";
 import { EnrolledEventsComponent } from './event-pages/my-events/enrolled-events/enrolled-events.component';
 import { OrganizedEventsComponent } from './event-pages/my-events/organized-events/organized-events.component';
+import { ConfirmationDialogComponent } from './shared/dialog/confirmation-dialog/confirmation-dialog.component';
+import {DialogService} from "./shared/dialog/dialog.service";
 
 
 
@@ -86,7 +88,8 @@ import { OrganizedEventsComponent } from './event-pages/my-events/organized-even
     FaqPageComponent,
     AlertComponent,
     EnrolledEventsComponent,
-    OrganizedEventsComponent
+    OrganizedEventsComponent,
+    ConfirmationDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -182,7 +185,8 @@ import { OrganizedEventsComponent } from './event-pages/my-events/organized-even
     EventService,
     GoogleMapsAPIWrapper,
     HttpClientService,
-    AlertService
+    AlertService,
+    DialogService
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
