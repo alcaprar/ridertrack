@@ -7,6 +7,7 @@ import {HttpClientService} from "./http-client.service";
 import {environment} from '../../../environments/environment'
 import {User} from "../models/user";
 import {EventsListQueryParams} from "../models/eventsListQueryParams";
+import {MyEventsQueryParams} from "../models/myEventsQueryParams";
 
 @Injectable()
 export class EventService {
@@ -14,7 +15,7 @@ export class EventService {
   private BASE_URL = environment.baseAPI;
   private BASE_EVENT_URL = '/api/events';
 
-  private eventTypes: [String] = ['Running', 'Cycling', 'Hiking', 'Triathlon', 'Other'];
+  private eventTypes: [String] = ['running', 'cycling', 'hiking', 'triathlon', 'other'];
 
   constructor(private http: HttpClientService, private router: Router) {
   }
@@ -33,47 +34,50 @@ export class EventService {
     console.log('[EventService][getAllEvents]', url);
 
     return this.http.get(url).toPromise()
-        .then( (response) => {
-          const body = response.json();
-          const events = body.events as Event[];
-          console.log('[EventService][getAllEvents][success]', body);
-         return [events, body.page, body.itemsPerPage, body.totalPages];
-        }, (err) => {
-          console.log('[EventService][getAllEvents][error]', err);
-          return Observable.of(null);
-        });
+      .then( (response) => {
+        const body = response.json();
+        const events = body.events as Event[];
+        console.log('[EventService][getAllEvents][success]', body);
+        return [events, body.page, body.itemsPerPage, body.totalPages];
+      }, (err) => {
+        console.log('[EventService][getAllEvents][error]', err);
+        return Observable.of(null);
+      });
   }
 
   /**
    * Perform an HTTP GET request to the REST API to read all the events that specific user has organized
    * @returns {Promise<Event[]>}
    */
-  getOrganizedEventsForUser(id): Promise<Event[]> {
-    const url = `${this.BASE_URL}/users/${id}/organizedEvents`;
+  getOrganizedEventsForUser(userId, queryParams: MyEventsQueryParams): Promise<[Event[], number, number, number]> {
+    const url = `${this.BASE_URL}/users/${userId}/organizedEvents?${this.serializeQueryString(queryParams)}`;
 
     return this.http.get(url).toPromise()
-        .then( (res) => {
-          const eventsBody = res.json().events as Event[];
-          console.log('[EventService][getOrganizedEventsForUser][success]', eventsBody);
-         return eventsBody;
+      .then(
+        (response) => {
+          const body = response.json();
+          const events = body.events as Event[];
+          console.log('[EventService][getOrganizedEventsForUser][success]', body);
+          return [events, body.page, body.itemsPerPage, body.totalPages];
         }, (err) => {
           console.log('[EventService][getOrganizedEventsForUser][error]', err);
           return Observable.of(null);
         });
   }
-
-/**
+  /**
    * Perform an HTTP GET request to the REST API to read all the events in which specific user has enrolled
    * @returns {Promise<Event[]>}
    */
-  getEnrolledEventsForUser(id): Promise<Event[]> {
-    const url = `${this.BASE_URL}/users/${id}/enrolledEvents`;
+  getEnrolledEventsForUser(userId, queryParams: MyEventsQueryParams): Promise<[Event[], number, number, number]> {
+    const url = `${this.BASE_URL}/users/${userId}/enrolledEvents?${this.serializeQueryString(queryParams)}`;
 
     return this.http.get(url).toPromise()
-        .then( (res) => {
-          const eventsBody = res.json().events as Event[];
-          console.log('[EventService][getEnrolledEventsForUser][success]', eventsBody);
-         return eventsBody;
+      .then(
+        (response) => {
+          const body = response.json();
+          const events = body.events as Event[];
+          console.log('[EventService][getEnrolledEventsForUser][success]', body);
+          return [events, body.page, body.itemsPerPage, body.totalPages];
         }, (err) => {
           console.log('[EventService][getEnrolledEventsForUser][error]', err);
           return Observable.of(null);
@@ -83,7 +87,7 @@ export class EventService {
   /**
    * It retrieves a certain amount of events ordered by date ascending.
    * @param amount
-     */
+   */
   getLastEvents(amount): Promise<Event[]> {
     const url = `${this.BASE_EVENT_URL}?sort=startingDate=asc&page=1&itemsPerPage=${amount}`;
 
@@ -156,12 +160,12 @@ export class EventService {
           console.log('[EventService][createEvent][success]', eventBody);
           this.router.navigate(['my-events']);
           return eventBody;
-      })
+        })
       .catch(
         (error) => {
           console.log('[EventService][createEvent][error]', error);
           return Promise.reject(error.json());
-      });
+        });
   }
 
   /**
@@ -184,11 +188,11 @@ export class EventService {
           return eventBody;
         })
       .catch(error => {
-          console.log('[EventService][updateEvent][error]', error);
-          this.router.navigate(['/manage-event', event._id]);
+        console.log('[EventService][updateEvent][error]', error);
+        this.router.navigate(['/manage-event', event._id]);
         return Promise.reject(error.message || error);
-        });
-    }
+      });
+  }
 
   /**
    * Perform an HTTP DELETE request to REST API to delete a certain event
@@ -200,9 +204,9 @@ export class EventService {
     return this.http.delete(url).toPromise()
       .then(() => null)
       .catch((error) => {
-          console.log('[EventService][deleteEvent][error]', error);
+        console.log('[EventService][deleteEvent][error]', error);
         return Promise.reject(error.message || error);
-        });
+      });
   }
 
   getParticipants(eventId): Promise<String[]>{
@@ -220,9 +224,9 @@ export class EventService {
         })
       .catch(
         (error) => {
-        console.log('[EventService][updateEvent][error]', error);
+          console.log('[EventService][updateEvent][error]', error);
           return [];
-      });
+        });
   }
 
   /**
@@ -242,12 +246,12 @@ export class EventService {
           const eventBody = res.json();
           console.log('[EventService][enroll][success]', eventBody);
           return true;
-      })
+        })
       .catch(
         (error) => {
           console.log('[EventService][enroll][error]', error);
           return false;
-      });
+        });
   }
 
   /**
@@ -264,12 +268,12 @@ export class EventService {
           const respondMessage = res.json();
           console.log('[EventService][withdrawEnrollment][success]', respondMessage);
           return true;
-      })
+        })
       .catch(
         (error) => {
           console.log('[EventService][withdrawEnrollment][error]', error);
           return false;
-      });
+        });
   }
 
   private serializeQueryString(obj) {

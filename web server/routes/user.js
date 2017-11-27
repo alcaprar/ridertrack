@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var config = require('../config');
+var async = require('async');
 
 var User = require('../models/user');
 var Event = require('../models/event');
@@ -61,38 +62,62 @@ router.get('/:userId', function (req, res) {
  * It returns the events enrolled by the user.
  */
 router.get('/:userId/enrolledEvents', authMiddleware.hasValidToken, function (req, res){
+    var options = {};
     let enrolledEventsIdList=[];
+
     var page = parseInt(req.query.page) || 1;
     var itemsPerPage = parseInt(req.query.itemsPerPage) || 10;
+    options.skip = (parseInt(page) -1) * parseInt(itemsPerPage);
+    options.limit = itemsPerPage;
 
-    Enrollment.find({userId: req.userId}, function (err, enrollment){
-        if (err) {
-            res.status(400).send({
-                errors: err,
-                message: 'Error in finding an enrollment in getting enrolled events'
-
-            })
-        }else{
-            for(let key in enrollment){
-                enrolledEventsIdList.push(enrollment[key].eventId);
+    // using async lib to find the total number and find the events in parallel
+    var countEnrollments = function (callback) {
+        Enrollment.find({userId: req.userId}, function (err, enrollments) {
+            if(err){
+                callback(err)
+            }else{
+                callback(null, enrollments.length)
             }
-            Event.findEventsFromList(enrolledEventsIdList, function(err, events){
-                if(err){
-                    res.status(400).send({
-                        errors: err,
-                        message: 'Error in finding events in getting enrolled events'
-                    })
-                }else{
-                    res.status(200).send({
-                        events: events,
-                        page: page,
-                        itemsPerPage: itemsPerPage,
-                        totalPages: Math.ceil(events.length/itemsPerPage)
-                    })
+        })
+    };
+
+    var findEnrollments = function (callback) {
+        Enrollment.find({userId: req.userId}, null, options, function (err, enrollment){
+            if (err) {
+                console.log('GET /users/:userId/enrolledEvents', err);
+                res.status(400).send({
+                    errors: [{message: 'Error in finding an enrollment in getting enrolled events'}]
+
+                })
+            }else{
+                for(let key in enrollment){
+                    enrolledEventsIdList.push(enrollment[key].eventId);
                 }
+                Event.findEventsFromList(enrolledEventsIdList, function(err, events){
+                    if(err){
+                        callback(err)
+                    }else{
+                        callback(null, events);
+                    }
+                })
+            }
+        })
+    };
+
+    async.parallel([countEnrollments, findEnrollments], function (err, results) {
+        if(err) {
+            res.status(400).send({
+                errors: err
+            })
+        } else {
+            res.status(200).send({
+                events: results[1],
+                page: page,
+                itemsPerPage: itemsPerPage,
+                totalPages: Math.ceil(results[0]/itemsPerPage)
             })
         }
-    })
+    });
 });
 
 /**
@@ -100,23 +125,50 @@ router.get('/:userId/enrolledEvents', authMiddleware.hasValidToken, function (re
  *
  */
 router.get('/:userId/organizedEvents', authMiddleware.hasValidToken, function(req,res){
+    var options = {};
+
     var page = parseInt(req.query.page) || 1;
     var itemsPerPage = parseInt(req.query.itemsPerPage) || 10;
+    options.skip = (parseInt(page) -1) * parseInt(itemsPerPage);
+    options.limit = itemsPerPage;
 
-    Event.find({organizerId: req.userId},function(err, events){
-        if (err) {
-            return res.status(400).send({
+    // using async lib to find the total number and find the events in parallel
+    var countEvents = function (callback) {
+        Event.find({organizerId: req.userId}, function (err, events) {
+            if(err){
+                callback(err)
+            }else{
+                callback(null, events.length)
+            }
+        })
+    };
+
+    var findEvents = function (callback) {
+        Event.find({organizerId: req.userId},null, options, function(err, events){
+            if (err) {
+                callback(err)
+            }else{
+                callback(null, events)
+            }
+        });
+    };
+
+    async.parallel([countEvents, findEvents], function (err, results) {
+        if(err) {
+            res.status(400).send({
                 errors: err
-            });
-        }else{
+            })
+        } else {
             res.status(200).send({
-                events: events,
+                events: results[1],
                 page: page,
                 itemsPerPage: itemsPerPage,
-                totalPages: Math.ceil(events.length/itemsPerPage)
+                totalPages: Math.ceil(results[0]/itemsPerPage)
             })
         }
     });
+
+
 });
 
 /**

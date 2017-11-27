@@ -3,16 +3,31 @@
 <!-- property area -->
 <div class="properties-area recent-property" style="background-color: #FFF;">
   <div class="container">
-    <ul class="nav nav-tabs" routerLinkActive="active" style="padding-top: 10px">
-      <li style="width: 49%;">
-        <a routerLink="/my-events/enrolled" aria-expanded="true">Enrolled</a>
-      </li>
-      <li style="width: 49%;">
-        <a [routerLink]="['organized']">Organized</a>
-      </li>
-    </ul>
-    <div role="tabpanel" class="tab-content tab-pane">
-      <router-outlet></router-outlet>
+    <div class="row  pr0 padding-top-40 properties-page">
+      <div class="col-md-12 padding-bottom-40 large-search">
+        <div class="search-form wow pulse">
+          <div class="col-xs-12 col-md-2 col-md-offset-5" id="create" style="text-align: center">
+            <form class="form-inline">
+              <input class="button btn largesearch-btn" (click)="createEvent()" value="Create event" type="submit" style="width: 150px; float: none">
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-12 clear ">
+        <ul class="nav nav-tabs" routerLinkActive="active" style="padding-top: 10px">
+          <li style="width: 49%;" [routerLinkActive]="['active']">
+            <a [routerLink]="['enrolled']" aria-expanded="true">Enrolled</a>
+          </li>
+          <li style="width: 49%;" [routerLinkActive]="['active']">
+            <a [routerLink]="['organized']">Organized</a>
+          </li>
+        </ul>
+        <div role="tabpanel" class="tab-content tab-pane">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>

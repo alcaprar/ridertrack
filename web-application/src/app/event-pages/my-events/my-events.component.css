@@ -4,14 +4,12 @@
 .page-title {
   padding-top: 1em !important;
 }
-.tabs__tab.active[_ngcontent-c6] {
-  background-color: #FDC600 !important;
-  border:none !important;
+.disabled {
+  cursor: not-allowed;
+  pointer-events: all !important;
 }
-.tabs__panel[_ngcontent-c7]{
-  background-color: white !important;
-  box-shadow: none !important;
-}
-.tabs__tab-bar[_ngcontent-c6]{
-  border:none !important;
+
+#create {
+  margin-left: auto !important;
+  width:100%;
 }

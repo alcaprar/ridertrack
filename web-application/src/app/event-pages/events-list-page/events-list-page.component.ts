@@ -129,6 +129,7 @@ export class EventsListPageComponent implements OnInit {
   onItemsPerPageChanged(){
     console.log('[EventsList][onItemsPerPageChanged]', this.itemsPerPageSelect.nativeElement.value);
     this.queryParams.itemsPerPage = this.itemsPerPageSelect.nativeElement.value;
+    this.queryParams.page = 1
     this.updateEventsList()
   }
 
@@ -153,12 +154,12 @@ export class EventsListPageComponent implements OnInit {
    * It navigate to the route with the new query params.
    */
   private updateEventsList(){
-    this.queryParams.price = undefined; // TODO remove when price slider is activated
-    this.queryParams.length = undefined; // TODO remove when length slider is activated
+  this.queryParams.price = undefined; // TODO remove when price slider is activated
+  this.queryParams.length = undefined; // TODO remove when length slider is activated
 
-    this.router.navigate([ '/events' ], {
-      queryParams: this.queryParams
-    });
-  }
+  this.router.navigate([ '/events' ], {
+    queryParams: this.queryParams
+  });
+}
 
 }

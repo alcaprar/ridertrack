@@ -1,7 +1,5 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-declare var $: any;
-
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-my-events',
@@ -11,10 +9,19 @@ declare var $: any;
 })
 export class MyEventsComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute) {
+
+
+  constructor(private route: ActivatedRoute, private router: Router) {
   }
 
   ngOnInit() {
-    console.log('[MyEvents][onInit]',this.route.children)
+
+  }
+
+  /**
+   * It is called when the user clicks the button.
+   */
+  private createEvent(){
+    this.router.navigate(['/create-event'])
   }
 }
