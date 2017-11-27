@@ -20,6 +20,7 @@ export class EventDetailPageComponent implements OnInit {
   private event: Event = new Event();
   private currentUser: User = new User();
   private organizer: User = new User();
+  private similarEvents: Event[];
 
   // ids of participants
   private participantsList = [];
@@ -37,14 +38,14 @@ export class EventDetailPageComponent implements OnInit {
 
       this.eventService.getEvent(this.eventId)
         .then(
-          (event) =>{
+          (event) => {
             console.log('[EventDetail][OnInit][EventService.getEvent][success]', event);
             // TODO add a check: if the event is null redirect somewhere maybe showing an alert
-            this.event = event ;
+            this.event = event;
           }
         )
         .catch(
-          (error) =>{
+          (error) => {
             console.log('[EventDetail][OnInit][EventService.getEvent][error]', error);
           }
         );
@@ -66,16 +67,16 @@ export class EventDetailPageComponent implements OnInit {
   /**
    * It calls the event service in order to get the organizer profile.
    */
-  private getOrganizer(){
+  private getOrganizer() {
     this.eventService.getOrganizer(this.eventId)
       .then(
-        (organizer) =>{
+        (organizer) => {
           console.log('[EventDetail][OnInit][EventService.getOrganizer][success]', organizer);
           this.organizer = organizer;
         }
       )
       .catch(
-        (error) =>{
+        (error) => {
           console.log('[EventDetail][OnInit][EventService.getOrganizer][error]', error);
         }
       )
@@ -84,7 +85,7 @@ export class EventDetailPageComponent implements OnInit {
   /**
    * It calls the event service in order to get the participants list.
    */
-  private getParticipants(){
+  private getParticipants() {
     this.eventService.getParticipants(this.eventId)
       .then(
         (participants) => {
@@ -94,16 +95,16 @@ export class EventDetailPageComponent implements OnInit {
       )
   }
 
-  isLogged(): boolean{
+  isLogged(): boolean {
     return this.authService.isAuthenticated()
   }
 
   getDate(date: Date): String {
-    if(date) {
+    if (date) {
       console.log(date);
       return null;
     } else {
-      return (date.getDate().toString() + '/' + (date.getMonth()+1).toString() + '/' +
+      return (date.getDate().toString() + '/' + (date.getMonth() + 1).toString() + '/' +
         date.getFullYear().toString());
     }
   }
@@ -111,7 +112,7 @@ export class EventDetailPageComponent implements OnInit {
   /**
    * It calls the event service to enroll the user.
    */
-  enroll(){
+  enroll() {
     this.eventService.enrollToEvent(this.eventId)
       .then(
         (response) => {
@@ -131,7 +132,7 @@ export class EventDetailPageComponent implements OnInit {
   /**
    * It calls the event service to withdraw the enrollment of the user.
    */
-  withdrawEnrollment(){
+  withdrawEnrollment() {
     console.log('[EventDetail][withdrawEnrollment]');
     this.eventService.withdrawEnrollment(this.eventId, this.currentUser.id)
       .then(
@@ -152,15 +153,15 @@ export class EventDetailPageComponent implements OnInit {
   /**
    * It says if the logged user, if any, is already enrolled in the events.
    * @returns {boolean}
-     */
-  isEnrolled(){
+   */
+  isEnrolled() {
     return this.participantsList.includes(this.currentUser.id)
   }
 
   /**
    * It deletes an event when an event organizer decides to do it
    */
-  deleteEvent(){
+  deleteEvent() {
     console.log('[EventDetail][deleteEvent]');
     this.eventService.deleteEvent(this.eventId)
       .then(
@@ -176,6 +177,21 @@ export class EventDetailPageComponent implements OnInit {
         }
       );
   }
+
+ /** similarEvent() {
+    this.eventService.getSimilarEvents(3)
+      .then(
+        (events) => {
+          console.log('[Footer][getLastEvents][success]', events);
+          this.similarEvents = events
+        }
+      )
+      .catch(
+        (error) => {
+          console.log('[Footer][getLastEvents][error]', error);
+        }
+      );
+  }**/
 }
 
 

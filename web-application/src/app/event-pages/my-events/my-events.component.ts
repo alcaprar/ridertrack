@@ -5,7 +5,6 @@ import {ActivatedRoute, Router} from '@angular/router';
   selector: 'app-my-events',
   templateUrl: './my-events.component.html',
   styleUrls: ['./my-events.component.css'],
-  encapsulation: ViewEncapsulation.None
 })
 export class MyEventsComponent implements OnInit {
 

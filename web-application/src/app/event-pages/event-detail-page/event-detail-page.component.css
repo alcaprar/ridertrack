@@ -1,62 +1,33 @@
-
-.button.navbar-right {
-  padding-top: 10px;
-}
-.nav-button {
-  background-color: #c2c2c2;
-  border: medium none;
-  color: #fff;
-  font-size: 16px;
-  padding: 8px 20px;
-  border-radius: 2px;
-}
-
-.nav-button.header{
-  background-color: #d30000;
-  margin-right: 5px;
-  float: right;
-}
-
-.nav-button:hover{
-  background-color: lightcoral;
-}
-#logo {
-  width: 100%;
-}
-.logo {
-  display: block;
-}
-.favorite-and-print {
-  width:100%;
-  padding-bottom: 5em;
-  display: block;
-  margin:2em -1em 2em -1em;
-}
-.btn-enroll {
-  width:100%;
-  display: inline;
-  margin:0 0 0.5em 0 !important;
-}
-.dealer-widget {
-  margin-bottom: 0;
-  background: #FDC600;
-}
-.property-info-label {
-  color:white;
-}
-.single-property-header {
-  padding-bottom: 0;
-  width:100%;
-  float: none;
-}
-.property-meta .entry-meta {
-  padding:1em 0;
-}
 .btn-delete {
   background-color: #d30000;
   float: right;
   padding:0.5em;
   width:100%;
+  color: white;
+  margin-bottom:3em;
 }
-
-
+.btn-manage {
+  background-color: #FDC600;
+  margin-bottom: 0.5em;
+  width:100%;
+  color: white;
+  padding:1em;
+}
+.prp-style-1 .single-property-wrapper {
+  margin-top: 0em !important;
+}
+.info-icon {
+  width:3em;
+  margin: 1em;
+}
+.dealer-widget {
+  margin-bottom: 1em;
+  margin-top:1em;
+}
+.blog-asside-right{
+  padding-top: 0;
+  padding-left:3em;
+}
+.panel-heading{
+  margin-top:1em;
+}
