@@ -3,26 +3,12 @@
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-12">
         <h2>wherever with you</h2>
-        <div class="placeholder col-md-4"></div>
-          <div class="description col-md-8">
-            <p>The one and only management service for sport events capable of supporting multiple input forms of tracking source</p>
-         </div>
-      </div>
-    </div>
-        <div class="search-form wow pulse" data-wow-delay="0.8s">
+        <p>The one and only management service for sport events capable of supporting multiple input forms of tracking source</p>
+        <div class="search-form wow pulse animated" data-wow-delay="0.8s" style="visibility: visible; animation-delay: 0.8s; animation-name: pulse;">
 
           <form (ngSubmit)="search()" class="form-inline">
-
             <div class="form-group">
-              <input type="text" #searchKeyword id="search-keyword" class="form-control" placeholder="Type a keyword..">
-              <!--<select id="city" class="selectpicker" data-live-search="true" data-live-search-style="begins" title="Select city">-->
-
-                <!--<option>New york</option>-->
-                <!--<option>Paris</option>-->
-                <!--<option>Casablanca</option>-->
-                <!--<option>Tokyo</option>-->
-                <!--<option>Marraekch</option>-->
-              <!--</select>-->
+              <input type="text" #searchKeyword id="search-keyword"  class="form-control" placeholder="Key word">
             </div>
             <div class="form-group">
               <select id="race" #searchType class="selectpicker" data-live-search="true" data-live-search-style="begins" title="Select race">
@@ -30,13 +16,14 @@
                 <option *ngFor="let type of eventTypes" [value]="type" style="text-transform: capitalize">{{type}}</option>
               </select>
             </div>
-
             <button class="btn search-btn" type="submit"><i class="fa fa-search"></i></button>
 
           </form>
         </div>
       </div>
     </div>
+  </div>
+</div>
 
 <!-- property area -->
 <div class="content-area home-area-1 recent-property" style="background-color: #FCFCFC; padding-bottom: 55px;">
@@ -58,11 +45,11 @@
             <a routerLink="events" ><div class="item-tree-icon">
               <i class="fa fa-th"></i>
             </div>
-            <div class="more-entry overflow">
-              <h5>CAN'T DECIDE ? </h5>
-              <h5 class="tree-sub-ttl">Show all events</h5>
-              <button class="btn border-btn more-black" value="All properties">All events</button>
-            </div></a>
+              <div class="more-entry overflow">
+                <h5>CAN'T DECIDE ? </h5>
+                <h5 class="tree-sub-ttl">Show all events</h5>
+                <button class="btn border-btn more-black" value="All properties">All events</button>
+              </div></a>
           </div>
         </div>
 
@@ -84,7 +71,7 @@
                   <a routerLink="events"><div class="welcome-icon">
                     <i class="pe-7s-home pe-4x"></i>
                   </div>
-                 <h3>Any event</h3></a>
+                    <h3>Any event</h3></a>
                 </div>
               </div>
               <div class="col-xs-6 m-padding">
@@ -92,7 +79,7 @@
                   <a routerLink=" "><div class="welcome-icon">
                     <i class="pe-7s-users pe-4x"></i>
                   </div>
-                  <h3>More Spectators</h3></a>
+                    <h3>More Spectators</h3></a>
                 </div>
               </div>
 
