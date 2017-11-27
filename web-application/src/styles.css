@@ -2680,16 +2680,12 @@ blog
   z-index:99; /* makes sure it stays on top */
 }
 
-#status {
-  width:200px;
-  height:200px;
+#loading-spinner {
+  width: 50px;
+  height: 50px;
   position:absolute;
   left:50%;
   top:50%;
-  background-image:url("./assets/img/preloader.gif");
-  background-repeat:no-repeat;
-  background-position:center;
-  margin:-100px 0 0 -100px;
 }
 .prop-btm-sheaerch {
   display: none

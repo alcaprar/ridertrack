@@ -31,4 +31,8 @@ export class FooterComponent implements OnInit {
   ngOnInit() {
   }
 
+  thisYear(){
+    return (new Date()).getFullYear()
+  }
+
 }
