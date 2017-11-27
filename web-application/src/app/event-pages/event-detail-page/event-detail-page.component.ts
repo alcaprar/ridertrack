@@ -140,20 +140,24 @@ export class EventDetailPageComponent implements OnInit {
    */
   withdrawEnrollment() {
     console.log('[EventDetail][withdrawEnrollment]');
-    this.eventService.withdrawEnrollment(this.eventId, this.currentUser.id)
-      .then(
-        (response) => {
-          console.log('[EventDetail][withdrawEnrollment][success]', response);
-          // get the new list of particpants to update the buttons
-          this.getParticipants()
-        }
-      )
-      .catch(
-        (error) => {
-          console.log('[EventDetail][withdrawEnrollment][error]', error);
-          // TODO show errors
-        }
-      );
+    this.dialogService.confirmation('Withdraw enrollment', 'Are you sure to withdraw your enrollment for this event?', function () {
+      console.log('[EventDetail][withdrawEnrollment][callback]');
+      this.eventService.withdrawEnrollment(this.eventId, this.currentUser.id)
+        .then(
+          (response) => {
+            console.log('[EventDetail][withdrawEnrollment][success]', response);
+            // get the new list of particpants to update the buttons
+            this.getParticipants()
+          }
+        )
+        .catch(
+          (error) => {
+            console.log('[EventDetail][withdrawEnrollment][error]', error);
+            // TODO show errors
+          }
+        );
+    }.bind(this));
+
   }
 
   /**
