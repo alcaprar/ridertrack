@@ -62,6 +62,9 @@ router.get('/:userId', function (req, res) {
  */
 router.get('/:userId/enrolledEvents', authMiddleware.hasValidToken, function (req, res){
     let enrolledEventsIdList=[];
+    var page = parseInt(req.query.page) || 1;
+    var itemsPerPage = parseInt(req.query.itemsPerPage) || 10;
+
     Enrollment.find({userId: req.userId}, function (err, enrollment){
         if (err) {
             res.status(400).send({
@@ -81,7 +84,10 @@ router.get('/:userId/enrolledEvents', authMiddleware.hasValidToken, function (re
                     })
                 }else{
                     res.status(200).send({
-                        events: events
+                        events: events,
+                        page: page,
+                        itemsPerPage: itemsPerPage,
+                        totalPages: Math.ceil(events.length/itemsPerPage)
                     })
                 }
             })
@@ -94,15 +100,21 @@ router.get('/:userId/enrolledEvents', authMiddleware.hasValidToken, function (re
  *
  */
 router.get('/:userId/organizedEvents', authMiddleware.hasValidToken, function(req,res){
-    Event.find({organizerId: req.userId}, function(err, events){
+    var page = parseInt(req.query.page) || 1;
+    var itemsPerPage = parseInt(req.query.itemsPerPage) || 10;
+
+    Event.find({organizerId: req.userId},function(err, events){
         if (err) {
             return res.status(400).send({
                 errors: err
             });
         }else{
-            return res.status(200).send({
-                events: events
-            });
+            res.status(200).send({
+                events: events,
+                page: page,
+                itemsPerPage: itemsPerPage,
+                totalPages: Math.ceil(events.length/itemsPerPage)
+            })
         }
     });
 });

@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var config = require('../config')
+var config = require('../config');
 var fs = require('fs');
 
 var async = require('async');
