@@ -1,0 +1,42 @@
+<div class="row  pr0 padding-top-40 properties-page">
+
+  <div class="col-md-12  clear">
+    <div class="col-xs-10 page-subheader sorting pl0">
+      <!--<ul class="sort-by-list">
+        <li class="active">
+          <a href="javascript:void(0);" class="order_by_date" data-orderby="property_date" data-order="ASC">
+            Event Date <i class="fa fa-sort-amount-asc"></i>
+          </a>
+        </li>
+        <li class="">
+          <a href="javascript:void(0);" class="order_by_price" data-orderby="property_price" data-order="DESC">
+            Event Price <i class="fa fa-sort-numeric-desc"></i>
+          </a>
+        </li>
+      </ul>-->
+
+      <div class="items-per-page">
+        <label for="items_per_page"><b>Events per page :</b></label>
+        <div class="sel">
+          <select #itemsPerPage id="items_per_page" name="per_page" (change)="onItemsPerPageChanged()">
+            <option *ngFor="let itemsPerPage of allowedItemsPerPage" [value]="itemsPerPage" [selected]="queryParams.itemsPerPage === itemsPerPage">{{itemsPerPage}}</option>
+          </select>
+        </div><!--/ .sel-->
+      </div><!--/ .items-per-page-->
+    </div>
+
+    <div class="col-xs-2 layout-switcher">
+      <!-- <a class="layout-list" href="javascript:void(0);"> <i class="fa fa-th-list"></i>  </a>-->
+      <a class="layout-grid active" href="javascript:void(0);"> <i class="fa fa-th"></i> </a>
+    </div><!--/ .layout-switcher-->
+  </div>
+
+  <div class="col-md-12 clear ">
+    <div id="list-type" class="proerty-th" *ngFor="let event of organizedEvents">
+      <app-event-box-organized [event]="event"></app-event-box-organized>
+    </div>
+    <div *ngIf="organizedEvents.length === 0">
+      No events with those criteria.
+    </div>
+  </div>
+</div>

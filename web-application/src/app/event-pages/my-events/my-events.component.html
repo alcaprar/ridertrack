@@ -1,39 +1,18 @@
-<app-page-header title="MY EVENTS"></app-page-header>
-<div class="content-area home-area-1 recent-property" style="background-color: #FCFCFC; padding-bottom: 55px;">
-  <tabs>
-    <tab tabTitle="Enrolled events" active="true" style="background-color: white;">
-  <div class="container">
-    <div class="row  pr0 padding-top-40 properties-page">
-      <div class="text-center page-title">
-        <h2>Enrolled events</h2>
-      </div>
-    </div>
+<app-page-header title="My events"></app-page-header>
 
-    <div class="row  pr0 padding-top-40 properties-page">
-          <div class="col-md-12 ">
-            <div id="list-type-enroll" class="proerty-th" *ngFor="let event of enrolledEvents">
-            <app-event-box [event]="event"></app-event-box>
-            </div>
-          </div>
+<!-- property area -->
+<div class="properties-area recent-property" style="background-color: #FFF;">
+  <div class="container">
+    <ul class="nav nav-tabs" routerLinkActive="active" style="padding-top: 10px">
+      <li style="width: 49%;">
+        <a routerLink="/my-events/enrolled" aria-expanded="true">Enrolled</a>
+      </li>
+      <li style="width: 49%;">
+        <a [routerLink]="['organized']">Organized</a>
+      </li>
+    </ul>
+    <div role="tabpanel" class="tab-content tab-pane">
+      <router-outlet></router-outlet>
     </div>
   </div>
-    </tab>
-    <tab tabTitle="Organized events">
-  <div class="container">
-    <div class="row  pr0 padding-top-40 properties-page">
-      <div class="text-center page-title">
-        <h2>Organized events</h2>
-      </div>
-    </div>
-
-    <div class="row  pr0 padding-top-40 properties-page">
-        <div class="col-md-12 clear">
-          <div id="list-type-organize" class="proerty-th" *ngFor="let event of organizedEvents">
-        <app-event-box-organized [event]="event"></app-event-box-organized>
-        </div>
-        </div>
-    </div>
-  </div>
-    </tab>
-  </tabs>
 </div>

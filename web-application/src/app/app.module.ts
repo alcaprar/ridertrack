@@ -49,6 +49,8 @@ import {AlertService} from "./shared/services/alert.service";
 import {TabModule} from "angular-tabs-component";
 import {EventBoxOrganizedComponent} from "./event-pages/event-box/event-box-organized.component";
 import {ErrorStateMatcher, ShowOnDirtyErrorStateMatcher} from "@angular/material";
+import { EnrolledEventsComponent } from './event-pages/my-events/enrolled-events/enrolled-events.component';
+import { OrganizedEventsComponent } from './event-pages/my-events/organized-events/organized-events.component';
 
 
 
@@ -82,7 +84,9 @@ import {ErrorStateMatcher, ShowOnDirtyErrorStateMatcher} from "@angular/material
     WhyRidertrackBestPageComponent,
     FooterEventBoxComponent,
     FaqPageComponent,
-    AlertComponent
+    AlertComponent,
+    EnrolledEventsComponent,
+    OrganizedEventsComponent
   ],
   imports: [
     BrowserModule,
@@ -155,7 +159,12 @@ import {ErrorStateMatcher, ShowOnDirtyErrorStateMatcher} from "@angular/material
       {
         path: 'my-events',
         component: MyEventsComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard],
+        children: [
+          { path: '', redirectTo: 'enrolled', pathMatch: 'full'},
+          { path: 'enrolled', component: EnrolledEventsComponent},
+          { path: 'organized', component: OrganizedEventsComponent}
+        ]
       },
       {
         path: '**',
