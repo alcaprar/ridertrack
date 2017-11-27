@@ -98,42 +98,24 @@
                 </div>
 
                 <div class="property-meta entry-meta ">
-                  <ul>
-                    <li>
                        <span class="property-info-entry">
-                         <span class="property-info-value">Date</span>
                          <span class="property-info-label">{{event.startingDate}}</span>
                        </span>
-                    </li>
-                    <li *ngIf="event.startingTime != null">
+
+                    <div *ngIf="event.startingTime != null">
                        <span class="property-info-entry" >
                          <span class="property-info-value">Starting Time</span>
                          <span class="property-info-label" *ngIf="event.startingTime != null">{{event.startingTime}}</span>
                        </span>
-                    </li>
-                  </ul>
+                    </div>
                 </div>
                 <!--end Information area-->
 
 
                 <!--organizer area-->
-
-                <div class="dealer-section-space">
-                  <span>Information</span>
-                </div>
                 <div class="clear">
-                  <div class="col-xs-4 col-sm-4 dealer-face">
-                    <a href="">
-                      <img
-                        src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYGUCrTOnryrIanCbitS8_XW2rv8TEoNRT7xDtzf2cLFSIWCbb3Q'
-                        class="img-circle">
-                    </a>
-                  </div>
                   <div class="col-xs-8 col-sm-8 ">
-                    <h3 class="dealer-name">
-                      <a href="">{{organizer.name}} {{organizer.surname}}</a><br>
-                      <span>Event Organizer</span>
-                    </h3>
+                    <h4 class="dealer-name">Event Organizer:</h4><p> {{organizer.name}} {{organizer.surname}}</p>
                   </div>
                   </div>
                 </div>

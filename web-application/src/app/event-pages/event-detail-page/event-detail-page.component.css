@@ -39,6 +39,18 @@
 }
 .dealer-widget {
   margin-bottom: 0;
+  background: #FDC600;
+}
+.property-info-label {
+  color:white;
+}
+.single-property-header {
+  padding-bottom: 0;
+  width:100%;
+  float: none;
+}
+.property-meta .entry-meta {
+  padding:1em 0;
 }
 
 
