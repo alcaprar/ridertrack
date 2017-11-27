@@ -5,6 +5,7 @@ import {User} from '../../shared/models/user';
 import {Event} from '../../shared/models/event';
 import { ActivatedRoute } from '@angular/router';
 import {AuthenticationService} from '../../authentication/authentication.service';
+import { Router } from "@angular/router";
 
 
 @Component({
@@ -24,7 +25,7 @@ export class EventDetailPageComponent implements OnInit {
   private participantsList = [];
 
   constructor(private route: ActivatedRoute, private userService: UserService, private eventService: EventService
-    , private authService: AuthenticationService) {
+    , private authService: AuthenticationService, private router: Router) {
   }
 
 
@@ -154,6 +155,26 @@ export class EventDetailPageComponent implements OnInit {
      */
   isEnrolled(){
     return this.participantsList.includes(this.currentUser.id)
+  }
+
+  /**
+   * It deletes an event when an event organizer decides to do it
+   */
+  deleteEvent(){
+    console.log('[EventDetail][deleteEvent]');
+    this.eventService.deleteEvent(this.eventId)
+      .then(
+        (response) => {
+          console.log('[EventDetail][deleteEvent][success]', response);
+          this.router.navigate(['/my-events']);
+        }
+      )
+      .catch(
+        (error) => {
+          console.log('[EventDetail][deleteEvent][error]', error);
+          // TODO show errors
+        }
+      );
   }
 }
 

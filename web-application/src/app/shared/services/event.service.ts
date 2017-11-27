@@ -14,7 +14,7 @@ export class EventService {
   private BASE_URL = environment.baseAPI;
   private BASE_EVENT_URL = '/api/events';
 
-  private eventTypes: [String] = ['running', 'cycling', 'hiking', 'triathlon', 'other'];
+  private eventTypes: [String] = ['Running', 'Cycling', 'Hiking', 'Triathlon', 'Other'];
 
   constructor(private http: HttpClientService, private router: Router) {
   }

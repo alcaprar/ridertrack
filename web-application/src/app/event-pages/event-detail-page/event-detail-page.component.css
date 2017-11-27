@@ -52,5 +52,11 @@
 .property-meta .entry-meta {
   padding:1em 0;
 }
+.btn-delete {
+  background-color: #d30000;
+  float: right;
+  padding:0.5em;
+  width:100%;
+}
 
 

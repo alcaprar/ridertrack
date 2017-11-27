@@ -37,12 +37,12 @@
                 </li>
 
                 <li *ngIf ="event.enrollmentOpeningAt != null">
-                  <span class="col-xs-6 col-sm-4 col-md-4 add-d-title">Registration Open</span>
+                  <span class="col-xs-6 col-sm-4 col-md-4 add-d-title">Registration Opens At</span>
                   <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry"> {{event.enrollmentOpeningAt | date: 'short'}}
                     </span>
                 </li>
                 <li *ngIf ="event.enrollmentClosingAt != null">
-                  <span class="col-xs-6 col-sm-4 col-md-4 add-d-title">Registration Close</span>
+                  <span class="col-xs-6 col-sm-4 col-md-4 add-d-title">Registration Closes At</span>
                   <span class="col-xs-6 col-sm-8 col-md-8 add-d-entry"> {{event.enrollmentClosingAt | date: 'short'}}
                     </span>
                 </li>
@@ -94,21 +94,12 @@
               <div class="inner-wrapper">
                 <div class="single-property-header">
                   <span class="property-title">{{event.name}}</span>
-
                 </div>
-
                 <div class="property-meta entry-meta ">
-                       <span class="property-info-entry">
-                         <span class="property-info-label">{{event.startingDate}}</span>
-                       </span>
+                  <span class="property-info-entry">
+                    <span class="property-info-label">{{event.startingDate}}</span>
+                  </span>
 
-                    <div *ngIf="event.startingTime != null">
-                       <span class="property-info-entry" >
-                         <span class="property-info-value">Starting Time</span>
-                         <span class="property-info-label" *ngIf="event.startingTime != null">{{event.startingTime}}</span>
-                       </span>
-                    </div>
-                </div>
                 <!--end Information area-->
 
 
@@ -117,11 +108,15 @@
                   <div class="col-xs-8 col-sm-8 ">
                     <h4 class="dealer-name">Event Organizer:</h4><p> {{organizer.name}} {{organizer.surname}}</p>
                   </div>
+                  <div class="buttons clearfix" *ngIf="isLogged()">
+                    <button class="btn-delete" (click)="deleteEvent()" *ngIf="currentUser.email === organizer.email">Delete event</button>
                   </div>
                 </div>
               <!--End organizer area-->
               </div>
             </div>
+          </div>
+          </div>
         </aside>
       </div>
   </div>
