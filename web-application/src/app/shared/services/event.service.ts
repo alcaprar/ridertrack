@@ -158,14 +158,14 @@ export class EventService {
           const body = res.json();
           const event = body.event as Event;
           console.log('[EventService][createEvent][success]', body);
-          this.router.navigate(['my-events']);
+          //this.router.navigate(['my-events']);
           return [null, event];
         })
       .catch(
         (errorResponse: any) => {
           var errors = errorResponse.json().errors as Error[];
           console.log('[EventService][createEvent][error]', errors);
-          return [errors, null];
+          return [errors, new Event()];
         }
       )
   }

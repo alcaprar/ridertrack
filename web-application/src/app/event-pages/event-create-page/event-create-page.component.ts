@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {EventService} from "../../shared/services/event.service";
+import {Event} from "../../shared/models/event"
 import {EventToCreate} from "../../shared/models/eventToCreate";
 import {AlertService} from "../../shared/services/alert.service";
 import {Error} from "../../shared/models/error";
@@ -110,7 +111,8 @@ export class EventCreatePageComponent implements OnInit {
               // errors occureed
               this.errors = response[0] as Error[];
             }else{
-              this.router.navigate(['/events/' + event._id]);
+              var createdEvent: Event = response[1] as Event;
+              this.router.navigate(['/manage-event/' + createdEvent._id]);
             }
             // this.alertService.success("Event successfully created");
           }

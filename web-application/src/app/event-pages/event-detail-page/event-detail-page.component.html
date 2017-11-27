@@ -61,7 +61,7 @@
                                     </span>
               <span class="property-info-entry">
                                         <span class="property-info-label">Max Duration</span>
-                                        <span class="property-info-value">{{event.maxDuration}}</span>
+                                        <span class="property-info-value">{{(event.maxDuration) ? event.maxDuration : '(TBD*)'}}</span>
                                     </span>
             </div>
 
@@ -71,7 +71,7 @@
                                     </span>
               <span class="property-info-entry">
                                         <span class="property-info-label">Length</span>
-                                        <span class="property-info-value">{{event.length}}</span>
+                                        <span class="property-info-value">{{(event.length) ? event.length : '(TBD*)'}}</span>
                                     </span>
             </div>
 
@@ -81,7 +81,7 @@
                                     </span>
               <span class="property-info-entry">
                                         <span class="property-info-label">Enrollment Opening At</span>
-                                        <span class="property-info-value">{{event.enrollmentOpeningAt}}</span>
+                                        <span class="property-info-value">{{(event.enrollmentOpeningAt) ? event.enrollmentOpeningAt : '(TBD*)'}}</span>
                                     </span>
             </div>
             <div class="col-xs-6 col-sm-3 col-md-3 p-b-15">
@@ -90,9 +90,10 @@
                                     </span>
               <span class="property-info-entry">
                                         <span class="property-info-label">Enrollment Closing At</span>
-                                        <span class="property-info-value">{{event.enrollmentClosingAt}}</span>
+                                        <span class="property-info-value">{{(event.enrollmentClosingAt) ? event.enrollmentClosingAt : '(TBD*)' }}</span>
                                     </span>
             </div>
+            <div col-xs-12><small>*TBD= Info not available yet.</small></div>
 
 
           </div>
