@@ -1,6 +1,9 @@
 export class User {
  private _id: String;
  private picture: String;
+ public city: string;
+ public aboutMe: string;
+ public image: File;
 
 
   constructor(
