@@ -14,3 +14,9 @@
   width:100%;
 }
 
+.large-search .search-form{
+  border:none;
+}
+.form-inline input[type=submit]{
+  background: #d30000;
+}

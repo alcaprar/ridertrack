@@ -12,3 +12,6 @@
 .wizard-header {
   padding:4em;
 }
+.btn-default:enabled {
+  color: white;
+}

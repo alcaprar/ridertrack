@@ -187,17 +187,17 @@ export class EventDetailPageComponent implements OnInit {
     }.bind(this));
   }
 
- /** similarEvent() {
+ /** similarEvents() {
     this.eventService.getSimilarEvents(3)
       .then(
         (events) => {
-          console.log('[Footer][getLastEvents][success]', events);
+          console.log('[Event Detail][getSimilarEvents][success]', events);
           this.similarEvents = events
         }
       )
       .catch(
         (error) => {
-          console.log('[Footer][getLastEvents][error]', error);
+          console.log('[Event Detail][getSimilarEvents][error]', error);
         }
       );
   }**/

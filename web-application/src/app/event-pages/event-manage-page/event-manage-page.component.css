@@ -15,5 +15,15 @@
 .wizard-header {
   padding:4em;
 }
+#btn-delete {
+  background: #d30000;
+  width: auto;
+  border: none;
+  margin-left: 1em;
+}
+.btn {
+  color: white;
+}
+
 
 

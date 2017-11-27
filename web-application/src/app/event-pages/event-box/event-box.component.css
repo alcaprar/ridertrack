@@ -35,3 +35,9 @@ h5 {
 .btn-primary {
   width: 100%;
 }
+.event-name {
+  word-wrap:break-word;
+}
+.proerty-th .proerty-item  .item-entry h5{
+  height:4em;
+}

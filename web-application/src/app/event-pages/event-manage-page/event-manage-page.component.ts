@@ -143,4 +143,25 @@ export class EventManagePageComponent implements OnInit {
     console.log('[Login COmponent][showErrors]', errors);
     this.errors = errors;
   }
+
+  /**
+   * It is called when the user clicks on the delete button.
+   * It calls the method of event service which delete the event.
+   */
+  deleteEvent() {
+    console.log('[ManageEvent][deleteEvent]');
+    this.eventService.deleteEvent(this.eventId)
+      .then(
+        (response) => {
+          console.log('[ManageEvent][deleteEvent][success]', response);
+          this.router.navigate(['/my-events']);
+        }
+      )
+      .catch(
+        (error) => {
+          console.log('[ManageEvent][deleteEvent][error]', error);
+          // TODO show errors
+        }
+      );
+  }
 }

@@ -8,13 +8,13 @@
     </div>
 
     <div class="item-entry overflow">
-      <h5><a [routerLink]="['/events', event._id]"> {{event.name}}</a></h5>
+      <h5><a class="event-name" [routerLink]="['/events', event._id]"> {{event.name}}</a></h5>
       <div class="line">
         <span class="property pull-left" *ngIf="event.length"><b> Length :</b> {{event.length}} km </span>
-        <span class="property location pull-right"><b><i class="fa fa-map-marker"></i></b> {{event.country}} | {{event.city}}</span>
+        <span class="property pull-right"><b><i class="fa fa-calendar"></i></b> {{event.startingDate}} </span>
       </div>
       <div class="line">
-        <span class="property pull-right"><b><i class="fa fa-calendar"></i></b> {{event.startingDate}} </span>
+        <span class="property location pull-right"><b><i class="fa fa-map-marker"></i></b> {{event.country}} | {{event.city}}</span>
         <!--<span class="property pull-left"><b> Price :</b> {{}}</span>-->
       </div>
       <p style="display: none;">{{event.description}}</p>
