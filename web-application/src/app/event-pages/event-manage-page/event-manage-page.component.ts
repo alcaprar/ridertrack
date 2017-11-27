@@ -5,6 +5,7 @@ import {EventService} from "../../shared/services/event.service";
 import {Event} from "../../shared/models/event";
 import { DatePipe } from '@angular/common';
 import {AlertService} from "../../shared/services/alert.service";
+import {DialogService} from "../../shared/dialog/dialog.service";
 declare var $: any;
 
 @Component({
@@ -26,7 +27,7 @@ export class EventManagePageComponent implements OnInit {
   errors: Error[] = [];
 
   constructor(private eventService: EventService, private router: Router, private route: ActivatedRoute,
-              private alertService: AlertService) {
+              private alertService: AlertService, private dialogService: DialogService) {
   }
 
   ngOnInit() {
@@ -149,6 +150,7 @@ export class EventManagePageComponent implements OnInit {
    * It calls the method of event service which delete the event.
    */
   deleteEvent() {
+    this.dialogService.confirmation('Delete event', 'Are you sure to delete this event?', function () {
     console.log('[ManageEvent][deleteEvent]');
     this.eventService.deleteEvent(this.eventId)
       .then(
@@ -163,5 +165,6 @@ export class EventManagePageComponent implements OnInit {
           // TODO show errors
         }
       );
+    }.bind(this));
   }
 }
