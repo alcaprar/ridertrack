@@ -50,10 +50,10 @@ var eventSchema = Schema({
         default: 0
     },
     enrollmentOpeningAt: {
-        type: Date
+        type: String
     },
     enrollmentClosingAt: {
-        type: Date
+        type: String
     },
     logo: {
         type: String

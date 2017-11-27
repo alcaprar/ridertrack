@@ -112,23 +112,32 @@ export class EventManagePageComponent implements OnInit {
   onSubmit(){
     // the datepicker is not detected by angular form
     this.event.startingDate = $('#startingDate.datepicker').val();
+    this.event.enrollmentOpeningAt = $('#enrollmentOpeningAt.datepicker').val();
+    this.event.enrollmentClosingAt = $('#enrollmentClosingAt.datepicker').val();
+
     this.event.logo = $('#logo').prop('files')[0];
-    console.log('Submitted', this.event);
 
     this.eventService.updateEvent(this.event._id, this.event)
       .then(
         (response) => {
-          console.log('Update event', response);
-          this.router.navigate(['/events', this.event._id]);
-          this.alertService.success("The event is Updated!");
+          console.log('[UpdateEvent][onSubmit][success]', response);
+          if(response[0] !== null){
+            // errors occureed
+            this.errors = response[0] as Error[];
+          }else{
+            var event: Event = response[1] as Event;
+            this.router.navigate(['/events/' + event._id]);
+          }
         }
       )
       .catch(
-        (errors: Error[]) =>{
-          this.showErrors(errors)
-          }
-      );
+        (error) => {
+          console.log('[CreateEvent][onSubmit][error]', error);
+          // this.alertService.error("An error occured: "+ error.message);
+          this.router.navigate(['/create-event']);
         }
+      );
+  }
 
   showErrors(errors: Error[]){
     console.log('[Login COmponent][showErrors]', errors);

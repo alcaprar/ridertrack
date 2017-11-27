@@ -150,8 +150,6 @@ export class EventService {
     formData.append('country', event.country);
     formData.append('city', event.city);
 
-
-
     return this.http.post(url, formData).toPromise()
       .then(
         (res) => {
@@ -176,24 +174,34 @@ export class EventService {
    * @param {Event} event updated
    * @returns {Promise<Event>}
    */
-  updateEvent(id, event: Event): Promise<Event> {
+  updateEvent(id, event: Event): Promise<[Error[], Event]> {
     const url = `${this.BASE_EVENT_URL}/${id}`;
 
     console.log("[EventService][UpdateEvent][eventToPass]", event);
     // create form data in order to pass an image
 
-    return this.http.put(url , event).toPromise()
+    var formData = new FormData();
+    for(let key in event){
+      if(event[key] !== undefined){
+        formData.append(key, event[key])
+      }
+    }
+
+    return this.http.put(url , formData).toPromise()
       .then(
-        (res) => {
-          const eventBody = res.json().event as Event;
-          console.log('[EventService][updateEvent][success]', eventBody);
-          return eventBody;
+        (response) => {
+          const body = response.json();
+          var event = body.event as Event;
+          console.log('[EventService][updateEvent][success]', response);
+          return [null, event];
         })
-      .catch(error => {
-        console.log('[EventService][updateEvent][error]', error);
-        this.router.navigate(['/manage-event', event._id]);
-        return Promise.reject(error.message || error);
-      });
+      .catch(
+        (errorResponse: any) => {
+          var errors = errorResponse.json().errors as Error[];
+          console.log('[EventService][updateEvent][error]', errors);
+          return [errors, new Event()];
+        }
+      )
   }
 
   /**

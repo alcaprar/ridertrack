@@ -17,6 +17,8 @@ export class EventDetailPageComponent implements OnInit {
 
   private eventId: String;
 
+  private random;
+
   private event: Event = new Event();
   private currentUser: User = new User();
   private organizer: User = new User();
@@ -62,7 +64,10 @@ export class EventDetailPageComponent implements OnInit {
     });
 
     console.log('[Event-Detail-Component][OnInit][Event]', this.event);
+
+    this.random = Math.random();
   }
+
 
   /**
    * It calls the event service in order to get the organizer profile.

@@ -257,30 +257,51 @@ router.post('/', authMiddleware.hasValidToken, multipart, function (req, res) {
 /**
  * It updates the fields passed in the body of the given eventId
  */
-router.put('/:eventId',authMiddleware.hasValidToken,function (req, res) {
+router.put('/:eventId', authMiddleware.hasValidToken, multipart, function (req, res) {
     Event.findByEventId(req.params.eventId, function (err, event) {
         if (err) {
-            res.status(400).send({
+            return res.status(400).send({
                 errors: err
             })
         }
         //Only organizer can change event
         else if (event.organizerId !== req.userId) {
-            res.status(401).send({
-                errors: ["You are not allowed to change event"]
+            return res.status(401).send({
+                errors: [{message: "You are not allowed to change event"}]
             })
         }
         //you have been logged in as organizer
         else {
             Event.update(req.params.eventId, req.body, function (err, event) {
                 if (err) {
-                    res.status(400).send({
+                    return res.status(400).send({
                         errors: err
                     })
                 } else {
-                    res.status(200).send({
-                        event: event
-                    })
+                    if(req.files.logo){
+                        // rename the logo with the id
+                        var tempPath = req.files.logo.path;
+                        var logoExtension = tempPath.split('.').pop();
+                        var newFilename = event._id + '.' + logoExtension;
+                        var newPath = config.uploadImageFolder + '/' + newFilename;
+
+                        return fs.rename(tempPath, newPath, function (err) {
+                            // TODO check the err. it might be thrown when the file is not saved properly
+                            // TODO the event should be deleted and an error to the user should be sent
+
+                            // saving the logo path
+                            event.logo = '/img/' + newFilename;
+                            return event.save(function (err) {
+                                return res.status(200).send({
+                                    event: event
+                                })
+                            })
+                        });
+                    }else{
+                        return res.status(200).send({
+                            event: event
+                        })
+                    }
                 }
             })
         }
