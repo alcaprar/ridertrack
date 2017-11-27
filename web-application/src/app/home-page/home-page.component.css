@@ -121,3 +121,10 @@
 ::placeholder { /* Most modern browsers support this now. */
   color:    #A5A5A5;
 }
+.right {
+  text-align: right;
+}
+#descr {
+  color: black;
+  margin-left: 35% !important;
+}
