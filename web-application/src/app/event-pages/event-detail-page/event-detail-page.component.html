@@ -157,7 +157,7 @@
             </div>
           </div>
           <div class="buttons clearfix" *ngIf="isLogged()">
-            <button class="btn-delete" (click)="deleteEvent()" *ngIf="currentUser.email === organizer.email">Delete event</button>
+            <button class="btn-delete" *ngIf="currentUser.email === organizer.email" (click)="deleteEvent()">Delete event</button>
           </div>
 
           <div class="panel panel-default sidebar-menu similar-property-wdg wow fadeInRight animated">

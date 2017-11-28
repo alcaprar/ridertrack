@@ -9,10 +9,12 @@
     <h5><a routerLink="events/{{event._id}}" style="height: 1em; line-height: 1em; overflow: hidden"> {{event.name}} </a></h5>
     <div class="dot-hr"></div>
     <span class="pull-left" ><b><i class="fa fa-calendar"></i></b> {{event.startingDate}}</span>
-    <span class="location pull-right"><i class="fa fa-map-marker"></i> {{event.country}} | {{event.city}}</span>
+    <span class="pull-right" *ngIf="event.length"><b><i class="fa fa-arrows-h"></i></b> {{event.length}} km </span>
 
+<br>
     <div class="line">
-      <span class="pull-left" *ngIf="event.length"><b><i class="fa fa-arrows-h"></i></b> {{event.length}} km </span>
+      <span class="location pull-right"><i class="fa fa-map-marker"></i> {{event.country}} | {{event.city}}</span>
     </div>
   </div>
 </div>
+
