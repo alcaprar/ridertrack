@@ -36,26 +36,31 @@ router.get('/', function (req, res) {
     })
 });
 
-
-
-
 /**
- * TODO verify that userID and eventID exist in the database
+ * It creates the enrollment passed in the body after checking the user is logged in.
+ * It returns the detail of the enrollment just created.
  */
-
 router.post('/', authMiddleware.hasValidToken, function(req, res){
-    Enrollment.create(req.userId, req.body, function (err, enrollment) {
+    Event.findOne({_id: req.body.eventId}, function(err){
         if(err){
             res.status(400).send({
                 errors: err
             })
         }else{
-            res.status(200).send({
-                message: 'User enrolled successfully!',
-                enrollment: enrollment
+            Enrollment.create(req.userId, req.body, function (err, enrollment) {
+                if(err){
+                    res.status(400).send({
+                        errors: err
+                    })
+                }else{
+                    res.status(200).send({
+                        message: 'User enrolled successfully!',
+                        enrollment: enrollment
+                    })
+                }
             })
         }
-    });
+    })
 });
 
 /**
@@ -78,16 +83,30 @@ router.get('/:eventId', function (req, res) {
 /**
  * It updates the fields passed in the body of the given enrollmentId
  */
-router.put('/:enrollmentId', function (req, res) {
-    Enrollment.update(req.params.enrollmentId, req.body, function (err, enrollment) {
-        if(err){
+router.put('/:enrollmentId', authMiddleware.hasValidToken, function (req, res) {
+    Enrollment.findOne({_id: req.params.enrollmentId}, function(err, enrollment) {
+        if (err) {
             res.status(400).send({
                 errors: err
             })
-        }else{
-            res.status(200).send({
-                message: 'Enrollment successfully updated',
-                enrollment: enrollment
+        }
+        else if (enrollment.userId !== req.userId) {
+            res.status(401).send({
+                errors: "You are not allowed to update this enrollment"
+            })
+        }
+        else {
+            Enrollment.update(req.params.enrollmentId, req.body, function (err, enrollment) {
+                if (err) {
+                    res.status(400).send({
+                        errors: err
+                    })
+                } else {
+                    res.status(200).send({
+                        message: 'Enrollment successfully updated',
+                        enrollment: enrollment
+                    })
+                }
             })
         }
     })
@@ -96,22 +115,24 @@ router.put('/:enrollmentId', function (req, res) {
 
 /**
  * It deletes the given enrollment by eventId and userId
- * Can be called only by the given user if he/she is enrollment on the envent.
+ * Can be called only by the given user if he/she is enrollment on the event.
  * This will delete permanently everything related to it.
  */
-router.delete('/:eventId/:userId', function (req, res) {
-    Enrollment.delete(req.params.eventId, req.params.userId, function (err, deleted_enrollment) {
-        if(err){
-            res.status(400).send({
-                errors: err
-            })
-        }else {
-            res.status(200).send({
-                enrollment: deleted_enrollment,
-                message: 'Enrollment successfully deleted'
-            })
-        }
-    })
+router.delete('/:eventId/:userId', authMiddleware.hasValidToken, function (req, res) {
+    if(req.params.userId === req.userId) {
+        Enrollment.delete(req.params.eventId, req.params.userId, function (err, deleted_enrollment) {
+            if (err) {
+                res.status(400).send({
+                    errors: err
+                })
+            }else {
+                res.status(200).send({
+                    enrollment: deleted_enrollment,
+                    message: 'Enrollment successfully deleted'
+                })
+            }
+        })
+    }
 });
 
 module.exports = router;
