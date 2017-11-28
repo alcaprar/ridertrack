@@ -12,7 +12,7 @@ var Enrollment = require('../models/enrollment');
 var authMiddleware = require('../middlewares/auth');
 var multipart = require('connect-multiparty')({
     uploadDir: config.uploadImageFolder,
-    maxFilesSize: 1024 * 1000 // 1 MB
+    maxFilesSize: 1024 * 3000 // 1 MB
 });
 
 /**

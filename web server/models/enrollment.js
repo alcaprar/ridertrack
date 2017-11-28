@@ -28,6 +28,8 @@ var enrollmentSchema = Schema({
     }
 });
 
+enrollmentSchema.index({eventId: 1, userId: 1}, {name: 'one_enrollment_per_event_idx', unique: true});
+
 /**
  * Static method to create an enrollment.
  */

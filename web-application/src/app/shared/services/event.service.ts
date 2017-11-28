@@ -94,9 +94,17 @@ export class EventService {
 
     return this.http.get(url).toPromise()
       .then( (res) => {
-        const eventsBody = res.json().events as Event[];
-        console.log('[EventService][getLastEvents][success]', eventsBody);
-        return eventsBody;
+        var body = res.json();
+        var events = body.events as Event[];
+        events.sort(function (a, b) {
+          var aComps = a.startingDate.split("/");
+          var bComps = b.startingDate.split("/");
+          var aDate = new Date(parseInt(aComps[2]), parseInt(aComps[1]), parseInt(aComps[0]));
+          var bDate = new Date(parseInt(bComps[2]), parseInt(bComps[1]), parseInt(bComps[0]));
+          return aDate.getTime() - bDate.getTime();
+        });
+        console.log('[EventService][getLastEvents][success]', body);
+        return events;
       }, (err) => {
         console.log('[EventService][getLastEvents][error]', err);
         return Observable.of(null);

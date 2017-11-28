@@ -29,7 +29,7 @@ export class HomePageComponent {
       .then(
         (events) =>{
           console.log('[HomePage][getLastEvents][success]', events);
-          this.lastEvents = events
+          this.lastEvents = events;
         }
       )
       .catch(
