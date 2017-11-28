@@ -152,7 +152,7 @@
 
                 <div class="clear">
                   <ul class="dealer-contacts">
-                    <li><i class="pe-7s-map-marker strong"> </i> {{organizer.city}}</li>
+                   <!-- <li><i class="pe-7s-map-marker strong"> </i> {{organizer.city}}</li>-->
                     <li><i class="pe-7s-mail strong"> </i> {{organizer.email}}</li>
                   </ul>
                   <p *ngIf="organizer.aboutMe">{{organizer.aboutMe}}</p>
@@ -161,7 +161,7 @@
             </div>
           </div>
           <div class="buttons clearfix" *ngIf="isLogged()">
-            <button class="btn-delete" (click)="deleteEvent()" *ngIf="currentUser.email === organizer.email">Delete event</button>
+            <button class="btn-delete" *ngIf="currentUser.email === organizer.email" (click)="deleteEvent()">Delete event</button>
           </div>
 
           <div class="panel panel-default sidebar-menu similar-property-wdg wow fadeInRight animated">
