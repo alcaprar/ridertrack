@@ -51,7 +51,7 @@
                                     </span>
               <span class="property-info-entry">
                                         <span class="property-info-label">Type</span>
-                                        <span class="property-info-value">{{event.type}}</span>
+                                        <span class="property-info-value" style="text-transform: capitalize">{{event.type}}</span>
                                     </span>
             </div>
 
@@ -108,16 +108,12 @@
           <!-- End description area  -->
 
           <div class="section property-share">
-            <h4 class="s-property-title">Share width your friends </h4>
+            <h4 class="s-property-title">Share with your friends </h4>
             <div class="roperty-social">
               <ul>
-                <li><a title="Share this on dribbble " href="#"><img src="../../../assets/img/social_big/dribbble_grey.png"></a></li>
-                <li><a title="Share this on facebok " href="#"><img src="../../../assets/img/social_big/facebook_grey.png"></a></li>
-                <li><a title="Share this on delicious " href="#"><img src="../../../assets/img/social_big/delicious_grey.png"></a></li>
-                <li><a title="Share this on tumblr " href="#"><img src="../../../assets/img/social_big/tumblr_grey.png"></a></li>
-                <li><a title="Share this on digg " href="#"><img src="../../../assets/img/social_big/digg_grey.png"></a></li>
-                <li><a title="Share this on twitter " href="#"><img src="../../../assets/img/social_big/twitter_grey.png"></a></li>
-                <li><a title="Share this on linkedin " href="#"><img src="../../../assets/img/social_big/linkedin_grey.png"></a></li>
+                <li><a title="Share this on facebok " (click)="shareWithFacebook()"><img src="../../../assets/img/social_big/facebook_grey.png"></a></li>
+                <li><a title="Share this on tumblr " href="http://www.tumblr.com/share/link?url={{href}}" target="_blank"><img src="../../../assets/img/social_big/tumblr_grey.png"></a></li>
+                <li><a title="Share this on twitter " href="https://twitter.com/home?status=Look this amazing event!" target="_blank"><img src="../../../assets/img/social_big/twitter_grey.png"></a></li>
               </ul>
             </div>
           </div>
@@ -152,7 +148,7 @@
 
                 <div class="clear">
                   <ul class="dealer-contacts">
-                    <li><i class="pe-7s-map-marker strong"> </i> {{organizer.city}}</li>
+                    <li *ngIf="organizer.city"><i class="pe-7s-map-marker strong"> </i> {{organizer.city}}</li>
                     <li><i class="pe-7s-mail strong"> </i> {{organizer.email}}</li>
                   </ul>
                   <p *ngIf="organizer.aboutMe">{{organizer.aboutMe}}</p>
@@ -170,7 +166,7 @@
             </div>
             <div class="panel-body recent-property-widget">
               <ul>
-                <li *ngFor="let event of lastEvents">
+                <li *ngFor="let event of similarEvents">
                   <app-footer-event-box [event]="event"></app-footer-event-box>
               </ul>
             </div>

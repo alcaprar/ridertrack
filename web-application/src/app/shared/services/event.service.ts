@@ -90,13 +90,31 @@ export class EventService {
    * @param amount
    */
   getLastEvents(amount): Promise<Event[]> {
-    const url = `${this.BASE_EVENT_URL}?sort=startingDate=asc&page=1&itemsPerPage=${amount}`;
+    const url = `${this.BASE_EVENT_URL}?sort=startingDate:asc&page=1&itemsPerPage=${amount}`;
 
     return this.http.get(url).toPromise()
       .then( (res) => {
         const eventsBody = res.json().events as Event[];
         console.log('[EventService][getLastEvents][success]', eventsBody);
         return eventsBody;
+      }, (err) => {
+        console.log('[EventService][getLastEvents][error]', err);
+        return Observable.of(null);
+      });
+  }
+
+  /**
+   * It retrieves similar events.
+   */
+  getSimilarEvents(amount, type): Promise<Event[]> {
+    const url = `${this.BASE_EVENT_URL}?type=${type}&page=1&itemsPerPage=${amount}`;
+
+    return this.http.get(url).toPromise()
+      .then( (res) => {
+        const body = res.json();
+        const event = body.events as Event[];
+        console.log('[EventService][getLastEvents][success]', body);
+        return event;
       }, (err) => {
         console.log('[EventService][getLastEvents][error]', err);
         return Observable.of(null);

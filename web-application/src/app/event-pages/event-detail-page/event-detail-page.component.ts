@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import {AuthenticationService} from '../../authentication/authentication.service';
 import { Router } from "@angular/router";
 import {DialogService} from "../../shared/dialog/dialog.service";
+import {FacebookService, UIParams, UIResponse, InitParams} from "ngx-facebook/dist/esm/index";
 
 
 @Component({
@@ -20,6 +21,8 @@ export class EventDetailPageComponent implements OnInit {
 
   private random;
 
+  private href = '';
+
   private event: Event = new Event();
   private currentUser: User = new User();
   private organizer: User = new User();
@@ -28,12 +31,27 @@ export class EventDetailPageComponent implements OnInit {
   // ids of participants
   private participantsList = [];
 
-  constructor(private route: ActivatedRoute, private userService: UserService, private eventService: EventService
-    , private authService: AuthenticationService, private router: Router, private dialogService: DialogService) {
+  constructor(private route: ActivatedRoute,
+              private userService: UserService,
+              private eventService: EventService,
+              private authService: AuthenticationService,
+              private router: Router,
+              private dialogService: DialogService,
+              private fb: FacebookService) {
+    // init Facebook strategy
+    const initParams: InitParams = {
+      appId: '278876872621248',
+      xfbml: true,
+      version: 'v2.11'
+    };
+    this.fb.init(initParams);
   }
 
 
   ngOnInit() {
+
+    this.href = window.location.href;
+
     this.route.params.subscribe(params => {
       this.eventId = params['eventId'];
       console.log('[EventDetail][OnInit]', this.eventId);
@@ -45,6 +63,14 @@ export class EventDetailPageComponent implements OnInit {
             console.log('[EventDetail][OnInit][EventService.getEvent][success]', event);
             // TODO add a check: if the event is null redirect somewhere maybe showing an alert
             this.event = event;
+
+            this.eventService.getSimilarEvents(3, this.event.type)
+              .then(
+                (similarEvents) => {
+                  console.log('[EventDetail][OnInit][EventService.getSimilarEvents][success]', similarEvents);
+                  this.similarEvents = similarEvents;
+                }
+              )
           }
         )
         .catch(
@@ -67,6 +93,17 @@ export class EventDetailPageComponent implements OnInit {
     console.log('[Event-Detail-Component][OnInit][Event]', this.event);
 
     this.random = Math.random();
+  }
+
+  shareWithFacebook(){
+    let params: UIParams = {
+      href: this.href,
+      method: 'share'
+    };
+
+    this.fb.ui(params)
+      .then((res: UIResponse) => console.log(res))
+      .catch((e: any) => console.error(e));
   }
 
 
@@ -174,7 +211,7 @@ export class EventDetailPageComponent implements OnInit {
   deleteEvent() {
     console.log('[EventDetail][deleteEvent]');
     this.dialogService.confirmation('Delete event', 'Are you sure to delete this event?', function () {
-      console.log('[EventDetail][deleteEvent][callback]')
+      console.log('[EventDetail][deleteEvent][callback]');
       this.eventService.deleteEvent(this.eventId)
         .then(
           (response) => {
