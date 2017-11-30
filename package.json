@@ -6,5 +6,8 @@
     "start": "node ridertrack-web/server.js",
     "postinstall": "cd ridertrack-web && npm install"
   },
-  "private": true
+  "private": true,
+  "engines":{
+    "node": "6.2.0"
+  }
 }
