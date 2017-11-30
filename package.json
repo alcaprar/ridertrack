@@ -1,0 +1,10 @@
+{
+  "name": "ridertrack-web",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {
+    "start": "node ridertrack-web/server.js",
+    "postinstall": "cd ridertrack-web && npm install"
+  },
+  "private": true
+}
