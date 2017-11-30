@@ -43,7 +43,7 @@ mongoose.connect(config.mongodb.uri, {
     promiseLibrary: global.Promise
 }, function (err) {
     if (err){
-        console.log('[MDB] Error while connecting to mongodb.', err);
+        console.log('[MDB] Error while connecting to mongodb.', config.mongodb.uri, err.message);
         // TODO try to reconnect
     }else{
         console.log('[MDB] Successfully connected to MongoDB')
