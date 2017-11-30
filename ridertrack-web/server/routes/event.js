@@ -172,6 +172,26 @@ router.get('/:eventId/participantsList', function (req, res, next) {
     )
 });
 
+router.get(':eventId/logo', function (req, res, next) {
+  var eventId = req.params.eventId;
+
+  Event.findByEventId(eventId, function (err, event) {
+    if(err){
+      res.status(400).send({
+        errors: err
+      })
+    }else{
+      // TODO change the header according to the mime type
+      if(event.logo){
+        res.status(200).send('logo')
+      }else{
+        // send the default logo
+        res.status(200).send('logo')
+      }
+    }
+  })
+});
+
 /**
  * It returns the detail of the given eventId
  */
@@ -214,7 +234,7 @@ router.get('/:eventId/organizer', function (req, res) {
     })
 });
 
-/** 
+/**
  * It creates the event passed in the body after checking the user is logged in.
  * It returns the detail of the event just created.
  * Multipart middleware allows the upload of files.

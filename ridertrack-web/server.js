@@ -59,6 +59,9 @@ if (!fs.existsSync(config.uploadImageFolder)){
 // Angular build folder
 app.use(express.static(__dirname + '/dist'));
 
+// public folder for images
+app.use(express.static(__dirname + '/public'));
+
 // configuring favicon
 // TODO to remove the comment once we have an icon
 // app.use(favicon(__dirname + '/public/img/favicon.ico'));
