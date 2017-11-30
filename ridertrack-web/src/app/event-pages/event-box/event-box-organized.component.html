@@ -3,7 +3,7 @@
     <div class="item-thumb">
       <a [routerLink]="['/events', event._id]" >
         <div *ngIf="!event.logo" class="event-image" style="background-image: url('../../../assets/img/logoRidertrack.png')"></div>
-        <div *ngIf="event.logo" class="event-image" [ngStyle]="{ 'background-image': 'url(' + event.logo + ')'}"></div>
+        <div class="event-image" [ngStyle]="{ 'background-image': 'url(/api/events/' + event._id + '/logo)'}"></div>
       </a>
     </div>
 
