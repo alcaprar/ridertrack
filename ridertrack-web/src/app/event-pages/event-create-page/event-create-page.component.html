@@ -1,0 +1,79 @@
+<app-page-header title="CREATE EVENT"></app-page-header>
+
+<div class="content-area submit-property" style="background-color: #FCFCFC;">&nbsp;
+  <div class="container">
+    <div class="clearfix" >
+      <div class="wizard-container">
+
+        <div class="wizard-card ct-wizard-orange" id="wizardProperty">
+          <div class="wizard-header">
+            <h3>
+              <b>Create</b> YOUR EVENT <br>
+              <small>Become an organizer and create you own event!</small>
+            </h3>
+          </div>
+          <form (ngSubmit)="onSubmit()" #createEventForm="ngForm">
+            <div id="create">
+              <div class="row p-b-15  ">
+                <div class="col-sm-4 col-sm-offset-1">
+                  <div class="picture-container">
+                    <div class="picture">
+                      <img [src]="urlImage != null ? urlImage : urlNoImage" style="height: 100%" class="picture-src"
+                           id="wizardPicturePreview" title=""/>
+                      <input type="file" (change)="readUrl($event)" id="logo">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label for="name">Name <small>(required)</small></label>
+                    <input [(ngModel)]="event.name" #name="ngModel" id="name" name="name" type="text" class="form-control" placeholder="Maratona di Milano 2018" required>
+                    <div [hidden]="name.valid || name.pristine" class="alert alert-danger">Name is required.</div>
+                  </div>
+                  <div class="form-group">
+                    <label for="type">Type <small>(required)</small></label>
+                    <select [(ngModel)]="event.type" #type="ngModel" id="type"  name="type" class="selectpicker" data-live-search="true" data-live-search-style="begins" title="Select type">
+                      <option *ngFor="let type of eventTypes" [value]="type" style="text-transform: capitalize" required>{{type}}</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Date <small>(required)</small></label>
+                    <input [(ngModel)]="event.startingDate" #startingDate="ngModel" id="startingDate" name="startingDate" type="text" class="form-control datepicker" placeholder="15/12/2017">
+                    <div [hidden]="startingDate.valid || startingDate.pristine" class="alert alert-danger">Date is required.</div>
+                  </div>
+                  <div class="form-group">
+                    <label for="country">Country <small>(required)</small></label>
+                    <input [(ngModel)]="event.country" #country="ngModel" id="country" name="country" type="text" class="form-control" placeholder="Italy" required>
+                    <div [hidden]="country.valid || country.pristine" class="alert alert-danger">Country is required.</div>
+                  </div>
+                  <div class="form-group">
+                    <label for="city">City <small>(required)</small></label>
+                    <input [(ngModel)]="event.city" #city="ngModel" id="city" name="city" type="text" class="form-control" placeholder="Milano" required>
+                    <div [hidden]="city.valid || city.pristine" class="alert alert-danger">City is required.</div>
+                  </div>
+                  <div *ngIf="errors.length > 0" class="alert alert-danger">
+                    <span *ngFor="let error of errors">{{error.message}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--  End step 1 -->
+
+            <div class="wizard-footer">
+              <div class="pull-right">
+                <button type='submit' class='btn btn-default' [disabled]="!createEventForm.form.valid">Create</button>
+              </div>
+
+              <div class="pull-left">
+                <input type='button' class='btn btn-primary' value='Cancel' (click)="onCancel()" />
+              </div>
+              <div class="clearfix"></div>
+            </div>
+          </form>
+        </div>
+        <!-- End submit form -->
+      </div>
+    </div>
+  </div>
+</div>
+

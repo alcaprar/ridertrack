@@ -1,0 +1,46 @@
+/*====================================================
+page-header
+======================================================*/
+.page-head{
+  background: #494C53 url("../../../../assets/img/page-header.jpg")
+  no-repeat scroll center top / cover;
+  color:#FFF;
+  position: relative;
+  min-height: 140px;
+}
+.page-head-content {
+  padding-top: 52px;
+  padding-bottom: 52px;
+  width:100%;
+  margin-right: 0em;
+
+}
+.page-head-content .page-title {
+  margin: 0px;
+  padding: 10px 16px;
+  font-size: 30px;
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  display: inline-block;
+
+}
+.page-head-content .page-subtitle {
+  margin: 0px;
+ text-align: right;
+  padding-left: 10px ;
+  font: bold 20px arial,sans-serif;
+  text-transform: uppercase;
+  display: inline-block;
+  letter-spacing: 4px;
+  float: inherit;
+  text-decoration: underline;
+
+}
+
+.btn-primary {
+  float: right;
+  display: inline-block;
+  width:20%;
+  background-color: #d30000;
+}

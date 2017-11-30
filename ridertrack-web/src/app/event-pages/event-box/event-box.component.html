@@ -1,0 +1,28 @@
+<div class="col-sm-6 col-md-3 p0">
+  <div class="box-two proerty-item">
+    <div class="item-thumb">
+      <a [routerLink]="['/events', event._id]" >
+        <div *ngIf="!event.logo" class="event-image" style="background-image: url('../../../assets/img/logoRidertrack.png')"></div>
+        <div *ngIf="event.logo" class="event-image" [ngStyle]="{ 'background-image': 'url(' + event.logo + ')'}"></div>
+      </a>
+    </div>
+
+    <div class="item-entry overflow">
+      <h5><a class="event-name" [routerLink]="['/events', event._id]"> {{event.name}}</a></h5>
+      <div class="line">
+        <span class="property pull-left" *ngIf="event.length"><b> Length :</b> {{event.length}} km </span>
+        <span class="property pull-right"><b><i class="fa fa-calendar"></i></b> {{event.startingDate}} </span>
+      </div>
+      <div class="line">
+        <span class="property location pull-right"><b><i class="fa fa-map-marker"></i></b> {{event.country}} | {{event.city}}</span>
+        <!--<span class="property pull-left"><b> Price :</b> {{}}</span>-->
+      </div>
+      <p style="display: none;">{{event.description}}</p>
+      <!--<div class="property-icon">
+        <img class="logo" src="../../../assets/img/garmin-logo.jpg">|
+        <img class="logo" src="../../../assets/img/spot-logo.png">|
+        <img class="logo" src="../../../assets/img/maprogress-logo.jpg">
+      </div>-->
+    </div>
+  </div>
+</div>

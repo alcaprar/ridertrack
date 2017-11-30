@@ -1,0 +1,179 @@
+<app-page-header title="{{event.name}}"></app-page-header>
+<!-- Body content -->
+<!-- property area -->
+<div class="content-area single-property clearfix" style="background-color: #FCFCFC;">&nbsp;
+  <div class="container">
+
+    <div class="clearfix padding-top-40" >
+
+      <div class="col-md-8 single-property-content prp-style-1 ">
+        <div class="row">
+            <div class="image">
+              <img src="{{ (event.logo) ? event.logo + '?' + random  : '../../../assets/img/logofoto.png'}}">
+            </div>
+        </div>
+
+        <div class="single-property-wrapper">
+
+          <div class="property-meta entry-meta clearfix ">
+
+            <div class="col-xs-6 col-sm-3 col-md-3 p-b-15">
+                                    <span class="property-info-icon icon-tag">
+                                        <img class="info-icon" src="../../../assets/img/icon/location.png">
+                                    </span>
+              <span class="property-info-entry">
+                                        <span class="property-info-label">Location</span>
+                                        <span class="property-info-value">{{event.city}}</span>
+                                    </span>
+            </div>
+            <div class="col-xs-6 col-sm-3 col-md-3 p-b-15">
+                                    <span class="property-info-icon icon-bed">
+                                        <img class="info-icon" src="../../../assets/img/icon/world.png">
+                                    </span>
+              <span class="property-info-entry">
+                                        <span class="property-info-label">Country</span>
+                                        <span class="property-info-value">{{event.country}}</span>
+                                    </span>
+            </div>
+            <div class="col-xs-6 col-sm-3 col-md-3 p-b-15">
+                                    <span class="property-info icon-area">
+                                        <img class="info-icon" src="../../../assets/img/icon/calendar.png">
+                                    </span>
+              <span class="property-info-entry">
+                                        <span class="property-info-label">Date</span>
+                                        <span class="property-info-value">{{event.startingDate}}</span>
+                                    </span>
+            </div>
+
+            <div class="col-xs-6 col-sm-3 col-md-3 p-b-15">
+                                    <span class="property-info-icon icon-bed">
+                                        <img class="info-icon" src="../../../assets/img/icon/type.png">
+                                    </span>
+              <span class="property-info-entry">
+                                        <span class="property-info-label">Type</span>
+                                        <span class="property-info-value" style="text-transform: capitalize">{{event.type}}</span>
+                                    </span>
+            </div>
+
+            <div class="col-xs-6 col-sm-3 col-md-3 p-b-15">
+                                    <span class="property-info-icon icon-bath">
+                                        <img class="info-icon" src="../../../assets/img/icon/time.png">
+                                    </span>
+              <span class="property-info-entry">
+                                        <span class="property-info-label">Max Duration</span>
+                                        <span class="property-info-value">{{(event.maxDuration) ? event.maxDuration : '(TBD*)'}}</span>
+                                    </span>
+            </div>
+
+            <div class="col-xs-6 col-sm-3 col-md-3 p-b-15">
+                                    <span class="property-info-icon icon-garage">
+                                        <img class="info-icon" src="../../../assets/img/icon/length.png">
+                                    </span>
+              <span class="property-info-entry">
+                                        <span class="property-info-label">Length</span>
+                                        <span class="property-info-value">{{(event.length) ? event.length : '(TBD*)'}}</span>
+                                    </span>
+            </div>
+
+            <div class="col-xs-6 col-sm-3 col-md-3 p-b-15">
+                                    <span class="property-info-icon icon-garage">
+                                        <img class="info-icon" src="../../../assets/img/icon/start.png">
+                                    </span>
+              <span class="property-info-entry">
+                                        <span class="property-info-label">Enrollment Opening At</span>
+                                        <span class="property-info-value">{{(event.enrollmentOpeningAt) ? event.enrollmentOpeningAt : '(TBD*)'}}</span>
+                                    </span>
+            </div>
+            <div class="col-xs-6 col-sm-3 col-md-3 p-b-15">
+                                    <span class="property-info-icon icon-garage">
+                                        <img class="info-icon" src="../../../assets/img/icon/close.png">
+                                    </span>
+              <span class="property-info-entry">
+                                        <span class="property-info-label">Enrollment Closing At</span>
+                                        <span class="property-info-value">{{(event.enrollmentClosingAt) ? event.enrollmentClosingAt : '(TBD*)' }}</span>
+                                    </span>
+            </div>
+            <div col-xs-12><small>*TBD= Info not available yet.</small></div>
+
+
+          </div>
+          <!-- .property-meta -->
+
+          <div *ngIf="event.description" class="section">
+            <h4 class="s-property-title">Description</h4>
+            <div class="s-property-content">
+              <p>{{event.description}}</p>
+            </div>
+          </div>
+          <!-- End description area  -->
+
+          <div class="section property-share">
+            <h4 class="s-property-title">Share with your friends </h4>
+            <div class="roperty-social">
+              <ul>
+                <li><a title="Share this on facebok " (click)="shareWithFacebook()"><img src="../../../assets/img/social_big/facebook_grey.png"></a></li>
+                <li><a title="Share this on tumblr " href="http://www.tumblr.com/share/link?url={{href}}" target="_blank"><img src="../../../assets/img/social_big/tumblr_grey.png"></a></li>
+                <li><a title="Share this on twitter " href="https://twitter.com/home?status=Look this amazing event!" target="_blank"><img src="../../../assets/img/social_big/twitter_grey.png"></a></li>
+              </ul>
+            </div>
+          </div>
+          <!-- End video area  -->
+
+        </div>
+      </div>
+      <div class="col-md-4 p0">
+        <aside class="sidebar sidebar-property blog-asside-right">
+          <div class="buttons clearfix" *ngIf="isLogged()">
+            <button class="btn-manage bounceInRight" (click)="enroll()" *ngIf="!isEnrolled()">Enroll</button>
+            <button class="btn-manage bounceInRight" (click)="withdrawEnrollment()"
+                    *ngIf="isEnrolled()">Withdraw enrollment</button>
+            <button class="btn-manage bounceInRight" (click)="enroll()" *ngIf="currentUser.email === organizer.email" [routerLink]="['/manage-event', event._id]">Edit</button>
+          </div>
+          <div class="dealer-widget">
+            <div class="dealer-content">
+              <div class="inner-wrapper">
+                <div class="clear">
+                  <div class="col-xs-4 col-sm-4 dealer-face">
+                    <a href="">
+                      <img src="{{ (organizer.image) ? organizer.image : '../../../assets/img/logofoto.png'}}" class="img-circle">
+                    </a>
+                  </div>
+                  <div class="col-xs-8 col-sm-8 ">
+                    <h3 class="dealer-name">
+                      {{organizer.name}} {{organizer.surname}}<br>
+                      <span>Event Organizer</span>
+                    </h3>
+                  </div>
+                </div>
+
+                <div class="clear">
+                  <ul class="dealer-contacts">
+                    <li *ngIf="organizer.city"><i class="pe-7s-map-marker strong"> </i> {{organizer.city}}</li>
+                    <li><i class="pe-7s-mail strong"> </i> {{organizer.email}}</li>
+                  </ul>
+                  <p *ngIf="organizer.aboutMe">{{organizer.aboutMe}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="buttons clearfix" *ngIf="isLogged()">
+            <button class="btn-delete" *ngIf="currentUser.email === organizer.email" (click)="deleteEvent()">Delete event</button>
+          </div>
+
+          <div class="panel panel-default sidebar-menu similar-property-wdg wow fadeInRight animated">
+            <div class="panel-heading">
+              <h3 class="panel-title">Similar Events</h3>
+            </div>
+            <div class="panel-body recent-property-widget">
+              <ul>
+                <li *ngFor="let event of similarEvents">
+                  <app-footer-event-box [event]="event"></app-footer-event-box>
+              </ul>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+</div>
+

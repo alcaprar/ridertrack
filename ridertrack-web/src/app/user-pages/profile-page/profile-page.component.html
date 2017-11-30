@@ -1,0 +1,69 @@
+<app-page-header title="Welcome back {{user.name}}"></app-page-header>
+
+<div class="wizard-card ct-wizard-orange" id="wizardProperty">
+  <div class="wizard-header">
+    <h3>
+      <b>Edit</b> YOUR PROFILE <br>
+    </h3>
+  </div>
+<form (ngSubmit)="edit()" #updateEventForm="ngForm">
+  <div id="create">
+    <div class="row p-b-15  ">
+      <div class="col-sm-4 col-sm-offset-1">
+        <div class="picture-container">
+          <div class="picture">
+            <img [src]="urlImage != null ? urlImage : urlNoImage" style="height: 100%" class="picture-src" id="wizardPicturePreview" title=""/>
+            <input type="file" (change)="urlChanged($event)" id="logo">
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="name">Name </label>
+          <input [(ngModel)]="user.name" #name="ngModel" id="name" name="name" type="text" class="form-control" placeholder="user.name">
+          <div [hidden]="name.valid || name.pristine" class="alert alert-danger">Name is required.</div>
+        </div>
+        <div class="form-group">
+          <label for="surname">Surname</label>
+          <input [(ngModel)]="user.surname" #surname="ngModel" id="surname"  name="surname" type="text"
+                 class="form-control" placeholder="user.surname">
+        </div>
+        <div class="form-group">
+          <label for="city"> City </label>
+          <input [(ngModel)]="user.city"
+                 #city="ngModel" id="city" name="city" type="text" class="form-control"
+                 placeholder="Milan" >
+        </div>
+        <div class="form-group">
+          <label for="aboutMe">About Me</label>
+          <textarea [(ngModel)]="user.aboutMe" #description="ngModel" id="aboutMe" name="aboutMe"
+                    type="text" class="form-control" cols="40" placeholder="Describe yourself..." >
+                    </textarea>
+        </div>
+
+      <div class="form-group">
+        <label for="email"> Email </label>
+        <input [(ngModel)]="user.email"
+               #city="ngModel" id="email" name="email" type="email" class="form-control"
+               placeholder="user.email" disabled>
+      </div>
+        <div class="form-group">
+          <label for="password"> Password </label>
+          <input [(ngModel)]="user.password"
+                 #city="ngModel" id="password" name="password" type="password" class="form-control"
+                 placeholder="********" disabled>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wizard-footer">
+    <div class="pull-right ">
+      <button type='submit' class='btn btn-default ' >Save</button>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+
+  </form>
+</div>
+  <!--  End step 1 -->

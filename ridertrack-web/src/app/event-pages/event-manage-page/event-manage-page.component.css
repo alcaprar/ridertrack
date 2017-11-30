@@ -1,0 +1,29 @@
+#description {
+  height: 132px;
+  text-align: start;
+}
+.wizard-header {
+  padding:4em;
+}
+.ng-valid[required], .ng-valid.required  {
+  border-left: 5px solid #42A948; /* green */
+}
+
+.ng-invalid:not(form)  {
+  border-left: 5px solid #a94442; /* red */
+}
+.wizard-header {
+  padding:4em;
+}
+#btn-delete {
+  background: #d30000;
+  width: auto;
+  border: none;
+  margin-left: 1em;
+}
+.btn {
+  color: white;
+}
+
+
+

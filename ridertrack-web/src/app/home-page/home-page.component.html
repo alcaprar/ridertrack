@@ -1,0 +1,185 @@
+<div class="slider-area">
+  <div class="slider-content">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-12">
+        <div class="row">
+          <h2 class="right">wherever with you</h2>
+        </div>
+        <div class="row">
+          <p id="descr" class="col-md-8 col-md-offset-2 right">The one and only management service for sport events capable of supporting multiple input forms of tracking source</p>
+        </div>
+        <div class="row search-form wow pulse animated" data-wow-delay="0.8s" style="visibility: visible; animation-delay: 0.8s; animation-name: pulse;">
+
+          <form (ngSubmit)="search()" class="form-inline">
+            <div class="form-group">
+              <input type="text" #searchKeyword id="search-keyword"  class="form-control" placeholder="Key word">
+            </div>
+            <div class="form-group">
+              <select id="race" #searchType class="selectpicker" data-live-search="true" data-live-search-style="begins" title="Select race">
+                <option value="-1" selected>All types</option>
+                <option *ngFor="let type of eventTypes" [value]="type" style="text-transform: capitalize">{{type}}</option>
+              </select>
+            </div>
+            <button class="btn search-btn" type="submit"><i class="fa fa-search"></i></button>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- property area -->
+<div class="content-area home-area-1 recent-property" style="background-color: #FCFCFC; padding-bottom: 55px;">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-10 col-md-offset-1 col-sm-12 text-center page-title">
+        <!-- /.feature title -->
+        <h2>Next events</h2>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="proerty-th last-events-container">
+        <div class="col-sm-3 p0" *ngFor="let event of lastEvents">
+          <app-home-event-box [event]="event"></app-home-event-box>
+        </div>
+        <div class="col-sm-6 col-md-3 p0">
+          <div class="box-tree more-proerty text-center">
+            <a routerLink="events" ><div class="item-tree-icon">
+              <i class="fa fa-th"></i>
+            </div>
+              <div class="more-entry overflow">
+                <h5>CAN'T DECIDE ? </h5>
+                <h5 class="tree-sub-ttl">Show all events</h5>
+                <button class="btn border-btn more-black" value="All properties">All events</button>
+              </div></a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Welcome area -->
+<div class="Welcome-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 Welcome-entry  col-sm-12">
+        <div class="col-md-5 col-md-offset-7 col-sm-6 col-xs-12">
+          <div  class="welcome_services wow fadeInRight" data-wow-delay="0.3s" data-wow-offset="100">
+            <div class="row">
+              <div class="col-xs-6 m-padding">
+                <div class="welcome-estate">
+                  <a routerLink="events"><div class="welcome-icon">
+                    <i class="pe-7s-home pe-4x"></i>
+                  </div>
+                    <h3>Any event</h3></a>
+                </div>
+              </div>
+              <div class="col-xs-6 m-padding">
+                <div class="welcome-estate">
+                  <a routerLink=" "><div class="welcome-icon">
+                    <i class="pe-7s-users pe-4x"></i>
+                  </div>
+                    <h3>More Spectators</h3></a>
+                </div>
+              </div>
+
+
+              <div class="col-xs-12 text-center">
+                <i class="welcome-circle"></i>
+              </div>
+
+              <div class="col-xs-6 m-padding">
+                <div class="welcome-estate">
+                  <a routerLink="why-best"><div class="welcome-icon">
+                    <i class="pe-7s-notebook pe-4x"></i>
+                  </div>
+                    <h3>Easy to use</h3></a>
+                </div>
+              </div>
+              <div class="col-xs-6 m-padding">
+                <div class="welcome-estate">
+                  <a routerLink="faq"><div class="welcome-icon">
+                    <i class="pe-7s-help2 pe-4x"></i>
+                  </div>
+                    <h3>Any help </h3></a>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Count area -->
+<div class="count-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-10 col-md-offset-1 col-sm-12 text-center page-title">
+        <!-- /.feature title -->
+        <h2>You can trust Us </h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 col-xs-12 percent-blocks m-main" data-waypoint-scroll="true">
+        <div class="row">
+          <div class="col-sm-3 col-xs-6">
+            <div class="count-item">
+              <div class="count-item-circle">
+                <span class="pe-7s-users"></span>
+              </div>
+              <div class="chart" data-percent="5000">
+                <h2 class="percent" id="counter">0</h2>
+                <h5>PARTICIPANTS </h5>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3 col-xs-6">
+            <div class="count-item">
+              <div class="count-item-circle">
+                <span class="pe-7s-glasses"></span>
+              </div>
+              <div class="chart" data-percent="12000">
+                <h2 class="percent" id="counter1">0</h2>
+                <h5>SPECTATORS</h5>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3 col-xs-6">
+            <div class="count-item">
+              <div class="count-item-circle">
+                <span class="pe-7s-graph2"></span>
+              </div>
+              <div class="chart" data-percent="5000">
+                <h2 class="percent"  id="counter2">5000</h2>
+                <h5>ORGANIZERS</h5>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3 col-xs-6">
+            <div class="count-item">
+              <div class="count-item-circle">
+                <span class="pe-7s-flag"></span>
+              </div>
+              <div class="chart" data-percent="120">
+                <h2 class="percent" id="counter3">0</h2>
+                <h5>EVENTS REGISTERED</h5>
+              </div>
+            </div>
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

@@ -1,0 +1,60 @@
+<!-- Footer area-->
+<div class="footer-area">
+
+  <div class=" footer">
+    <div class="container">
+      <div class="row">
+
+        <div class="col-md-4 col-sm-6 wow fadeInRight animated">
+          <div class="single-footer">
+            <h4>About us </h4>
+            <div class="footer-title-line"></div>
+
+            <img src="../../../../assets/img/logoRidertrack-vector.png" alt="" id="logo-footer" class="wow pulse" data-wow-delay="1s">
+            <ul class="footer-adress">
+              <li><i class="pe-7s-map-marker strong"> </i> 20144 9-5 New Bond St</li>
+              <li><i class="pe-7s-mail strong"> </i> info@ridertrack.com</li>
+              <li><i class="pe-7s-call strong"> </i> +44 20 7946 0229</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6 wow fadeInRight animated">
+          <div class="single-footer">
+            <h4>Quick links </h4>
+            <div class="footer-title-line"></div>
+            <ul class="footer-menu">
+              <li><a routerLink=" ">Home Page</a>  </li>
+              <li><a routerLink="why-best">Why Ridertrack best</a>  </li>
+              <li><a routerLink="events">All Events </a></li>
+              <li><a routerLink="contacts">Contact us</a></li>
+              <li><a routerLink="/faq">FAQ</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6 wow fadeInRight animated animated" style="visibility: visible; animation-name: fadeInRight;">
+          <div class="single-footer">
+            <h4>Next events</h4>
+            <div class="footer-title-line"></div>
+            <ul class="footer-blog">
+              <li *ngFor="let event of lastEvents">
+                <app-footer-event-box [event]="event"></app-footer-event-box>
+              </li>
+            </ul>
+          </div>
+        </div>
+              <!-- /input-group -->
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-copy text-center">
+    <div class="container">
+      <div class="row">
+        <div class="pull-left">
+          <span> (C) <a href="http://www.KimaroTec.com">Ridertrack</a> , All rights reserved {{thisYear()}}  </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

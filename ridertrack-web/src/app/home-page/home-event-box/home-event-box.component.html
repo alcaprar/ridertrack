@@ -1,0 +1,20 @@
+<div class="box-two proerty-item">
+  <div class="item-thumb">
+    <a routerLink="events/{{event._id}}">
+      <div class="event-image" *ngIf="event.logo" [ngStyle]="{ 'background-image': 'url(' + event.logo + ')'}"></div>
+      <div class="event-image" *ngIf="!event.logo" style="background-image: url('../../../assets/img/logoRidertrack.png')"></div>
+    </a>
+  </div>
+  <div class="item-entry overflow">
+    <h5><a routerLink="events/{{event._id}}" style="height: 1em; line-height: 1em; overflow: hidden"> {{event.name}} </a></h5>
+    <div class="dot-hr"></div>
+    <span class="pull-left" ><b><i class="fa fa-calendar"></i></b> {{event.startingDate}}</span>
+    <span class="pull-right" *ngIf="event.length"><b><i class="fa fa-arrows-h"></i></b> {{event.length}} km </span>
+
+<br>
+    <div class="line">
+      <span class="location pull-right"><i class="fa fa-map-marker"></i> {{event.country}} | {{event.city}}</span>
+    </div>
+  </div>
+</div>
+

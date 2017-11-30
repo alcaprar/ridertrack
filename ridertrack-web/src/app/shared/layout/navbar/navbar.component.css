@@ -1,0 +1,223 @@
+.navbar-default .navbar-nav > li > a{
+  color: #929292;
+  font-size: 16px;
+  font-weight: 400;
+  text-transform: capitalize;
+  position: relative;
+
+}
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
+  color: #929292;
+  background-color: transparent;
+}
+.navbar-nav > li > a {
+  padding-right: 20px;
+  padding-left: 20px;
+}
+
+.navbar-default .navbar-nav > li > a.active:after{
+  background-color: lightcoral;
+  bottom: -24px;
+  content: "";
+  height: 5px;
+  left: 0;
+  position: absolute;
+  transition: all 0.2s ease 0s;
+  width: 100%;
+}
+.navbar-default .navbar-nav > li > a::after {
+  background-color: lightcoral;
+  bottom: -24px;
+  content: "";
+  height: 5px;
+  left: 0;
+  position: absolute;
+  transition: all 0.2s ease 0s;
+  width: 0%;
+}
+.navbar-default .navbar-nav > li > a:hover:after {
+  width: 100%;
+}
+
+.navbar-nav.navbar-right:last-child{
+  margin-right: 20px
+}
+/*logo*/
+.navbar-brand {
+  padding-top: 2px;
+  width: 200px;
+  height: auto;
+}
+.main-nav {
+  padding-top: 10px;
+}
+.button.navbar-right {
+  padding-top: 10px;
+}
+.nav-button {
+  background-color: #c2c2c2;
+  border: medium none;
+  color: #fff;
+  font-size: 16px;
+  padding: 8px 20px;
+  border-radius: 2px;
+  -webkit-transition: all 0.4s ease;
+  -moz-transition: all 0.4s ease;
+  -ms-transition: all 0.4s ease;
+  transition: all 0.4s ease;
+}
+
+.nav-button.collapse{
+  align-items: left;
+  height: auto;
+  padding: 70%;
+}
+
+.nav-button.login{
+  background-color: #d30000;
+  margin-right: 5px;
+}
+.nav-button:hover{
+  background-color: lightcoral;
+
+}
+.navbar{
+  margin-bottom: 0px;
+  min-height: 100px;
+}
+.navbar-default {
+  background-image: none;
+  background-color: #fff;
+  background-repeat: repeat-x;
+  border-radius: 4px;
+  box-shadow: none;
+}
+.navbar .container{
+  padding-top: 15px
+}
+.navbar-default {
+  background-image: none;
+  background-color: #FFF;
+  background-repeat: repeat-x;
+  border-radius: 0px;
+  box-shadow: none;
+  border-left: none;
+  border-right: none;
+}
+
+.navbar .yamm-content h5 {
+  font-size: 18px;
+  font-weight: 400;
+  text-transform: uppercase;
+  padding-bottom: 10px;
+  border-bottom: dotted 1px #555555;
+}
+@media (max-width: 767px) {
+  .navbar .yamm-content h5 {
+    font-size: 14px;
+  }
+}
+.navbar .yamm-content ul {
+  margin: 0;
+  padding: 0;
+}
+.navbar .yamm-content ul li {
+  list-style-type: none;
+  border-bottom: solid 1px #eeeeee;
+  text-transform: uppercase;
+  padding: 4px 0;
+}
+.navbar .yamm-content ul li a {
+  color: #777;
+  font-size: 14px;
+  display: block;
+  font-weight: 300;
+}
+.navbar .yamm-content ul li a:hover {
+  color: #FDC600;
+  text-decoration: none;
+}
+.navbar .yamm-content .banner {
+  margin-bottom: 10px;
+}
+.ymm-sw .dropdown-menu li{
+  clear: both;
+  height: 50px;
+}
+.navbar-default .ymm-sw .navbar-nav a::after {
+  bottom: 5px;
+  background-color: #FFF;
+}
+.yamm .ymm-sw  .dropdown-menu {
+  left: auto;
+  right: auto;
+}
+
+/*!
+ * Yamm!3
+ * Yet another megamenu for Bootstrap 3
+ *
+ * http://geedmo.github.com/yamm3
+ */
+.yamm .nav,
+.yamm .collapse,
+.yamm .dropup,
+.yamm .dropdown {
+  position: static;
+}
+.yamm .container {
+  position: relative;
+}
+.yamm .dropdown-menu {
+  left: auto;
+}
+.yamm .yamm-content {
+  padding: 20px 30px;
+}
+@media (max-width: 767px) {
+  .yamm .yamm-content {
+    padding: 10px 20px;
+  }
+}
+.yamm .dropdown.yamm-fw .dropdown-menu {
+  left: 0;
+  right: 0;
+}
+.yamm .dropdown-menu {
+  background-color: #FFF;
+  border: 0.3px solid rgba(227, 227, 227, 0.22);
+  border-radius: 0px;
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.176);
+}
+.ymm-sw .dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0px;
+  z-index: 1000;
+  float: left;
+  min-width: 160px;
+  padding: inherit;
+  margin: inherit;
+  list-style: outside none none;
+  font-size: inherit;
+  background-color: #FFF;
+  border: 0px solid rgba(0, 0, 0, 0);
+  border-radius: 0px;
+  box-shadow: 0px 0.5px 1px #CECECE;
+  background-clip: padding-box;
+}
+.nav-tabs > li > a{
+  color: #666;
+  font-weight: 300;
+  border-width: 4px;
+}
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+  border-color: transparent transparent #d30000;
+  border-style: solid;
+  border-width: 4px;
+  color: #666666;
+  cursor: default;
+  font-weight: 700;
+  outline: none;
+}
+
