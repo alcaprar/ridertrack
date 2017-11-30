@@ -31,9 +31,14 @@ config.uploadImageFolder = config.publicFolder + '/img';
 config.port = process.env.PORT || 5000;
 
 config.mongodb = {};
-config.mongodb.host = process.env.MONGODB_HOST || 'localhost';
-config.mongodb.port = process.env.MONGODB_HOST || 27017;
-config.mongodb.database_name = process.env.DATABASE_NAME || 'ridetrack';
-config.mongodb.uri =  'mongodb://' + config.mongodb.host + '/' + config.mongodb.database_name; 
+console.log('[config][mongodb]', process.env.MONGODB_URI);
+if(process.env.MONGODB_URI){
+    config.mongodb.uri = process.env.MONGODB_URI;
+}else{
+    config.mongodb.host = 'localhost';
+    config.mongodb.port = 27017;
+    config.mongodb.database_name = 'ridetrack';
+    config.mongodb.uri =  'mongodb://' + config.mongodb.host + '/' + config.mongodb.database_name;
+}
 
 module.exports = config;
