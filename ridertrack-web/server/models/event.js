@@ -56,7 +56,8 @@ var eventSchema = Schema({
         type: String
     },
     logo: {
-        type: String
+        data: Buffer,
+        contentType: String
     },
     routes: {
         type: [String], //TODO to change with coordinates

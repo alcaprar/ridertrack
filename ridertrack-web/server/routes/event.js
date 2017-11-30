@@ -172,24 +172,25 @@ router.get('/:eventId/participantsList', function (req, res, next) {
     )
 });
 
-router.get(':eventId/logo', function (req, res, next) {
-  var eventId = req.params.eventId;
+router.get('/:eventId/logo', function (req, res, next) {
+    var eventId = req.params.eventId;
 
-  Event.findByEventId(eventId, function (err, event) {
-    if(err){
-      res.status(400).send({
-        errors: err
-      })
-    }else{
-      // TODO change the header according to the mime type
-      if(event.logo){
-        res.status(200).send('logo')
-      }else{
-        // send the default logo
-        res.status(200).send('logo')
-      }
-    }
-  })
+    Event.findByEventId(eventId, function (err, event) {
+        if(err){
+            res.status(400).send({
+                errors: err
+            })
+        }else{
+            // TODO change the header according to the mime type
+            if(event.logo){
+                res.header('Content-type', event.logo.contentType);
+                res.end(event.logo.data, 'binary');
+            }else{
+                // send the default logo
+                res.status(200).send('logo')
+            }
+        }
+    })
 });
 
 /**
@@ -242,31 +243,34 @@ router.get('/:eventId/organizer', function (req, res) {
 router.post('/', authMiddleware.hasValidToken, multipart, function (req, res) {
     console.log('[POST /events]', req.userId, req.body, req.files);
 
-    Event.create(req.userId, req.body, function (err, event) {
+    var event = req.body;
+
+    // check image
+
+    var tempPath = req.files.logo.path;
+    var logoMimeType = req.files.logo.type;
+
+    // TODO check allowed extension
+
+    if(['image/png', 'image/jpg'].indexOf(logoMimeType) === -1){
+        console.log('[POST /events] logo extension not allowed: ', logoMimeType)
+    }
+
+    event.logo = {
+        data: fs.readFileSync(tempPath),
+        contentType: req.files.logo.type
+    };
+
+    Event.create(req.userId, event, function (err, event) {
         if (err) {
             console.log('[POST/events][error]', err);
             res.status(400).send({
                 errors: [err]
             })
         }else{
-            // rename the logo with the id
-            var tempPath = req.files.logo.path;
-            var logoExtension = tempPath.split('.').pop();
-            var newFilename = event._id + '.' + logoExtension;
-            var newPath = config.uploadImageFolder + '/' + newFilename;
-
-            fs.rename(tempPath, newPath, function (err) {
-                // TODO check the err. it might be thrown when the file is not saved properly
-                // TODO the event should be deleted and an error to the user should be sent
-
-                // saving the logo path
-                event.logo = '/img/' + newFilename;
-                event.save(function (err) {
-                    res.status(200).send({
-                        event: event
-                    })
-                })
-            });
+            res.status(200).send({
+                event: event
+            })
         }
 
         // TODO delete the temp file in any case
