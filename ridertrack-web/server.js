@@ -99,4 +99,9 @@ server.listen(config.port, function () {
 // exporting the server only for testing purposes
 module.exports = server;
 
-
+// pinging timeout to keep alive the heroku apps
+var http = require("http");
+setInterval(function() {
+    http.get("https://rider-track-dev.herokuapp.com");
+    http.get("https://rider-track.herokuapp.com");
+}, 300000); // every 5 minutes (300000)
