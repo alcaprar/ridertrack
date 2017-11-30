@@ -19,7 +19,7 @@ export const ROLE = 'ROLE';
 
 @Injectable()
 export class AuthenticationService{
-  private BASE_AUTH_URL = environment.baseAPI + '/auth';
+  private BASE_AUTH_URL = '/auth';
 
   public auth2: any;
 
