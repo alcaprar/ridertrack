@@ -4,10 +4,10 @@
   "license": "MIT",
   "scripts": {
     "start": "node ridertrack-web/server.js",
-    "postinstall": "cd ridertrack-web && npm install"
+    "postinstall": "cd ridertrack-web && npm install && echo MONGODB_URI && echo NODE_ENV"
   },
   "private": true,
   "engines":{
-    "node": "6.2.0"
+    "node": "6.9.0"
   }
 }
