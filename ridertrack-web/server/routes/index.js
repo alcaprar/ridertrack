@@ -21,6 +21,7 @@ router.get('/health-check', function (req, res) {
 
 // it sends the angular app
 router.get('*', function (req, res) {
+  return res.sendFile(config.buildFolder + '/index.html');
     return res.status(404).send('Endpoint not found.');
 });
 
