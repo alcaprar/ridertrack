@@ -24,6 +24,8 @@ var config = {
     }
 };
 
+config.env = process.env.NODE_ENV || 'development';
+
 config.rootFolder=  __dirname + '/../';
 config.publicFolder = config.rootFolder + '/public';
 config.uploadImageFolder = config.publicFolder + '/img';
@@ -31,9 +33,13 @@ config.uploadImageFolder = config.publicFolder + '/img';
 config.port = process.env.PORT || 5000;
 
 config.mongodb = {};
-config.mongodb.host = process.env.MONGODB_HOST || 'localhost';
-config.mongodb.port = process.env.MONGODB_HOST || 27017;
-config.mongodb.database_name = process.env.DATABASE_NAME || 'ridetrack';
-config.mongodb.uri =  'mongodb://' + config.mongodb.host + '/' + config.mongodb.database_name; 
+if(process.env.MONGODB_URI){
+  config.mongodb.uri = process.env.MONGODB_URI
+}else{
+  config.mongodb.host = process.env.MONGODB_HOST || 'localhost';
+  config.mongodb.port = process.env.MONGODB_HOST || 27017;
+  config.mongodb.database_name = process.env.DATABASE_NAME || 'ridetrack';
+  config.mongodb.uri =  'mongodb://' + config.mongodb.host + '/' + config.mongodb.database_name;
+}
 
 module.exports = config;
