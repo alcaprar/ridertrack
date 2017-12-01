@@ -53,6 +53,7 @@ import { ConfirmationDialogComponent } from './shared/dialog/confirmation-dialog
 import {DialogService} from "./shared/dialog/dialog.service";
 import {CommonModule} from "@angular/common";
 import { AddRouteMapComponent } from './shared/map/add-route-map/add-route-map.component';
+import { EventManageRouteComponent } from './event-pages/event-manage-route/event-manage-route.component';
 
 @NgModule({
   declarations: [
@@ -88,7 +89,8 @@ import { AddRouteMapComponent } from './shared/map/add-route-map/add-route-map.c
     EnrolledEventsComponent,
     OrganizedEventsComponent,
     ConfirmationDialogComponent,
-    AddRouteMapComponent
+    AddRouteMapComponent,
+    EventManageRouteComponent
   ],
   imports: [
     BrowserModule,
@@ -129,6 +131,11 @@ import { AddRouteMapComponent } from './shared/map/add-route-map/add-route-map.c
         path: 'events/:eventId/manage',
         component: EventManagePageComponent,
         canActivate: [AuthGuard], // TODO check if possible to add an authGuard based on parameters
+      },
+      {
+        path: 'events/:eventId/manage/route',
+        component: EventManageRouteComponent,
+        canActivate: [AuthGuard]
       },
       {
         path: 'my-events',
