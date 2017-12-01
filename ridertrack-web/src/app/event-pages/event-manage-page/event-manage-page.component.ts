@@ -34,7 +34,7 @@ export class EventManagePageComponent implements OnInit {
     this.eventTypes = this.eventService.getEventTypes();
 
     this.route.params.subscribe(params => {
-      this.eventId = params['id'];
+      this.eventId = params['eventId'];
       console.log('[EventManage][OnInit]', this.eventId);
 
       // load the event using eventId
@@ -102,7 +102,7 @@ export class EventManagePageComponent implements OnInit {
    * It redirects the user at my-events page.
    */
   onCancel(){
-    this.router.navigate(['my-events']);
+    this.router.navigate(['/my-events']);
   }
 
 
@@ -127,7 +127,7 @@ export class EventManagePageComponent implements OnInit {
             this.errors = response[0] as Error[];
           }else{
             var event: Event = response[1] as Event;
-            this.router.navigate(['/events/' + event._id]);
+            this.router.navigate(['/events/', event._id]);
           }
         }
       )
@@ -135,7 +135,7 @@ export class EventManagePageComponent implements OnInit {
         (error) => {
           console.log('[CreateEvent][onSubmit][error]', error);
           // this.alertService.error("An error occured: "+ error.message);
-          this.router.navigate(['/create-event']);
+          this.router.navigate(['/events', 'create']);
         }
       );
   }

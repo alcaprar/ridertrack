@@ -127,7 +127,7 @@
             <button class="btn-manage bounceInRight" (click)="enroll()" *ngIf="!isEnrolled()">Enroll</button>
             <button class="btn-manage bounceInRight" (click)="withdrawEnrollment()"
                     *ngIf="isEnrolled()">Withdraw enrollment</button>
-            <button class="btn-manage bounceInRight" (click)="enroll()" *ngIf="currentUser.email === organizer.email" [routerLink]="['/manage-event', event._id]">Edit</button>
+            <button class="btn-manage bounceInRight" (click)="enroll()" *ngIf="currentUser.email === organizer.email" [routerLink]="['/events', event._id, 'manage']">Edit</button>
           </div>
           <div class="dealer-widget">
             <div class="dealer-content">

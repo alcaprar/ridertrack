@@ -182,7 +182,7 @@ export class EventService {
           const body = res.json();
           const event = body.event as Event;
           console.log('[EventService][createEvent][success]', body);
-          //this.router.navigate(['my-events']);
+          //this.router.navigate(['/my-events']);
           return [null, event];
         })
       .catch(

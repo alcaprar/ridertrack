@@ -1,13 +1,14 @@
 import {AfterViewInit, Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
 import {FormControl} from "@angular/forms";
 import {GoogleMapsAPIWrapper, MapsAPILoader, MouseEvent as AGMMouseEvent} from "@agm/core";
+import {} from '@types/googlemaps';
 
 declare var google: any;
 
 @Component({
-  selector: 'app-add-route-map',
-  templateUrl: './add-route-map.component.html',
-  styleUrls: ['./add-route-map.component.css']
+    selector: 'app-add-route-map',
+    templateUrl: './add-route-map.component.html',
+    styleUrls: ['./add-route-map.component.css']
 })
 export class AddRouteMapComponent implements OnInit {
 
@@ -29,9 +30,9 @@ export class AddRouteMapComponent implements OnInit {
 
     constructor(private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private googleWrapper: GoogleMapsAPIWrapper) {}
 
-  ngOnInit() {
-      this.initMap();
-  }
+    ngOnInit() {
+        this.initMap();
+    }
 
     initMap(){
 

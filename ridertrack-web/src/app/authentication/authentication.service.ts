@@ -72,7 +72,7 @@ export class AuthenticationService{
                   this.storeResponse(body.userId, body.role, body.jwtToken);
 
                   // route to my-events
-                  this.router.navigate(['my-events']);
+                  this.router.navigate(['/my-events']);
 
                   // to force angular to update the views
                   this.appRef.tick();
@@ -114,7 +114,7 @@ export class AuthenticationService{
           this.storeResponse(body.userId, body.role, body.jwtToken);
 
           // route to my-events
-          this.router.navigate(['my-events']);
+          this.router.navigate(['/my-events']);
 
           return null;
         },
@@ -142,7 +142,7 @@ export class AuthenticationService{
           this.storeResponse(body.userId, body.role, body.jwtToken);
 
           // route to my-events
-          this.router.navigate(['my-events']);
+          this.router.navigate(['/my-events']);
 
           return null;
         },
@@ -189,7 +189,7 @@ export class AuthenticationService{
                 this.storeResponse(body.userId, body.role, body.jwtToken);
 
                 // route to my-events
-                this.router.navigate(['my-events']);
+                this.router.navigate(['/my-events']);
 
                 // to force angular to update the views
                 this.appRef.tick();

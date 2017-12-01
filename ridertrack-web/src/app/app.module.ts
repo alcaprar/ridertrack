@@ -117,23 +117,28 @@ import { AddRouteMapComponent } from './shared/map/add-route-map/add-route-map.c
         component: EventsListPageComponent
       },
       {
-        path: 'create-event',
+        path: 'events/create',
         component: EventCreatePageComponent,
-        //canActivate: [AuthGuard]
+        canActivate: [AuthGuard], // TODO check if possible to add an authGuard based on parameters
       },
-      {
-        path: 'manage-event/:id',
-        component: EventManagePageComponent,
-        //canActivate: [AuthGuard]
-      },
-      /**
-       *  when you want to redirect to the event detail page,
-       *  you have to call: routerLink= "/events/{{event._id}}" for each single event
-       *  so if you have a list of events: *ngFor="let event of events" routerLink="/events/{{event._id}}"
-       */
       {
         path: 'events/:eventId',
         component: EventDetailPageComponent
+      },
+      {
+        path: 'events/:eventId/manage',
+        component: EventManagePageComponent,
+        canActivate: [AuthGuard], // TODO check if possible to add an authGuard based on parameters
+      },
+      {
+        path: 'my-events',
+        component: MyEventsComponent,
+        canActivate: [AuthGuard],
+        children: [
+          { path: '', redirectTo: 'enrolled', pathMatch: 'full'},
+          { path: 'enrolled', component: EnrolledEventsComponent},
+          { path: 'organized', component: OrganizedEventsComponent}
+        ]
       },
       {
         path: 'contacts',
@@ -146,7 +151,7 @@ import { AddRouteMapComponent } from './shared/map/add-route-map/add-route-map.c
       {
         path: 'my-profile',
         component: ProfilePageComponent,
-        //canActivate: [AuthGuard]
+        canActivate: [AuthGuard]
       },
       {
         path: 'login',
@@ -158,16 +163,6 @@ import { AddRouteMapComponent } from './shared/map/add-route-map/add-route-map.c
         component: RegistrationPageComponent,
         canActivate: [GuestGuard]
       } ,
-      {
-        path: 'my-events',
-        component: MyEventsComponent,
-        canActivate: [AuthGuard],
-        children: [
-          { path: '', redirectTo: 'enrolled', pathMatch: 'full'},
-          { path: 'enrolled', component: EnrolledEventsComponent},
-          { path: 'organized', component: OrganizedEventsComponent}
-        ]
-      },
       {
         path: '**',
         redirectTo: '/',

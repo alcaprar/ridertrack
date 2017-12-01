@@ -73,7 +73,7 @@ export class EventCreatePageComponent implements OnInit {
    * It redirects the user at my-events page.
    */
   onCancel(){
-    this.router.navigate(['my-events']);
+    this.router.navigate(['/my-events']);
   }
 
   /**
@@ -112,7 +112,7 @@ export class EventCreatePageComponent implements OnInit {
               this.errors = response[0] as Error[];
             }else{
               var createdEvent: Event = response[1] as Event;
-              this.router.navigate(['/manage-event/' + createdEvent._id]);
+              this.router.navigate(['/events', createdEvent._id, 'manage']);
             }
             // this.alertService.success("Event successfully created");
           }
@@ -121,7 +121,7 @@ export class EventCreatePageComponent implements OnInit {
           (error) => {
             console.log('[CreateEvent][onSubmit][error]', error);
             // this.alertService.error("An error occured: "+ error.message);
-            this.router.navigate(['/create-event']);
+            this.router.navigate(['/events', 'create']);
           }
         )
     }

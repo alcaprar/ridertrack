@@ -14,23 +14,23 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
 
     <div class="button navbar-right">
-      <button class="navbar-btn nav-button wow bounceInRight login" *ngIf="!isLoggedIn()" routerLink="login" data-wow-delay="0.45s">Login</button>
-      <button class="navbar-btn nav-button wow fadeInRight" *ngIf="!isLoggedIn()" routerLink="register" data-wow-delay="0.48s">Register</button>
+      <button class="navbar-btn nav-button wow bounceInRight login" *ngIf="!isLoggedIn()" routerLink="/login" data-wow-delay="0.45s">Login</button>
+      <button class="navbar-btn nav-button wow fadeInRight" *ngIf="!isLoggedIn()" routerLink="/register" data-wow-delay="0.48s">Register</button>
     </div>
 
     <div class="collapse navbar-collapse yamm" id="navigation">
       <ul class="main-nav nav navbar-nav navbar-right" routerLinkActive="active">
         <li class="wow fadeInDown" data-wow-delay="0.2s">
-          <a class="" routerLink="why-best"> Why Ridertrack Best</a>
+          <a class="" routerLink="/why-best"> Why Ridertrack Best</a>
         </li>
         <li class="wow fadeInDown" data-wow-delay="0.2s">
-          <a class="" routerLink="events"> All Events</a>
+          <a class="" routerLink="/events"> All Events</a>
         </li>
         <li class="wow fadeInDown" data-wow-delay="0.3s" *ngIf="isLoggedIn()">
-          <a class="" routerLink="my-events">My Events</a>
+          <a class="" routerLink="/my-events">My Events</a>
         </li>
         <li class="wow fadeInDown" data-wow-delay="0.3s">
-          <a class="" routerLink="contacts">Contacts</a>
+          <a class="" routerLink="/contacts">Contacts</a>
         </li>
         <li class="dropdown ymm-sw " data-wow-delay="0.1s" *ngIf="isLoggedIn()">
           <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="200"><i class="fa fa-user" style="font-size: 20px"></i> <b class="caret"></b></a>
