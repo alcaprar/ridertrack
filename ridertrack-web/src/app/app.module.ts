@@ -51,8 +51,8 @@ import { EnrolledEventsComponent } from './event-pages/my-events/enrolled-events
 import { OrganizedEventsComponent } from './event-pages/my-events/organized-events/organized-events.component';
 import { ConfirmationDialogComponent } from './shared/dialog/confirmation-dialog/confirmation-dialog.component';
 import {DialogService} from "./shared/dialog/dialog.service";
-
-
+import {CommonModule} from "@angular/common";
+import { AddRouteMapComponent } from './shared/map/add-route-map/add-route-map.component';
 
 @NgModule({
   declarations: [
@@ -87,12 +87,14 @@ import {DialogService} from "./shared/dialog/dialog.service";
     AlertComponent,
     EnrolledEventsComponent,
     OrganizedEventsComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    AddRouteMapComponent
   ],
   imports: [
     BrowserModule,
     ReactiveFormsModule,
     FormsModule,
+    CommonModule,
     HttpClientModule,
     FacebookModule.forRoot(),
     AgmCoreModule.forRoot({
