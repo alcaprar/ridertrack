@@ -102,6 +102,10 @@ module.exports = server;
 // pinging timeout to keep alive the heroku apps
 var http = require("http");
 setInterval(function() {
-    http.get("https://rider-track-dev.herokuapp.com");
-    http.get("https://rider-track.herokuapp.com");
-}, 300000); // every 5 minutes (300000)
+    http.get({host: "rider-track-dev.herokuapp.com"}, function (res) {
+        console.log('Ping rider-track-dev.herokuapp.com')
+    });
+    http.get({host: "rider-track.herokuapp.com"}, function (res) {
+        console.log('Ping rider-track.herokuapp.com')
+    });
+}, 5 * 60 * 1000); // every 5 minutes (300000)
