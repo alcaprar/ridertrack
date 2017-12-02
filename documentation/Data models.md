@@ -79,12 +79,12 @@ Index: (eventId, userId)
 
 ### Tracking source
 
-### Tracking data
+### Location data
 
 ```
 {
-    "eventId": Number,
-    "userId": Number,
+    "eventId": String,
+    "userId": String,
     "timestamp": Date,
     "coordinates": Coordinates
 }
