@@ -8,6 +8,8 @@ var async = require('async');
 var Event = require('../models/event');
 var User = require('../models/user');
 var Enrollment = require('../models/enrollment');
+var Location = require('../models/location');
+
 
 var authMiddleware = require('../middlewares/auth');
 var multipart = require('connect-multiparty')({
@@ -277,6 +279,44 @@ router.post('/', authMiddleware.hasValidToken, multipart, function (req, res) {
     })
 });
 
+/**
+ * Gets the location from a mobile app in form of an object[lat,lon]
+ * adds the coordinates of last location to the end of location list.
+ */
+router.post('/:eventId/participants/positions', authMiddleware.hasValidToken, function (req, res) {
+
+    Location.update((req.userId, req.params.eventId, req.body), function (err, location) {
+        if (err) {
+            res.status(400).send({
+                errors: [err]
+            })
+        }else{
+            res.status(200).send({
+                message: "Location updated successfully",
+                location: location
+            })
+        }
+    })
+});
+
+/**
+ * gets the location of the last location of an user.
+ * Coordinates are an object {[lat,lon]}
+ */
+router.get('/:eventId/:userId/location', function (req, res) {
+
+    Location.findOne({userId: req.params.userId, eventId: req.params.eventId}, function (err, location) {
+        if (err) {
+            res.status(400).send({
+                errors: [err]
+            })
+        }else{
+            res.status(200).send({
+                location: location
+            })
+        }
+    })
+});
 
 /**
  * It updates the fields passed in the body of the given eventId
