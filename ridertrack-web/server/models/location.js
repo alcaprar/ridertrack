@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+const fieldsNotChangeable = ['_id', 'userId','eventId','trackingSources','timeStamp' ,'__v', 'created_at', 'updated_at'];
+
 var locationSchema = Schema({
     userId: {
         type: String,
@@ -12,16 +14,16 @@ var locationSchema = Schema({
     },
     timeStamp : {
         type: Date,
-        required: true
+        required: false
     },
     trackingSources: {
         type: String,
         required: false
     },
+    // TODO change type of coordinates to what we get from mobile
     coordinates: {
-        type: String,
-        required: true,
-        default: []
+        type:[String],
+        required: false,
     },
     created_at: {
         type: Date,
@@ -59,15 +61,22 @@ locationSchema.statics.create = function(userId, eventId, locationJson, callback
             console.log("All good with adding location!");
             return callback(null, location)
         }
-    });
+    })
 };
 
-locationSchema.statics.update = function (userId, eventId, newLocation, callback) {
+/* TODO change type of coordinates to what we get from mobile
+*/
+
+locationSchema.statics.update = function (userId, eventId, locationJson, callback) {
     this.findOne({eventId: eventId, userId: userId}, function (err, location) {
         if (err) {
             return callback(err)
         } else {
-            location.coordinates.push(newLocation);
+            for (let key in locationJson) {
+                if(fieldsNotChangeable.indexOf(key) === -1){
+                    location[key].push(locationJson[key])
+                }
+            }
             location.save(function (err) {
                 if (err) {
                     return callback(err)
@@ -75,13 +84,6 @@ locationSchema.statics.update = function (userId, eventId, newLocation, callback
                     return callback(null, location)
                 }
             })
-            /*
-            Location.update(
-                { eventId: eventId, userId: userId },
-                { $push: { coordinates: newLocation } },
-                done
-                );
-            */
         }
     })
 };

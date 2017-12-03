@@ -281,19 +281,43 @@ router.post('/', authMiddleware.hasValidToken, multipart, function (req, res) {
 
 /**
  * Gets the location from a mobile app in form of an object[lat,lon]
- * adds the coordinates of last location to the end of location list.
+ * adds the coordinates(String) of last location to the end of location list.
+ * if a location for an user in an event isn't created it creates it
+ * if it is created than it updates it with adding the coordinates(String)
+ * TODO change type of coordinates to what we get from mobile
  */
 router.post('/:eventId/participants/positions', authMiddleware.hasValidToken, function (req, res) {
-
-    Location.update((req.userId, req.params.eventId, req.body), function (err, location) {
+    Location.findOne({userId: req.userId, eventId: req.params.eventId}, function (err, location) {
         if (err) {
             res.status(400).send({
                 errors: [err]
             })
-        }else{
-            res.status(200).send({
-                message: "Location updated successfully",
-                location: location
+        }else if(location ===null) {
+            Location.create(req.userId, req.params.eventId, req.body, function (err, location) {
+                if (err) {
+                    res.status(400).send({
+                        errors: [err]
+                    })
+                }else{
+                    res.status(200).send({
+                        message: "Location created successfully",
+                        location: location
+                    })
+                }
+            })
+        }
+        else{
+            Location.update(req.userId, req.params.eventId, req.body, function (err, location) {
+                if (err) {
+                    res.status(400).send({
+                        errors: [err]
+                    })
+                }else{
+                    res.status(200).send({
+                        message: "Location updated successfully",
+                        location: location
+                    })
+                }
             })
         }
     })
