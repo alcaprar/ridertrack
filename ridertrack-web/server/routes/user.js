@@ -15,7 +15,7 @@ var authMiddleware = require('../middlewares/auth');
  */
 router.get('/', function (req, res) {
     var conditions = {};
-    
+
     // check for query parameters
     // if they are present, add them to the conditions
     if(req.query.email){
@@ -27,7 +27,7 @@ router.get('/', function (req, res) {
     if(req.query.surname){
         conditions.surname = req.query.surname
     }
-    
+
     User.find(conditions, function (err, user) {
         if(err){
             res.status(400).send({
@@ -72,7 +72,7 @@ router.get('/:userId/enrolledEvents', authMiddleware.hasValidToken, function (re
 
     // using async lib to find the total number and find the events in parallel
     var countEnrollments = function (callback) {
-        Enrollment.find({userId: req.userId}, function (err, enrollments) {
+        Enrollment.find({userId: req.params.userId}, function (err, enrollments) {
             if(err){
                 callback(err)
             }else{
@@ -82,7 +82,7 @@ router.get('/:userId/enrolledEvents', authMiddleware.hasValidToken, function (re
     };
 
     var findEnrollments = function (callback) {
-        Enrollment.find({userId: req.userId}, null, options, function (err, enrollment){
+        Enrollment.find({userId: req.params.userId}, null, options, function (err, enrollment){
             if (err) {
                 console.log('GET /users/:userId/enrolledEvents', err);
                 res.status(400).send({
@@ -134,7 +134,7 @@ router.get('/:userId/organizedEvents', authMiddleware.hasValidToken, function(re
 
     // using async lib to find the total number and find the events in parallel
     var countEvents = function (callback) {
-        Event.find({organizerId: req.userId}, function (err, events) {
+        Event.find({organizerId: req.params.userId}, function (err, events) {
             if(err){
                 callback(err)
             }else{
@@ -144,7 +144,7 @@ router.get('/:userId/organizedEvents', authMiddleware.hasValidToken, function(re
     };
 
     var findEvents = function (callback) {
-        Event.find({organizerId: req.userId},null, options, function(err, events){
+        Event.find({organizerId: req.params.userId}, null, options, function(err, events){
             if (err) {
                 callback(err)
             }else{

@@ -342,6 +342,25 @@ router.get('/:eventId/:userId/location', function (req, res) {
     })
 });
 
+/*
+* This method gets the last known location of a user and its freshness data
+*/
+router.get('/:eventId/:userId/lastLocation', function (req, res) {
+
+    Location.findOne({userId: req.params.userId, eventId: req.params.eventId}, function (err, location) {
+        if (err) {
+            res.status(400).send({
+                errors: [err]
+            })
+        }else{
+            res.status(200).send({
+                lastUserCoordinate: location.coordinates[location.coordinates.length-1],
+                time :'Location was sent on: ' + location.updated_at
+            })
+        }
+    })
+});
+
 /**
  * It updates the fields passed in the body of the given eventId
  */

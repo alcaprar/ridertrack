@@ -20,10 +20,12 @@ var locationSchema = Schema({
         type: String,
         required: false
     },
-    // TODO change type of coordinates to what we get from mobile
     coordinates: {
-        type:[String],
-        required: false,
+        type:[{
+            lat:{type: String},
+            lon:{type: String}
+        }],
+        required: false
     },
     created_at: {
         type: Date,
@@ -31,7 +33,7 @@ var locationSchema = Schema({
     },
     updated_at: {
         type: Date,
-        select: false
+        select: true
     }
 });
 
@@ -64,8 +66,6 @@ locationSchema.statics.create = function(userId, eventId, locationJson, callback
     })
 };
 
-/* TODO change type of coordinates to what we get from mobile
-*/
 
 locationSchema.statics.update = function (userId, eventId, locationJson, callback) {
     this.findOne({eventId: eventId, userId: userId}, function (err, location) {
