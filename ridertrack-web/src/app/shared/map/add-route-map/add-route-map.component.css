@@ -1,8 +1,19 @@
 agm-map {
 }
+p{
+    margin-top:0.4em;
+   font-weight: bold;
+}
+#walking, #bicycling{
+    padding:0;
+    width: inherit;
+    margin-left: 1em;
+    margin-top: 0.5em;
+}
+
 #map , #map:hover{
     cursor: crosshair;
-    height: 700px;
+    height: 65rem;
 }
 
 .btn-manage {
@@ -10,17 +21,17 @@ agm-map {
     margin-bottom: 0.5em;
     color: white;
     padding: 0.5em;
-    width: 20%;
+    width: 30%;
     margin-left: 1em;
     margin-right: 1em;
     float: right;
 }
 .btn-save{
-    align-self: center;
-    background-color: darkred;
+    margin-top: 0.5em;
+    background-color: #d30000;
     padding: 0.5em;
     color: white;
-    width: 20%;
+    width: 100%;
 }
 
 #search-container{

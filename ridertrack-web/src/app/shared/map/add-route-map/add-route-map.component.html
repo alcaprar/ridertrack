@@ -4,24 +4,34 @@
         <input id="search" placeholder="Insert starting area" type="text" class="form-control"
                    #search [formControl]="searchControl">
     </div>
-    <div class="row">
-        <div class="col">
+    <div class="row align-items-start">
+        <div class="col-4 col-md-2">
             <p>TRAVEL MODE: </p>
-            <input type="radio" name="travelMode" value ='WALKING' (click)="setTravelMode(value)">Walking
-            <input type="radio" name="travelMode" value='BICYCLING' (click)="setTravelMode(value)">Bicycling
         </div>
-        <div class="col">
+        <div class="col-4 col-md-2">
+            <label for="walking">Walking</label>
+            <input id="walking" type="radio" name="travelMode" value='WALKING' default (click)="setTravelMode(value)">
+        </div>
+        <div class="col-4 col-md-2">
+            <label for="bicycling">Bicycling</label>
+            <input type="radio" name="travelMode" value='BICYCLING' (click)="setTravelMode(value)"
+                   id="bicycling" title="Bicycling">
+        </div>
+        <div class="col-8 col-md-6">
         <button class="btn-manage" (click)="clearLast()">Clear Last</button>
         <button class="btn-manage bounceInRight" (click)="clearAll()" >Clear Map</button>
         </div>
     </div>
 
-        <agm-map id="map" #map [longitude]="initLong" [latitude]="initLat" [zoom]="zoom" (mapClick)="mapClicked($event)"
-        class="mapDirection" >
+        <agm-map id="map" #map [longitude]="initLong" [latitude]="initLat" [zoom]="zoom" (mapClick)="mapClicked($event)">
             <map-direction *ngIf="directions != null" [origin]="directions.origin" [destination]="directions.destination"
                            [waypoints]="directions.waypoints" [travelMode]="travelModeInput"></map-direction>
         </agm-map >
-    <button class="btn-save" (click)="saveRoute()">Save Route</button>
+    <div class="row ">
+        <div class="col-20 col-md-12 justify-content-center">
+            <button class="btn-save" (click)="saveRoute()">Save Route</button>
+        </div>
+    </div>
 </div>
 
 

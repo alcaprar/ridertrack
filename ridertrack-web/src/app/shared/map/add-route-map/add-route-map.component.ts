@@ -1,5 +1,5 @@
 import { Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
-import {GoogleMapsAPIWrapper, MapsAPILoader, MouseEvent as AGMMouseEvent} from "@agm/core";
+import { MapsAPILoader, MouseEvent as AGMMouseEvent} from "@agm/core";
 import {} from '@types/googlemaps';
 import {FormControl} from "@angular/forms";
 
@@ -12,25 +12,19 @@ declare var google: any;
 })
 export class AddRouteMapComponent implements OnInit {
 
-
     public initLat: number;
     public initLong: number;
     public zoom = 15;
     public searchControl: FormControl= new FormControl();
 
     public mapPoints = []; //latLng array
-    public markers = []; //latLng array
-
     directions : any;
     travelModeInput: string = 'WALKING';
 
     @ViewChild("search")
     public searchElementRef: ElementRef;
 
-    @ViewChild("map")
-    public mapElementRef: ElementRef;
-
-    constructor(private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private googleWrapper: GoogleMapsAPIWrapper) {}
+    constructor(private mapsAPILoader: MapsAPILoader, private ngZone: NgZone) {}
 
     ngOnInit() {
         this.initMap();
@@ -61,7 +55,7 @@ export class AddRouteMapComponent implements OnInit {
                     }
                     this.initLat= place.geometry.location.lat();
                     this.initLong= place.geometry.location.lng();
-                    this.zoom = 16;
+                    this.zoom = 15;
 
                     console.log("[Show area inserted]" + "[Lng]" +this.initLong + "[Lat]"+ this.initLong);
                 })
@@ -75,9 +69,10 @@ export class AddRouteMapComponent implements OnInit {
         let currentpoint = $event.coords; //latLng literal coords
         console.log("[Map][Clicked][Coordinates detected]", currentpoint);
         this.mapPoints.push(currentpoint);
+        this.initLat= this.mapPoints[this.mapPoints.length-1].lat;
+        this.initLong = this.mapPoints[this.mapPoints.length-1].lng;
         this.getRoutePointsAndWaypoints();
     }
-
 
     getRoutePointsAndWaypoints(){
         let waypoints = [];
