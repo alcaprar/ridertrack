@@ -288,40 +288,24 @@ router.post('/', authMiddleware.hasValidToken, multipart, function (req, res) {
  * TODO change type of coordinates to what we get from mobile
  */
 router.post('/:eventId/participants/positions', authMiddleware.hasValidToken, function (req, res) {
-    Location.findOne({userId: req.userId, eventId: req.params.eventId}, function (err, location) {
+
+    // TODO: Find user if exist, find if event exists, find if that user is enrolled in that event
+
+    Location.create(req.userId, req.params.eventId, req.body, function (err, location) {
         if (err) {
             res.status(400).send({
                 errors: [err]
             })
-        }else if(location ===null) {
-            Location.create(req.userId, req.params.eventId, req.body, function (err, location) {
-                if (err) {
-                    res.status(400).send({
-                        errors: [err]
-                    })
-                }else{
-                    res.status(200).send({
-                        message: "Location created successfully",
-                        location: location
-                    })
-                }
+        }else{
+            res.status(200).send({
+                message: "Location created successfully",
+                location: location
             })
-        }
-        else{
-            Location.update(req.userId, req.params.eventId, req.body, function (err, location) {
-                if (err) {
-                    res.status(400).send({
-                        errors: [err]
-                    })
-                }else{
-                    res.status(200).send({
-                        message: "Location updated successfully",
-                        location: location
-                    })
-                }
-            })
+            // update the ranking logic
         }
     })
+
+
 });
 
 /**
