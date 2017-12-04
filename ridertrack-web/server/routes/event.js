@@ -8,6 +8,7 @@ var async = require('async');
 var Event = require('../models/event');
 var User = require('../models/user');
 var Enrollment = require('../models/enrollment');
+var Route = require ('../models/route');
 var Location = require('../models/location');
 
 
@@ -445,5 +446,111 @@ router.delete('/:eventId', authMiddleware.hasValidToken, function(req,res){
         }
     });
 });
+
+router.get ('/:eventId/route',function(req,res){
+   var eventId = req.params.eventId;
+   Route.findByEventId(eventId,function(err,routeCoordinates){
+       if (err){
+           return res.status(400).send({
+               message : err.message
+           });
+       }
+       else{
+           return res.status(200).send({
+               coordinates:routeCoordinates
+           });
+       }
+   })
+});
+
+router.post('/:eventId/route',authMiddleware.hasValidToken,function(req,res){
+   var eventId = req.params.eventId;
+   var coordinates = req.body.coordinates;
+    console.log('[POST /events]', req.params.eventId, req.body.coordinates);
+   Route.create(eventId,coordinates,function(err,routeCordinates){
+      if (err){
+          res.status(400).send({
+              message:err.message
+          });
+      }
+      else{
+          res.status(200).send({
+              coordinates:routeCordinates,
+              message:"Route was successfully created"
+          });
+      }
+   });
+});
+
+router.put('/:eventId/route',authMiddleware.hasValidToken,function(req,res){
+  var coordinates = req.body.coordinates;
+  var userId = req.userId;
+  var eventId = req.params.eventId;
+
+  console.log('[PUT /events]', eventId, coordinates);
+
+  Event.findByEventId(eventId,function(err,event){
+      if(err){
+          return res.status(400).send({
+              message:err.message + "during finding event"
+          });
+      }
+     else if (userId !== event.organizerId){
+         return res.status(401).send({
+             message:"You are not authorized to change route of this event"
+         });
+     }
+     else{
+         Route.update(eventId,coordinates,function(err,updatedCoordinates){
+            if (err){
+                return res.status(400).send({
+                message:err.message
+                });
+            }
+            else{
+                return res.status(200).send({
+                    coordinates:updatedCoordinates,
+                    message:"Route was succesfully updated"
+                });
+            }
+         });
+     }
+  });
+
+});
+
+router.delete('/:eventId/route',authMiddleware.hasValidToken,function(req,res){
+   var eventId = req.params.eventId;
+   var userId = req.userId;
+
+   Event.findByEventId(eventId,function(err,event){
+       if (err){
+           return res.status(400).send({
+               message:err.message
+           });
+       }
+       else if (event.organizerId !== userId){
+           return res.status(401).send({
+               message:"You are not allowed to delete this event"
+           });
+       }
+       else{
+           Route.delete(eventId,function(err,deletedCoordinates){
+               if (err){
+                   return res.status(400).send({
+                       message:err.message
+                   });
+               }
+               else{
+                   return res.status(200).send({
+                       coordinates:deletedCoordinates,
+                       message:"Route was succesfully deleted"
+                   });
+               }
+           })
+       }
+   })
+});
+
 
 module.exports = router;

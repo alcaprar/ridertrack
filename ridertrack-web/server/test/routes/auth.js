@@ -3,7 +3,7 @@ process.env.NODE_ENV = 'test';
 
 //Require the dev-dependencies
 var chai = require('chai');
-var server = require('../../index');
+var server = require('../../../server');
 var uuid = require('uuid');
 var supertest = require('supertest');
 

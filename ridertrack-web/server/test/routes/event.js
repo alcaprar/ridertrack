@@ -3,7 +3,7 @@ process.env.NODE_ENV = 'test';
 
 //Require the dev-dependencies
 var chai = require('chai');
-var server = require('../../index');
+var server = require('../../../server');
 var uuid = require('uuid');
 var supertest = require('supertest');
 var mongoose = require('mongoose')
@@ -16,7 +16,8 @@ global.request = supertest(server);
 
 var Event = require('../../models/event');
 var User = require('../../models/user');
-var Enrollment = require('../../models/enrollment')
+var Enrollment = require('../../models/enrollment');
+var Route = require ('../../models/route');
 
 describe('Event API tests', function () {
 
@@ -28,9 +29,11 @@ describe('Event API tests', function () {
      * It clears the database.
      */
     beforeEach(function (done) {
-        Event.remove({},function(){
-            User.remove({},function(){
-                done()
+        Event.remove({}, function () {
+            User.remove({}, function () {
+               Route.remove({}, function () {
+                    done()
+               });
             });
         });
     });
@@ -1572,6 +1575,147 @@ describe('Event API tests', function () {
         });
 
     });
+
+	describe ('route APIs',function(done){
+
+		var userCreatorObject = {
+            "email":"firstUser@user.com",
+            "password":'firstUser',
+            "name":"First",
+            "surname":"User",
+            "jwtToken":""
+		};
+
+		var userNotCreatorObject = {
+            "email":"secondUser@user.com",
+            "password":'secondUserUser',
+            "name":"Second",
+            "surname":"User",
+            "jwtToken":""
+		};
+
+		var createdEventObject = {
+		    "id":"",
+			"name": "First event I created try number 2",
+			"organizerId": '',
+			"type": "running",
+			"description": "Blablabla",
+			"country": "MyCountry",
+			"city": "MyCity",
+			"startingDate":"2017-09-23",
+			"startingTime": "12:00:00.000",
+			"maxDuration": 150,
+			"length": 40,
+			"enrollmentOpeningAt": "2017-09-10T00:00:00.000Z",
+			"enrollmentClosingAt": "2017-09-17T00:00:00.000Z",
+			"participantsList": [255],
+			"routes": ["Route1"]
+		};
+		//Login 2 users and create one event
+		beforeEach(function(done) {
+            request.post('/api/auth/register')
+                .send(userCreatorObject)
+                .end(function (err1, res1) {
+
+                    userCreatorObject.userToken = "JWT " + res1.body.jwtToken;
+                    createdEventObject.organizerId = res1.body.userId;
+                    var createdEvent = new Event(createdEventObject);
+                    createdEvent.save(function (err, event) {
+                        createdEventObject.id = event._id;
+                        request.post('/api/auth/register')
+                            .send(userNotCreatorObject)
+                            .end(function (err2, res2) {
+                                userNotCreatorObject.userToken = "JWT " + res2.body.jwtToken;
+                                done();
+                            });
+
+                    });
+
+
+                });
+        });
+
+		var coordinates = [{
+		    lat:20,
+            lon:5
+        },
+            {
+                lat:15,
+                lon:10
+            },{
+		        lat:50,
+                lon:25
+            }];
+
+		//Before each function user creator should create function
+		beforeEach(function(done){
+		    request.post('/api/events/' + createdEventObject.id + "/route")
+                .set('Authorization',userCreatorObject.userToken)
+                .send({coordinates:coordinates})
+                .end(function(err,res){
+                    done();
+                });
+        });
+
+		//check for some more useful tests
+        it ('should get an created route',function(done){
+            request.get('/api/events/' + createdEventObject.id + "/route")
+                .end(function(err,res) {
+                    expect(res.body).not.to.be.eql(null);
+					expect(res.body).to.have.property('coordinates');
+					expect(res.body.coordinates).not.to.be.eql(null);
+					//console.log(res.body.coordinates);
+                    done();
+                });
+            });
+
+        it('should allow user to update routes',function(done){
+            request.put('/api/events/' + createdEventObject.id + '/route')
+                .set('Authorization',userCreatorObject.userToken)
+                .send({coordinates:[{lat:-1,lon:-1},{lat:6,lon:3},{lat:11,lon:5}]})
+                .end(function(err,res){
+                    expect(res.body).not.to.be.eql(null);
+					expect(res.body).to.have.property('coordinates');
+					expect(res.body.coordinates).not.to.be.eql(null);
+					//console.log(res.body.coordinates);
+					done();
+                });
+        });
+		
+		it('should allow user to delete route',function(done){
+			request.delete('/api/events/' + createdEventObject.id + '/route')
+				.set('Authorization',userCreatorObject.userToken)
+				.end(function(err,res){
+					console.log(res.body.coordinates);
+					Route.findByEventId(createdEventObject.id,function(err,route){
+						expect(route).to.be.eql(null);
+						done();
+					});
+				});
+		});
+		
+		it('should not allow user to update route if he is not creator',function(done){
+			     request.put('/api/events/' + createdEventObject.id + '/route')
+                .set('Authorization',userNotCreatorObject.userToken)
+                .send({coordinates:[{lat:-1,lon:-1},{lat:6,lon:3},{lat:11,lon:5}]})
+                .end(function(err,res){
+                    expect(res.status).to.be.eql(401);
+                    done();
+                });
+		});
+		
+		it('should not allow user to delete route if he is not creator',function(done){
+						request.delete('/api/events/' + createdEventObject.id + '/route')
+				.set('Authorization',userNotCreatorObject.userToken)
+				.end(function(err,res){
+					Route.findByEventId(createdEventObject.id,function(err,route){
+						expect(route).not.to.be.eql(null);
+						done();
+					});
+				});
+		});
+	});
+
 
     // it closes the server at the end
     after(function (done) {
