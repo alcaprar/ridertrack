@@ -1,16 +1,30 @@
 
-<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback=initialize"></script>
-
-<div class="container">
-    <div class="row">
-        <div class="form-group">
-            <input id="search" placeholder="Insert the starting point" type="text" class="form-control"
+<div class="container" id="search-container">
+    <div class="form-group">
+        <input id="search" placeholder="Insert starting area" type="text" class="form-control"
                    #search [formControl]="searchControl">
-        </div>
-
-        <agm-map id="map" [longitude]="initLong" [latitude]="initLat" [zoom]="zoom" (mapClick)="mapClicked($event)" >
-            <agm-marker *ngFor="let m of markers; let i= index"  [longitude]="m.lng" [latitude]="m.lat" ></agm-marker>
-        </agm-map >
-
     </div>
+    <div class="row">
+        <p>TRAVEL MODE: </p>
+        <div class="col">
+            <input type="radio" name="travelMode" value ='WALKING' (click)="setTravelMode(value)">Walking
+            <input type="radio" name="travelMode" value='BICYCLING' (click)="setTravelMode(value)">Bicycling
+        </div>
+        <div class="col">
+        <button class="btn-manage" (click)="clearLast()">Clear Last</button>
+        <button class="btn-manage bounceInRight" (click)="clearAll()" >Clear Map</button>
+        </div>
+    </div>
+
+        <agm-map id="map" #map [longitude]="initLong" [latitude]="initLat" [zoom]="zoom" (mapClick)="mapClicked($event)"
+        class="mapDirection" >
+            <agm-marker *ngFor="let m of markers; let i= index"  [longitude]="m.lng" [latitude]="m.lat" ></agm-marker>
+            <map-direction *ngIf="directions" [origin]="directions.origin" [destination]="directions.destination"
+                           [waypoints]="directions.waypoints" [travelMode]="travelModeInput"></map-direction>
+        </agm-map >
+    <button class="btn-save" (click)="saveRoute()">Save Route</button>
 </div>
+
+
+
+

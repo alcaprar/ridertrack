@@ -1,7 +1,7 @@
-import {AfterViewInit, Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
-import {FormControl} from "@angular/forms";
+import { Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
 import {GoogleMapsAPIWrapper, MapsAPILoader, MouseEvent as AGMMouseEvent} from "@agm/core";
 import {} from '@types/googlemaps';
+import {FormControl} from "@angular/forms";
 
 declare var google: any;
 
@@ -22,11 +22,13 @@ export class AddRouteMapComponent implements OnInit {
     public markers = []; //latLng array
 
     directions : any;
-    public directionService;
-    public directionDisplay;
+    travelModeInput: string = 'WALKING';
 
     @ViewChild("search")
     public searchElementRef: ElementRef;
+
+    @ViewChild("map")
+    public mapElementRef: ElementRef;
 
     constructor(private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private googleWrapper: GoogleMapsAPIWrapper) {}
 
@@ -50,8 +52,6 @@ export class AddRouteMapComponent implements OnInit {
             let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
                 types: ["address"]
             });
-            this.directionDisplay = new google.maps.DirectionsService;
-            this.directionService= new google.maps.DirectionsRenderer;
             autocomplete.addListener("place_changed", () => {
                 this.ngZone.run(() => {
                     let place: google.maps.places.PlaceResult = autocomplete.getPlace();
@@ -69,6 +69,7 @@ export class AddRouteMapComponent implements OnInit {
         });
     }
 
+
     mapClicked($event : AGMMouseEvent){
 
         let currentpoint = $event.coords; //latLng literal coords
@@ -81,55 +82,49 @@ export class AddRouteMapComponent implements OnInit {
 
 
     getRoutePointsAndWaypoints(){
-        let waypoints = new Array();
+        let waypoints = [];
         if (this.mapPoints.length > 2){
             for(let i=1; i<this.mapPoints.length-1; i++){
                 let address = this.mapPoints[i];
                 if(address !== ""){
                     waypoints.push({
                         location: address,
-                        stopover: true //show marker on map for each waypoint
+                        stopover: false //show marker on map for each waypoint
                     });
                 }
-                this.drawRoute(this.mapPoints[0], this.mapPoints[this.mapPoints.length-1],waypoints);
+                this.updateDirections(this.mapPoints[0], this.mapPoints[this.mapPoints.length-1],waypoints);
             }
         }else if(this.mapPoints.length > 1){
-            this.drawRoute(this.mapPoints[this.mapPoints.length-2], this.mapPoints[this.mapPoints.length-1], waypoints);
+            this.updateDirections(this.mapPoints[this.mapPoints.length-2], this.mapPoints[this.mapPoints.length-1], waypoints);
         }else {
-            this.drawRoute(this.mapPoints[this.mapPoints.length-1], this.mapPoints[this.mapPoints.length -1 ], waypoints);
+            this.updateDirections(this.mapPoints[this.mapPoints.length-1], this.mapPoints[this.mapPoints.length -1 ], waypoints);
         }
     }
 
-    drawRoute(originAddress, destinationAddress, waypoints){
+    updateDirections(originAddress, destinationAddress, waypoints){
         this.directions = {
             origin: {lat: originAddress.lat, lng: originAddress.lng},
             destination: {lat: destinationAddress.lat, lng: destinationAddress.lng},
             waypoints: waypoints
         };
         console.log("[Directions][Update]", this.directions);
-        // Send request
-        this.googleWrapper.getNativeMap().then(map => {
+    }
 
-            if (typeof this.directionDisplay === 'undefined') {
-                console.log("[MapsApiWrapper][directionDisplay][Undefined]");
-                this.directionDisplay = new google.maps.DirectionsRenderer;
-            }
-            this.directionDisplay.setMap(map);
-            console.log("[MapsApiWrapper][directionService][Route]");
-            this.directionService.route({
-                origin: this.directions.origin,
-                destination: this.directions.destination,
-                waypoints: this.directions.waypoints,
-                travelMode: google.maps.TravelMode.WALKING
-            }, (response, status) => {
-                console.log("[Direction Service][Direction Sent][Response]", response);
-                if (status === google.maps.DirectionsStatus.OK) {
-                    console.log("[Direction Service][Response][OK]");
-                    this.directionDisplay.setDirections(response);
-                }
-            } );
+    setTravelMode(value: string) {
+      this.travelModeInput = value;
+    }
 
-        });
+    clearAll() {
+      this.mapPoints = [];
+    }
+
+    clearLast() {
+      this.mapsAPILoader.load().then(()=> {
+        let latLngLast = this.mapPoints.pop();
+        let marker = google.maps.Marker(this.searchElementRef.nativeElement, latLngLast.lat, latLngLast.lng);
+        marker.setVisible(false);
+      });
+
     }
 
     saveRoute() {

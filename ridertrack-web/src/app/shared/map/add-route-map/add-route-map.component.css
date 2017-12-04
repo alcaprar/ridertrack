@@ -1,3 +1,29 @@
 agm-map {
-    height: 400px
+}
+#map , #map:hover{
+    cursor: crosshair;
+    height: 700px;
+}
+
+.btn-manage {
+    background-color: #FDC600;
+    margin-bottom: 0.5em;
+    color: white;
+    padding: 0.5em;
+    width: 20%;
+    margin-left: 1em;
+    margin-right: 1em;
+    float: right;
+}
+.btn-save{
+    margin-left: 1em;
+    margin-right: 1em;
+    background-color: red;
+    color: white;
+    width: 100%;
+}
+
+#search-container{
+    padding: 1em 1em 1em 1em;
+    background-color: ghostwhite;
 }

@@ -54,6 +54,7 @@ import {DialogService} from "./shared/dialog/dialog.service";
 import {CommonModule} from "@angular/common";
 import { AddRouteMapComponent } from './shared/map/add-route-map/add-route-map.component';
 import { EventManageRouteComponent } from './event-pages/event-manage-route/event-manage-route.component';
+import { DirectionDirective } from './shared/map/direction.directive';
 
 @NgModule({
   declarations: [
@@ -90,7 +91,8 @@ import { EventManageRouteComponent } from './event-pages/event-manage-route/even
     OrganizedEventsComponent,
     ConfirmationDialogComponent,
     AddRouteMapComponent,
-    EventManageRouteComponent
+    EventManageRouteComponent,
+    DirectionDirective
   ],
   imports: [
     BrowserModule,
