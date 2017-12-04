@@ -5,8 +5,8 @@
                    #search [formControl]="searchControl">
     </div>
     <div class="row">
-        <p>TRAVEL MODE: </p>
         <div class="col">
+            <p>TRAVEL MODE: </p>
             <input type="radio" name="travelMode" value ='WALKING' (click)="setTravelMode(value)">Walking
             <input type="radio" name="travelMode" value='BICYCLING' (click)="setTravelMode(value)">Bicycling
         </div>
@@ -18,8 +18,7 @@
 
         <agm-map id="map" #map [longitude]="initLong" [latitude]="initLat" [zoom]="zoom" (mapClick)="mapClicked($event)"
         class="mapDirection" >
-            <agm-marker *ngFor="let m of markers; let i= index"  [longitude]="m.lng" [latitude]="m.lat" ></agm-marker>
-            <map-direction *ngIf="directions" [origin]="directions.origin" [destination]="directions.destination"
+            <map-direction *ngIf="directions != null" [origin]="directions.origin" [destination]="directions.destination"
                            [waypoints]="directions.waypoints" [travelMode]="travelModeInput"></map-direction>
         </agm-map >
     <button class="btn-save" (click)="saveRoute()">Save Route</button>

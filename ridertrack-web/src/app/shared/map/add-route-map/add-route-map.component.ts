@@ -61,7 +61,7 @@ export class AddRouteMapComponent implements OnInit {
                     }
                     this.initLat= place.geometry.location.lat();
                     this.initLong= place.geometry.location.lng();
-                    this.zoom = 17;
+                    this.zoom = 16;
 
                     console.log("[Show area inserted]" + "[Lng]" +this.initLong + "[Lat]"+ this.initLong);
                 })
@@ -74,8 +74,6 @@ export class AddRouteMapComponent implements OnInit {
 
         let currentpoint = $event.coords; //latLng literal coords
         console.log("[Map][Clicked][Coordinates detected]", currentpoint);
-        this.markers.push(currentpoint);
-        console.log("[Map][Clicked][Marker added]", this.markers);
         this.mapPoints.push(currentpoint);
         this.getRoutePointsAndWaypoints();
     }
@@ -83,13 +81,14 @@ export class AddRouteMapComponent implements OnInit {
 
     getRoutePointsAndWaypoints(){
         let waypoints = [];
+
         if (this.mapPoints.length > 2){
             for(let i=1; i<this.mapPoints.length-1; i++){
                 let address = this.mapPoints[i];
                 if(address !== ""){
                     waypoints.push({
                         location: address,
-                        stopover: false //show marker on map for each waypoint
+                        stopover: true //show marker on map for each waypoint
                     });
                 }
                 this.updateDirections(this.mapPoints[0], this.mapPoints[this.mapPoints.length-1],waypoints);
@@ -116,18 +115,19 @@ export class AddRouteMapComponent implements OnInit {
 
     clearAll() {
       this.mapPoints = [];
+      this.directions = null;
     }
 
     clearLast() {
-      this.mapsAPILoader.load().then(()=> {
-        let latLngLast = this.mapPoints.pop();
-        let marker = google.maps.Marker(this.searchElementRef.nativeElement, latLngLast.lat, latLngLast.lng);
-        marker.setVisible(false);
-      });
-
+      if(this.mapPoints.length> 1){
+        this.mapPoints.pop();
+        this.getRoutePointsAndWaypoints();
+      } else {
+          this.clearAll();
+        }
     }
 
-    saveRoute() {
+    saveRoute(){
 
     }
 

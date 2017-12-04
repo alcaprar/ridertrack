@@ -1,4 +1,4 @@
-import {Directive, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Directive, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {GoogleMapsAPIWrapper} from "@agm/core";
 import {} from "@types/googlemaps"
 
@@ -7,7 +7,7 @@ declare var google:any;
 @Directive({
   selector: 'map-direction'
 })
-export class DirectionDirective implements  OnInit, OnChanges {
+export class DirectionDirective implements  OnInit, OnChanges, OnDestroy {
 
   @Input() origin: any;
   @Input() destination: any;
@@ -26,6 +26,12 @@ export class DirectionDirective implements  OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
       this.drawRoute();
   }
+
+  ngOnDestroy(): void {
+    this.directionsDisplay.setMap(null);
+    console.log("[Directions Directive][OnDestroy]")
+  }
+
 
   drawRoute(){
 
