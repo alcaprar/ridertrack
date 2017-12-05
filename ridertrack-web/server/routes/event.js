@@ -328,8 +328,8 @@ router.get('/:eventId/:userId/location', function (req, res) {
 });
 
 /*
-* This method gets the last known location of a user and its freshness data
-*/
+ * This method gets the last known location of a user and its freshness data
+ */
 router.get('/:eventId/:userId/lastLocation', function (req, res) {
 
     Location.findOne({userId: req.params.userId, eventId: req.params.eventId}, function (err, location) {
@@ -431,109 +431,142 @@ router.delete('/:eventId', authMiddleware.hasValidToken, function(req,res){
     });
 });
 
-router.get ('/:eventId/route',function(req,res){
-   var eventId = req.params.eventId;
-   Route.findByEventId(eventId,function(err,routeCoordinates){
-       if (err){
-           return res.status(400).send({
-               message : err.message
-           });
-       }
-       else{
-           return res.status(200).send({
-               coordinates:routeCoordinates
-           });
-       }
-   })
+/**
+ * It returns the route of the requested event.
+ */
+router.get('/:eventId/route', function(req, res){
+    var eventId = req.params.eventId;
+    Route.findByEventId(eventId, function(err, routeCoordinates){
+        if (err){
+            return res.status(400).send({
+                errors: [err.message]
+            });
+        }
+        else{
+            return res.status(200).send({
+                coordinates: routeCoordinates
+            });
+        }
+    })
 });
 
-router.post('/:eventId/route',authMiddleware.hasValidToken,function(req,res){
-   var eventId = req.params.eventId;
-   var coordinates = req.body.coordinates;
+/**
+ * It creates the route for the given event.
+ * It before checks if the user is logged in and if he/she is the owner of the event.
+ */
+router.post('/:eventId/route', authMiddleware.hasValidToken, function(req, res){
     console.log('[POST /events]', req.params.eventId, req.body.coordinates);
-   Route.create(eventId,coordinates,function(err,routeCordinates){
-      if (err){
-          res.status(400).send({
-              message:err.message
-          });
-      }
-      else{
-          res.status(200).send({
-              coordinates:routeCordinates,
-              message:"Route was successfully created"
-          });
-      }
-   });
-});
+    var userId = req.userId;
+    var eventId = req.params.eventId;
+    var coordinates = req.body.coordinates;
 
-router.put('/:eventId/route',authMiddleware.hasValidToken,function(req,res){
-  var coordinates = req.body.coordinates;
-  var userId = req.userId;
-  var eventId = req.params.eventId;
-
-  console.log('[PUT /events]', eventId, coordinates);
-
-  Event.findByEventId(eventId,function(err,event){
-      if(err){
-          return res.status(400).send({
-              message:err.message + "during finding event"
-          });
-      }
-     else if (userId !== event.organizerId){
-         return res.status(401).send({
-             message:"You are not authorized to change route of this event"
-         });
-     }
-     else{
-         Route.update(eventId,coordinates,function(err,updatedCoordinates){
-            if (err){
+    // check the organizerId if it's the same as the user that requested it
+    Event.findByEventId(eventId, function (err, event) {
+        if(err){
+            return res.status(400).send({
+                errors: [err]
+            });
+        }else{
+            if(!event){
                 return res.status(400).send({
-                message:err.message
+                    errors: [{message: "The given event does not exist."}]
                 });
             }
-            else{
-                return res.status(200).send({
-                    coordinates:updatedCoordinates,
-                    message:"Route was succesfully updated"
+            if(event.organizerId !== userId){
+                // if the event does not exist or the user is not the organizer returns an error
+                return res.status(401).send({
+                    errors: [{message: "You are not allowed to update this event route."}]
+                });
+            }else{
+                // if the event exist and the user is the organizer, create the route
+                Route.create(eventId, coordinates, function(err, routeCoordinates){
+                    if(err){
+                        return res.status(400).send({
+                            errors: [err]
+                        });
+                    }else{
+                        return res.status(200).send({
+                            coordinates: routeCoordinates
+                        });
+                    }
                 });
             }
-         });
-     }
-  });
+        }
+    });
+});
+
+/**
+ * It updates the route for the given event.
+ */
+router.put('/:eventId/route',authMiddleware.hasValidToken,function(req,res){
+    var coordinates = req.body.coordinates;
+    var userId = req.userId;
+    var eventId = req.params.eventId;
+
+    console.log('[PUT /events/'+eventId+'/route]', eventId, coordinates);
+
+    Event.findByEventId(eventId,function(err,event){
+        if(err){
+            return res.status(400).send({
+                errors: [err]
+            });
+        }else if(userId !== event.organizerId){
+            return res.status(401).send({
+                errors: [{message: "You are not allowed to update this event route."}]
+            });
+        }else{
+            Route.update(eventId,coordinates,function(err,updatedCoordinates){
+                if (err){
+                    return res.status(400).send({
+                        errors: [err]
+                    });
+                }
+                else{
+                    return res.status(200).send({
+                        coordinates: updatedCoordinates
+                    });
+                }
+            });
+        }
+    });
 
 });
 
+/**
+ * It deletes the route for the given event.
+ * It checks if the user is the organizer.
+ */
 router.delete('/:eventId/route',authMiddleware.hasValidToken,function(req,res){
-   var eventId = req.params.eventId;
-   var userId = req.userId;
+    var eventId = req.params.eventId;
+    var userId = req.userId;
 
-   Event.findByEventId(eventId,function(err,event){
-       if (err){
-           return res.status(400).send({
-               message:err.message
-           });
-       }
-       else if (event.organizerId !== userId){
-           return res.status(401).send({
-               message:"You are not allowed to delete this event"
-           });
-       }
-       else{
-           Route.delete(eventId,function(err,deletedCoordinates){
-               if (err){
-                   return res.status(400).send({
-                       message:err.message
-                   });
-               }
-               else{
-                   return res.status(200).send({
-                       coordinates:deletedCoordinates,
-                       message:"Route was succesfully deleted"
-                   });
-               }
-           })
-       }
-   })
+    Event.findByEventId(eventId,function(err,event){
+        if (err){
+            return res.status(400).send({
+                errors: [err]
+            });
+        }
+        else if (event.organizerId !== userId){
+            return res.status(401).send({
+                errors: [{message: "You are not allowed to delete this event."}]
+            });
+        }
+        else{
+            Route.delete(eventId, function(err, deletedCoordinates){
+                if (err){
+                    return res.status(400).send({
+                        message:err.message
+                    });
+                }
+                else{
+                    return res.status(200).send({
+                        coordinates:deletedCoordinates,
+                        message: "Route was succesfully deleted."
+                    });
+                }
+            })
+        }
+    })
 });
 
 

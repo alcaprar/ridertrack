@@ -118,25 +118,30 @@ import { DirectionDirective } from './shared/map/direction.directive';
       },
       {
         path: 'events',
-        component: EventsListPageComponent
+        component: EventsListPageComponent,
+        pathMatch: 'full'
       },
       {
         path: 'events/create',
         component: EventCreatePageComponent,
+        pathMatch: 'full',
         canActivate: [AuthGuard], // TODO check if possible to add an authGuard based on parameters
       },
       {
         path: 'events/:eventId',
-        component: EventDetailPageComponent
+        component: EventDetailPageComponent,
+        pathMatch: 'full'
       },
       {
         path: 'events/:eventId/manage',
         component: EventManagePageComponent,
+        pathMatch: 'full',
         canActivate: [AuthGuard], // TODO check if possible to add an authGuard based on parameters
       },
       {
         path: 'events/:eventId/manage/route',
         component: EventManageRouteComponent,
+        pathMatch: 'full',
         canActivate: [AuthGuard]
       },
       {
@@ -145,30 +150,35 @@ import { DirectionDirective } from './shared/map/direction.directive';
         canActivate: [AuthGuard],
         children: [
           { path: '', redirectTo: 'enrolled', pathMatch: 'full'},
-          { path: 'enrolled', component: EnrolledEventsComponent},
-          { path: 'organized', component: OrganizedEventsComponent}
+          { path: 'enrolled', pathMatch: 'full', component: EnrolledEventsComponent},
+          { path: 'organized', pathMatch: 'full', component: OrganizedEventsComponent}
         ]
       },
       {
         path: 'contacts',
+        pathMatch: 'full',
         component: ContactsPageComponent
       },
       {
         path: 'why-best',
+        pathMatch: 'full',
         component: WhyRidertrackBestPageComponent
       },
       {
         path: 'my-profile',
+        pathMatch: 'full',
         component: ProfilePageComponent,
         canActivate: [AuthGuard]
       },
       {
         path: 'login',
+        pathMatch: 'full',
         component: LoginPageComponent,
         canActivate: [GuestGuard]
       } ,
       {
         path: 'register',
+        pathMatch: 'full',
         component: RegistrationPageComponent,
         canActivate: [GuestGuard]
       } ,

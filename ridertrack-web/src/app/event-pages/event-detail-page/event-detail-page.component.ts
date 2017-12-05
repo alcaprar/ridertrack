@@ -45,6 +45,8 @@ export class EventDetailPageComponent implements OnInit {
       version: 'v2.11'
     };
     this.fb.init(initParams);
+
+    console.log('[EventDetailPage][constructor]')
   }
 
 
