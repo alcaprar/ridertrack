@@ -75,7 +75,7 @@ export class RouteService {
   private getCoordinates(result){
     const body = result.json();
     const coordinates = body.coordinates as [{lat:number , lng: number}];
-    console.log('[RouteService][getCoordinates][success]', body);
+    console.log('[RouteService][getCoordinates][success]', coordinates);
     return [null, coordinates];
   }
 

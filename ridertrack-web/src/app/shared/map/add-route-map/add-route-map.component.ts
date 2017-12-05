@@ -49,6 +49,7 @@ export class AddRouteMapComponent implements OnInit {
             } else {
               this.mapPoints = coordinates;
               this.firstRoute = false;
+              this.getRoutePointsAndWaypoints();
             }
           }
         )
