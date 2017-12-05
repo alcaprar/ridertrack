@@ -160,6 +160,8 @@ export class AddRouteMapComponent implements OnInit {
         this.routeService.updateRoute(this.eventId, this.mapPoints);
       }
       this.router.navigate(['/events/', this.eventId, '/manage']);
+
+      // TODO use the dialog service to show the result of the saving
     }
 
 }

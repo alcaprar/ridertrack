@@ -455,7 +455,7 @@ router.get('/:eventId/route', function(req, res){
  * It before checks if the user is logged in and if he/she is the owner of the event.
  */
 router.post('/:eventId/route', authMiddleware.hasValidToken, function(req, res){
-    console.log('[POST /events]', req.params.eventId, req.body.coordinates);
+    console.log('[POST /events]', req.params.eventId, req.body);
     var userId = req.userId;
     var eventId = req.params.eventId;
     var coordinates = req.body.coordinates;

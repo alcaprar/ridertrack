@@ -127,11 +127,6 @@ import {RouteService} from "./shared/services/route.service";
         canActivate: [AuthGuard], // TODO check if possible to add an authGuard based on parameters
       },
       {
-        path: 'events/:eventId',
-        component: EventDetailPageComponent,
-        pathMatch: 'full'
-      },
-      {
         path: 'events/:eventId/manage',
         component: EventManagePageComponent,
         pathMatch: 'full',
@@ -142,6 +137,11 @@ import {RouteService} from "./shared/services/route.service";
         component: EventManageRouteComponent,
         pathMatch: 'full',
         canActivate: [AuthGuard]
+      },
+      {
+        path: 'events/:eventId',
+        component: EventDetailPageComponent,
+        pathMatch: 'full'
       },
       {
         path: 'my-events',

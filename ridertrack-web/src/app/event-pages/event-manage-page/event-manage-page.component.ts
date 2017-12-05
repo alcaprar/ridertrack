@@ -168,7 +168,12 @@ export class EventManagePageComponent implements OnInit {
     }.bind(this));
   }
 
+  /**
+   * It is called when the user clicks the update route button.
+   * It navigates to the route page.
+   */
   editRoute() {
-    this.router.navigate(['/events/', this.eventId, '/route']);
+    console.log('[EventManage][editRoute]');
+    this.router.navigate(['/events/' + this.eventId + '/manage/route']);
   }
 }
