@@ -2,6 +2,9 @@ import { Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
 import { MapsAPILoader, MouseEvent as AGMMouseEvent} from "@agm/core";
 import {} from '@types/googlemaps';
 import {FormControl} from "@angular/forms";
+import {RouteService} from "../../services/route.service";
+import {ActivatedRoute, Router} from "@angular/router";
+import {isNullOrUndefined} from "util";
 
 declare var google: any;
 
@@ -17,17 +20,45 @@ export class AddRouteMapComponent implements OnInit {
     public zoom = 15;
     public searchControl: FormControl= new FormControl();
 
-    public mapPoints = []; //latLng array
+    public mapPoints ; //latLng array
     directions : any;
     travelModeInput: string = 'WALKING';
+
+    private eventId: String;
+    private firstRoute: boolean;
 
     @ViewChild("search")
     public searchElementRef: ElementRef;
 
-    constructor(private mapsAPILoader: MapsAPILoader, private ngZone: NgZone) {}
+    constructor(private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private routeService: RouteService,
+                private route: ActivatedRoute, private router: Router) {}
 
     ngOnInit() {
-        this.initMap();
+      this.route.params.subscribe(params => {
+        this.eventId = params['eventId'];
+        console.log('[Route Management][OnInit]', this.eventId);
+      });
+
+      this.routeService.getRoute(this.eventId)
+        .then(
+          (coordinates) => {
+            console.log('[Route Management][OnInit][success]', coordinates);
+            if(coordinates === null || coordinates === undefined){
+              this.mapPoints = [];
+              this.firstRoute = true;
+            } else {
+              this.mapPoints = coordinates;
+              this.firstRoute = false;
+            }
+          }
+        )
+        .catch(
+          (error) => {
+            console.log('[Route Management][OnInit][error]', error);
+          }
+        );
+
+      this.initMap();
     }
 
     initMap(){
@@ -123,7 +154,12 @@ export class AddRouteMapComponent implements OnInit {
     }
 
     saveRoute(){
-
+      if(this.firstRoute) {
+        this.routeService.createRoute(this.eventId, this.mapPoints);
+      } else {
+        this.routeService.updateRoute(this.eventId, this.mapPoints);
+      }
+      this.router.navigate(['/events/', this.eventId, '/manage']);
     }
 
 }

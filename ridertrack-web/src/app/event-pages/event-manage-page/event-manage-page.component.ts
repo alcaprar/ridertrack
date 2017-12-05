@@ -167,4 +167,8 @@ export class EventManagePageComponent implements OnInit {
       );
     }.bind(this));
   }
+
+  editRoute() {
+    this.router.navigate(['/events/', this.eventId, '/route']);
+  }
 }
