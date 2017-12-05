@@ -34,7 +34,6 @@ import { FacebookModule } from 'ngx-facebook';
 import { MyEventsComponent } from './event-pages/my-events/my-events.component';
 import {GuestGuard} from "./shared/guards/guest.guard";
 import {EventService} from "./shared/services/event.service";
-import { MapComponent } from './shared/map/display_map/map.component';
 import {HttpClientService} from "./shared/services/http-client.service";
 import {EventBoxComponent} from "./event-pages/event-box/event-box.component";
 import {HomeEventBoxComponent} from "./home-page/home-event-box/home-event-box.component";
@@ -73,7 +72,6 @@ import {RouteService} from "./shared/services/route.service";
     EventDetailPageComponent,
     MyEventsComponent,
     ProfilePageComponent,
-    MapComponent,
     EventCreatePageComponent,
     EventBoxComponent,
     EventBoxOrganizedComponent,
