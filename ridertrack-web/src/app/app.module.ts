@@ -13,7 +13,6 @@ import { LoginPageComponent } from './authentication/login-page/login-page.compo
 import { RegistrationPageComponent } from './authentication/registration-page/registration-page.component';
 import { ParticipantPageComponent } from './user-pages/participant-page/participant-page.component';
 import { CountDownComponent } from './user-pages/count-down/count-down.component';
-import { EventAdminPageComponent } from './event-pages/event-admin-page/event-admin-page.component';
 import { HeaderConnectComponent } from './shared/layout/header-connect/header-connect.component';
 import { NavbarComponent } from './shared/layout/navbar/navbar.component';
 import { EventsListPageComponent } from './event-pages/events-list-page/events-list-page.component';
@@ -64,7 +63,6 @@ import { DirectionDirective } from './shared/map/direction.directive';
     RegistrationPageComponent,
     ParticipantPageComponent,
     CountDownComponent,
-    EventAdminPageComponent,
     HeaderConnectComponent,
     NavbarComponent,
     EventsListPageComponent,

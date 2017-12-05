@@ -21,6 +21,11 @@ var eventSchema = Schema({
         enum: ['running', 'cycling', 'hiking', 'triathlon', 'other'],
         required: [true, 'Type of the event is required.']
     },
+    status: {
+        type: String,
+        enum: ['planned', 'ongoing', 'passed'],
+        default: 'planned'
+    },
     description: {
         type: String
     },
@@ -144,6 +149,7 @@ eventSchema.statics.findEventsFromList = function (eventsIdList, callback ){
 eventSchema.statics.create = function (organizerId, eventJson, callback) {
     var event = new Event(eventJson);
     event.organizerId = organizerId;
+    event.status = 'planned';
 
     event.save(function (err, event) {
         if (err) {
@@ -207,6 +213,48 @@ eventSchema.statics.delete = function (eventId, callback){
             })
         }
     })
+};
+
+/**
+ * It starts the tracking of the event changing the status of it.
+ * It returns an error if the status is different than planned.
+ * @param callback
+ * @returns {*}
+ */
+eventSchema.methods.startTracking = function (callback) {
+    if(this.status === 'planned'){
+        // if the status is planned is possible to start the tracking
+        // change the status and save
+        this.status = 'ongoing';
+        this.save(function (err) {
+            console.log('[EventModel][startTracking] error while saving', err);
+            return callback({message: 'Error while updating the status of the event.'});
+        })
+    }else{
+        // if the status is different than planned is not possible to start the tracking
+        return callback({message:  'The event is already ongoing or passed.'})
+    }
+};
+
+/**
+ * It stops the tracking of the event changing the status of it.
+ * It returns an error if the status is different than ongoing.
+ * @param callback
+ * @returns {*}
+ */
+eventSchema.methods.stopTracking = function (callback) {
+    if(this.status === 'ongoing'){
+        // if the status is planned is possible to start the tracking
+        // change the status and save
+        this.status = 'passed';
+        this.save(function (err) {
+            console.log('[EventModel][stopTracking] error while saving', err);
+            return callback({message: 'Error while updating the status of the event.'});
+        })
+    }else{
+        // if the status is different than planned is not possible to start the tracking
+        return callback({message:  'The event is already passed or still only planned.'})
+    }
 };
 
 var Event = mongoose.model('Event', eventSchema);

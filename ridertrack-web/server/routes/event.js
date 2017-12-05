@@ -555,13 +555,12 @@ router.delete('/:eventId/route',authMiddleware.hasValidToken,function(req,res){
             Route.delete(eventId, function(err, deletedCoordinates){
                 if (err){
                     return res.status(400).send({
-                        message:err.message
+                        errors: [err]
                     });
                 }
                 else{
                     return res.status(200).send({
-                        coordinates:deletedCoordinates,
-                        message: "Route was succesfully deleted."
+                        message: "Route was successfully deleted."
                     });
                 }
             })
@@ -569,5 +568,43 @@ router.delete('/:eventId/route',authMiddleware.hasValidToken,function(req,res){
     })
 });
 
+/**
+ * It starts the tracking of an event.
+ * It uses the method on the event model.
+ * It uses the authMiddlewares in order to check if the user is logged and if he/she is the organizer.
+ */
+router.post('/:eventId/tracking/start', authMiddleware.hasValidToken, authMiddleware.isOrganizer, function (req, res) {
+
+    req.event.startTracking(function (err) {
+        if(err){
+            return res.status(400).send({
+                errrors: [err]
+            });
+        }else{
+            return res.status(200).send({
+                message: 'Tracking started successfully.'
+            });
+        }
+    })
+});
+
+/**
+ * It stops the tracking of an event.
+ * It uses the method on the event model.
+ * It uses the authMiddlewares in order to check if the user is logged and if he/she is the organizer.
+ */
+router.post('/:eventId/tracking/stop', authMiddleware.hasValidToken, authMiddleware.isOrganizer, function (req, res) {
+    req.event.stopTracking(function (err) {
+        if(err){
+            return res.status(400).send({
+                errrors: [err]
+            });
+        }else{
+            return res.status(200).send({
+                message: 'Tracking stopped successfully.'
+            });
+        }
+    })
+});
 
 module.exports = router;
