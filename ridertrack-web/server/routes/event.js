@@ -285,27 +285,48 @@ router.post('/', authMiddleware.hasValidToken, multipart, function (req, res) {
  * adds the coordinates(String) of last location to the end of location list.
  * if a location for an user in an event isn't created it creates it
  * if it is created than it updates it with adding the coordinates(String)
- * TODO change type of coordinates to what we get from mobile
  */
 router.post('/:eventId/participants/positions', authMiddleware.hasValidToken, function (req, res) {
-
-    // TODO: Find user if exist, find if event exists, find if that user is enrolled in that event
-
-    Location.create(req.userId, req.params.eventId, req.body, function (err, location) {
+    User.findOne({_id: req.userId}, function (err, user) {
         if (err) {
-            res.status(400).send({
-                errors: [err]
+            return callback({
+                message:"User doesn't exist"
             })
-        }else{
-            res.status(200).send({
-                message: "Location created successfully",
-                location: location
+        }
+        else {
+            Event.findOne({_id: req.params.eventId}, function (err, event) {
+                if (err) {
+                    return callback({
+                        message: "Event doesn't exist"
+                    })
+                }
+                else{
+                    Enrollment.findOne({userId: req.userId, eventId: req.params.eventId}, function (err, enrollment) {
+                        if (err) {
+                            return callback({
+                                message:"User didn't enroll for this event"
+                            })
+                        }
+                        else{
+                            Location.create(req.userId, req.params.eventId, req.body, function (err, location) {
+                                if (err) {
+                                    res.status(400).send({
+                                        errors: [err]
+                                    })
+                                }else{
+                                    res.status(200).send({
+                                        message: "Location created successfully",
+                                        location: location
+                                    })
+                                    // update the ranking logic
+                                }
+                            })
+                        }
+                    })
+                }
             })
-            // update the ranking logic
         }
     })
-
-
 });
 
 /**
