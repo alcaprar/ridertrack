@@ -101,6 +101,9 @@
               <div class="pull-right">
                 <button type='submit' id="btn-submit" class='btn btn-default' [disabled]="!updateEventForm.form.valid">Update</button>
               </div>
+              <div class="pull-right">
+                <button type='button' id="btn-route" class='btn btn-default' (click)="editRoute()">Edit Route</button>
+              </div>
               <div class="pull-left">
                 <input type='button' class='btn btn-default' value='Cancel' (click)="onCancel()" />
               </div>

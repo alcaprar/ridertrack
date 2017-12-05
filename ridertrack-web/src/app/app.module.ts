@@ -55,6 +55,7 @@ import {CommonModule} from "@angular/common";
 import { AddRouteMapComponent } from './shared/map/add-route-map/add-route-map.component';
 import { EventManageRouteComponent } from './event-pages/event-manage-route/event-manage-route.component';
 import { DirectionDirective } from './shared/map/direction.directive';
+import {RouteService} from "./shared/services/route.service";
 
 @NgModule({
   declarations: [
@@ -199,7 +200,8 @@ import { DirectionDirective } from './shared/map/direction.directive';
     GoogleMapsAPIWrapper,
     HttpClientService,
     AlertService,
-    DialogService
+    DialogService,
+    RouteService
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
