@@ -1637,14 +1637,14 @@ describe('Event API tests', function () {
 
 		var coordinates = [{
 		    lat:20,
-            lon:5
+            lng:5
         },
             {
                 lat:15,
-                lon:10
+                lng:10
             },{
 		        lat:50,
-                lon:25
+                lng:25
             }];
 
 		//Before each function user creator should create function
@@ -1672,7 +1672,7 @@ describe('Event API tests', function () {
         it('should allow user to update routes',function(done){
             request.put('/api/events/' + createdEventObject.id + '/route')
                 .set('Authorization',userCreatorObject.userToken)
-                .send({coordinates:[{lat:-1,lon:-1},{lat:6,lon:3},{lat:11,lon:5}]})
+                .send({coordinates:[{lat:-1,lng:-1},{lat:6,lng:3},{lat:11,lng:5}]})
                 .end(function(err,res){
                     expect(res.body).not.to.be.eql(null);
 					expect(res.body).to.have.property('coordinates');
@@ -1697,7 +1697,7 @@ describe('Event API tests', function () {
 		it('should not allow user to update route if he is not creator',function(done){
 			     request.put('/api/events/' + createdEventObject.id + '/route')
                 .set('Authorization',userNotCreatorObject.userToken)
-                .send({coordinates:[{lat:-1,lon:-1},{lat:6,lon:3},{lat:11,lon:5}]})
+                .send({coordinates:[{lat:-1,lng:-1},{lat:6,lng:3},{lat:11,lng:5}]})
                 .end(function(err,res){
                     expect(res.status).to.be.eql(401);
                     done();

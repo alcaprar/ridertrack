@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-//mongoose.set('debug',true);
+mongoose.set('debug',true);
 
 var routeSchema = Schema({
     eventId:{
@@ -9,7 +9,7 @@ var routeSchema = Schema({
     },
     coordinates :[{
         lat: Number,
-        lon: Number
+        lng: Number
     }]
 });
 
