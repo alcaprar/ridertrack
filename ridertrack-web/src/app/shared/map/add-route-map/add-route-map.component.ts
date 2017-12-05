@@ -87,7 +87,7 @@ export class AddRouteMapComponent implements OnInit {
                     }
                     this.initLat= place.geometry.location.lat();
                     this.initLong= place.geometry.location.lng();
-                    this.zoom = 15;
+                    this.zoom = 17;
 
                     console.log("[Show area inserted]" + "[Lng]" +this.initLong + "[Lat]"+ this.initLong);
                 })

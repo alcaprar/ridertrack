@@ -53,6 +53,7 @@ export class DirectionDirective implements  OnInit, OnChanges, OnDestroy {
         console.log("[Direction Service][Direction Sent][Response]", response);
         if (status === google.maps.DirectionsStatus.OK) {
           console.log("[Direction Service][Response][OK]");
+          this.directionsDisplay.setOptions({preserveViewport: true});
           this.directionsDisplay.setDirections(response);
         }
       } );

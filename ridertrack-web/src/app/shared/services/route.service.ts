@@ -5,7 +5,6 @@ import {Router} from "@angular/router";
 
 @Injectable()
 export class RouteService {
-  private BASE_URL = environment.baseAPI;
   private BASE_EVENT_URL = '/api/events';
 
   constructor(private http: HttpClientService, private router: Router) { }
