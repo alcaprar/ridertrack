@@ -10,12 +10,12 @@
         </div>
         <div class="col-4 col-md-2">
             <label for="walking">Walking</label>
-            <input id="walking" type="radio" name="travelMode" value='WALKING' default (click)="setTravelMode(value)">
+            <input id="walking" type="radio" name="travelMode" (click)="setTravelMode('WALKING')">
         </div>
         <div class="col-4 col-md-2">
             <label for="bicycling">Bicycling</label>
-            <input type="radio" name="travelMode" value='BICYCLING' (click)="setTravelMode(value)"
-                   id="bicycling" title="Bicycling">
+            <input type="radio" name="travelMode" (click)="setTravelMode('BICYCLING')"
+                   id="bicycling">
         </div>
         <div class="col-8 col-md-6">
         <button class="btn-manage" (click)="clearLast()">Clear Last</button>
