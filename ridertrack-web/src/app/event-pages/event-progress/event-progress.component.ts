@@ -68,7 +68,7 @@ export class EventProgressComponent implements OnInit {
         } else {
           this.mapPoints = coordinates;
           this.firstRoute = false;
-          this.getRoutePointsAndWaypoints();
+          // this.getRoutePointsAndWaypoints();
         }
       }
       )
