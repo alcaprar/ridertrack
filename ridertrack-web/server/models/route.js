@@ -76,8 +76,16 @@ routeSchema.statics.update = function (eventId, newCoordinates, callback) {
         }
 
         if(!route){
+            /*
+            Commented by Alessandro 6/12/2017
+            We assume that the route is created empty when the event is created.
+            This error should never be thrown to the user, instead we should instantiate an empty one.
+
             return callback({
                 message: 'Route not found for the given event.'
+            })*/
+            route = new Route({
+                eventId: eventId
             })
         }
 

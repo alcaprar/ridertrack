@@ -14,9 +14,12 @@ export class RouteService {
 
     return this.http.get(url).toPromise()
       .then(
-        (res)=> {
-         this.getCoordinates(res);
-          console.log('[RouteService][Route gotten]');
+        (response)=> {
+          console.log('[RouteService][getRoute][success]', response);
+          const body = response.json();
+          const coordinates = body.coordinates as [{lat:number , lng: number}];
+          console.log('[RouteService][getRoute] coordinates', coordinates);
+          return coordinates;
         }
       ).catch(
         (errorResponse: any) => {

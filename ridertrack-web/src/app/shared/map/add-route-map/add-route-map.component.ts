@@ -154,12 +154,12 @@ export class AddRouteMapComponent implements OnInit {
         }
     }
 
+  /**
+   * It is called when the user click the save route button.
+   * It then calls the routeService to update the route passing the points.
+   */
     saveRoute(){
-      if(this.firstRoute) {
-        this.routeService.createRoute(this.eventId, this.mapPoints);
-      } else {
-        this.routeService.updateRoute(this.eventId, this.mapPoints);
-      }
+      this.routeService.updateRoute(this.eventId, this.mapPoints);
 
       // TODO use the dialog service to show the result of the saving
     }

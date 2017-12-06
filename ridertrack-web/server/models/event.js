@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+var Route = require('./route');
+
 // list of fields that an user can not change
 const fieldsNotChangeable = ['_id', 'organizerId', '__v', 'created_at', 'updated_at'];
 
@@ -155,6 +157,13 @@ eventSchema.statics.create = function (organizerId, eventJson, callback) {
         if (err) {
             return callback(err)
         } else {
+            // create an empty route
+            Route.create(event._id, [], function (err) {
+                if(err){
+                    console.log('[EventModel][create] error while creating an empty route.')
+                }
+            });
+            // TODO create an empty ranking
             return callback(null, event)
         }
     })
