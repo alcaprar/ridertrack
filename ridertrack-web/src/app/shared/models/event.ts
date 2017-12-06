@@ -10,10 +10,12 @@ export class Event{
     public country?: string,
     public city?: string,
     public logo?: File,
+    public status?: string,
     public maxDuration?: number,
     public length?: number,
     public routes?: [number, number],
     public enrollmentClosingAt?: Date,
-    public enrollmentOpeningAt?: Date
+    public enrollmentOpeningAt?: Date,
+    public ranking?: File
   ){}
 }

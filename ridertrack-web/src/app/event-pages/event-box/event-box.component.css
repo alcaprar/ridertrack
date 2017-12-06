@@ -41,3 +41,31 @@ h5 {
 .proerty-th .proerty-item  .item-entry h5{
   height:4em;
 }
+#btn-stop{
+  background-color: #d30000;
+}
+#btn-start{
+  background-color: green;
+}
+
+.uploader input {
+  display: none;
+}
+
+.uploader {
+  -webkit-align-items: center;
+  align-items: center;
+  cursor: pointer;
+  display: -webkit-flex;
+  display:flex;
+  height: 2em;
+  -webkit-justify-content: center;
+  justify-content: center;
+  width: 2em;
+}
+.uploader i:hover {
+  color: #fec503;
+}
+
+
+

@@ -19,8 +19,10 @@
 
     <div class="col-md-12 clear ">
       <div id="list-type" class="proerty-th" *ngFor="let event of organizedEvents">
-        <app-event-box-organized [event]="event"></app-event-box-organized>
+        <app-event-box-organized [event]="event">
+        </app-event-box-organized>
       </div>
+
       <div *ngIf="organizedEvents.length === 0">
         <p> NO ORGANIZED EVENTS</p>
       </div>

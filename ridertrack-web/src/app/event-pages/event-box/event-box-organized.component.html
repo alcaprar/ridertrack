@@ -3,12 +3,13 @@
     <div class="item-thumb">
       <a [routerLink]="['/events', event._id]" >
         <div *ngIf="!event.logo" class="event-image" style="background-image: url('../../../assets/img/logoRidertrack.png')"></div>
-        <div class="event-image" [ngStyle]="{ 'background-image': 'url(/api/events/' + event._id + '/logo)'}"></div>
+        <div class="event-image" [ngStyle]="{ 'background-image': 'url(/api/events/' + event._id + '/logo)'}">
+        </div>
       </a>
     </div>
 
     <div class="item-entry overflow">
-      <h5><a class="event-name"[routerLink]="['/events', event._id]"> {{event.name}}</a></h5>
+      <h5><a class="event-name" [routerLink]="['/events', event._id]"> {{event.name}}</a></h5>
       <div class="line">
         <span class="property pull-left" *ngIf="event.length"><b> Length :</b> {{event.length}} km </span>
         <span class="property pull-right"><b><i class="fa fa-calendar"></i></b> {{event.startingDate}} </span>
@@ -16,6 +17,10 @@
       </div>
       <div class="line">
         <span class="property location pull-right"><b><i class="fa fa-map-marker"></i></b> {{event.country}} | {{event.city}}</span>
+         <!-- <label class="uploader pull-left">
+              <i class="fa fa-upload" aria-hidden="true"></i>
+              <input type="file" name="fileCSV" accept=".csv" (change)="fileChangeListener($event)">
+         </label>-->
 
         <!--<span class="property pull-left"><b> Price :</b> {{}}</span>-->
       </div>
@@ -26,6 +31,11 @@
         <img class="logo" src="../../../assets/img/maprogress-logo.jpg">
       </div>-->
       <button class="btn-primary" routerLink="/events/{{event._id}}/manage">Edit event</button>
+      <button id="btn-start" class="btn-primary" *ngIf="event.status==='planned'" (click)="startTracking(event)">Start Tracking</button>
+      <button id="btn-stop" class="btn-primary" *ngIf="event.status==='ongoing'" (click)="stopTracking(event)">Stop Tracking</button>
+        <div style="height: 0;overflow: hidden">
+            <input type="file" (change)="fileChangeListener($event)" />
+        </div>
     </div>
   </div>
 </div>

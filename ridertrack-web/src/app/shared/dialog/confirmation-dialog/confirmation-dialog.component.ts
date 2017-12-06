@@ -11,7 +11,7 @@ declare var $: any;
 export class ConfirmationDialogComponent implements OnInit {
 
   private callback;
-  private title = 'Title'
+  private title = 'Title';
   private body = 'Body';
 
   constructor(private dialogService: DialogService) {

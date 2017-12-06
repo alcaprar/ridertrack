@@ -1,3 +1,4 @@
+///<reference path="http-client.service.ts"/>
 import { Injectable } from '@angular/core';
 import {Router} from '@angular/router';
 import {Event} from '../models/event';
@@ -319,6 +320,27 @@ export class EventService {
         str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
       }
     return str.join("&");
+  }
+
+  startTracking(event: Event) {
+    const url = `${this.BASE_EVENT_URL}/${event._id}/tracking/start`;
+
+    return this.http.post(url,"").toPromise()
+      .then((response) => {
+        console.log("[EventService][StartTracking][Success]", response);
+      }).catch((errors) => {
+        console.log("[EventService][StartTracking][Error]", errors);
+      });
+  }
+  stopTracking(event: Event) {
+    const url = `${this.BASE_EVENT_URL}/${event._id}/tracking/stop`;
+
+    return this.http.post(url,"").toPromise()
+      .then((response) => {
+      console.log("[EventService][StopTracking][Success]", response);
+      }).catch((errors) => {
+      console.log("[EventService][StopTracking][Error]", errors);
+      });
   }
 
 }

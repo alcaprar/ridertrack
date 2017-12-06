@@ -3,6 +3,7 @@ import {AuthenticationService} from "../../../authentication/authentication.serv
 import {EventService} from "../../../shared/services/event.service";
 import {MyEventsQueryParams} from "../../../shared/models/myEventsQueryParams";
 import {ActivatedRoute, Router} from '@angular/router';
+import {AlertService} from "../../../shared/services/alert.service";
 
 @Component({
   selector: 'app-organized-events',
@@ -13,6 +14,7 @@ export class OrganizedEventsComponent implements OnInit {
 
   @ViewChild('itemsPerPage') itemsPerPageSelect: ElementRef;
 
+
   private allowedItemsPerPage = [3, 6, 9, 12, 15];
 
   private queryParams: MyEventsQueryParams = new MyEventsQueryParams();
@@ -20,7 +22,8 @@ export class OrganizedEventsComponent implements OnInit {
 
   private organizedEvents: Event[] = [];
 
-  constructor(private authService: AuthenticationService, private route: ActivatedRoute, private router: Router, private eventService: EventService) {
+  constructor(private authService: AuthenticationService, private route: ActivatedRoute,
+              private router: Router, private eventService: EventService) {
 
   }
 
@@ -98,5 +101,7 @@ export class OrganizedEventsComponent implements OnInit {
       queryParams: this.queryParams
     });
   }
+
+
 
 }
