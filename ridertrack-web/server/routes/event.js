@@ -595,11 +595,10 @@ router.delete('/:eventId/route',authMiddleware.hasValidToken,function(req,res){
  * It uses the authMiddlewares in order to check if the user is logged and if he/she is the organizer.
  */
 router.post('/:eventId/tracking/start', authMiddleware.hasValidToken, authMiddleware.isOrganizer, function (req, res) {
-
     req.event.startTracking(function (err) {
         if(err){
             return res.status(400).send({
-                errrors: [err]
+                errors: [err]
             });
         }else{
             return res.status(200).send({
@@ -618,7 +617,7 @@ router.post('/:eventId/tracking/stop', authMiddleware.hasValidToken, authMiddlew
     req.event.stopTracking(function (err) {
         if(err){
             return res.status(400).send({
-                errrors: [err]
+                errors: [err]
             });
         }else{
             return res.status(200).send({

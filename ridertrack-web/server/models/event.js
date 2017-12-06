@@ -227,8 +227,12 @@ eventSchema.methods.startTracking = function (callback) {
         // change the status and save
         this.status = 'ongoing';
         this.save(function (err) {
-            console.log('[EventModel][startTracking] error while saving', err);
-            return callback({message: 'Error while updating the status of the event.'});
+            if(err){
+                console.log('[EventModel][startTracking] error while saving', err);
+                return callback({message: 'Error while updating the status of the event.'});
+            }else{
+                return callback(null)
+            }
         })
     }else{
         // if the status is different than planned is not possible to start the tracking
@@ -248,8 +252,12 @@ eventSchema.methods.stopTracking = function (callback) {
         // change the status and save
         this.status = 'passed';
         this.save(function (err) {
-            console.log('[EventModel][stopTracking] error while saving', err);
-            return callback({message: 'Error while updating the status of the event.'});
+            if(err){
+                console.log('[EventModel][stopTracking] error while saving', err);
+                return callback({message: 'Error while updating the status of the event.'});
+            }else{
+                return callback(null)
+            }
         })
     }else{
         // if the status is different than planned is not possible to start the tracking
