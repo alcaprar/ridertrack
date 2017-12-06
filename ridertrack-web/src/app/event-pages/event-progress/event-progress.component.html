@@ -1,0 +1,28 @@
+<app-page-header title="Track progress"></app-page-header>
+
+<div class="search-form wow pulse">
+  <form (ngSubmit)="search()" class="form-inline">
+    <div class="row ">
+      <div class="col-md-4 col-md-offset-4">
+        <select #searchType class="selectpicker show-tick form-control">
+            <option value="default" >Choose a participant to track</option>
+          <option *ngFor="let participant of participantsList" [value]="participant" style="text-transform: capitalize">{{participant}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="row ">
+      <div class="col-md-12">
+        <div class="row" style="padding-top: 5px">
+          <div class="col-xs-12 col-md-2 col-md-offset-5" id="search" style="text-align: center">
+            <input class="button btn largesearch-btn" value="Search" type="submit" style="min-width: 100px; float: none">
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<agm-map id="map" #map [longitude]="initLong" [latitude]="initLat" [zoom]="zoom" (mapClick)="mapClicked($event)">
+  <map-direction *ngIf="directions != null" [origin]="directions.origin" [destination]="directions.destination" [waypoints]="directions.waypoints"
+    [travelMode]="travelModeInput"></map-direction>
+</agm-map>

@@ -54,6 +54,7 @@ import { AddRouteMapComponent } from './shared/map/add-route-map/add-route-map.c
 import { EventManageRouteComponent } from './event-pages/event-manage-route/event-manage-route.component';
 import { DirectionDirective } from './shared/map/direction.directive';
 import {RouteService} from "./shared/services/route.service";
+import { EventProgressComponent } from './event-pages/event-progress/event-progress.component';
 
 @NgModule({
   declarations: [
@@ -89,7 +90,8 @@ import {RouteService} from "./shared/services/route.service";
     ConfirmationDialogComponent,
     AddRouteMapComponent,
     EventManageRouteComponent,
-    DirectionDirective
+    DirectionDirective,
+    EventProgressComponent
   ],
   imports: [
     BrowserModule,
@@ -139,6 +141,11 @@ import {RouteService} from "./shared/services/route.service";
       {
         path: 'events/:eventId',
         component: EventDetailPageComponent,
+        pathMatch: 'full'
+      },
+      {
+        path: 'events/:eventId/progress',
+        component: EventProgressComponent,
         pathMatch: 'full'
       },
       {

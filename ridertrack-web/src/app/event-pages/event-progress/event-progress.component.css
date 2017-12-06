@@ -1,0 +1,41 @@
+agm-map {
+    cursor: crosshair;
+}
+p{
+    margin-top:0.4em;
+   font-weight: bold;
+}
+#walking, #bicycling{
+    padding:0;
+    width: inherit;
+    margin-left: 1em;
+    margin-top: 0.5em;
+}
+
+#map , #map:hover{
+    cursor: crosshair;
+    height: 65rem;
+}
+
+.btn-manage {
+    background-color: #FDC600;
+    margin-bottom: 0.5em;
+    color: white;
+    padding: 0.5em;
+    width: 30%;
+    margin-left: 1em;
+    margin-right: 1em;
+    float: right;
+}
+.btn-save{
+    margin-top: 0.5em;
+    background-color: #d30000;
+    padding: 0.5em;
+    color: white;
+    width: 100%;
+}
+
+#search-container{
+    padding: 1em 1em 1em 1em;
+    background-color: ghostwhite;
+}
