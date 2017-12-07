@@ -349,6 +349,25 @@ router.get('/:eventId/:userId/location', function (req, res) {
 });
 
 
+/*
+ * This method gets the latest ranking of the event
+ */
+router.get('/:eventId/ranking', function (req, res) {
+
+    Ranking.findOne({eventId: req.params.eventId}, function (err, ranking) {
+        if (err) {
+            res.status(400).send({
+                errors: [err]
+            })
+        }else{
+            // before add function which uses ranking.update and user position to re-rank
+            res.status(200).send({
+                ranking: ranking.ranking,
+                time :'Ranking was sent on: ' + ranking.updated_at
+            })
+        }
+    })
+});
 
 /*
  * This method gets the last known location of a user and its freshness data
