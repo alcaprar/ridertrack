@@ -20,7 +20,9 @@ router.post('/register', function (req, res) {
             errors: [{message: "Email and/or password missing."}]
             });
     }else{
+        console.log("Else.....")
         User.create(req.body, function (err, user) {
+            console.log("working...Node")
             // if the error throws any error, send them
             if(err){
                 return res.status(400).send({

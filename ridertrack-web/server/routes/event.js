@@ -348,6 +348,8 @@ router.get('/:eventId/:userId/location', function (req, res) {
     })
 });
 
+
+
 /*
  * This method gets the last known location of a user and its freshness data
  */

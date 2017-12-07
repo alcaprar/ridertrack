@@ -14,7 +14,7 @@ var userSchema = Schema({
         type: String,
         required: true,
         minlength: 1,
-        validate: [validator.isEmail, 'Email is not correct.']     
+        validate: [validator.isEmail, 'Email is not correct.']
     },
     salt: {
         type: String,
@@ -25,13 +25,13 @@ var userSchema = Schema({
         required: false
     },
     name: {
-        type: String, 
-        required: true, 
+        type: String,
+        required: true,
         minlength: 1
     },
     surname: {
-        type: String, 
-        required: true, 
+        type: String,
+        required: true,
         minlength: 1
     },
     role: {
@@ -185,7 +185,7 @@ userSchema.statics.findByGoogleId = function (googleId, callback) {
                 message:"User with specified googleId can't be found"
             })
         }
-        
+
         return callback(null, user)
     })
 };
@@ -214,6 +214,8 @@ userSchema.statics.findByFacebookId = function (facebookId, callback) {
  * @param callback
  */
 userSchema.statics.create = function (userJson, callback) {
+    console.log("Got here...")
+    console.log(userJson)
     var user = new User(userJson);
 
     if(typeof userJson.password === 'undefined'){
@@ -229,6 +231,7 @@ userSchema.statics.create = function (userJson, callback) {
             return callback(null, user);
         })
     }else{
+        console.log("Got here... else")
         user.generateHash(userJson.password, function (err) {
             if(err){
                 return callback(err)
@@ -240,6 +243,7 @@ userSchema.statics.create = function (userJson, callback) {
                         " Maybe user already exists as social service user"
                     });
                 }
+                console.log("Got here...if")
 
                 return user.removePrivateFields(function () {
                     callback(null, user)
@@ -256,7 +260,7 @@ userSchema.statics.create = function (userJson, callback) {
  * @param userJson
  * @param callback
  */
-userSchema.statics.update = function (userId, userJson, callback) {    
+userSchema.statics.update = function (userId, userJson, callback) {
     // return and block the update if a not changeable field is passed
     for(let key in userJson){
         if(fieldsNotChangeable.indexOf(key) > -1){
@@ -275,7 +279,7 @@ userSchema.statics.update = function (userId, userJson, callback) {
             for(let key in userJson){
                 user[key] = userJson[key]
             }
-            
+
             user.save(function (err) {
                 if(err){
                     return callback({
