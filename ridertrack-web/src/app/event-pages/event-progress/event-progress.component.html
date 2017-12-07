@@ -5,7 +5,7 @@
     <div class="row ">
       <div class="col-md-4 col-md-offset-4">
         <select #searchType class="selectpicker show-tick form-control">
-            <option value="default" >Choose a participant to track</option>
+          <option value="default">Choose a participant to track</option>
           <option *ngFor="let participant of participantsList" [value]="participant" style="text-transform: capitalize">{{participant}}</option>
         </select>
       </div>
@@ -22,7 +22,9 @@
   </form>
 </div>
 
-<agm-map id="map" #map [longitude]="initLong" [latitude]="initLat" [zoom]="zoom" (mapClick)="mapClicked($event)">
+<agm-map id="map" #map [longitude]="initLong" [latitude]="initLat" [zoom]="zoom">
+  <!--<agm-marker [latitude]="userPosition.lat" [longitude]="userPosition.lng"></agm-marker>-->
   <map-direction *ngIf="directions != null" [origin]="directions.origin" [destination]="directions.destination" [waypoints]="directions.waypoints"
     [travelMode]="travelModeInput"></map-direction>
+
 </agm-map>

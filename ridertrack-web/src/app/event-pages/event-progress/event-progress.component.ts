@@ -32,6 +32,11 @@ export class EventProgressComponent implements OnInit {
   private firstRoute: boolean;
   private participantsList: any;
 
+  private userPosition: {
+    lat: 45.31411230740029,
+    lng: 14.173370342254639
+  }
+
   @ViewChild("search")
   public searchElementRef: ElementRef;
 
@@ -50,13 +55,11 @@ export class EventProgressComponent implements OnInit {
         if (participants != null) {
           this.participantsList = participants;
         }
-      }
-    )
+      })
       .catch(
       (error) => {
         console.log('[Participants Management][OnInit][error]', error);
-      }
-      );
+      });
 
     this.routeService.getRoute(this.eventId)
       .then(
@@ -64,54 +67,56 @@ export class EventProgressComponent implements OnInit {
         console.log('[Route Management][OnInit][success]', coordinates);
         if (coordinates === null || coordinates === undefined) {
           this.mapPoints = [];
-          this.firstRoute = true;
+          // this.firstRoute = true;
         } else {
           this.mapPoints = coordinates;
-          this.firstRoute = false;
-          // this.getRoutePointsAndWaypoints();
+          // this.firstRoute = false;
+          this.getRoutePointsAndWaypoints();
+          this.initMap();
         }
-      }
-      )
+      })
       .catch(
       (error) => {
         console.log('[Route Management][OnInit][error]', error);
-      }
-      );
-
-    this.initMap();
+      });
   }
 
   initMap() {
-
-    //set up current location
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(position => {
-        this.initLat = position.coords.latitude;
-        this.initLong = position.coords.longitude;
-        console.log("[Geolocated]", position.coords);
-      });
-    }
-
-    //add listener to Input search
-    this.mapsAPILoader.load().then(() => {
-      let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
-        types: ["address"]
-      });
-      autocomplete.addListener("place_changed", () => {
-        this.ngZone.run(() => {
-          let place: google.maps.places.PlaceResult = autocomplete.getPlace();
-
-          if (place.geometry === undefined || place.geometry === null) {
-            return;
-          }
-          this.initLat = place.geometry.location.lat();
-          this.initLong = place.geometry.location.lng();
-          this.zoom = 17;
-
-          console.log("[Show area inserted]" + "[Lng]" + this.initLong + "[Lat]" + this.initLong);
-        })
-      })
+    navigator.geolocation.getCurrentPosition(position => {
+      this.initLat = this.mapPoints[0].lat;
+      this.initLong = this.mapPoints[0].lng;
+      console.log("[Init map]", position);
     });
+  }
+
+  getRoutePointsAndWaypoints() {
+    let waypoints = [];
+
+    if (this.mapPoints.length > 2) {
+      for (let i = 1; i < this.mapPoints.length - 1; i++) {
+        let address = this.mapPoints[i];
+        if (address !== "") {
+          waypoints.push({
+            location: address,
+            stopover: false //show marker on map for each waypoint (true)
+          });
+        }
+        this.updateDirections(this.mapPoints[0], this.mapPoints[this.mapPoints.length - 1], waypoints);
+      }
+    } else if (this.mapPoints.length > 1) {
+      this.updateDirections(this.mapPoints[this.mapPoints.length - 2], this.mapPoints[this.mapPoints.length - 1], waypoints);
+    } else {
+      this.updateDirections(this.mapPoints[this.mapPoints.length - 1], this.mapPoints[this.mapPoints.length - 1], waypoints);
+    }
+  }
+
+  updateDirections(originAddress, destinationAddress, waypoints) {
+    this.directions = {
+      origin: { lat: originAddress.lat, lng: originAddress.lng },
+      destination: { lat: destinationAddress.lat, lng: destinationAddress.lng },
+      waypoints: waypoints
+    };
+    console.log("[Directions][Update]", this.directions);
   }
 
 
