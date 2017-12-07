@@ -14,6 +14,7 @@ var standardMessage = {message: 'An error occured. Please try again in a while. 
  */
 router.post('/register', function (req, res) {
     console.log('[POST /register]');
+    console.log(req.body);
     if(typeof req.body.email === 'undefined' || typeof req.body.password === 'undefined'){
         return res.status(400).send({
             errors: [{message: "Email and/or password missing."}]
@@ -43,8 +44,8 @@ router.post('/register', function (req, res) {
                     expiresIn: 172800
                 })
             }
-        });   
-    }    
+        });
+    }
 });
 
 /**
@@ -124,7 +125,7 @@ router.get('/login/google', function (req, res, next) {
                 errors: [err.message]
             });
         }
-        
+
         if(!user){
             return res.status(400).send({
                 errors: [standardMessage]
