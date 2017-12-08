@@ -47,6 +47,8 @@ export class AddRouteMapComponent implements OnInit {
             } else {
               console.log('[Route Management][OnInit][Coordinates detected]', coordinates);
               this.mapPoints = coordinates;
+              this.initLat = this.mapPoints[0].lat;
+              this.initLong = this.mapPoints[0].lng;
               this.getRoutePointsAndWaypoints();
             }
           }
@@ -63,7 +65,7 @@ export class AddRouteMapComponent implements OnInit {
     initMap(){
 
         //set up current location
-        if(navigator.geolocation){
+        if( navigator.geolocation && this.mapPoints === []){
             navigator.geolocation.getCurrentPosition(position => {
                 this.initLat = position.coords.latitude;
                 this.initLong = position.coords.longitude;
