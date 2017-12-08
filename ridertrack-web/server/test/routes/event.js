@@ -1025,438 +1025,330 @@ describe('Event API tests', function () {
     });
 
     describe('POST /events', function () {
+		
+		var userJson = {
+			"name": "User",
+			"surname": "Surname",
+			"email": "email@domain.it",
+			"password": "AVeryStrongPasword",
+			"id":'',
+			"jwtToken":''
+		};
+		
+		var eventJson ={         
+			"id":'',
+			"name":"TestEvent",
+			"organizerId": '',
+			"type":"running",
+			"description":"Blablabla",
+			"country":"MyCountry",
+			"city":"MyCity",
+			"startingDate":"2017-09-23",
+			"startingTime":"12:00:00.000",
+			"maxDuration":150,
+			"length": 40,
+			"enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
+			"enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+			"participantsList":[255],
+			"routes":["Route1"]
+			
+		}
+		
+		beforeEach(function(done){
+			
+			request.post('/api/auth/register')
+				.send(userJson)
+				.end(function(err,resUser){
+					if (err)
+						throw new Error(err);
+					
+					userJson.id = resUser.body.userId;
+					userJson.jwtToken = "JWT " + resUser.body.jwtToken;
+					eventJson.organizerId = userJson.id;
+					
+					done();
+				});
+		});
+		
+		
+		
+		
+		
         it('it should create an event', function (done) {
-            var user = {
-                "name": "User",
-                "surname": "Surname",
-                "email": "email@domain.it",
-                "password": "AVeryStrongPasword"
-            };
-            request.post('/api/auth/register')
-                .send(user)
-                .end(function (err, res) {
-                    var userId = res.body.userId;
-                    var userToken = res.body.jwtToken;
-
-                    var event = {
-                        "name":"TestEvent",
-                        "organizerId": userId,
-                        "type":"running",
-                        "description":"Blablabla",
-                        "country":"MyCountry",
-                        "city":"MyCity",
-                        "startingDate":"2017-09-23",
-                        "startingTime":"12:00:00.000",
-                        "maxDuration":150,
-                        "length": 40,
-                        "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
-                        "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
-                        "participantsList":[255],
-                        "routes":["Route1"]
-                    };
-
-                    request.post('/api/events')
-                        .send(event)
-                        .set('Authorization', 'JWT ' + userToken)
-                        .end(function (err, res) {
-                            expect(res.status).to.be.eql(200);
-                            expect(res.body).to.be.an('object');
-                            expect(res.body.event).to.be.an('object');
-                            expect(res.body.event._id).to.not.be.eql('');
-
-                            done();
-                        })
+			
+			request.post('/api/events')
+				.set('Authorization', userJson.jwtToken)
+				.send(eventJson)
+				.end(function (err, res) {
+					expect(res.status).to.be.eql(200);
+					expect(res.body).to.be.an('object');
+					expect(res.body.event).to.be.an('object');
+					expect(res.body.event._id).to.not.be.eql('');
+					
+					done();
+					
                 });
         });
 
         it('it should NOT create an event without login', function (done) {
-            var user = {
-                "name": "User",
-                "surname": "Surname",
-                "email": "email@domain.it",
-                "password": "AVeryStrongPasword"
-            };
-            request.post('/api/auth/register')
-                .send(user)
-                .end(function (err, res) {
-                    user._id = res.body.userId;
-                    user.jwtToken = res.body.jwtToken;
-
-                    var event = {
-                        "name":"TestEvent",
-                        "organizerId": user._id,
-                        "type":"running",
-                        "description":"Blablabla",
-                        "country":"MyCountry",
-                        "city":"MyCity",
-                        "startingDate":"2017-09-23",
-                        "startingTime":"12:00:00.000",
-                        "maxDuration":150,
-                        "length": 40,
-                        "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
-                        "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
-                        "participantsList":[255],
-                        "routes":["Route1"]
-                    };
-
-                    request.post('/api/events')
-                        .send(event)
-                        .end(function (err, res) {
-                            expect(res.status).to.be.eql(401);
-                            expect(res.body).to.be.an('object');
-                            expect(res.body.errors).to.not.be.eql(undefined);
-                            done();
-                        })
+						
+			request.post('/api/events')
+				.send(eventJson)
+				.end(function (err, res) {
+					expect(res.status).to.be.eql(401);
+					expect(res.body).to.be.an('object');
+					expect(res.body.event).to.be.an('object');
+					expect(res.body.event._id).to.not.be.eql('');
+					
+					done();
+					
                 });
         });
-    });
+	});
 
 
     describe('PUT /events', function () {
+		
+		var userJson = {
+			"name": "User",
+			"surname": "Surname",
+			"email": "email@domain.it",
+			"password": "AVeryStrongPasword",
+			"id":'',
+			"jwtToken":''
+		};
+		
+		var eventJson ={         
+			"id":'',
+			"name":"TestEvent",
+			"organizerId": '',
+			"type":"running",
+			"description":"Blablabla",
+			"country":"MyCountry",
+			"city":"MyCity",
+			"startingDate":"2017-09-23",
+			"startingTime":"12:00:00.000",
+			"maxDuration":150,
+			"length": 40,
+			"enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
+			"enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+			"participantsList":[255],
+			"routes":["Route1"]
+			
+		}
+		
+		beforeEach(function(done){
+			
+			request.post('/api/auth/register')
+				.send(userJson)
+				.end(function(err,resUser){
+					
+					userJson.id = resUser.body.userId;
+					userJson.jwtToken = "JWT " + resUser.body.jwtToken;
+					eventJson.organizerId = userJson.id;
+					
+					Event.create(organizerId,eventJson,function(err,event){
+						eventJson.id = event._id;
+						done();
+					});
+				});
+		});
+		
+		
         it('it should NOT update the event if it is not the organizer', function (done) {
-            var user = {
-                "name": "User",
-                "surname": "Surname",
-                "email": "email@domain.it",
-                "password": "AVeryStrongPasword"
-            };
-            request.post('/api/auth/register')
-                .send(user)
-                .end(function (err, res) {
-                    user._id = res.body.userId;
-                    user.jwtToken = res.body.jwtToken;
-
-                    var event = new Event({
-                        "name":"TestEvent",
-                        "organizerId": user._id,
-                        "type":"running",
-                        "description":"Blablabla",
-                        "country":"MyCountry",
-                        "city":"MyCity",
-                        "startingDate":"2017-09-23",
-                        "startingTime":"12:00:00.000",
-                        "maxDuration":150,
-                        "length": 40,
-                        "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
-                        "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
-                        "participantsList":[255],
-                        "routes":["Route1"]
-                    });
-
-                    var user2 = {
-                        "name": "User",
-                        "surname": "Surname",
-                        "email": "email@domain.it",
-                        "password": "AVeryStrongPasword"
-                    };
-
-                    request.post('/api/auth/register')
-                        .send(user2)
-                        .end(function (err, res) {
-                            user2._id = res.body.userId;
-                            user2.jwtToken = res.body.jwtToken;
-
-                            event.save(function () {
-                                var newFields = {
+		
+		var user2 = {
+				"name": "User",
+				"surname": "Surname",
+				"email": "email@domain.it",
+				"password": "AVeryStrongPasword"
+                };
+				   
+				request.post('/api/auth/register')
+					.send(user2)
+					.end(function (err, res) {
+						user2._id = res.body.userId;
+						user2.jwtToken = res.body.jwtToken;
+						
+						var newFields = {
                                     name: 'newName'
                                 };
-
-                                request.put('/api/events/' + event._id)
-                                    .send(newFields)
-                                    .set('Authorization', 'JWT ' + user2.jwtToken)
-                                    .end(function (req, res) {
-                                        expect(res.status).to.be.eql(401);
-                                        expect(res.body).to.be.an('object');
-                                        expect(res.body.errors).to.not.be.eql(null);
-
-                                        done()
-                                    });
+								
+						request.put('/api/events/' + eventJson.id)
+							.send(newFields)
+							.set('Authorization', 'JWT ' + user2.jwtToken)
+							.end(function (req, res) {
+								expect(res.status).to.be.eql(401);
+								expect(res.body).to.be.an('object');
+								expect(res.body.errors).to.not.be.eql(null);
+								
+								done();
+                                  
                             });
-                        });
-                });
-        });
+                    });
+		});
 
         it('should NOT update the id of the event', function (done) {
-            var user = {
-                "name": "User",
-                "surname": "Surname",
-                "email": "email@domain.it",
-                "password": "AVeryStrongPasword"
-            };
-            request.post('/api/auth/register')
-                .send(user)
-                .end(function (err, res) {
-                    user._id = res.body.userId;
-                    user.jwtToken = res.body.jwtToken;
-
-                    var event = new Event({
-                        "name":"TestEvent",
-                        "organizerId": user._id,
-                        "type":"running",
-                        "description":"Blablabla",
-                        "country":"MyCountry",
-                        "city":"MyCity",
-                        "startingDate":"2017-09-23",
-                        "startingTime":"12:00:00.000",
-                        "maxDuration":150,
-                        "length": 40,
-                        "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
-                        "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
-                        "participantsList":[255],
-                        "routes":["Route1"]
-                    });
-
-                    event.save(function () {
-                        let newFields = {
-                            _id: mongoose.Types.ObjectId()
-                        };
-
-                        request.put('/api/events/' + event._id)
-                            .send(newFields)
-                            .set('Authorization', 'JWT ' + user.jwtToken)
-                            .end(function (req, res) {
-                                expect(res.status).to.be.eql(400);
-                                expect(res.body).to.be.an('object');
-                                expect(res.body.errors).to.not.be.eql(null);
-
-                                done()
-                            });
-                    });
+			
+			let newFields = {
+				_id: mongoose.Types.ObjectId()
+				};
+				
+			request.put('/api/events/' + eventJson.id)
+				.set('Authorization', userJson.jwtToken)
+				.send(newFields)
+				.end(function (req, res) {
+					//authorization error
+					expect(res.status).to.be.eql(401);
+					expect(res.body).to.be.an('object');
+					expect(res.body.errors).to.not.be.eql(null);
+					
+					done();
+                      
                 });
         });
 
         it('should NOT update without login', function (done) {
-            var event = new Event({
-                "name":"TestEvent",
-                "organizerId": mongoose.Types.ObjectId(),
-                "type":"running",
-                "description":"Blablabla",
-                "country":"MyCountry",
-                "city":"MyCity",
-                "startingDate":"2017-09-23",
-                "startingTime":"12:00:00.000",
-                "maxDuration":150,
-                "length": 40,
-                "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
-                "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
-                "participantsList":[255],
-                "routes":["Route1"]
-            });
-
-            event.save(function () {
-                var newFields = {
-                    name: 'newName'
-                };
-
-                request.put('/api/events/' + event._id)
-                    .send(newFields)
-                    .end(function (req, res) {
-                        expect(res.status).to.be.eql(401);
-                        expect(res.body).to.be.an('object');
-                        expect(res.body.errors).to.not.be.eql(null);
-
-                        done()
+			
+			var newFields = {
+				name: 'newName'
+				};
+				
+			request.put('/api/events/' + eventJson.id)
+				.send(newFields)
+				.end(function (req, res) {
+					expect(res.status).to.be.eql(401);
+					expect(res.body).to.be.an('object');
+					expect(res.body.errors).to.not.be.eql(null);
+					
+					done()
                     });
-            });
-        });
+		});
 
         it('it should update the name of the event', function (done) {
-            var user = {
-                "name": "User",
-                "surname": "Surname",
-                "email": "email@domain.it",
-                "password": "AVeryStrongPasword"
-            };
-            request.post('/api/auth/register')
-                .send(user)
-                .end(function (err, res) {
-                    user._id = res.body.userId;
-                    user.jwtToken = res.body.jwtToken;
-
-                    var event = new Event({
-                        "name":"TestEvent",
-                        "organizerId": user._id,
-                        "type":"running",
-                        "description":"Blablabla",
-                        "country":"MyCountry",
-                        "city":"MyCity",
-                        "startingDate":"2017-09-23",
-                        "startingTime":"12:00:00.000",
-                        "maxDuration":150,
-                        "length": 40,
-                        "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
-                        "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
-                        "participantsList":[255],
-                        "routes":["Route1"]
-                    });
-
-                    event.save(function () {
-                        var newFields = {
-                            name: 'newName'
-                        };
-
-                        request.put('/api/events/' + event._id)
-                            .send(newFields)
-                            .set('Authorization', 'JWT ' + user.jwtToken)
-                            .end(function (req, res) {
-                                expect(res.status).to.be.eql(200);
-                                expect(res.body).to.be.an('object');
-                                expect(res.body.errors).to.be.eql(undefined);
-                                expect(res.body.event.name).to.be.eql(newFields.name);
-
-                                done()
-                            });
-                    });
+			
+			var newFields = {
+				name: 'newName'
+				
+				};
+				
+			request.put('/api/events/' + eventJson.id)
+				.set('Authorization', userJson.jwtToken)
+				.send(newFields)
+				.end(function (req, res) {
+					//console.log(res.body);
+					expect(res.status).to.be.eql(200);
+					expect(res.body).to.be.an('object');
+					expect(res.body.errors).to.be.eql(undefined);
+					expect(res.body.event.name).to.be.eql(newFields.name);
+					
+					done()
                 });
-        })
-    });
-
+        });
+	});
+	
     describe('DELETE /events', function () {
+		
+		var userJson = {
+			"name": "User",
+			"surname": "Surname",
+			"email": "email@domain.it",
+			"password": "AVeryStrongPasword",
+			"id":'',
+			"jwtToken":''
+		};
+		
+		var eventJson ={         
+			"id":'',
+			"name":"TestEvent",
+			"organizerId": '',
+			"type":"running",
+			"description":"Blablabla",
+			"country":"MyCountry",
+			"city":"MyCity",
+			"startingDate":"2017-09-23",
+			"startingTime":"12:00:00.000",
+			"maxDuration":150,
+			"length": 40,
+			"enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
+			"enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+			"participantsList":[255],
+			"routes":["Route1"]
+			
+		}
+		
+		beforeEach(function(done){
+			
+			request.post('/api/auth/register')
+				.send(userJson)
+				.end(function(err,resUser){
+					
+					userJson.id = resUser.body.userId;
+					userJson.jwtToken = "JWT " + resUser.body.jwtToken;
+					eventJson.organizerId = userJson.id;
+					
+					Event.create(organizerId,eventJson,function(err,event){
+						eventJson.id = event._id;
+						done();
+					});
+				});
+		});
+		
+		
+		
         it('it should NOT delete an event without login', function (done) {
-            var event = new Event({
-                "name":"TestEvent",
-                "organizerId": mongoose.Types.ObjectId(),
-                "type":"running",
-                "description":"Blablabla",
-                "country":"MyCountry",
-                "city":"MyCity",
-                "startingDate":"2017-09-23",
-                "startingTime":"12:00:00.000",
-                "maxDuration":150,
-                "length": 40,
-                "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
-                "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
-                "participantsList":[255],
-                "routes":["Route1"]
-            });
-
-            event.save(function () {
-                var newFields = {
-                    name: 'newName'
-                };
-
-                request.delete('/api/events/' + event._id)
-                    .end(function (req, res) {
-                        expect(res.status).to.be.eql(401);
-                        expect(res.body).to.be.an('object');
-                        expect(res.body.errors).to.not.be.eql(null);
-
-                        done()
+			
+			request.delete('/api/events/' + eventJson.id)
+				.end(function (req, res) {
+					expect(res.status).to.be.eql(401);
+					expect(res.body).to.be.an('object');
+					expect(res.body.errors).to.not.be.eql(null);
+					
+					done()
                     });
             });
         });
 
         it('it should NOT delete the event if it is not the organizer', function (done) {
-            var user = {
-                "name": "User",
-                "surname": "Surname",
-                "email": "email@domain.it",
-                "password": "AVeryStrongPasword"
-            };
-            request.post('/api/auth/register')
-                .send(user)
-                .end(function (err, res) {
-                    user._id = res.body.userId;
-                    user.jwtToken = res.body.jwtToken;
-
-                    var event = new Event({
-                        "name":"TestEvent",
-                        "organizerId": user._id,
-                        "type":"running",
-                        "description":"Blablabla",
-                        "country":"MyCountry",
-                        "city":"MyCity",
-                        "startingDate":"2017-09-23",
-                        "startingTime":"12:00:00.000",
-                        "maxDuration":150,
-                        "length": 40,
-                        "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
-                        "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
-                        "participantsList":[255],
-                        "routes":["Route1"]
-                    });
-
-                    var user2 = {
-                        "name": "User",
-                        "surname": "Surname",
-                        "email": "email@domain.it",
-                        "password": "AVeryStrongPasword"
-                    };
-
-                    request.post('/api/auth/register')
-                        .send(user2)
-                        .end(function (err, res) {
-                            user2._id = res.body.userId;
-                            user2.jwtToken = res.body.jwtToken;
-
-                            event.save(function () {
-                                var newFields = {
-                                    name: 'newName'
-                                };
-
-                                request.delete('/api/events/' + event._id)
-                                    .set('Authorization', 'JWT ' + user2.jwtToken)
-                                    .end(function (req, res) {
-                                        expect(res.status).to.be.eql(401);
-                                        expect(res.body).to.be.an('object');
-                                        expect(res.body.errors).to.not.be.eql(null);
-
-                                        done()
-                                    });
-                            });
+			
+			var user2 = {
+				"name": "User",
+				"surname": "Surname",
+				"email": "email@domain.it",
+				"password": "AVeryStrongPasword"
+                };
+				
+			request.post('/api/auth/register')
+				.send(user2)
+				.end(function (err, res) {
+					user2._id = res.body.userId;
+					user2.jwtToken = res.body.jwtToken;
+					
+					request.delete('/api/events/' + eventJson.id)
+						.set('Authorization', 'JWT ' + user2.jwtToken)
+						.end(function (req, res) {
+							expect(res.status).to.be.eql(401);
+							expect(res.body).to.be.an('object');
+							expect(res.body.errors).to.not.be.eql(null);
+							
+							done()
                         });
                 });
         });
 
         it('it should delete the event', function (done) {
-            var user = {
-                "name": "User",
-                "surname": "Surname",
-                "email": "email@domain.it",
-                "password": "AVeryStrongPasword"
-            };
-            request.post('/api/auth/register')
-                .send(user)
-                .end(function (err, res) {
-                    user._id = res.body.userId;
-                    user.jwtToken = res.body.jwtToken;
-
-                    var event = new Event({
-                        "name":"TestEvent",
-                        "organizerId": user._id,
-                        "type":"running",
-                        "description":"Blablabla",
-                        "country":"MyCountry",
-                        "city":"MyCity",
-                        "startingDate":"2017-09-23",
-                        "startingTime":"12:00:00.000",
-                        "maxDuration":150,
-                        "length": 40,
-                        "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
-                        "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
-                        "participantsList":[255],
-                        "routes":["Route1"]
-                    });
-
-                    event.save(function () {
-                        var newFields = {
-                            name: 'newName'
-                        };
-
-                        request.delete('/api/events/' + event._id)
-                            .set('Authorization', 'JWT ' + user.jwtToken)
-                            .end(function (req, res) {
-                                expect(res.status).to.be.eql(200);
-                                expect(res.body).to.be.an('object');
-                                expect(res.body.errors).to.be.eql(undefined);
-                                expect(res.body.event).to.be.an('object');
-
-                                done()
-                            });
-                    });
+			
+			request.delete('/api/events/' + eventJson.id)
+				.set('Authorization', 'JWT ' + userJson.jwtToken)
+				.end(function (req, res) {
+					expect(res.status).to.be.eql(200);
+					expect(res.body).to.be.an('object');
+					expect(res.body.errors).to.be.eql(undefined);
+					expect(res.body.event).to.be.an('object');
+					
+					done()
                 });
-        })
-    });
+        });
 
     describe('GET /organizedEvents',function(){
 
@@ -1674,9 +1566,8 @@ describe('Event API tests', function () {
                 .set('Authorization',userCreatorObject.userToken)
                 .send({coordinates:[{lat:-1,lng:-1},{lat:6,lng:3},{lat:11,lng:5}]})
                 .end(function(err,res){
+					expect(res.status).to.be.eql(200);
                     expect(res.body).not.to.be.eql(null);
-					expect(res.body).to.have.property('coordinates');
-					expect(res.body.coordinates).not.to.be.eql(null);
 					//console.log(res.body.coordinates);
 					done();
                 });
@@ -1761,7 +1652,6 @@ function createRandomEvents(numberToCreate, callback) {
             ev.save(function () {
                 if (++created == numberToCreate) callback();
             })
-        })()
+        })
     }
 }
-

@@ -21,16 +21,88 @@ describe('Enrollment API tests', function () {
     // this will run before every test to clear the database
     // TODO clear database
 
+	var userToken = '';
+	var userId = '';
+	var event1Id = '';
+	var event2Id = '';
+	
     beforeEach(function (done) {
         Enrollment.remove({}, function (err) {
-            done()
-        })
+			User.remove({},function(){
+				Event.remove({},function(){
+					done();
+				});
+			});
+        });
     });
-
+	
+	
+	//register user and recieve userToken and userId for other usage
+	beforeEach (function(done){
+		var user = {
+			email:"user@gmail.com",
+			password:"StrongPassword123",
+			name:"User",
+			surname:"User"
+		};
+		
+		request.post('/api/auth/register')
+			.send(user)
+			.end(function(err,res){
+				console.log(res.body);
+				userId = res.body.userId;
+				userToken = "JWT " + res.body.jwtToken;
+				
+				var event1 = {
+					"name":"Long Marathon",
+					"type":"running",
+					"description":"Blablabla",
+					"country":"MyCountry",
+					"city":"MyCity",
+					"startingDate":"2017-09-23",
+					"startingTime":"12:00:00.000",
+					"maxDuration":150,
+					"length": 40,
+					"enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
+					"enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+					"participantsList":[255],
+					"routes":["Route1"]
+				};
+				
+				var event2 = {
+					"name":"Marathon 2",
+					"type":"running",
+					"description":"Blablabla",
+					"country":"MyCountry",
+					"city":"MyCity",
+					"startingDate":"2017-09-23",
+					"startingTime":"12:00:00.000",
+					"maxDuration":150,
+					"length": 40,
+					"enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
+					"enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+					"participantsList":[255],
+					"routes":["Route1"]
+				};
+				
+				Event.create(userId,event1,function(err,createdEvent1){
+					
+					console.log(err +" " + createdEvent1)
+					event1Id = createdEvent1._id;
+					Event.create(userId,event2,function(err,createdEvent2){
+						event2Id = createdEvent2._id;
+						done();
+					});
+				});
+			});
+		});
+	
+	
+	
     describe('POST /enrollments', function () {
         it('it should NOT add a new enrollment because eventId field is missing', function (done) {
             let enrollment =  new Enrollment({
-                userId :"userId",
+                userId :userId,
                 additionalInfo : Object,
                 trackingSources: [],
                 created_at: "2017-09-10T00:00:00.000Z",
@@ -38,6 +110,7 @@ describe('Enrollment API tests', function () {
             });
 
             request.post('/api/enrollments')
+				.set('Authorization',userToken)
                 .send(enrollment)
                 .end(function (err, res) {
                     expect(res.status).to.be.eql(400);
@@ -51,8 +124,8 @@ describe('Enrollment API tests', function () {
         it('it should add an enrollment', function (done) {
             let enrollment = new Enrollment({
 
-                eventId: "eventId1",
-                userId :"userId1",
+                eventId: event1Id,
+                userId :userId,
                 additionalInfo : Object,
                 trackingSources: [Object],
                 created_at: "2017-09-10T00:00:00.000Z",
@@ -60,6 +133,7 @@ describe('Enrollment API tests', function () {
             });
 
             request.post('/api/enrollments')
+				.set('Authorization',userToken)
                 .send(enrollment)
                 .end(function (err, res) {
                     expect(res.status).to.be.eql(200);
@@ -69,10 +143,11 @@ describe('Enrollment API tests', function () {
                     done()
                 })
         });
-
+		
+		
         it('it should return a list with two object', function (done) {
             let enrollment1 = new Enrollment({
-                eventId: "eventId1",
+                eventId: event1Id,
                 userId :"first_user",
                 additionalInfo : Object,
                 trackingSources: [],
@@ -80,7 +155,7 @@ describe('Enrollment API tests', function () {
                 updated_at: "2017-09-10T00:00:00.000Z"
             });
             let enrollment2 = new Enrollment( {
-                eventId: "eventId1",
+                eventId: event2Id,
                 userId :"second_user",
                 additionalInfo : Object,
                 trackingSources: [],
@@ -103,7 +178,7 @@ describe('Enrollment API tests', function () {
 
         it('it should return a list with one object', function (done) {
             let enrollment1 = new Enrollment({
-                eventId: "eventId1",
+                eventId: event1Id,
                 userId :"first_user",
                 additionalInfo : Object,
                 trackingSources: [],
@@ -111,7 +186,7 @@ describe('Enrollment API tests', function () {
                 updated_at: "2017-09-10T00:00:00.000Z"
             });
             let enrollment2 = new Enrollment( {
-                eventId: "eventId1",
+                eventId: event2Id,
                 userId :"second_user",
                 additionalInfo : Object,
                 trackingSources: [],
@@ -136,8 +211,8 @@ describe('Enrollment API tests', function () {
         it('it should returns ok even if we changed to ask nothing', function (done) {
             let enrollment = new Enrollment({
 
-                eventId: "eventId",
-                userId :"userId",
+                eventId: event1Id,
+                userId :userId,
                 additionalInfo : Object,
                 trackingSources: [],
                 created_at: "2017-09-10T00:00:00.000Z",
@@ -148,6 +223,7 @@ describe('Enrollment API tests', function () {
 
             enrollment.save(function () {
                 request.put('/api/enrollments/' + enrollment._id)
+					.set('Authorization',userToken)
                     .send(change)
                     .end(function (err, res) {
                         expect(res.status).to.be.eql(200);
@@ -162,8 +238,8 @@ describe('Enrollment API tests', function () {
         it('it should NOT update the eventId of an enrollment', function (done) {
             let enrollment = new Enrollment({
 
-                eventId: "eventId",
-                userId :"userId",
+                eventId: event1Id,
+                userId :userId,
                 additionalInfo : Object,
                 trackingSources: [],
                 created_at: "2017-09-10T00:00:00.000Z",
@@ -176,6 +252,7 @@ describe('Enrollment API tests', function () {
 
             enrollment.save(function () {
                 request.put('/api/enrollments/' + enrollment._id)
+					.set('Authorization',userToken)
                     .send(change)
                     .end(function (err, res) {
                         expect(res.status).to.be.eql(400);
