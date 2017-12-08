@@ -20,7 +20,7 @@ export class AddRouteMapComponent implements OnInit {
     public zoom = 15;
     public searchControl: FormControl= new FormControl();
 
-    public mapPoints ; //latLng array
+    public mapPoints : any ; //latLng array
     directions : any;
     travelModeInput: string = 'WALKING';
 
@@ -45,7 +45,7 @@ export class AddRouteMapComponent implements OnInit {
             if(coordinates === null || coordinates === undefined){
               this.mapPoints = [];
             } else {
-              this.mapPoints = [];
+              this.mapPoints = coordinates;
               this.getRoutePointsAndWaypoints();
             }
           }
