@@ -25,7 +25,6 @@ export class AddRouteMapComponent implements OnInit {
     travelModeInput: string = 'WALKING';
 
     private eventId: String;
-    private firstRoute: boolean;
 
     @ViewChild("search")
     public searchElementRef: ElementRef;
@@ -45,10 +44,8 @@ export class AddRouteMapComponent implements OnInit {
             console.log('[Route Management][OnInit][success]', coordinates);
             if(coordinates === null || coordinates === undefined){
               this.mapPoints = [];
-              this.firstRoute = true;
             } else {
-              this.mapPoints = coordinates;
-              this.firstRoute = false;
+              this.mapPoints = [];
               this.getRoutePointsAndWaypoints();
             }
           }
