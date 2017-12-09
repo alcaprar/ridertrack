@@ -9,10 +9,6 @@ import { Router } from "@angular/router";
 import {DialogService} from "../../shared/dialog/dialog.service";
 import {FacebookService, UIParams, UIResponse, InitParams} from "ngx-facebook/dist/esm/index";
 import {RouteService} from "../../shared/services/route.service";
-import {} from '@types/googlemaps';
-
-
-declare var google: any;
 
 @Component({
   selector: 'app-event-detail-page',
@@ -34,11 +30,6 @@ export class EventDetailPageComponent implements OnInit {
 
   // ids of participants
   private participantsList = [];
-  private mapPoints: any;
-  private initLat: number;
-  private initLong: number;
-  private directions: any;
-  travelModeInput= "WALKING";
 
   errors: Error[] = [];
 
@@ -72,24 +63,6 @@ export class EventDetailPageComponent implements OnInit {
       this.eventId = params['eventId'];
       console.log('[EventDetail][OnInit]', this.eventId);
 
-      this.routeService.getRoute(this.eventId)
-        .then(
-          (coordinates) => {
-            console.log('[Route Management][OnInit][success]', coordinates);
-            console.log('[Route Management][OnInit][Coordinates detected]', coordinates);
-            this.mapPoints = coordinates;
-            if(this.mapPoints.length > 0){
-              this.initLat = this.mapPoints[0].lat;
-              this.initLong = this.mapPoints[0].lng;
-              this.getRoutePointsAndWaypoints();
-            }
-          }
-        )
-        .catch(
-          (error) => {
-            console.log('[Route Management][OnInit][error]', error);
-          }
-        );
 
       this.eventService.getEvent(this.eventId)
         .then(
@@ -142,36 +115,6 @@ export class EventDetailPageComponent implements OnInit {
       .catch((e: any) => console.error(e));
   }
 
-
-  getRoutePointsAndWaypoints(){
-    let waypoints = [];
-
-    if (this.mapPoints.length > 2){
-      for(let i=1; i<this.mapPoints.length-1; i++){
-        let address = this.mapPoints[i];
-        if(address !== ""){
-          waypoints.push({
-            location: address,
-            stopover: true //show marker on map for each waypoint
-          });
-        }
-        this.updateDirections(this.mapPoints[0], this.mapPoints[this.mapPoints.length-1],waypoints);
-      }
-    }else if(this.mapPoints.length > 1){
-      this.updateDirections(this.mapPoints[this.mapPoints.length-2], this.mapPoints[this.mapPoints.length-1], waypoints);
-    }else {
-      this.updateDirections(this.mapPoints[this.mapPoints.length-1], this.mapPoints[this.mapPoints.length -1 ], waypoints);
-    }
-  }
-
-  updateDirections(originAddress, destinationAddress, waypoints){
-    this.directions = {
-      origin: {lat: originAddress.lat, lng: originAddress.lng},
-      destination: {lat: destinationAddress.lat, lng: destinationAddress.lng},
-      waypoints: waypoints
-    };
-    console.log("[Directions][Update]", this.directions);
-  }
 
   /**
    * It calls the event service in order to get the organizer profile.
