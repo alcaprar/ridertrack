@@ -1,5 +1,5 @@
 import {Directive, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
-import {GoogleMapsAPIWrapper} from "@agm/core";
+import {MapsAPILoader, GoogleMapsAPIWrapper} from "@agm/core";
 import {} from "@types/googlemaps"
 
 declare var google:any;
@@ -14,17 +14,23 @@ export class DirectionDirective implements  OnInit, OnChanges, OnDestroy {
   @Input() waypoints: any;
   @Input() travelMode: string;
 
-  public directionService = new google.maps.DirectionsService;
+  public directionService :any;
   public directionsDisplay: any = undefined;
 
-  constructor(private  googleWrapper : GoogleMapsAPIWrapper) { }
+  constructor(private  googleWrapper : GoogleMapsAPIWrapper, private apiLoader: MapsAPILoader) { }
 
   ngOnInit(): void {
+    this.apiLoader.load().then(() => {
+      this.directionService = new google.maps.DirectionsService;
       this.drawRoute();
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    this.apiLoader.load().then(() => {
+      this.directionService = new google.maps.DirectionsService;
       this.drawRoute();
+    });
   }
 
   ngOnDestroy(): void {
