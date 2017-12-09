@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {UserService} from '../../shared/services/user.service';
 import {EventService} from '../../shared/services/event.service';
 import {User} from '../../shared/models/user';
@@ -8,7 +8,11 @@ import {AuthenticationService} from '../../authentication/authentication.service
 import { Router } from "@angular/router";
 import {DialogService} from "../../shared/dialog/dialog.service";
 import {FacebookService, UIParams, UIResponse, InitParams} from "ngx-facebook/dist/esm/index";
+import {RouteService} from "../../shared/services/route.service";
+import {} from '@types/googlemaps';
 
+
+declare var google: any;
 
 @Component({
   selector: 'app-event-detail-page',
@@ -30,14 +34,22 @@ export class EventDetailPageComponent implements OnInit {
 
   // ids of participants
   private participantsList = [];
+  private mapPoints: any;
+  private initLat: number;
+  private initLong: number;
+  private directions: any;
+  travelModeInput= "WALKING";
+
+  errors: Error[] = [];
 
   constructor(private route: ActivatedRoute,
               private userService: UserService,
               private eventService: EventService,
               private authService: AuthenticationService,
               private router: Router,
-              private dialogService: DialogService,
-              private fb: FacebookService) {
+              private fb: FacebookService,
+              private routeService: RouteService,
+              private dialogService: DialogService) {
     // init Facebook strategy
     const initParams: InitParams = {
       appId: '278876872621248',
@@ -52,12 +64,32 @@ export class EventDetailPageComponent implements OnInit {
 
   ngOnInit() {
 
+    this.errors = [];
+
     this.href = window.location.href;
 
     this.route.params.subscribe(params => {
       this.eventId = params['eventId'];
       console.log('[EventDetail][OnInit]', this.eventId);
 
+      this.routeService.getRoute(this.eventId)
+        .then(
+          (coordinates) => {
+            console.log('[Route Management][OnInit][success]', coordinates);
+            console.log('[Route Management][OnInit][Coordinates detected]', coordinates);
+            this.mapPoints = coordinates;
+            if(this.mapPoints.length > 0){
+              this.initLat = this.mapPoints[0].lat;
+              this.initLong = this.mapPoints[0].lng;
+              this.getRoutePointsAndWaypoints();
+            }
+          }
+        )
+        .catch(
+          (error) => {
+            console.log('[Route Management][OnInit][error]', error);
+          }
+        );
 
       this.eventService.getEvent(this.eventId)
         .then(
@@ -94,6 +126,8 @@ export class EventDetailPageComponent implements OnInit {
 
     console.log('[Event-Detail-Component][OnInit][Event]', this.event);
 
+
+
     this.random = Math.random();
   }
 
@@ -108,6 +142,36 @@ export class EventDetailPageComponent implements OnInit {
       .catch((e: any) => console.error(e));
   }
 
+
+  getRoutePointsAndWaypoints(){
+    let waypoints = [];
+
+    if (this.mapPoints.length > 2){
+      for(let i=1; i<this.mapPoints.length-1; i++){
+        let address = this.mapPoints[i];
+        if(address !== ""){
+          waypoints.push({
+            location: address,
+            stopover: true //show marker on map for each waypoint
+          });
+        }
+        this.updateDirections(this.mapPoints[0], this.mapPoints[this.mapPoints.length-1],waypoints);
+      }
+    }else if(this.mapPoints.length > 1){
+      this.updateDirections(this.mapPoints[this.mapPoints.length-2], this.mapPoints[this.mapPoints.length-1], waypoints);
+    }else {
+      this.updateDirections(this.mapPoints[this.mapPoints.length-1], this.mapPoints[this.mapPoints.length -1 ], waypoints);
+    }
+  }
+
+  updateDirections(originAddress, destinationAddress, waypoints){
+    this.directions = {
+      origin: {lat: originAddress.lat, lng: originAddress.lng},
+      destination: {lat: destinationAddress.lat, lng: destinationAddress.lng},
+      waypoints: waypoints
+    };
+    console.log("[Directions][Update]", this.directions);
+  }
 
   /**
    * It calls the event service in order to get the organizer profile.
@@ -158,21 +222,62 @@ export class EventDetailPageComponent implements OnInit {
    * It calls the event service to enroll the user.
    */
   enroll() {
-    this.eventService.enrollToEvent(this.eventId)
-      .then(
-        (response) => {
-          console.log('[EventDetail][enroll][success]', response);
-          // get the new list of particpants to update the buttons
-          this.getParticipants()
-        }
-      )
-      .catch(
-        (error) => {
-          console.log('[EventDetail][enroll][error]', error);
-          // TODO show errors
-        }
-      );
+
+    if(this.enrollementIsOpen()) {
+      this.eventService.enrollToEvent(this.eventId)
+        .then(
+          (response) => {
+            console.log('[EventDetail][enroll][success]', response);
+            // get the new list of particpants to update the buttons
+            this.getParticipants();
+            this.dialogService.confirmation("Success", "You are correctly enrolled",function(){
+
+            });
+          }
+        )
+        .catch(
+          (error) => {
+            console.log('[EventDetail][enroll][error]', error);
+            this.errors = error;
+          }
+        );
+    } else {
+      this.dialogService.confirmation("Enrollement",
+        "Sorry the registration period is CLOSED or not yet AVAILABLE",function(){
+      });
+    }
   }
+
+  enrollementIsOpen(): boolean {
+    let today = new Date();
+    var initialOpen = this.event.enrollmentOpeningAt;
+    var initialClose = this.event.enrollmentClosingAt;
+    let open = null;
+    let close = null;
+
+    if (initialOpen != null && initialClose != null) {
+      var split_open = initialOpen.split(/\//);
+      let split_close = initialClose.split(/\//);
+      open = new Date(+split_open[2], +split_open[1] - 1, +split_open[0]);
+      close = new Date(+split_close[2], +split_close[1] - 1, +split_close[0]);
+    } else if (initialOpen != null) {
+      var split_open = initialOpen.split(/\//);
+      open = new Date(+split_open[2], +split_open[1] - 1, +split_open[0]);
+    }
+
+    console.log("Today", today);
+    console.log("open", open);
+    console.log("close", close);
+
+
+    if (this.event.enrollmentOpeningAt && this.event.enrollmentClosingAt) {
+        return today >= open && today<= close;
+    }else {
+      return false;
+    }
+  }
+
+
 
   /**
    * It calls the event service to withdraw the enrollment of the user.
@@ -192,7 +297,7 @@ export class EventDetailPageComponent implements OnInit {
         .catch(
           (error) => {
             console.log('[EventDetail][withdrawEnrollment][error]', error);
-            // TODO show errors
+              this.errors = error;
           }
         );
     }.bind(this));
