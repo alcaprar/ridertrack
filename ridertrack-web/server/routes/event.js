@@ -132,6 +132,54 @@ router.get('/', function(req, res) {
     })
 });
 
+router.get('/passed', function(req,res){
+    var options = {};
+    var status= 'passed';
+
+    var page = parseInt(req.query.page) || 1;
+    var itemsPerPage = parseInt(req.query.itemsPerPage) || 10;
+    options.skip = (parseInt(page) -1) * parseInt(itemsPerPage);
+    options.limit = itemsPerPage;
+
+    // using async lib to find the total number and find the events in parallel
+    var countEvents = function (callback) {
+        Event.find({status: status}, function (err, events) {
+            if(err){
+                callback(err)
+            }else{
+                callback(null, events.length)
+            }
+        })
+    };
+
+    var findEvents = function (callback) {
+        Event.find({status: status}, null, options, function(err, events){
+            if (err) {
+                callback(err)
+            }else{
+                callback(null, events)
+            }
+        });
+    };
+
+    async.parallel([countEvents, findEvents], function (err, results) {
+        if(err) {
+            res.status(400).send({
+                errors: err
+            })
+        } else {
+            res.status(200).send({
+                events: results[1],
+                page: page,
+                itemsPerPage: itemsPerPage,
+                totalPages: Math.ceil(results[0]/itemsPerPage)
+            })
+        }
+    });
+
+
+});
+
 /**
  * It returns the list of distinct cities of all the events.
  */
