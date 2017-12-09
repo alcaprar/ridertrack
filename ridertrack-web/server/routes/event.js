@@ -486,7 +486,7 @@ router.get('/:eventId/route', function(req, res){
         }
         else{
             return res.status(200).send({
-                coordinates: route.coordinates
+                coordinates: (route) ? route.coordinates : []
             });
         }
     })
