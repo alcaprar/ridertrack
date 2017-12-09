@@ -14,8 +14,8 @@ export class Event{
     public maxDuration?: number,
     public length?: number,
     public routes?: [{lat: number, lng: number}],
-    public enrollmentClosingAt?: Date,
-    public enrollmentOpeningAt?: Date,
+    public enrollmentClosingAt?: string,
+    public enrollmentOpeningAt?: string,
     //public ranking?: File
   ){}
 }

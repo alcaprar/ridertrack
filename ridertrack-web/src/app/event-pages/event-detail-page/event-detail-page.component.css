@@ -14,7 +14,7 @@
   padding:1em;
 }
 .prp-style-1 .single-property-wrapper {
-  margin-top: 0em !important;
+  margin-top: 0 !important;
 }
 .info-icon {
   width:3em;
@@ -30,4 +30,11 @@
 }
 .panel-heading{
   margin-top:1em;
+}
+
+#map{
+    position:relative;
+   margin-top: 1em;
+   height: 30rem;
+    width: 100%;
 }

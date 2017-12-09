@@ -24,4 +24,5 @@ describe('EventDetailPageComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
 });

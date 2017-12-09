@@ -134,7 +134,6 @@ export class EventManagePageComponent implements OnInit {
       .catch(
         (error) => {
           console.log('[CreateEvent][onSubmit][error]', error);
-          // this.alertService.error("An error occured: "+ error.message);
           this.router.navigate(['/events', 'create']);
         }
       );
