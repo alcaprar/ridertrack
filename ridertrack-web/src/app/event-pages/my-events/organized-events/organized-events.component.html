@@ -23,7 +23,7 @@
         </app-event-box-organized>
       </div>
 
-      <div *ngIf="organizedEvents.length === 0">
+      <div *ngIf="organizedEvents === null || organizedEvents.length === 0">
         <p> NO ORGANIZED EVENTS</p>
       </div>
     </div>
