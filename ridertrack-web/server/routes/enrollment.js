@@ -50,16 +50,21 @@ router.post('/', authMiddleware.hasValidToken, function(req, res){
             var currentDate = new Date();
             var closingDate = new Date();
             var closingDateParsed = event.enrollmentClosingAt.split("/");
-
             closingDate.setDate(closingDateParsed[0]);
             closingDate.setMonth(closingDateParsed[1] - 1);
             closingDate.setYear(closingDateParsed[2]);
+
+            var openingDate = new Date();
+            var openingDateParsed = event.enrollmentOpeningAt.split("/");
+            openingDate.setDate(openingDateParsed[0]);
+            openingDate.setMonth(openingDateParsed[1] - 1);
+            openingDate.setYear(openingDateParsed[2]);
 
             Enrollment.find({userId: req.body.eventId}, function (err, enrollments) {
                 if (err) {
                     callback(err)
                 } else {
-                    if (currentDate < closingDate && enrollments.length < event.maxParticipants) {
+                    if (currentDate >= openingDate && currentDate <= closingDate && enrollments.length < event.maxParticipants) {
                         Enrollment.create(req.userId, req.body, function (err, enrollment) {
                             if (err) {
                                 res.status(400).send({
