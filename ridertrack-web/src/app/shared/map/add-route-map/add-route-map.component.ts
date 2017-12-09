@@ -42,15 +42,9 @@ export class AddRouteMapComponent implements OnInit {
         .then(
           (coordinates) => {
             console.log('[Route Management][OnInit][success]', coordinates);
-            if(coordinates === null || coordinates === undefined){
-              this.mapPoints = [];
-            } else {
               console.log('[Route Management][OnInit][Coordinates detected]', coordinates);
               this.mapPoints = coordinates;
-              this.initLat = this.mapPoints[0].lat;
-              this.initLong = this.mapPoints[0].lng;
-              this.getRoutePointsAndWaypoints();
-            }
+            this.initMap();
           }
         )
         .catch(
@@ -59,19 +53,25 @@ export class AddRouteMapComponent implements OnInit {
           }
         );
 
-      this.initMap();
+
     }
 
     initMap(){
 
         //set up current location
-        if( navigator.geolocation && this.mapPoints === []){
-            navigator.geolocation.getCurrentPosition(position => {
-                this.initLat = position.coords.latitude;
-                this.initLong = position.coords.longitude;
-                console.log("[Geolocated]", position.coords);
-            });
+      if(this.mapPoints.length > 0){
+        this.initLat = this.mapPoints[0].lat;
+        this.initLong = this.mapPoints[0].lng;
+        this.getRoutePointsAndWaypoints();
+      } else {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(position => {
+            this.initLat = position.coords.latitude;
+            this.initLong = position.coords.longitude;
+            console.log("[Geolocated]", position.coords);
+          });
         }
+      }
 
         //add listener to Input search
         this.mapsAPILoader.load().then(()=> {
