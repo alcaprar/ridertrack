@@ -30,6 +30,18 @@ var enrollmentSchema = Schema({
 
 enrollmentSchema.index({eventId: 1, userId: 1}, {name: 'one_enrollment_per_event_idx', unique: true});
 
+// on every save, add the date
+enrollmentSchema.pre('save', function(next) {
+    // get the current date
+    var currentDate = new Date();
+    // change the updated_at field to current date
+    this.updated_at = currentDate;
+    // if created_at doesn't exist, add to that field
+    if (!this.created_at) {
+        this.created_at = currentDate;
+    }
+    next();
+});
 /**
  * Static method to create an enrollment.
  */

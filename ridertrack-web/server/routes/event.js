@@ -132,6 +132,9 @@ router.get('/', function(req, res) {
     })
 });
 
+/**
+ * It returns the list of all the passed events
+ */
 router.get('/passed', function(req,res){
     var options = {};
     var status= 'passed';
@@ -176,8 +179,6 @@ router.get('/passed', function(req,res){
             })
         }
     });
-
-
 });
 
 /**

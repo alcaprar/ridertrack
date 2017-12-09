@@ -41,22 +41,42 @@ router.get('/', function (req, res) {
  * It returns the detail of the enrollment just created.
  */
 router.post('/', authMiddleware.hasValidToken, function(req, res){
-    Event.findOne({_id: req.body.eventId}, function(err){
+    Event.findOne({_id: req.body.eventId}, function(err, event){
         if(err){
             res.status(400).send({
                 errors: err
             })
-        }else{
-            Enrollment.create(req.userId, req.body, function (err, enrollment) {
-                if(err){
-                    res.status(400).send({
-                        errors: err
-                    })
-                }else{
-                    res.status(200).send({
-                        message: 'User enrolled successfully!',
-                        enrollment: enrollment
-                    })
+        }else {
+            var currentDate = new Date();
+            var closingDate = new Date();
+            var closingDateParsed = event.enrollmentClosingAt.split("/");
+
+            closingDate.setDate(closingDateParsed[0]);
+            closingDate.setMonth(closingDateParsed[1] - 1);
+            closingDate.setYear(closingDateParsed[2]);
+
+            Enrollment.find({userId: req.body.eventId}, function (err, enrollments) {
+                if (err) {
+                    callback(err)
+                } else {
+                    if (currentDate < closingDate && enrollments.length < event.maxParticipants) {
+                        Enrollment.create(req.userId, req.body, function (err, enrollment) {
+                            if (err) {
+                                res.status(400).send({
+                                    errors: err
+                                })
+                            } else {
+                                res.status(200).send({
+                                    message: 'User enrolled successfully!',
+                                    enrollment: enrollment
+                                })
+                            }
+                        })
+                    } else {
+                        res.status(401).send({
+                            errors: "Enrollment is not possible for this event"
+                        })
+                    }
                 }
             })
         }

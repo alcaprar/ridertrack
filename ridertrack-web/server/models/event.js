@@ -56,6 +56,10 @@ var eventSchema = Schema({
         type: Number,
         default: 0
     },
+    maxParticipants: {
+        type: Number,
+        default: 100
+    },
     enrollmentOpeningAt: {
         type: String
     },
