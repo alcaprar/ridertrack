@@ -102,7 +102,7 @@ import { EventProgressComponent } from './event-pages/event-progress/event-progr
     FacebookModule.forRoot(),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyCWY7J8-bVG3TxQbVvgXb-F5lQV6XrTM5s',
-      libraries: ["places"]
+      libraries: ["places, address"]
     }),
     RouterModule.forRoot([
       {

@@ -40,6 +40,7 @@ export class EventBoxOrganizedComponent implements OnInit {
   }
 
   startTracking(event){
+
     this.eventService.startTracking(event).then((success) => {
       console.log("TRACK STARTING");
       this.event.status = "ongoing";
