@@ -22,23 +22,14 @@ export class EventProgressComponent implements OnInit {
   public initLat: number;
   public initLong: number;
   public zoom = 15;
-  public searchControl: FormControl = new FormControl();
 
   public mapPoints; //latLng array
   directions: any;
-  travelModeInput: string = 'WALKING';
 
   private eventId: String;
-  private firstRoute: boolean;
   private participantsList: any;
-
-  private userPosition: {
-    lat: 45.31411230740029,
-    lng: 14.173370342254639
-  }
-
-  @ViewChild("search")
-  public searchElementRef: ElementRef;
+  private event: any;
+  private city: any;
 
   constructor(private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private routeService: RouteService,
     private route: ActivatedRoute, private router: Router, private eventService: EventService) { }
@@ -46,7 +37,7 @@ export class EventProgressComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.eventId = params['eventId'];
-      console.log('[Route Management][OnInit]', this.eventId);
+      console.log('[Progress Management][OnInit]', this.eventId);
     });
 
     this.eventService.getParticipants(this.eventId).then(
@@ -64,29 +55,49 @@ export class EventProgressComponent implements OnInit {
     this.routeService.getRoute(this.eventId)
       .then(
       (coordinates) => {
-        console.log('[Route Management][OnInit][success]', coordinates);
-        if (coordinates === null || coordinates === undefined) {
-          this.mapPoints = [];
-          // this.firstRoute = true;
-        } else {
-          this.mapPoints = coordinates;
-          // this.firstRoute = false;
-          this.getRoutePointsAndWaypoints();
-          this.initMap();
-        }
+        console.log('[Progress Management][OnInit][success]', coordinates);
+        console.log('[Progress Management][OnInit][Coordinates detected]', coordinates);
+        this.mapPoints = coordinates;
+        this.initMap();
       })
-      .catch(
-      (error) => {
-        console.log('[Route Management][OnInit][error]', error);
+      .catch((error) => {
+        this.mapPoints = [];
+        console.log('[Progress Management][OnInit][error]', error);
       });
+
   }
 
   initMap() {
-    navigator.geolocation.getCurrentPosition(position => {
+
+    if (this.mapPoints.length > 0) {
+      console.log('Route exists');
       this.initLat = this.mapPoints[0].lat;
       this.initLong = this.mapPoints[0].lng;
-      console.log("[Init map]", position);
-    });
+      this.getRoutePointsAndWaypoints();
+    }
+    else {
+      console.log('[Event Progress][Zoom to the event city]');
+      this.eventService.getEvent(this.eventId)
+        .then(
+        (event) => {
+          console.log('[Event Progress][OnInit][EventService.getEvent][success]', event);
+          this.event = event;
+          var address = this.event.city;
+          var geocoder = new google.maps.Geocoder();
+          geocoder.geocode({ 'address': address }, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+              this.initLat = results[0].geometry.location.lat();
+              this.initLong = results[0].geometry.location.lng();
+              console.log('[Event Progress][city coordinates] lat: ' + this.initLat + ' lng: ' + this.initLong);
+            }
+          });
+        })
+        .catch(
+        (error) => {
+          console.log('[Event Progress][OnInit][EventService.getEvent][error]', error);
+        });
+    }
+
   }
 
   getRoutePointsAndWaypoints() {
