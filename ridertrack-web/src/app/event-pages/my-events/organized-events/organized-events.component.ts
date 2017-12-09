@@ -22,6 +22,8 @@ export class OrganizedEventsComponent implements OnInit {
 
   private organizedEvents: Event[] = [];
 
+  private errors: Error[]=[];
+
   constructor(private authService: AuthenticationService, private route: ActivatedRoute,
               private router: Router, private eventService: EventService) {
 

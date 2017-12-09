@@ -1,7 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {Component, OnInit, Input, Output} from '@angular/core';
 import {Router} from "@angular/router";
 import {EventService} from "../../shared/services/event.service";
 import {AlertService} from "../../shared/services/alert.service";
+import {DialogService} from "../../shared/dialog/dialog.service";
 
 @Component({
   selector: 'app-event-box-organized',
@@ -13,7 +14,8 @@ export class EventBoxOrganizedComponent implements OnInit {
   @Input()
   event: any;
 
-  constructor(private router: Router, private eventService: EventService, private alert: AlertService) { }
+
+  constructor(private router: Router, private eventService: EventService, private dialogService: DialogService) { }
 
   csvFile: File;
 
@@ -34,29 +36,66 @@ export class EventBoxOrganizedComponent implements OnInit {
       };
       fileReader.readAsText(this.csvFile);
     }
-    else {
-      setTimeout(this.alert.error("The file uploaded is not a .CSV file"), 5000);
-    }
   }
 
   startTracking(event){
-
-    this.eventService.startTracking(event).then((success) => {
-      console.log("TRACK STARTING");
-      this.event.status = "ongoing";
-      this.router.navigate(['/events/', event._id , 'progress']);
-    }).catch((error) => {
-      setTimeout(this.alert.error(error.message), 3000);
-    });
+    if(this.checkStarting()) {
+      this.eventService.startTracking(event).then((success) => {
+        console.log("[Start Tracking][Success]");
+        this.event.status = "ongoing";
+        this.router.navigate(['/events/', event._id, 'progress']);
+      }).catch((error) => {
+        console.log("[Start Tracking][Error]", error);
+      });
+    } else {
+      this.dialogService.confirmation("Error",
+        "Sorry the tracking can start only after the registration period is closed",function(){
+        });
+    }
   }
 
   stopTracking(event) {
-    this.eventService.stopTracking(event)
-      .then((success) => {
-      console.log("TRACK STOPPED");
-      this.event.status = "passed";
-    }).catch((error) => {
-      setTimeout(this.alert.error(error.message), 3000);
-    });
+    if(this.checkStopping()) {
+      this.dialogService.confirmation("Stop Event",
+        "Are you sure to stop the event?",function(){
+          this.eventService.stopTracking(event)
+            .then((success) => {
+              console.log("[Stop Tracking][Success]");
+              this.event.status = "passed";
+            }).catch((error) => {
+            console.log("[Stop Tracking][Error]", error);
+          });
+      });
+    }else{
+      this.dialogService.confirmation("Stop Event",
+        "Sorry the tracking cannot be stopped during the Event",function(){
+        });
+    }
+  }
+
+  checkStarting(){
+    if(this.event.startingDate && this.event.enrollementClosingAt){
+      let split = this.event.startingDate.split(/\//);
+      let startingDate = new Date(+split[2], +split[1] - 1, +split[0]);
+      let split_close = this.event.enrollementClosingAt.split(/\//);
+      let close = new Date(+split_close[2], +split_close[1] - 1, +split_close[0]);
+      let today = new Date();
+
+      return startingDate >= today && today > close;
+    } else {
+      return false;
+    }
+  }
+
+  checkStopping(){
+    if(this.event.startingDate && this.event.status === "ongoing"){
+      let split = this.event.startingDate.split(/\//);
+      let startingDate = new Date(+split[2], +split[1] - 1, +split[0]);
+      let today = new Date();
+
+      return startingDate <= today;
+    } else {
+      return false;
+    }
   }
 }
