@@ -22,6 +22,8 @@ export class EventProgressComponent implements OnInit {
   public initLat: number;
   public initLong: number;
   public zoom = 15;
+  public lat: number;
+  public lng: number;
 
   public mapPoints; //latLng array
   directions: any;
@@ -52,6 +54,8 @@ export class EventProgressComponent implements OnInit {
         console.log('[Participants Management][OnInit][error]', error);
       });
 
+
+
     this.routeService.getRoute(this.eventId)
       .then(
       (coordinates) => {
@@ -61,7 +65,6 @@ export class EventProgressComponent implements OnInit {
         this.initMap();
       })
       .catch((error) => {
-        this.mapPoints = [];
         console.log('[Progress Management][OnInit][error]', error);
       });
 
@@ -90,14 +93,13 @@ export class EventProgressComponent implements OnInit {
               this.initLong = results[0].geometry.location.lng();
               console.log('[Event Progress][city coordinates] lat: ' + this.initLat + ' lng: ' + this.initLong);
             }
-          });
+          })
         })
         .catch(
         (error) => {
           console.log('[Event Progress][OnInit][EventService.getEvent][error]', error);
         });
     }
-
   }
 
   getRoutePointsAndWaypoints() {

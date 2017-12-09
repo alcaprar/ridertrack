@@ -24,7 +24,7 @@
 
 <agm-map id="map" #map [longitude]="initLong" [latitude]="initLat" [zoom]="zoom">
   <agm-marker [latitude]="40.7127753" [longitude]="-74.0059728"></agm-marker>
-  <map-direction *ngIf="directions != null" [origin]="directions.origin" [destination]="directions.destination" [waypoints]="directions.waypoints"
-    [travelMode]="travelModeInput"></map-direction>
+  <map-direction *ngIf="directions != null" [origin]="directions.origin" [destination]="directions.destination"
+  [waypoints]="directions.waypoints" [travelMode]="travelModeInput"></map-direction>
 
 </agm-map>
