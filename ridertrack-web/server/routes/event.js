@@ -9,7 +9,7 @@ var Event = require('../models/event');
 var User = require('../models/user');
 var Enrollment = require('../models/enrollment');
 var Route = require ('../models/route');
-var Location = require('../models/location');
+var Positions = require('../models/positions');
 
 
 var authMiddleware = require('../middlewares/auth');
@@ -293,7 +293,7 @@ router.get('/:eventId/organizer', function (req, res) {
  * Multipart middleware allows the upload of files.
  */
 router.post('/', authMiddleware.hasValidToken, multipart, function (req, res) {
-    console.log('[POST /events]', req.userId, req.body, req.files);
+    console.log('[POST /events]');
 
     var event = req.body;
 
@@ -335,47 +335,57 @@ router.post('/', authMiddleware.hasValidToken, multipart, function (req, res) {
  * if a location for an user in an event isn't created it creates it
  * if it is created than it updates it with adding the coordinates(String)
  */
-router.post('/:eventId/participants/positions', authMiddleware.hasValidToken, function (req, res) {
-    User.findOne({_id: req.userId}, function (err, user) {
+router.post('/:eventId/participants/positions', /*authMiddleware.hasValidToken, authMiddleware.isEnrolled,*/ function (req, res, next) {
+    var userId = req.body.userId; // TODO to remove, needed only for testing the mobile app without token
+    var eventId = req.params.eventId;
+
+    // TODO add check if the event status is ongoing
+
+    Positions.add(userId, eventId, req.body, function (err, userPositions) {
         if (err) {
-            return callback({
-                message:"User doesn't exist"
+            res.status(400).send({
+                errors: [err]
             })
-        }
-        else {
-            Event.findOne({_id: req.params.eventId}, function (err, event) {
-                if (err) {
-                    return callback({
-                        message: "Event doesn't exist"
-                    })
-                }
-                else{
-                    Enrollment.findOne({userId: req.userId, eventId: req.params.eventId}, function (err, enrollment) {
-                        if (err) {
-                            return callback({
-                                message:"User didn't enroll for this event"
-                            })
-                        }
-                        else{
-                            Location.create(req.userId, req.params.eventId, req.body, function (err, location) {
-                                if (err) {
-                                    res.status(400).send({
-                                        errors: [err]
-                                    })
-                                }else{
-                                    res.status(200).send({
-                                        message: "Location created successfully",
-                                        location: location
-                                    })
-                                    // update the ranking logic
-                                }
-                            })
-                        }
-                    })
-                }
-            })
+        }else{
+            res.status(200).send({
+                message: "Positions updated successfully",
+                location: userPositions
+            });
+            // TODO update the ranking logic
         }
     })
+});
+
+/**
+ * It returns a list with the most recent positions of all the users in the event.
+ */
+router.get('/:eventId/participants/positions', function () {
+    var eventId = req.params.eventId;
+    Event.findByEventId(eventId, function (err, event) {
+        if(err){
+            return res.status(400).send({
+                errors: [err]
+            })
+        }else{
+            if(!event || event.status !== 'ongoing'){
+                return res.status(400).send({
+                    errors: [{message: 'The event does not exist or has not started yet.'}]
+                })
+            }else{
+                Positions.getLastPositionOfAllParticipants(eventId, function (err, usersPositions) {
+                    if(err){
+                        return res.status(400).send({
+                            errors: [err]
+                        })
+                    }else{
+                        res.status(200).send({
+                            positions: usersPositions
+                        });
+                    }
+                })
+            }
+        }
+    });
 });
 
 /**
@@ -384,7 +394,7 @@ router.post('/:eventId/participants/positions', authMiddleware.hasValidToken, fu
  */
 router.get('/:eventId/:userId/location', function (req, res) {
 
-    Location.findOne({userId: req.params.userId, eventId: req.params.eventId}, function (err, location) {
+    Positions.findOne({userId: req.params.userId, eventId: req.params.eventId}, function (err, location) {
         if (err) {
             res.status(400).send({
                 errors: [err]
@@ -398,7 +408,7 @@ router.get('/:eventId/:userId/location', function (req, res) {
 });
 
 
-/*
+/**
  * This method gets the latest ranking of the event
  */
 router.get('/:eventId/ranking', function (req, res) {

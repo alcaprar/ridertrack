@@ -3,6 +3,7 @@ var config = require('../config');
 
 var User = require('../models/user');
 var Event = require('../models/event');
+var Enrollment = require('../models/enrollment');
 
 var authMiddlewares = {
     /**
@@ -91,6 +92,53 @@ var authMiddlewares = {
                 })
             }
         })
+    },
+    /**
+     * It checks if the user that requested the endpoint is enrolled in the event.
+     * It MUST be called after hasValidToken.
+     * If the checks passes, it attaches to the req variable the event object.
+     * @param req
+     * @param res
+     * @param next
+     * @returns {*}
+     */
+    isEnrolled: function (req, res, next) {
+        var userId = req.userId;
+        var eventId = req.params.eventId;
+
+        // return an error if the userId is not set
+        if(!userId){
+            console.log('[middleware][isEnrolled] userId not set. he/she might not be logged.');
+            return res.status(401).send({
+                errors: [{message: 'Not authorized.'}]
+            })
+        }
+
+        // return an error if the eventId is not set
+        if(!eventId){
+            console.log('[middleware][isEnrolled] eventId not passed. the route might not accept it.');
+            return res.status(400).send({
+                errors: [{message: 'Error while controlling the permissions.'}]
+            })
+        }
+
+        Enrollment.findOne({userId: req.userId, eventId: req.params.eventId}, function (err, enrollment) {
+            if(err){
+                console.log('[middleware][isEnrolled] db error while retrieving the enrollment.', err);
+                return res.status(400).send({
+                    errors: [{message: 'Error while controlling the permissions.'}]
+                })
+            }
+            
+            if(!enrollment){
+                console.log('[middleware][isEnrolled] user is not enrolled.');
+                return res.status(400).send({
+                    errors: [{message: 'Error while controlling the permissions.'}]
+                })
+            }else{
+                return next()
+            }
+        });
     },
     /**
      * It checks if the logged user has enough permission.

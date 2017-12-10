@@ -214,8 +214,6 @@ userSchema.statics.findByFacebookId = function (facebookId, callback) {
  * @param callback
  */
 userSchema.statics.create = function (userJson, callback) {
-    console.log("Got here...")
-    console.log(userJson)
     var user = new User(userJson);
 
     if(typeof userJson.password === 'undefined'){
@@ -231,7 +229,6 @@ userSchema.statics.create = function (userJson, callback) {
             return callback(null, user);
         })
     }else{
-        console.log("Got here... else")
         user.generateHash(userJson.password, function (err) {
             if(err){
                 return callback(err)
@@ -243,7 +240,6 @@ userSchema.statics.create = function (userJson, callback) {
                         " Maybe user already exists as social service user"
                     });
                 }
-                console.log("Got here...if")
 
                 return user.removePrivateFields(function () {
                     callback(null, user)

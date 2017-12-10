@@ -62,7 +62,7 @@ describe('Auth API tests', function () {
                 })
         });
 
-        
+
         it('it should register an user and receive back a jwt token', function (done) {
             let user = {
                 name: 'Organizer2Name',
@@ -105,7 +105,7 @@ describe('Auth API tests', function () {
                     done()
                 })
         });
-        
+
         it('it should login and get a jwtToken', function (done) {
             let user = {
                 name: 'TestName',
@@ -135,6 +135,8 @@ describe('Auth API tests', function () {
 
     describe('GET /auth/login/facebook', function () {
 
+        // it does always work because the facebook token expires
+        /*
         it('it should login with facebook', function (done) {
             var accessToken = 'EAAD9oxTtvMABACYcZC2Xd7xr3rEjhegPmpG5OELsNQZBxo1FczinXG0hZCxquQle1GzPe2ZALWQEcOUtEQLvwom240ydtwsBcz7VxIln3XUjXFeG5vrlldQefIWJgZAv5gLTtPZAbpVQoASH1jJHZBNGPccJPmo3wotMGzqzN2cfYF9tqSyJOaGarUwC2KMrbLqQW7SUQzAZBe9i3KEnzJ7NelrB1bZBPt5DuweZCMnsKAZBQZDZD'
             request.get('/api/auth/login/facebook?access_token=' + accessToken)
@@ -151,7 +153,7 @@ describe('Auth API tests', function () {
 
                     done()
                 })
-        })
+        })*/
     });
 
     // it closes the server at the end

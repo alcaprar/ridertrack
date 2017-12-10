@@ -14,15 +14,12 @@ var standardMessage = {message: 'An error occured. Please try again in a while. 
  */
 router.post('/register', function (req, res) {
     console.log('[POST /register]');
-    console.log(req.body);
     if(typeof req.body.email === 'undefined' || typeof req.body.password === 'undefined'){
         return res.status(400).send({
             errors: [{message: "Email and/or password missing."}]
             });
     }else{
-        console.log("Else.....")
         User.create(req.body, function (err, user) {
-            console.log("working...Node")
             // if the error throws any error, send them
             if(err){
                 return res.status(400).send({

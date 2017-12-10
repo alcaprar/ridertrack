@@ -26,7 +26,7 @@ describe('Event model test', function () {
     });
 
 
-    it('should NOT create an event', function(done) {
+    /*it('should NOT create an event', function(done) {
         var event = new Event();
 
         event.save(function(err) {
@@ -127,5 +127,5 @@ describe('Event model test', function () {
             expect(err).to.not.be.eql(null);
             done();
         })
-    })
+    })*/
 });

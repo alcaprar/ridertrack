@@ -20,7 +20,7 @@ describe('User model test', function () {
         });
     });
 
-    it('should be invalid if name is empty', function(done) {
+    /*it('should be invalid if name is empty', function(done) {
         var user = new User({
             surname: 'Caprarelli',
             email: 'ale.capra@hotmail.it'
@@ -68,7 +68,7 @@ describe('User model test', function () {
             done();
         });
     });
-    
+
     it('should be valid if email is correct', function(done) {
         var user = new User({
             name: 'Alessandro',
@@ -123,5 +123,5 @@ describe('User model test', function () {
             done();
         })
 
-    })
+    })*/
 });

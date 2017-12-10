@@ -7,6 +7,8 @@ var server = require('../../../server');
 var uuid = require('uuid');
 var supertest = require('supertest');
 
+var mockdata = require('../mockdata');
+
 global.server = server;
 global.uuid = uuid;
 global.expect = chai.expect;
@@ -25,7 +27,7 @@ describe('Enrollment API tests', function () {
 	var userId = '';
 	var event1Id = '';
 	var event2Id = '';
-	
+
     beforeEach(function (done) {
         Enrollment.remove({}, function (err) {
 			User.remove({},function(){
@@ -35,24 +37,18 @@ describe('Enrollment API tests', function () {
 			});
         });
     });
-	
-	
+
+
 	//register user and recieve userToken and userId for other usage
 	beforeEach (function(done){
-		var user = {
-			email:"user@gmail.com",
-			password:"StrongPassword123",
-			name:"User",
-			surname:"User"
-		};
-		
+		var user = mockdata.createUser();
+
 		request.post('/api/auth/register')
 			.send(user)
 			.end(function(err,res){
-				console.log(res.body);
 				userId = res.body.userId;
 				userToken = "JWT " + res.body.jwtToken;
-				
+
 				var event1 = {
 					"name":"Long Marathon",
 					"type":"running",
@@ -68,7 +64,7 @@ describe('Enrollment API tests', function () {
 					"participantsList":[255],
 					"routes":["Route1"]
 				};
-				
+
 				var event2 = {
 					"name":"Marathon 2",
 					"type":"running",
@@ -84,10 +80,8 @@ describe('Enrollment API tests', function () {
 					"participantsList":[255],
 					"routes":["Route1"]
 				};
-				
+
 				Event.create(userId,event1,function(err,createdEvent1){
-					
-					console.log(err +" " + createdEvent1)
 					event1Id = createdEvent1._id;
 					Event.create(userId,event2,function(err,createdEvent2){
 						event2Id = createdEvent2._id;
@@ -96,9 +90,9 @@ describe('Enrollment API tests', function () {
 				});
 			});
 		});
-	
-	
-	
+
+
+
     describe('POST /enrollments', function () {
         it('it should NOT add a new enrollment because eventId field is missing', function (done) {
             let enrollment =  new Enrollment({
@@ -143,8 +137,8 @@ describe('Enrollment API tests', function () {
                     done()
                 })
         });
-		
-		
+
+
         it('it should return a list with two object', function (done) {
             let enrollment1 = new Enrollment({
                 eventId: event1Id,

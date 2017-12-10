@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+var Positions = require('./positions');
+
 var enrollmentSchema = Schema({
     eventId: {
         type: String,
@@ -55,7 +57,22 @@ enrollmentSchema.statics.create = function(userId, enrollmentJson, callback){
             return callback(err)
         } else {
             console.log("All good!");
-            return callback(null, enrollment)
+
+            // create an empty positions object for this enrollment
+            var userPositions = new Positions({
+                userId: userId,
+                eventId: enrollment.eventId
+            });
+
+            userPositions.save(function (err) {
+                if(err){
+                    console.log('[EnrollmentModel][create] error while creating default positions.', err)
+                }
+            });
+
+            return callback(null, enrollment);
+
+
         }
     });
 };
@@ -77,10 +94,12 @@ enrollmentSchema.statics.findAllByEventId = function (eventId, callback ){
  * Static method to delete an enrollment.
  */
 enrollmentSchema.statics.delete = function (eventId, userId, callback){
-    this.findOneAndRemove({eventId: eventId,userId: userId}, function(err, enrollment){
+    this.findOneAndRemove({eventId: eventId, userId: userId}, function(err, enrollment){
         if(err) {
             return callback(err)
         }else{
+            // remove the position object
+            Positions.delete(userId, eventId);
             return callback(null, enrollment)
         }
     })

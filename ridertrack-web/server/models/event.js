@@ -70,10 +70,6 @@ var eventSchema = Schema({
         data: Buffer,
         contentType: String
     },
-    routes: {
-        type: [String], //TODO to change with coordinates
-        default: []
-    },
     created_at: {
         type: Date,
         select: false

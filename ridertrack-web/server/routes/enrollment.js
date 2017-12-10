@@ -60,7 +60,7 @@ router.post('/', authMiddleware.hasValidToken, function(req, res){
             openingDate.setMonth(openingDateParsed[1] - 1);
             openingDate.setYear(openingDateParsed[2]);
 
-            Enrollment.find({userId: req.body.eventId}, function (err, enrollments) {
+            Enrollment.find({eventId: req.body.eventId}, function (err, enrollments) {
                 if (err) {
                     callback(err)
                 } else {
