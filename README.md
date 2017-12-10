@@ -1,7 +1,10 @@
 # Ridertrack
-https://travis-ci.org/alessandrocaprarelli/ridertrack.svg?branch=development
 
 An accessible tracking platform for outdoor sports events.
+
+## Build status
+Stable version: [![Build Status](https://travis-ci.org/alessandrocaprarelli/ridertrack.svg?branch=master)](https://travis-ci.org/alessandrocaprarelli/ridertrack) Development version: [![Build Status](https://travis-ci.org/alessandrocaprarelli/ridertrack.svg?branch=development)](https://travis-ci.org/alessandrocaprarelli/ridertrack)
+
 
 ## Getting started
 
