@@ -5,6 +5,7 @@ import {FormControl} from "@angular/forms";
 import {RouteService} from "../../services/route.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {isNullOrUndefined} from "util";
+import {DialogService} from "../../dialog/dialog.service";
 
 declare var google: any;
 
@@ -26,11 +27,13 @@ export class AddRouteMapComponent implements OnInit {
 
     private eventId: String;
 
+   errors: Error[] = [];
+
     @ViewChild("search")
     public searchElementRef: ElementRef;
 
     constructor(private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private routeService: RouteService,
-                private route: ActivatedRoute, private router: Router) {}
+                private route: ActivatedRoute, private router: Router, private dialogService: DialogService) {}
 
     ngOnInit() {
       this.route.params.subscribe(params => {
@@ -50,6 +53,7 @@ export class AddRouteMapComponent implements OnInit {
         .catch(
           (error) => {
             console.log('[Route Management][OnInit][error]', error);
+            this.errors = error;
           }
         );
 
@@ -159,9 +163,12 @@ export class AddRouteMapComponent implements OnInit {
    * It then calls the routeService to update the route passing the points.
    */
     saveRoute(){
-      this.routeService.updateRoute(this.eventId, this.mapPoints);
-
-      // TODO use the dialog service to show the result of the saving
+      this.routeService.updateRoute(this.eventId, this.mapPoints).then((success)=> {
+        this.dialogService.confirmation("Route", " The route is correctly saved", ()=>{
+            //TODO: Redirect somewhere else
+        });
+      }).catch((err) => {
+        this.errors = err;
+      });
     }
-
 }
