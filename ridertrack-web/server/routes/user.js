@@ -63,7 +63,7 @@ router.get('/:userId', function (req, res) {
  */
 router.get('/:userId/enrolledEvents', authMiddleware.hasValidToken, function (req, res){
     var options = {};
-    let enrolledEventsIdList=[];
+    let enrolledEventsIdList= [];
 
     var page = parseInt(req.query.page) || 1;
     var itemsPerPage = parseInt(req.query.itemsPerPage) || 10;

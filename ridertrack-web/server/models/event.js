@@ -61,10 +61,10 @@ var eventSchema = Schema({
         default: 100
     },
     enrollmentOpeningAt: {
-        type: String
+        type: Date
     },
     enrollmentClosingAt: {
-        type: String
+        type: Date
     },
     logo: {
         data: Buffer,
@@ -182,6 +182,7 @@ eventSchema.statics.update = function (eventId, eventJson, callback) {
         if (err) {
             return callback(err)
         } else {
+            console.log('event to update', eventJson)
             // override the previous value
             for (let key in eventJson) {
                 if(fieldsNotChangeable.indexOf(key) === -1){
@@ -189,7 +190,7 @@ eventSchema.statics.update = function (eventId, eventJson, callback) {
                 }
             }
 
-            console.log('user updated', event);
+            console.log('event updated', event);
 
             event.save(function (err) {
                 if (err) {

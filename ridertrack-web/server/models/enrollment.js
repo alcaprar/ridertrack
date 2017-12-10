@@ -53,10 +53,9 @@ enrollmentSchema.statics.create = function(userId, enrollmentJson, callback){
 
     enrollment.save(function(err, enrollment){
         if(err) {
-            console.log("Error Here!");
+            console.log('[EnrollmentModel][create] error', err);
             return callback(err)
         } else {
-            console.log("All good!");
 
             // create an empty positions object for this enrollment
             var userPositions = new Positions({
@@ -99,7 +98,9 @@ enrollmentSchema.statics.delete = function (eventId, userId, callback){
             return callback(err)
         }else{
             // remove the position object
-            Positions.delete(userId, eventId);
+            Positions.delete(userId, eventId, function (err) {
+                // do something??
+            });
             return callback(null, enrollment)
         }
     })

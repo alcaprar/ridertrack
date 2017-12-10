@@ -77,17 +77,13 @@
                   </div>
                   <div class="form-group">
                     <label for="enrollmentOpeningAt">Enrollment Opening At</label>
-                    <input [(ngModel)]="event.enrollmentOpeningAt"
-                           #description="ngModel" id="enrollmentOpeningAt" name="enrollmentOpeningAt"
-                           type="text" class="form-control datepicker" placeholder={{event.enrollmentOpeningAt}}
-                           (change)="updateOpenDate()">
+                    <input id="enrollmentOpeningAt" name="enrollmentOpeningAt"
+                           type="text" class="form-control datepicker" placeholder="Enrollment opening at">
                   </div>
                   <div class="form-group">
                     <label for="enrollmentClosingAt">Enrollment Closing At</label>
-                    <input [(ngModel)]="event.enrollmentClosingAt" #description="ngModel" id="enrollmentClosingAt"
-                           name="enrollmentClosingAt" type="text" class="form-control datepicker"
-                           placeholder={{event.enrollmentClosingAt}}
-                           (change)="updateCloseDate()" >
+                    <input id="enrollmentClosingAt" name="enrollmentClosingAt" type="text" class="form-control datepicker"
+                           placeholder="Enrollment closing at">
                   </div>
                 </div>
               </div>

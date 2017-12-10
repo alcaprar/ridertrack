@@ -48,6 +48,7 @@ import {EventBoxOrganizedComponent} from "./event-pages/event-box/event-box-orga
 import { EnrolledEventsComponent } from './event-pages/my-events/enrolled-events/enrolled-events.component';
 import { OrganizedEventsComponent } from './event-pages/my-events/organized-events/organized-events.component';
 import { ConfirmationDialogComponent } from './shared/dialog/confirmation-dialog/confirmation-dialog.component';
+import { AlertDialogComponent } from './shared/dialog/alert-dialog/alert-dialog.component';
 import {DialogService} from "./shared/dialog/dialog.service";
 import {CommonModule} from "@angular/common";
 import { AddRouteMapComponent } from './shared/map/add-route-map/add-route-map.component';
@@ -88,6 +89,7 @@ import { EventProgressComponent } from './event-pages/event-progress/event-progr
     EnrolledEventsComponent,
     OrganizedEventsComponent,
     ConfirmationDialogComponent,
+    AlertDialogComponent,
     AddRouteMapComponent,
     EventManageRouteComponent,
     DirectionDirective,

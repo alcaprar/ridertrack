@@ -44,6 +44,10 @@ export class EventManagePageComponent implements OnInit {
             console.log('[EventManage][OnInit][getEvent][success]', event);
             this.event = event;
             this.urlImage = '/api/events/' + this.event._id + '/logo';
+
+            // init the input of the datepicker
+            $('#enrollmentOpeningAt.datepicker').datepicker("setDate" , new Date(this.event.enrollmentOpeningAt));
+            $('#enrollmentClosingAt.datepicker').datepicker("setDate" , new Date(this.event.enrollmentClosingAt));
           }
         )
     })
@@ -57,8 +61,6 @@ export class EventManagePageComponent implements OnInit {
     // set the placeholder the date of today
     let todayDate = new Date();
     let today = todayDate.getDate() + '/' + (todayDate.getMonth() < 12 ? todayDate.getMonth() + 1 : 1) + '/' + todayDate.getFullYear();
-    console.log('[EventManage][ngAfterViewInit]', $('.datepicker'));
-    $('.datepicker').attr('placeholder', today);
     // init the plugin datepicker on the element
     $('.datepicker').datepicker({
       format: 'dd/mm/yyyy',
@@ -68,9 +70,14 @@ export class EventManagePageComponent implements OnInit {
     });
     // init the type selectpicker
     $('.selectpicker').selectpicker();
+  }
 
-    function formatDate(date){
+  formatDate(date){
+    if(date){
+      date = new Date(date);
       return date.getDate() + '/' + (date.getMonth() < 12 ? date.getMonth() + 1 : 1) + '/' + date.getFullYear()
+    }else{
+      return ''
     }
   }
 
@@ -113,11 +120,12 @@ export class EventManagePageComponent implements OnInit {
   onSubmit(){
     // the datepicker is not detected by angular form
     this.event.startingDate = $('#startingDate.datepicker').val();
-    this.event.enrollmentOpeningAt = $('#enrollmentOpeningAt.datepicker').val();
-    this.event.enrollmentClosingAt = $('#enrollmentClosingAt.datepicker').val();
+    this.event.enrollmentOpeningAt = $('#enrollmentOpeningAt.datepicker').datepicker("getDate" );
+    this.event.enrollmentClosingAt = $('#enrollmentClosingAt.datepicker').datepicker("getDate" );
 
     this.event.logo = $('#logo').prop('files')[0];
 
+    console.log('[EventManage][onSubmit]',$('#enrollmentOpeningAt.datepicker').datepicker("getDate" ))
     this.eventService.updateEvent(this.event._id, this.event)
       .then(
         (response) => {
@@ -150,20 +158,20 @@ export class EventManagePageComponent implements OnInit {
    */
   deleteEvent() {
     this.dialogService.confirmation('Delete event', 'Are you sure to delete this event?', function () {
-    console.log('[ManageEvent][deleteEvent]');
-    this.eventService.deleteEvent(this.eventId)
-      .then(
-        (response) => {
-          console.log('[ManageEvent][deleteEvent][success]', response);
-          this.router.navigate(['/my-events']);
-        }
-      )
-      .catch(
-        (error) => {
-          console.log('[ManageEvent][deleteEvent][error]', error);
-          // TODO show errors
-        }
-      );
+      console.log('[ManageEvent][deleteEvent]');
+      this.eventService.deleteEvent(this.eventId)
+        .then(
+          (response) => {
+            console.log('[ManageEvent][deleteEvent][success]', response);
+            this.router.navigate(['/my-events']);
+          }
+        )
+        .catch(
+          (error) => {
+            console.log('[ManageEvent][deleteEvent][error]', error);
+            // TODO show errors
+          }
+        );
     }.bind(this));
   }
 

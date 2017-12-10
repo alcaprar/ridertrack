@@ -47,43 +47,52 @@ router.post('/', authMiddleware.hasValidToken, function(req, res){
                 errors: err
             })
         }else {
-            var currentDate = new Date();
-            var closingDate = new Date();
-            var closingDateParsed = event.enrollmentClosingAt.split("/");
-            closingDate.setDate(closingDateParsed[0]);
-            closingDate.setMonth(closingDateParsed[1] - 1);
-            closingDate.setYear(closingDateParsed[2]);
+            if(!event){
+                return res.status(400).send({
+                    errors: [{message: 'Event does not exist.'}]
+                })
+            }else{
 
-            var openingDate = new Date();
-            var openingDateParsed = event.enrollmentOpeningAt.split("/");
-            openingDate.setDate(openingDateParsed[0]);
-            openingDate.setMonth(openingDateParsed[1] - 1);
-            openingDate.setYear(openingDateParsed[2]);
+                if(!event.enrollmentOpeningAt || !event.enrollmentClosingAt){
+                    return res.status(400).send({
+                        errors: [{message: 'The enrolling time is not defined yet.'}]
+                    })
+                }
 
-            Enrollment.find({eventId: req.body.eventId}, function (err, enrollments) {
-                if (err) {
-                    callback(err)
-                } else {
-                    if (currentDate >= openingDate && currentDate <= closingDate && enrollments.length < event.maxParticipants) {
-                        Enrollment.create(req.userId, req.body, function (err, enrollment) {
-                            if (err) {
-                                res.status(400).send({
-                                    errors: err
+                var currentDate = new Date();
+                if(currentDate > new Date(event.enrollmentOpeningAt) && currentDate < new Date(event.enrollmentClosingAt)){
+                    Enrollment.find({eventId: req.body.eventId}, function (err, enrollments) {
+                        if (err) {
+                            callback(err)
+                        } else {
+                            if (enrollments.length < event.maxParticipants) {
+                                Enrollment.create(req.userId, req.body, function (err, enrollment) {
+                                    if (err) {
+                                        res.status(400).send({
+                                            errors: err
+                                        })
+                                    } else {
+                                        res.status(200).send({
+                                            message: 'User enrolled successfully!',
+                                            enrollment: enrollment
+                                        })
+                                    }
                                 })
                             } else {
-                                res.status(200).send({
-                                    message: 'User enrolled successfully!',
-                                    enrollment: enrollment
+                                return res.status(401).send({
+                                    errors: "The event has reached the maximum of participants."
                                 })
                             }
-                        })
-                    } else {
-                        res.status(401).send({
-                            errors: "Enrollment is not possible for this event"
-                        })
-                    }
+                        }
+                    })
+                }else{
+                    return res.status(400).send({
+                        errors: "The enrollment is not opened."
+                    })
                 }
-            })
+
+
+            }
         }
     })
 });

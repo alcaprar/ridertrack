@@ -16,4 +16,9 @@ export class DialogService {
     this.dialogs['confirmation'].show(title, body, callback);
   }
 
+  alert(title, body){
+    console.log('[DialogService][alert]', this.dialogs);
+    this.dialogs['alert'].show(title, body);
+  }
+
 }

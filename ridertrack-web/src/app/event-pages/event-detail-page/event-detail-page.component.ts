@@ -173,9 +173,7 @@ export class EventDetailPageComponent implements OnInit {
             console.log('[EventDetail][enroll][success]', response);
             // get the new list of particpants to update the buttons
             this.getParticipants();
-            this.dialogService.confirmation("Success", "You are correctly enrolled",function(){
-
-            });
+            this.dialogService.alert("Success", "You are correctly enrolled");
           }
         )
         .catch(
@@ -193,28 +191,10 @@ export class EventDetailPageComponent implements OnInit {
 
   enrollementIsOpen(): boolean {
     let today = new Date();
-    var initialOpen = this.event.enrollmentOpeningAt;
-    var initialClose = this.event.enrollmentClosingAt;
-    let open = null;
-    let close = null;
-
-    if (initialOpen != null && initialClose != null) {
-      var split_open = initialOpen.split(/\//);
-      let split_close = initialClose.split(/\//);
-      open = new Date(+split_open[2], +split_open[1] - 1, +split_open[0]);
-      close = new Date(+split_close[2], +split_close[1] - 1, +split_close[0]);
-    } else if (initialOpen != null) {
-      var split_open = initialOpen.split(/\//);
-      open = new Date(+split_open[2], +split_open[1] - 1, +split_open[0]);
-    }
-
-    console.log("Today", today);
-    console.log("open", open);
-    console.log("close", close);
-
 
     if (this.event.enrollmentOpeningAt && this.event.enrollmentClosingAt) {
-        return today >= open && today<= close;
+      console.log('[EventDetail][EnromentIsOpen]', today >= new Date(this.event.enrollmentOpeningAt));
+        return today >= new Date(this.event.enrollmentOpeningAt) && today<=  new Date(this.event.enrollmentClosingAt);
     }else {
       return false;
     }

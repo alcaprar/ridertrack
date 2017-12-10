@@ -85,7 +85,7 @@
               </span>
               <span class="property-info-entry">
                 <span class="property-info-label">Enrollment Opening At</span>
-                <span class="property-info-value">{{(event.enrollmentOpeningAt) ? event.enrollmentOpeningAt : '(TBD*)'}}</span>
+                <span class="property-info-value">{{(event.enrollmentOpeningAt) ? (event.enrollmentOpeningAt | date: 'dd/MM/yyyy') : '(TBD*)' }}</span>
               </span>
             </div>
             <div class="col-xs-6 col-sm-3 col-md-3 p-b-15">
@@ -94,7 +94,7 @@
               </span>
               <span class="property-info-entry">
                 <span class="property-info-label">Enrollment Closing At</span>
-                <span class="property-info-value">{{(event.enrollmentClosingAt) ? event.enrollmentClosingAt : '(TBD*)' }}</span>
+                <span class="property-info-value">{{(event.enrollmentClosingAt) ? (event.enrollmentClosingAt | date: 'dd/MM/yyyy') : '(TBD*)'}}</span>
               </span>
             </div>
             <div col-xs-12>

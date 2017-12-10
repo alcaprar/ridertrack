@@ -271,7 +271,7 @@ export class EventService {
    * @param eventid
    * @returns enrollment message
    */
-  enrollToEvent(eventId): Promise<boolean>{
+  enrollToEvent(eventId): Promise<Error>{
     const url = `${this.BASE_URL}/enrollments`;
     var body = {
       eventId: eventId
@@ -282,12 +282,12 @@ export class EventService {
         (res) => {
           const eventBody = res.json();
           console.log('[EventService][enroll][success]', eventBody);
-          return true;
+          return null;
         })
       .catch(
         (error) => {
           console.log('[EventService][enroll][error]', error);
-          return false;
+          return (error as Error[])[0];
         });
   }
 

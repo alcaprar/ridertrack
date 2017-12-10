@@ -220,6 +220,7 @@ userSchema.statics.create = function (userJson, callback) {
         // social registration
         user.save(function (err) {
             if(err){
+                console.log('[UserModel][create] error', err);
                 return callback({
                     message:"Error occurred during saving user from social service site." +
                     "Maybe user has already registred in database "
@@ -235,6 +236,7 @@ userSchema.statics.create = function (userJson, callback) {
             }
             user.save(function (err) {
                 if(err){
+                    console.log('[UserModel][create] error', err);
                     return callback({
                         message:"Error occurred during saving user account." +
                         " Maybe user already exists as social service user"
