@@ -32,6 +32,7 @@ export class EventProgressComponent implements OnInit {
   private participantsList: any;
   private event: any;
   private city: any;
+  travelModeInput = "WALKING";
 
   constructor(private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private routeService: RouteService,
     private route: ActivatedRoute, private router: Router, private eventService: EventService) { }
