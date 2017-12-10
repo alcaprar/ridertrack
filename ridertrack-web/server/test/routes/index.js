@@ -27,6 +27,14 @@ describe('API tests', function () {
                     expect(res.status).to.eql(200);
                     done();
                 })
+        });
+
+        it('it should return Server up', function (done) {
+            request.get('/health-check')
+                .end(function (err, res) {
+                    expect(res.status).to.eql(200);
+                    done();
+                })
         })
     });
 
