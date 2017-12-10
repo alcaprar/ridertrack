@@ -78,6 +78,18 @@ Server listening on port: 5000
 
 In this case you don't need to wait also for the webpack compilation, because has been done during `ng build`.
 
+### Mongodb
+By default the node.js app tries to connect to a local installation of mongodb.
+If you want to connect to a different mongodb, you can pass either the complete uri setting `MONGODB_URI` environment variable or each single part of the uri:
+```
+MONGODB_URI
+
+or
+MONGODB_HOST
+MONGODB_PORT
+DATABASE_NAME
+```
+
 ### Running the tests
 
 You can run test on the node.js application running:

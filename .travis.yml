@@ -10,6 +10,10 @@ cache:
 services:
   - mongodb
 
+notifications:
+  slack:
+    secure: ZsAhS6VPEittRl+PY8JlLabsOWezLYjNB/ZoLdrDmHtSGl9+7o/HNdLdDQDps2JT2Lx88rFCH+zrmI26AZJPovGkNbJ8jurEVxROMfyJBdecU7zPERydwuvIhO6rrIxqOAQqyfXFFRcZT/LmGz2gkxdD2DLpdGdit8dvJMzbutji9Jn3j9jldIaSiP/ykzpa5iMTSgfzuTVamvPgaExnYNiCq1YnC45JchGWb09IXEtNmj+lnlWyVNnIZCHMTlk/63jGZI9CRO0xeoO3wczEkK5PkPPJXk5ViSMTb4x53KWxGQr+/t5XRbJ/cfKdnH1Bb1aTKuLHeTEJ+hrqCNOTc6gWAOLxjCG3+6xx67HNgKy/TQdE0AJ3xv8dmg61TTM/eHGfLhUPrBzMV+EdxLUTVmqi5BvVzH9zZOpiUnFL5HMP9WVbsMzUcVJk7rC7IrUTtlI+ZhVYOb9/a1cVBPYZcQjTSpDmb3RQ4H4Z0iaQkVxKyJWIqRjEQf5Extq+zrZ1PTGr+Kbw6EHJn55dEosUa3i6P3+sAiGoszDWlYKKmLUvNmwPxVauwWd94stbZwRt4gtwkxFN7TpEwDgbxZLglto9nZ3Ts18pJ/kVelXanxfXwZgT0seE4Hgg6TZjCJkd6c8/IrkMnTlRavFB5LnVsokeovpJTIR+Qyjv6cMWB5U=
+
 deploy:
   provider: heroku
   api_key:
