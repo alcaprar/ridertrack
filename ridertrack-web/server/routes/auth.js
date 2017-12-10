@@ -91,7 +91,7 @@ router.get('/login/facebook', function (req, res, next) {
     passport.authenticate('facebook-token', { scope: ['id', 'displayName', 'name', 'email'] }, function (err, user, info) {
         if(err){
             return res.status(400).send({
-                errors: [err.message]
+                errors: [err]
             });
         }
 
@@ -124,7 +124,7 @@ router.get('/login/google', function (req, res, next) {
     passport.authenticate('google-token', function (err, user, info) {
         if(err){
             return res.status(400).send({
-                errors: [err.message]
+                errors: [err]
             });
         }
 
