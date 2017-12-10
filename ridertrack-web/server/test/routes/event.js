@@ -6,7 +6,7 @@ var chai = require('chai');
 var server = require('../../../server');
 var uuid = require('uuid');
 var supertest = require('supertest');
-var mongoose = require('mongoose')
+var mongoose = require('mongoose');
 
 global.server = server;
 global.uuid = uuid;
@@ -32,7 +32,9 @@ describe('Event API tests', function () {
         Event.remove({}, function () {
             User.remove({}, function () {
                Route.remove({}, function () {
-                    done()
+                    Enrollment.remove({}, function () {
+                        done()
+                    })
                });
             });
         });
@@ -50,7 +52,7 @@ describe('Event API tests', function () {
                     done();
                 })
         });
-        
+
         it('General search: it should add an event and return an array with one element', function (done) {
             var event = new Event({
                 "name":"TestEvent",
@@ -1025,7 +1027,7 @@ describe('Event API tests', function () {
     });
 
     describe('POST /events', function () {
-		
+
 		var userJson = {
 			"name": "User",
 			"surname": "Surname",
@@ -1034,8 +1036,8 @@ describe('Event API tests', function () {
 			"id":'',
 			"jwtToken":''
 		};
-		
-		var eventJson ={         
+
+		var eventJson ={
 			"id":'',
 			"name":"TestEvent",
 			"organizerId": '',
@@ -1051,31 +1053,31 @@ describe('Event API tests', function () {
 			"enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
 			"participantsList":[255],
 			"routes":["Route1"]
-			
+
 		}
-		
+
 		beforeEach(function(done){
-			
+
 			request.post('/api/auth/register')
 				.send(userJson)
 				.end(function(err,resUser){
 					if (err)
 						throw new Error(err);
-					
+
 					userJson.id = resUser.body.userId;
 					userJson.jwtToken = "JWT " + resUser.body.jwtToken;
 					eventJson.organizerId = userJson.id;
-					
+
 					done();
 				});
 		});
-		
-		
-		
-		
-		
+
+
+
+
+
         it('it should create an event', function (done) {
-			
+
 			request.post('/api/events')
 				.set('Authorization', userJson.jwtToken)
 				.send(eventJson)
@@ -1084,14 +1086,14 @@ describe('Event API tests', function () {
 					expect(res.body).to.be.an('object');
 					expect(res.body.event).to.be.an('object');
 					expect(res.body.event._id).to.not.be.eql('');
-					
+
 					done();
-					
+
                 });
         });
 
         it('it should NOT create an event without login', function (done) {
-						
+
 			request.post('/api/events')
 				.send(eventJson)
 				.end(function (err, res) {
@@ -1099,16 +1101,16 @@ describe('Event API tests', function () {
 					expect(res.body).to.be.an('object');
 					expect(res.body.event).to.be.an('object');
 					expect(res.body.event._id).to.not.be.eql('');
-					
+
 					done();
-					
+
                 });
         });
 	});
 
 
     describe('PUT /events', function () {
-		
+
 		var userJson = {
 			"name": "User",
 			"surname": "Surname",
@@ -1117,8 +1119,8 @@ describe('Event API tests', function () {
 			"id":'',
 			"jwtToken":''
 		};
-		
-		var eventJson ={         
+
+		var eventJson ={
 			"id":'',
 			"name":"TestEvent",
 			"organizerId": '',
@@ -1134,46 +1136,46 @@ describe('Event API tests', function () {
 			"enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
 			"participantsList":[255],
 			"routes":["Route1"]
-			
+
 		}
-		
+
 		beforeEach(function(done){
-			
+
 			request.post('/api/auth/register')
 				.send(userJson)
 				.end(function(err,resUser){
-					
+
 					userJson.id = resUser.body.userId;
 					userJson.jwtToken = "JWT " + resUser.body.jwtToken;
 					eventJson.organizerId = userJson.id;
-					
+
 					Event.create(organizerId,eventJson,function(err,event){
 						eventJson.id = event._id;
 						done();
 					});
 				});
 		});
-		
-		
+
+
         it('it should NOT update the event if it is not the organizer', function (done) {
-		
+
 		var user2 = {
 				"name": "User",
 				"surname": "Surname",
 				"email": "email@domain.it",
 				"password": "AVeryStrongPasword"
                 };
-				   
+
 				request.post('/api/auth/register')
 					.send(user2)
 					.end(function (err, res) {
 						user2._id = res.body.userId;
 						user2.jwtToken = res.body.jwtToken;
-						
+
 						var newFields = {
                                     name: 'newName'
                                 };
-								
+
 						request.put('/api/events/' + eventJson.id)
 							.send(newFields)
 							.set('Authorization', 'JWT ' + user2.jwtToken)
@@ -1181,19 +1183,19 @@ describe('Event API tests', function () {
 								expect(res.status).to.be.eql(401);
 								expect(res.body).to.be.an('object');
 								expect(res.body.errors).to.not.be.eql(null);
-								
+
 								done();
-                                  
+
                             });
                     });
 		});
 
         it('should NOT update the id of the event', function (done) {
-			
+
 			let newFields = {
 				_id: mongoose.Types.ObjectId()
 				};
-				
+
 			request.put('/api/events/' + eventJson.id)
 				.set('Authorization', userJson.jwtToken)
 				.send(newFields)
@@ -1202,36 +1204,36 @@ describe('Event API tests', function () {
 					expect(res.status).to.be.eql(401);
 					expect(res.body).to.be.an('object');
 					expect(res.body.errors).to.not.be.eql(null);
-					
+
 					done();
-                      
+
                 });
         });
 
         it('should NOT update without login', function (done) {
-			
+
 			var newFields = {
 				name: 'newName'
 				};
-				
+
 			request.put('/api/events/' + eventJson.id)
 				.send(newFields)
 				.end(function (req, res) {
 					expect(res.status).to.be.eql(401);
 					expect(res.body).to.be.an('object');
 					expect(res.body.errors).to.not.be.eql(null);
-					
+
 					done()
                     });
 		});
 
         it('it should update the name of the event', function (done) {
-			
+
 			var newFields = {
 				name: 'newName'
-				
+
 				};
-				
+
 			request.put('/api/events/' + eventJson.id)
 				.set('Authorization', userJson.jwtToken)
 				.send(newFields)
@@ -1241,14 +1243,14 @@ describe('Event API tests', function () {
 					expect(res.body).to.be.an('object');
 					expect(res.body.errors).to.be.eql(undefined);
 					expect(res.body.event.name).to.be.eql(newFields.name);
-					
+
 					done()
                 });
         });
 	});
-	
+
     describe('DELETE /events', function () {
-		
+
 		var userJson = {
 			"name": "User",
 			"surname": "Surname",
@@ -1257,8 +1259,8 @@ describe('Event API tests', function () {
 			"id":'',
 			"jwtToken":''
 		};
-		
-		var eventJson ={         
+
+		var eventJson ={
 			"id":'',
 			"name":"TestEvent",
 			"organizerId": '',
@@ -1274,70 +1276,70 @@ describe('Event API tests', function () {
 			"enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
 			"participantsList":[255],
 			"routes":["Route1"]
-			
+
 		}
-		
+
 		beforeEach(function(done){
-			
+
 			request.post('/api/auth/register')
 				.send(userJson)
 				.end(function(err,resUser){
-					
+
 					userJson.id = resUser.body.userId;
 					userJson.jwtToken = "JWT " + resUser.body.jwtToken;
 					eventJson.organizerId = userJson.id;
-					
+
 					Event.create(organizerId,eventJson,function(err,event){
 						eventJson.id = event._id;
 						done();
 					});
 				});
 		});
-		
-		
-		
+
+
+
         it('it should NOT delete an event without login', function (done) {
-			
+
 			request.delete('/api/events/' + eventJson.id)
 				.end(function (req, res) {
 					expect(res.status).to.be.eql(401);
 					expect(res.body).to.be.an('object');
 					expect(res.body.errors).to.not.be.eql(null);
-					
+
 					done()
                     });
             });
         });
 
         it('it should NOT delete the event if it is not the organizer', function (done) {
-			
+
 			var user2 = {
 				"name": "User",
 				"surname": "Surname",
 				"email": "email@domain.it",
 				"password": "AVeryStrongPasword"
                 };
-				
+
 			request.post('/api/auth/register')
 				.send(user2)
 				.end(function (err, res) {
 					user2._id = res.body.userId;
 					user2.jwtToken = res.body.jwtToken;
-					
+
 					request.delete('/api/events/' + eventJson.id)
 						.set('Authorization', 'JWT ' + user2.jwtToken)
 						.end(function (req, res) {
 							expect(res.status).to.be.eql(401);
 							expect(res.body).to.be.an('object');
 							expect(res.body.errors).to.not.be.eql(null);
-							
+
 							done()
                         });
                 });
         });
 
         it('it should delete the event', function (done) {
-			
+
 			request.delete('/api/events/' + eventJson.id)
 				.set('Authorization', 'JWT ' + userJson.jwtToken)
 				.end(function (req, res) {
@@ -1345,7 +1347,7 @@ describe('Event API tests', function () {
 					expect(res.body).to.be.an('object');
 					expect(res.body.errors).to.be.eql(undefined);
 					expect(res.body.event).to.be.an('object');
-					
+
 					done()
                 });
         });
@@ -1572,7 +1574,7 @@ describe('Event API tests', function () {
 					done();
                 });
         });
-		
+
 		it('should allow user to delete route',function(done){
 			request.delete('/api/events/' + createdEventObject.id + '/route')
 				.set('Authorization',userCreatorObject.userToken)
@@ -1584,7 +1586,7 @@ describe('Event API tests', function () {
 					});
 				});
 		});
-		
+
 		it('should not allow user to update route if he is not creator',function(done){
 			     request.put('/api/events/' + createdEventObject.id + '/route')
                 .set('Authorization',userNotCreatorObject.userToken)
@@ -1594,7 +1596,7 @@ describe('Event API tests', function () {
                     done();
                 });
 		});
-		
+
 		it('should not allow user to delete route if he is not creator',function(done){
 						request.delete('/api/events/' + createdEventObject.id + '/route')
 				.set('Authorization',userNotCreatorObject.userToken)
