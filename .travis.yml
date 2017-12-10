@@ -1,8 +1,14 @@
 language: node_js
 node_js:
   - "8"
+
+cache:
+  directories:
+    - /home/travis/build/alessandrocaprarelli/ridertrack/ridertrack-web/node_modules
+
 services:
   - mongodb
+
 before_script:
 - npm install
 
