@@ -30,6 +30,9 @@ var rankingSchema = Schema({
     }
 });
 
+// index of the collection. just one ranking per event
+rankingSchema.index({eventId: 1}, {name: "ranking_eventId_idx", unique: true});
+
 // on every save, add the date
 rankingSchema.pre('save', function(next) {
     // get the current date

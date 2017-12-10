@@ -37,6 +37,9 @@ var locationSchema = Schema({
     }
 });
 
+// index of the collection
+locationSchema.index({userId:1, eventId: 1, timestamp: 1}, {name: "location_idx", unique: true});
+
 // on every save, add the date
 locationSchema.pre('save', function(next) {
     // get the current date
