@@ -1,4 +1,6 @@
 # Ridertrack
+https://travis-ci.org/alessandrocaprarelli/ridertrack.svg?branch=development
+
 An accessible tracking platform for outdoor sports events.
 
 ## Getting started
