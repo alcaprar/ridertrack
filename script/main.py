@@ -35,7 +35,8 @@ f.close()
 
 for p in participants:
     #login or register
-    tupleTokenId = serverRequests.register(url,p.name,p.surname,p.email,p.password)
+    #tupleTokenId = serverRequests.register(url,p.name,p.surname,p.email,p.password)
+    tupleTokenId = serverRequests.login(url,p.email,p.password)
     p.token = tupleTokenId[0]
     p.userId = tupleTokenId[1]
     #enroll users

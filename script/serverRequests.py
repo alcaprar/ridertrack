@@ -14,6 +14,7 @@ def register(url,name,surname,email,password):
     }
 
     r = requests.post(url,json=payload,headers = headers)
+    print(r.json())
     token = r.json()['jwtToken']
     userId = r.json()['userId']
     
@@ -30,6 +31,7 @@ def login (url,email,password):
     }
 
     r = requests.post(url,json=payload,headers = headers)
+    print(r.json())
     token = r.json()['jwtToken']
     userId = r.json()['userId']
     
