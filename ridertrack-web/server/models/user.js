@@ -14,7 +14,7 @@ var userSchema = Schema({
         type: String,
         required: true,
         minlength: 1,
-        validate: [validator.isEmail, 'Email is not correct.']
+        validate: [{ isAsync:false, validator: validator.isEmail, msg: 'Email is not correct.' }]
     },
     salt: {
         type: String,

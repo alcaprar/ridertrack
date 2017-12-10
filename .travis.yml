@@ -1,0 +1,25 @@
+language: node_js
+node_js:
+  - "8"
+env: global
+
+cache:
+  directories:
+    - /home/travis/build/alessandrocaprarelli/ridertrack/ridertrack-web/node_modules
+
+services:
+  - mongodb
+
+notifications:
+  slack:
+    secure: ZsAhS6VPEittRl+PY8JlLabsOWezLYjNB/ZoLdrDmHtSGl9+7o/HNdLdDQDps2JT2Lx88rFCH+zrmI26AZJPovGkNbJ8jurEVxROMfyJBdecU7zPERydwuvIhO6rrIxqOAQqyfXFFRcZT/LmGz2gkxdD2DLpdGdit8dvJMzbutji9Jn3j9jldIaSiP/ykzpa5iMTSgfzuTVamvPgaExnYNiCq1YnC45JchGWb09IXEtNmj+lnlWyVNnIZCHMTlk/63jGZI9CRO0xeoO3wczEkK5PkPPJXk5ViSMTb4x53KWxGQr+/t5XRbJ/cfKdnH1Bb1aTKuLHeTEJ+hrqCNOTc6gWAOLxjCG3+6xx67HNgKy/TQdE0AJ3xv8dmg61TTM/eHGfLhUPrBzMV+EdxLUTVmqi5BvVzH9zZOpiUnFL5HMP9WVbsMzUcVJk7rC7IrUTtlI+ZhVYOb9/a1cVBPYZcQjTSpDmb3RQ4H4Z0iaQkVxKyJWIqRjEQf5Extq+zrZ1PTGr+Kbw6EHJn55dEosUa3i6P3+sAiGoszDWlYKKmLUvNmwPxVauwWd94stbZwRt4gtwkxFN7TpEwDgbxZLglto9nZ3Ts18pJ/kVelXanxfXwZgT0seE4Hgg6TZjCJkd6c8/IrkMnTlRavFB5LnVsokeovpJTIR+Qyjv6cMWB5U=
+
+deploy:
+  provider: heroku
+  api_key:
+    secure: g/88E31XXnEhgKKzBHi374e7IA7OpKqdcjAtrFfq+SttAWs0gJnrqk00BMYWVmgbRUS4iyBqCgiI5tCaCyM3gGMyeIwc6yMaG4KLr1nZdop25Tv1hP4Vwxd2Mk/thRsIfBHuBMm3eOPJ2m74VSkCrhvN3QcEoxsLuRkYxwMLkqTvCe9qplF8PziTDVECLGGbQ8v1XI4KSX5jKjYS2LqdpbP7Y9jWslhftYggKGBC55PsMmOzCD3siMbivPoSDAifY0FtMuR4hL+xCnD7pY+6XkC17AOTbI16j5j3ziG06C7DBbUjo6XyGARSMndUOA2FY11rzZuc26BlUY0mpZP30tHntqenL5vihwFQSmBn/3rmcYI5t9F+Vvms9p3KNLyEt3mbpqrEXoCy0xhdaJQ0UXVCJni+Ky1RcgxVfDupi2/Havxjx8YggjhcdnE4Cj2MCm91GNJum6j/ZCaN7EztcDCL80gVApIhwe8n13Kc0qPBd4hQqM/dPnRuxVLJXIh9C9roKh3nV4nFcA79NrxivXWfGr6sUAybAN/7CIQU7idsnQtRyHYGSy7cYNJb2DJk8Hz1vnAXdfzk6Z3nMZXMa9KNGvge1WJmwyaKUZMz85xGXGbbOS00kEoOUSt2zeL4f+MWJ4J+RSprYBjGeVEOI8ISBibtc9Q9P0UzOwY+4LE=
+  app:
+    master: rider-track
+    development: rider-track-dev
+
+script: npm run test-node

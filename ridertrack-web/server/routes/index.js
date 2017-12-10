@@ -21,7 +21,13 @@ router.get('/health-check', function (req, res) {
 
 // it sends the angular app
 router.get('*', function (req, res) {
-  return res.sendFile(path.resolve(config.buildFolder + '/index.html'));
+    var indexPath = path.resolve(config.buildFolder + '/index.html');
+    var fs = require('fs');
+    if (!fs.existsSync(indexPath)) {
+        return res.status(200).send('index.html missing. Build not done.')
+    }else{
+        return res.sendFile(indexPath);
+    }
 });
 
 module.exports = router;
