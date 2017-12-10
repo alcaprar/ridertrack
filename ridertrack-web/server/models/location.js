@@ -22,8 +22,8 @@ var locationSchema = Schema({
     },
     coordinates: {
         type:[{
-            lat:{type: String},
-            lon:{type: String}
+            lat:{type: Number},
+            lng:{type: Number}
         }],
         required: false
     },
@@ -61,6 +61,7 @@ locationSchema.statics.create = function(userId, eventId, locationJson, callback
             return callback(err)
         } else {
             console.log("All good with adding location!");
+			console.log(location)
             return callback(null, location)
         }
     })

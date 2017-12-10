@@ -380,7 +380,7 @@ router.post('/:eventId/participants/positions', authMiddleware.hasValidToken, fu
 
 /**
  * gets the location of the last location of an user.
- * Coordinates are an object {[lat,lon]}
+ * Coordinates are an object {[lat,lng]}
  */
 router.get('/:eventId/:userId/location', function (req, res) {
 
