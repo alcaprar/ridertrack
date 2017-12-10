@@ -3,6 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "install": "cd ridertrack-web && npm install",
+    "build": "cd ridertrack-web && ng build",
     "start": "node ridertrack-web/server.js",
     "postinstall": "cd ridertrack-web && npm install"
   },
