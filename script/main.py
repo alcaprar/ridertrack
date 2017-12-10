@@ -18,11 +18,11 @@ f = open('users.txt','r')
 
 startingLine = True
 while (True):
+    l = f.readline().strip()
     if (startingLine  == True):
         startingLine = False
         continue
-
-    l = f.readline().strip()
+    
     if l == '':
         break
 
@@ -33,9 +33,9 @@ while (True):
 
 f.close()
 
-#login or register user
 for p in participants:
-    tupleTokenId = serverRequests.login(url,p.email,p.password)
+    #login or register
+    tupleTokenId = serverRequests.register(url,p.name,p.surname,p.email,p.password)
     p.token = tupleTokenId[0]
     p.userId = tupleTokenId[1]
     #enroll users
