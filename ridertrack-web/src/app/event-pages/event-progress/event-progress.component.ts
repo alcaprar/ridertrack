@@ -10,6 +10,7 @@ import { RouteService } from "../../shared/services/route.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { isNullOrUndefined } from "util";
 
+
 declare var google: any;
 
 @Component({
@@ -30,7 +31,7 @@ export class EventProgressComponent implements OnInit {
 
   private eventId: String;
   private participantsList: any;
-  private event: any;
+  private event: Event = new Event;
   private city: any;
   travelModeInput = "WALKING";
 
@@ -41,33 +42,46 @@ export class EventProgressComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.eventId = params['eventId'];
       console.log('[Progress Management][OnInit]', this.eventId);
+
+      this.eventService.getEvent(this.eventId)
+        .then(
+          (event) => {
+            this.event = event;
+
+            // check the status
+            if(this.event.status === 'ongoing'){
+              // start retrieving the positions
+              // this.eventService.getLastPositions
+            }
+          }
+        );
+
+      this.eventService.getParticipants(this.eventId).then(
+        (participants) => {
+          console.log('[Participants Management][OnInit][success]', participants);
+          if (participants != null) {
+            this.participantsList = participants;
+          }
+        })
+        .catch(
+          (error) => {
+            console.log('[Participants Management][OnInit][error]', error);
+          });
+
+
+
+      this.routeService.getRoute(this.eventId)
+        .then(
+          (coordinates) => {
+            console.log('[Progress Management][OnInit][success]', coordinates);
+            console.log('[Progress Management][OnInit][Coordinates detected]', coordinates);
+            this.mapPoints = coordinates;
+            this.initMap();
+          })
+        .catch((error) => {
+          console.log('[Progress Management][OnInit][error]', error);
+        });
     });
-
-    this.eventService.getParticipants(this.eventId).then(
-      (participants) => {
-        console.log('[Participants Management][OnInit][success]', participants);
-        if (participants != null) {
-          this.participantsList = participants;
-        }
-      })
-      .catch(
-      (error) => {
-        console.log('[Participants Management][OnInit][error]', error);
-      });
-
-
-
-    this.routeService.getRoute(this.eventId)
-      .then(
-      (coordinates) => {
-        console.log('[Progress Management][OnInit][success]', coordinates);
-        console.log('[Progress Management][OnInit][Coordinates detected]', coordinates);
-        this.mapPoints = coordinates;
-        this.initMap();
-      })
-      .catch((error) => {
-        console.log('[Progress Management][OnInit][error]', error);
-      });
 
   }
 
