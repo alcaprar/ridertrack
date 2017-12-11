@@ -29,7 +29,8 @@ var positionSchema = Schema({
             lng:{type: Number},
             timestamp: {type: Date}
         }],
-        required: false
+        required: false,
+        default: []
     },
     created_at: {
         type: Date,
@@ -68,19 +69,13 @@ positionSchema.statics.add = function (userId, eventId, positionJson, callback) 
             // create one
             positions = new Positions({
                 userId: userId,
-                eventId: eventId
+                eventId: eventId,
+                positions: []
             })
         }
-
-        // append the current position
-        var lastPos = {
-            lat: positionJson.lat,
-            lng: positionJson.lng,
-            timestamp: positionJson.timestamp
-        };
-
+        
         positions.lastPosition = lastPos;
-        positions.positions.append(lastPos);
+        positions.positions.push(lastPos);
 
         positions.save(function (err) {
             if(err){
