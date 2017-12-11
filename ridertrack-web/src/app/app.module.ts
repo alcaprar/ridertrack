@@ -201,7 +201,6 @@ import { EventProgressComponent } from './event-pages/event-progress/event-progr
     EventService,
     GoogleMapsAPIWrapper,
     HttpClientService,
-    AlertService,
     DialogService,
     RouteService
   ],
