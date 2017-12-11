@@ -107,8 +107,8 @@ export class EventProgressComponent implements OnInit {
       this.participantsMarkers.push({
         lat: Number(participantsProgress[i].lastPosition.lat),
         lng: Number(participantsProgress[i].lastPosition.lng),
-        label: participantsProgress[i].userId
-      })
+        user: participantsProgress[i].userId
+      });
     }
   }
 
