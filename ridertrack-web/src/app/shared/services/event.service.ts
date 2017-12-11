@@ -343,5 +343,9 @@ export class EventService {
       });
   }
 
+  getLastPositions(eventId){
+    
+  }
+
 }
 

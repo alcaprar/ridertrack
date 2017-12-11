@@ -66,6 +66,10 @@ positionSchema.statics.add = function (userId, eventId, positionJson, callback) 
 
         if(!positions){
             // create one
+            positions = new Positions({
+                userId: userId,
+                eventId: eventId
+            })
         }
 
         // append the current position
