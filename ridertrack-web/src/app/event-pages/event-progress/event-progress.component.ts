@@ -32,7 +32,9 @@ export class EventProgressComponent implements OnInit {
   travelModeInput = "WALKING";
   private initMarker: {lat:number, lng: number};
 
-  private participantsProgress : ParticipantProgress[] = [];
+  private participantsMarkers = [];
+
+  private refreshInterval;
 
   constructor(private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private routeService: RouteService,
     private route: ActivatedRoute, private router: Router, private eventService: EventService) { }
@@ -49,11 +51,17 @@ export class EventProgressComponent implements OnInit {
 
             // check the status
             if(this.event.status === 'ongoing'){
-              // start retrieving the positions
+              // retrieve the last position every 5 seconds
+              this.refreshInterval = setInterval(
+                ()=>{
+
+                }, 5 * 1000);
+
+
               this.eventService.getLastPositions(this.eventId)
                 .then((participantsProgress) => {
                   console.log("[Progress Management][OnInit][GetLastPositions][Success]", participantsProgress);
-                  this.participantsProgress = participantsProgress;
+                  this.transformParticipantsMaker(participantsProgress);
                 }).catch((error)=> {
                 console.log("[Progress Management][OnInit][GetLastPositions][Error]", error);
                 //TODO: Show errors
@@ -91,6 +99,32 @@ export class EventProgressComponent implements OnInit {
 
   }
 
+  /**
+   * It goes through the data received from the service and creates an array of markers.
+   * @param participantsProgress
+     */
+  transformParticipantsMaker(participantsProgress){
+    // clean the previous markers
+    this.participantsMarkers = [];
+    for(let i = 0; i < participantsProgress.length; i++){
+      this.participantsMarkers.push({
+        lat: Number(participantsProgress[i].lastPosition.lat),
+        lng: Number(participantsProgress[i].lastPosition.lng),
+        label: participantsProgress[i].userId
+      })
+    }
+  }
+
+  /**
+   * It is called when the user changes page.
+   * It stop the interval to retrieve the positions of the users.
+   */
+  ngOnDestroy(){
+    if(this.refreshInterval){
+      clearInterval(this.refreshInterval)
+    }
+  }
+
   initMap() {
 
     if (this.mapPoints.length > 0) {
@@ -112,7 +146,7 @@ export class EventProgressComponent implements OnInit {
             if (status == google.maps.GeocoderStatus.OK) {
               this.initLat = results[0].geometry.location.lat();
               this.initLong = results[0].geometry.location.lng();
-              this.initMarker.push({lat: this.initLat,lng:this.initLong});
+              this.initMarker = {lat: this.initLat,lng:this.initLong};
               console.log('[Event Progress][city coordinates] lat: ' + this.initLat + ' lng: ' + this.initLong + 'marker:'
               +this.initMarker);
             }
