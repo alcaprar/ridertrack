@@ -54,18 +54,15 @@ export class EventProgressComponent implements OnInit {
               // retrieve the last position every 5 seconds
               this.refreshInterval = setInterval(
                 ()=>{
-
+                  this.eventService.getLastPositions(this.eventId)
+                    .then((participantsProgress) => {
+                      console.log("[Progress Management][OnInit][GetLastPositions][Success]", participantsProgress);
+                      this.transformParticipantsMaker(participantsProgress);
+                    }).catch((error)=> {
+                    console.log("[Progress Management][OnInit][GetLastPositions][Error]", error);
+                    //TODO: Show errors
+                  })
                 }, 5 * 1000);
-
-
-              this.eventService.getLastPositions(this.eventId)
-                .then((participantsProgress) => {
-                  console.log("[Progress Management][OnInit][GetLastPositions][Success]", participantsProgress);
-                  this.transformParticipantsMaker(participantsProgress);
-                }).catch((error)=> {
-                console.log("[Progress Management][OnInit][GetLastPositions][Error]", error);
-                //TODO: Show errors
-              })
             }
           }
         );
