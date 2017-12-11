@@ -356,7 +356,7 @@ export class EventService {
       .then((res) => {
         var body = res.json();
         var participantsProgress = body.positions as ParticipantProgress[];
-        console.log("[EventService][GetLastPosition][Success]", res);
+        console.log("[EventService][GetLastPosition][Success]", body, participantsProgress);
         return (participantsProgress);
       }).catch((err)=> {
         console.log("[EventService][GetLastPosition][Error]", err);

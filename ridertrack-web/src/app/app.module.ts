@@ -42,8 +42,6 @@ import {InvalidTypeDirective} from "./authentication/invalid-type.directive";
 import {FooterEventBoxComponent} from "./shared/layout/footer/footer-event-box/footer-event-box.component";
 import { FaqPageComponent } from './faq-page/faq-page.component';
 import {WhyRidertrackBestPageComponent} from "./why-ridertrack-best-page/why-ridertrack-best-page.component";
-import { AlertComponent } from './shared/layout/alert/alert.component';
-import {AlertService} from "./shared/services/alert.service";
 import {EventBoxOrganizedComponent} from "./event-pages/event-box/event-box-organized.component";
 import { EnrolledEventsComponent } from './event-pages/my-events/enrolled-events/enrolled-events.component';
 import { OrganizedEventsComponent } from './event-pages/my-events/organized-events/organized-events.component';
@@ -85,7 +83,6 @@ import { EventProgressComponent } from './event-pages/event-progress/event-progr
     WhyRidertrackBestPageComponent,
     FooterEventBoxComponent,
     FaqPageComponent,
-    AlertComponent,
     EnrolledEventsComponent,
     OrganizedEventsComponent,
     ConfirmationDialogComponent,
