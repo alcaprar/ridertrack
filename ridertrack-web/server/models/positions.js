@@ -115,7 +115,7 @@ positionSchema.statics.getLastPositionOfUser = function (userId, eventId, callba
 
 positionSchema.statics.getLastPositionOfAllParticipants = function (eventId, callback) {
     this.find({eventId: eventId}, {positions: 0})
-        .populate('user')
+        .populate('userId')
         .exec(function (err, usersPositions) {
             if(err){
                 console.log('[PositionsModel][getLastPositionOfAllParticipantsInEvent] error:', err);
