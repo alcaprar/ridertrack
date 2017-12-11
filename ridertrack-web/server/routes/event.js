@@ -335,12 +335,14 @@ router.post('/', authMiddleware.hasValidToken, multipart, function (req, res) {
  * if a location for an user in an event isn't created it creates it
  * if it is created than it updates it with adding the coordinates(String)
  */
-router.post('/:eventId/participants/positions', authMiddleware.hasValidToken, authMiddleware.isEnrolled, function (req, res, next) {
-    // var userId = req.user.userId; // TODO to remove, needed only for testing the mobile app without token
-    var userId = req.user._id;
+router.post('/:eventId/participants/positions', /*authMiddleware.hasValidToken, authMiddleware.isEnrolled,*/ function (req, res, next) {
+    var userId = req.body.userId; // TODO to remove, needed only for testing the mobile app without token
+    //var userId = req.user._id;
     var eventId = req.params.eventId;
 
     // TODO add check if the event status is ongoing
+
+    console.log('[POST /positions]', req.body);
 
     Positions.add(userId, eventId, req.body, function (err, userPositions) {
         if (err) {
