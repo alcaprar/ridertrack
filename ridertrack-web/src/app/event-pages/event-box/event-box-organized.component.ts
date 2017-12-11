@@ -38,7 +38,7 @@ export class EventBoxOrganizedComponent implements OnInit {
   }
 
   startTracking(event){
-    if(this.checkStarting()) {
+  //  if(this.checkStarting()) {
       this.eventService.startTracking(event).then((success) => {
         console.log("[Start Tracking][Success]");
         this.event.status = "ongoing";
@@ -46,15 +46,15 @@ export class EventBoxOrganizedComponent implements OnInit {
       }).catch((error) => {
         console.log("[Start Tracking][Error]", error);
       });
-    } else {
-      this.dialogService.confirmation("Error",
-        "Sorry the tracking can start only after the registration period is closed",function(){
-        });
+    //} else {
+      //this.dialogService.confirmation("Error",
+       // "Sorry the tracking can start only after the registration period is closed",function(){
+        //});
     }
-  }
+ // }
 
   stopTracking(event) {
-    if(this.checkStopping()) {
+ //   if(this.checkStopping()) {
       this.dialogService.confirmation("Stop Event",
         "Are you sure to stop the event?",function(){
           this.eventService.stopTracking(event)
@@ -65,12 +65,12 @@ export class EventBoxOrganizedComponent implements OnInit {
             console.log("[Stop Tracking][Error]", error);
           });
       });
-    }else{
+    }/*else{
       this.dialogService.confirmation("Stop Event",
         "Sorry the tracking cannot be stopped during the Event",function(){
         });
     }
-  }
+  }*/
 
   checkStarting(){
     if(this.event.startingDate && this.event.enrollementClosingAt){

@@ -4,17 +4,16 @@ import requests
 from participant import *
 from route import *
 
-def postPosition(url,token,position):
+def postPosition(url,token,userId,position):
 
     headers = {u'content-type':u'application/json',
                u'Authorization':token
                }
     
     payload = {
-        "coordinates":{
-            "lat":position[0],
-            "lng":position[1]
-        }
+        "userId":userId,
+        "lat":position[0],
+        "lng":position[1]
     }
 
     r = requests.post(url,json = payload,headers = headers)
@@ -26,12 +25,17 @@ def simulate(url,eventId,competitors,r):
     url = url +"/api/events/" + eventId + "/participants/positions"
     finishedCompetitors = []
 
+    length = r.getLength()
+    print ("Length of track is " + str(length))
+
     for competitor in competitors:
         startingPosition = r.getStartingPoint()
         competitor.setPosition(startingPosition[0],startingPosition[1])
+        competitor.setMaxSpeed(length)
         #set position
-        postPosition(url,competitor.token,startingPosition)
+        postPosition(url,competitor.token,competitor.userId,startingPosition)
 
+    input("Press any key to start sending data")
     while (len(competitors) > len(finishedCompetitors)):
 
         for competitor in competitors:
@@ -46,8 +50,8 @@ def simulate(url,eventId,competitors,r):
                 currentPosition = competitor.getCurrentPosition()
 
                 #set position
-                postPosition(url,competitor.token,currentPosition)
-                
+                postPosition(url,competitor.token,competitor.userId,currentPosition)
+                 
                 print ("Name\t:" + competitor.name + " " + competitor.surname + "\nPosition : " + str(currentPosition) + "\n")
                 checkpointReached = r.setCheckpoint (checkpoint,currentPosition)
 
@@ -66,6 +70,6 @@ def simulate(url,eventId,competitors,r):
                 #sleep before each post request
                 time.sleep(0.005)
         #step simulation
-        time.sleep(2)
+        time.sleep(0.5)
 
     print ("All users finished")

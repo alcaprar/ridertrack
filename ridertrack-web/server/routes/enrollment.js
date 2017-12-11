@@ -60,7 +60,7 @@ router.post('/', authMiddleware.hasValidToken, function(req, res){
                 }
 
                 var currentDate = new Date();
-                if(currentDate > new Date(event.enrollmentOpeningAt) && currentDate < new Date(event.enrollmentClosingAt)){
+                //if(currentDate >= new Date(event.enrollmentOpeningAt) && currentDate <= new Date(event.enrollmentClosingAt)){
                     Enrollment.find({eventId: req.body.eventId}, function (err, enrollments) {
                         if (err) {
                             callback(err)
@@ -85,11 +85,12 @@ router.post('/', authMiddleware.hasValidToken, function(req, res){
                             }
                         }
                     })
-                }else{
-                    return res.status(400).send({
-                        errors: "The enrollment is not opened."
-                    })
-                }
+                //}
+			//	else{
+              //      return res.status(400).send({
+                //        errors: "The enrollment is not opened."
+                  //  })
+                //}
 
 
             }

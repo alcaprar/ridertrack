@@ -14,7 +14,7 @@ def register(url,name,surname,email,password):
     }
 
     r = requests.post(url,json=payload,headers = headers)
-    print(r.json())
+    print (r.json())
     token = r.json()['jwtToken']
     userId = r.json()['userId']
     
@@ -31,7 +31,6 @@ def login (url,email,password):
     }
 
     r = requests.post(url,json=payload,headers = headers)
-    print(r.json())
     token = r.json()['jwtToken']
     userId = r.json()['userId']
     
@@ -40,14 +39,12 @@ def login (url,email,password):
 def enroll(url,jwtToken,userId,eventId):
 
     url = url + "/api/enrollments"
-
     headers  = {u'content-type': u'application/json',
-                u'Authorization':jwtToken
+                'Authorization':jwtToken
         }
     
     payload = {
-        "eventId" : eventId,
-        "userId" : userId
+        "eventId" : eventId
         }
 
     r = requests.post(url,json=payload,headers = headers)

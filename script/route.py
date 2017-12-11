@@ -19,6 +19,14 @@ class Route:
     def getCoordinate(self,checkpoint):
         return self.__coordinates[checkpoint]
 
+    def getLength(self):
+        totalSum = 0.0
+        for i in range(1, len(self.__coordinates)):
+            coordinate = self.__coordinates[i]
+            pastCoordinate = self.__coordinates[i-1]
+            totalSum += (math.pow(coordinate[0] - pastCoordinate[0],2) + math.pow(coordinate[1] - pastCoordinate[1],2))
+        return totalSum
+
     def calculateVector(self,checkpoint):
 
         #out of range

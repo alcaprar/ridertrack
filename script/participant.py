@@ -54,7 +54,7 @@ class Participant(User):
         super().__init__(name,surname,email,password)
         self._longitude = 0.0
         self._lattitude = 0.0
-        self._speed = 0.0
+        self._maxSpeed = 0.0
         self._finished = False
         self._checkpoint = 0
 
@@ -79,9 +79,11 @@ class Participant(User):
     def setCheckpoint(self,checkpoint):
         self._checkpoint = checkpoint
 
-    def updatePosition(self,xVector,yVector):
+    def setMaxSpeed(self,length):
+        self._maxSpeed = length /1.105
 
-        maxSpeed = 0.01
-        self._speed = random.random() * maxSpeed
-        self._lattitude = self._lattitude + xVector * self._speed
-        self._longitude = self._longitude + yVector * self._speed
+    def updatePosition(self,xVector,yVector):
+        
+        currentSpeed = (0.7 + random.random() * 0.3) * self._maxSpeed
+        self._lattitude = self._lattitude + xVector * currentSpeed
+        self._longitude = self._longitude + yVector * currentSpeed

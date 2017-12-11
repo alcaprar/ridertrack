@@ -5,44 +5,48 @@ from participant import User,Participant
 from route import *
 
 localhostUrl = "http://localhost:5000"
-ridertrackUrl = "http://rider-track-dev.herokuapp.com"
+ridertrackUrl = "https://rider-track-dev.herokuapp.com"
 
 #set url for serverRequests
 url = localhostUrl
 
 participants = []
-eventId = '5a2c77d196c6a806b072ef96'
-#create 20 users
+eventId = '5a2ea1fff0aacb037cee1ea3'
 
 f = open('users.txt','r')
 
 startingLine = True
+counting = 0
 while (True):
     l = f.readline().strip()
     if (startingLine  == True):
         startingLine = False
         continue
     
-    if l == '':
+    if counting > 5:
         break
 
     line = l.split(',')
     user = Participant(line[0],line[1],line[2],line[3])
     participants.append(user)
     print (user.email)
-
+    counting+=1
 f.close()
 
 for p in participants:
     #login or register
-    #tupleTokenId = serverRequests.register(url,p.name,p.surname,p.email,p.password)
-    tupleTokenId = serverRequests.login(url,p.email,p.password)
+    tupleTokenId = ()
+    try:
+        tupleTokenId = serverRequests.login(url,p.email,p.password)
+    except:
+        tupleTokenId = serverRequests.register(url,p.name,p.surname,p.email,p.password)
     p.token = tupleTokenId[0]
     p.userId = tupleTokenId[1]
     #enroll users
     serverRequests.enroll(url,p.token,p.userId,eventId)
 
 #get route
+print ("Enrollment part finished")
 coordinates = serverRequests.getRoute(url,eventId)
 print (coordinates)
 r = Route(coordinates)
