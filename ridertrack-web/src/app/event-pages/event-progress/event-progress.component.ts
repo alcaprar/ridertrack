@@ -52,10 +52,8 @@ export class EventProgressComponent implements OnInit {
               // start retrieving the positions
               this.eventService.getLastPositions(this.eventId)
                 .then((participantsProgress) => {
-                  if(!participantsProgress){
-                    this.participantsProgress = participantsProgress;
-                    console.log("[Progress Management][OnInit][GetLastPositions][Success]", this.participantsProgress);
-                  }
+                  console.log("[Progress Management][OnInit][GetLastPositions][Success]", participantsProgress);
+                  this.participantsProgress = participantsProgress;
                 }).catch((error)=> {
                 console.log("[Progress Management][OnInit][GetLastPositions][Error]", error);
                 //TODO: Show errors
