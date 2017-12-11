@@ -10,6 +10,7 @@ import {User} from "../models/user";
 import {Error} from "../models/error";
 import {EventsListQueryParams} from "../models/eventsListQueryParams";
 import {MyEventsQueryParams} from "../models/myEventsQueryParams";
+import {ParticipantProgress} from "../models/participantProgress";
 
 @Injectable()
 export class EventService {
@@ -353,8 +354,10 @@ export class EventService {
 
     return this.http.get(url).toPromise()
       .then((res) => {
+        var body = res.json();
+        var participantsProgress = body.positions as ParticipantProgress[];
         console.log("[EventService][GetLastPosition][Success]", res);
-        return (res.json());
+        return (participantsProgress);
       }).catch((err)=> {
         console.log("[EventService][GetLastPosition][Error]", err);
         return (err as Error[])[0];

@@ -1,4 +1,4 @@
-export class ParticipantPosition{
+export class ParticipantProgress{
 
   constructor(
     public userId: string,

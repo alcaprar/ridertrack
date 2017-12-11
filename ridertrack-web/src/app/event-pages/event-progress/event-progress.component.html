@@ -24,9 +24,9 @@
 
 <agm-map id="map" #map [longitude]="initLong" [latitude]="initLat" [zoom]="zoom">
   <agm-marker *ngIf="initMarker" [latitude]="initMarker.lat" [longitude]="initMarker.lng"></agm-marker>
-  <agm-marker *ngFor="let p of positions"
-              [latitude]="p.lastPositions.lat"
-              [longitude]="p.lastPositions.lng">
+  <agm-marker *ngFor="let pP of participantsProgress"
+              [latitude]="pP.lastPosition.lat"
+              [longitude]="pP.lastPosition.lng">
   </agm-marker>
   <map-direction *ngIf="directions != null" [origin]="directions.origin" [destination]="directions.destination"
   [waypoints]="directions.waypoints" [travelMode]="travelModeInput"></map-direction>

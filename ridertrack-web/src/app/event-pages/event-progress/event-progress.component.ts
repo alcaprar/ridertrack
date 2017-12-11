@@ -5,6 +5,7 @@ import { Event } from '../../shared/models/event';
 import { } from '@types/googlemaps';
 import { RouteService } from "../../shared/services/route.service";
 import { ActivatedRoute, Router } from "@angular/router";
+import {ParticipantProgress} from "../../shared/models/participantProgress";
 
 declare var google: any;
 
@@ -31,11 +32,7 @@ export class EventProgressComponent implements OnInit {
   travelModeInput = "WALKING";
   private initMarker: {lat:number, lng: number};
 
-  private positions : [{
-    userId: string,
-    eventId: string,
-    lastPositions: {lat: number, lng: number, timestamp: number}
-  }];
+  private participantsProgress : ParticipantProgress[] = [];
 
   constructor(private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private routeService: RouteService,
     private route: ActivatedRoute, private router: Router, private eventService: EventService) { }
@@ -54,10 +51,10 @@ export class EventProgressComponent implements OnInit {
             if(this.event.status === 'ongoing'){
               // start retrieving the positions
               this.eventService.getLastPositions(this.eventId)
-                .then((result) => {
-                  if(result !== null){
-                    this.positions = result;
-                    console.log("[Progress Management][OnInit][GetLastPositions][Success]", this.positions);
+                .then((participantsProgress) => {
+                  if(!participantsProgress){
+                    this.participantsProgress = participantsProgress;
+                    console.log("[Progress Management][OnInit][GetLastPositions][Success]", this.participantsProgress);
                   }
                 }).catch((error)=> {
                 console.log("[Progress Management][OnInit][GetLastPositions][Error]", error);
