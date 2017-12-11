@@ -73,9 +73,16 @@ positionSchema.statics.add = function (userId, eventId, positionJson, callback) 
                 positions: []
             })
         }
-        
+
+        // append the current position
+        var lastPos = {
+            lat: positionJson.lat,
+            lng: positionJson.lng,
+            timestamp: positionJson.timestamp
+        };
+
         positions.lastPosition = lastPos;
-        positions.positions.push(lastPos);
+        positions.positions.append(lastPos);
 
         positions.save(function (err) {
             if(err){
