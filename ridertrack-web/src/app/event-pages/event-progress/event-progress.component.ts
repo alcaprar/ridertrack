@@ -143,8 +143,7 @@ export class EventProgressComponent implements OnInit {
             if (status == google.maps.GeocoderStatus.OK) {
               this.initLat = Number(results[0].geometry.location.lat());
               this.initLong = Number(results[0].geometry.location.lng());
-              this.initMarker.lat = this.initLat;
-              this.initMarker.lng = this.initLong;
+              this.initMarker = {lat: this.initLat, lng: this.initLong};
               console.log('[Event Progress][city coordinates] lat: ' + this.initLat + ' lng: ' + this.initLong + 'marker:'
               +this.initMarker);
             }
