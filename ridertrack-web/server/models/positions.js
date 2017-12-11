@@ -1,12 +1,15 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+var ObjectId = mongoose.Schema.Types.ObjectId;
+
 const fieldsNotChangeable = ['_id', 'userId','eventId','trackingSources','timeStamp' ,'__v', 'created_at', 'updated_at'];
 
 var positionSchema = Schema({
     userId: {
-        type: String,
-        required: true
+        type: ObjectId,
+        required: true,
+        ref: 'User'
     },
     eventId : {
         type: String,
@@ -111,14 +114,16 @@ positionSchema.statics.getLastPositionOfUser = function (userId, eventId, callba
 };
 
 positionSchema.statics.getLastPositionOfAllParticipants = function (eventId, callback) {
-    this.find({eventId: eventId}, {positions: 0}, function (err, usersPositions) {
-        if(err){
-            console.log('[PositionsModel][getLastPositionOfAllParticipantsInEvent] error:', err);
-            return callback({message: err.message})
-        }
+    this.find({eventId: eventId}, {positions: 0})
+        .populate('user')
+        .exec(function (err, usersPositions) {
+            if(err){
+                console.log('[PositionsModel][getLastPositionOfAllParticipantsInEvent] error:', err);
+                return callback({message: err.message})
+            }
 
-        return callback(null, usersPositions)
-    })
+            return callback(null, usersPositions)
+        })
 };
 
 positionSchema.statics.delete = function (userId, eventId, callback) {
