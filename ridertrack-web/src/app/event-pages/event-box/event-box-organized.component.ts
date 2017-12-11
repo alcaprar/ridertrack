@@ -1,7 +1,6 @@
 import {Component, OnInit, Input, Output} from '@angular/core';
 import {Router} from "@angular/router";
 import {EventService} from "../../shared/services/event.service";
-import {AlertService} from "../../shared/services/alert.service";
 import {DialogService} from "../../shared/dialog/dialog.service";
 
 @Component({

@@ -4,7 +4,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import {EventService} from "../../shared/services/event.service";
 import {Event} from "../../shared/models/event";
 import { DatePipe } from '@angular/common';
-import {AlertService} from "../../shared/services/alert.service";
 import {DialogService} from "../../shared/dialog/dialog.service";
 declare var $: any;
 
@@ -26,8 +25,7 @@ export class EventManagePageComponent implements OnInit {
 
   errors: Error[] = [];
 
-  constructor(private eventService: EventService, private router: Router, private route: ActivatedRoute,
-              private alertService: AlertService, private dialogService: DialogService) {
+  constructor(private eventService: EventService, private router: Router, private route: ActivatedRoute, private dialogService: DialogService) {
   }
 
   ngOnInit() {

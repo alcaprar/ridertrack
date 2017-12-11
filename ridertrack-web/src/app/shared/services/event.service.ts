@@ -349,7 +349,7 @@ export class EventService {
    * @param eventId of the event
    * @returns
    */
-  getLastPositions(eventId){
+  getLastPositions(eventId): Promise<any>{
     const url = `${this.BASE_EVENT_URL}/${eventId}/participants/positions`;
 
     return this.http.get(url).toPromise()

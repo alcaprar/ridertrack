@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import {EventService} from "../../shared/services/event.service";
 import {Event} from "../../shared/models/event"
 import {EventToCreate} from "../../shared/models/eventToCreate";
-import {AlertService} from "../../shared/services/alert.service";
 import {Error} from "../../shared/models/error";
 declare var $: any;
 
@@ -23,7 +22,7 @@ export class EventCreatePageComponent implements OnInit {
   private urlImage: any;
   private urlNoImage = '../../../assets/img/logofoto.png';
 
-  constructor(private eventService: EventService, private router: Router, private  alertService: AlertService) {
+  constructor(private eventService: EventService, private router: Router) {
   }
 
   ngOnInit() {

@@ -3,7 +3,6 @@ import {AuthenticationService} from "../../../authentication/authentication.serv
 import {EventService} from "../../../shared/services/event.service";
 import {MyEventsQueryParams} from "../../../shared/models/myEventsQueryParams";
 import {ActivatedRoute, Router} from '@angular/router';
-import {AlertService} from "../../../shared/services/alert.service";
 
 @Component({
   selector: 'app-organized-events',
