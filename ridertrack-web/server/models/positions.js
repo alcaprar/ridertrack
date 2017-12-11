@@ -89,6 +89,8 @@ positionSchema.statics.add = function (userId, eventId, positionJson, callback) 
                 console.log('[PositionModel][add] error', err);
                 return callback({message: err.message})
             }
+
+            return callback(null)
         })
     })
 };
