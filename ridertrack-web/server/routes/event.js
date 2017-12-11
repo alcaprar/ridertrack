@@ -362,7 +362,7 @@ router.post('/:eventId/participants/positions', /*authMiddleware.hasValidToken, 
 /**
  * It returns a list with the most recent positions of all the users in the event.
  */
-router.get('/:eventId/participants/positions', function () {
+router.get('/:eventId/participants/positions', function (req, res, next) {
     var eventId = req.params.eventId;
     Event.findByEventId(eventId, function (err, event) {
         if(err){
