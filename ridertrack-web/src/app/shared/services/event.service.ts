@@ -343,8 +343,22 @@ export class EventService {
       });
   }
 
+  /**
+   *  HTTP Get to retrieve participants positions during an event
+   * @param eventId of the event
+   * @returns
+   */
   getLastPositions(eventId){
-    
+    const url = `${this.BASE_EVENT_URL}/${eventId}/participants/positions`;
+
+    return this.http.get(url).toPromise()
+      .then((res) => {
+        console.log("[EventService][GetLastPosition][Success]", res);
+        return (res.json());
+      }).catch((err)=> {
+        console.log("[EventService][GetLastPosition][Error]", err);
+        return (err as Error[])[0];
+      });
   }
 
 }

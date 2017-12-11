@@ -23,7 +23,11 @@
 </div>
 
 <agm-map id="map" #map [longitude]="initLong" [latitude]="initLat" [zoom]="zoom">
-  <agm-marker [latitude]="40.7127753" [longitude]="-74.0059728"></agm-marker>
+  <agm-marker *ngIf="initMarker" [latitude]="initMarker.lat" [longitude]="initMarker.lng"></agm-marker>
+  <agm-marker *ngFor="let p of positions"
+              [latitude]="p.lastPositions.lat"
+              [longitude]="p.lastPositions.lng">
+  </agm-marker>
   <map-direction *ngIf="directions != null" [origin]="directions.origin" [destination]="directions.destination"
   [waypoints]="directions.waypoints" [travelMode]="travelModeInput"></map-direction>
 

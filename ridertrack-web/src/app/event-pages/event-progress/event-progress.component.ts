@@ -1,15 +1,10 @@
-import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
-import { MapsAPILoader, MouseEvent as AGMMouseEvent } from "@agm/core";
+import { Component, NgZone, OnInit} from '@angular/core';
+import { MapsAPILoader} from "@agm/core";
 import { EventService } from '../../shared/services/event.service';
-import { UserService } from '../../shared/services/user.service';
-import { User } from '../../shared/models/user';
 import { Event } from '../../shared/models/event';
 import { } from '@types/googlemaps';
-import { FormControl } from "@angular/forms";
 import { RouteService } from "../../shared/services/route.service";
 import { ActivatedRoute, Router } from "@angular/router";
-import { isNullOrUndefined } from "util";
-
 
 declare var google: any;
 
@@ -34,6 +29,13 @@ export class EventProgressComponent implements OnInit {
   private event: Event = new Event;
   private city: any;
   travelModeInput = "WALKING";
+  private initMarker: {lat:number, lng: number};
+
+  private positions : [{
+    userId: string,
+    eventId: string,
+    lastPositions: {lat: number, lng: number, timestamp: number}
+  }];
 
   constructor(private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private routeService: RouteService,
     private route: ActivatedRoute, private router: Router, private eventService: EventService) { }
@@ -51,7 +53,16 @@ export class EventProgressComponent implements OnInit {
             // check the status
             if(this.event.status === 'ongoing'){
               // start retrieving the positions
-              // this.eventService.getLastPositions
+              this.eventService.getLastPositions(this.eventId)
+                .then((result) => {
+                  if(result !== null){
+                    this.positions.push(result);
+                    console.log("[Progress Management][OnInit][GetLastPositions][Success]", this.positions);
+                  }
+                }).catch((error)=> {
+                console.log("[Progress Management][OnInit][GetLastPositions][Error]", error);
+                //TODO: Show errors
+              })
             }
           }
         );
@@ -106,13 +117,16 @@ export class EventProgressComponent implements OnInit {
             if (status == google.maps.GeocoderStatus.OK) {
               this.initLat = results[0].geometry.location.lat();
               this.initLong = results[0].geometry.location.lng();
-              console.log('[Event Progress][city coordinates] lat: ' + this.initLat + ' lng: ' + this.initLong);
+              this.initMarker.push({lat: this.initLat,lng:this.initLong});
+              console.log('[Event Progress][city coordinates] lat: ' + this.initLat + ' lng: ' + this.initLong + 'marker:'
+              +this.initMarker);
             }
-          })
+          });
         })
         .catch(
         (error) => {
           console.log('[Event Progress][OnInit][EventService.getEvent][error]', error);
+          //TODO: Show errors
         });
     }
   }
