@@ -64,7 +64,7 @@ export class EventBoxOrganizedComponent implements OnInit {
             }).catch((error) => {
             console.log("[Stop Tracking][Error]", error);
           });
-      });
+      }.bind(this));
     }/*else{
       this.dialogService.confirmation("Stop Event",
         "Sorry the tracking cannot be stopped during the Event",function(){
