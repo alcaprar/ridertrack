@@ -163,7 +163,7 @@ import { EventProgressComponent } from './event-pages/event-progress/event-progr
         component: ContactsPageComponent
       },
       {
-        path: 'why-best',
+        path: 'how-it-works',
         pathMatch: 'full',
         component: WhyRidertrackBestPageComponent
       },
