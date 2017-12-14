@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { User } from '../models/user';
+import {HttpClientService} from "./http-client.service";
 import { AuthenticationService } from '../../authentication/authentication.service';
 import { Observable } from 'rxjs/Observable';
 import { environment } from '../../../environments/environment'
@@ -9,7 +10,7 @@ import { environment } from '../../../environments/environment'
 export class UserService {
   private BASE_USERS_URL = '/api/users/';
 
-  constructor(private http: Http, private authService: AuthenticationService) {
+  constructor(private http: HttpClientService, private authService: AuthenticationService) {
 
   }
 
@@ -49,7 +50,6 @@ export class UserService {
     console.log(url);
     return this.http.delete(url).toPromise()
     .then((message) => {
-
       return message})
     .catch((error) => {
       console.log('[UserService][deleteUser][error]', error);

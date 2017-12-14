@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
 import { UserService } from '../../shared/services/user.service';
 import { User } from '../../shared/models/user';
 import { DialogService } from "../../shared/dialog/dialog.service";
+import { AuthenticationService } from '../../authentication/authentication.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-profile-page',
@@ -20,7 +22,7 @@ export class ProfilePageComponent implements OnInit {
   private urlImage: any;
   private urlNoImage = '../../../assets/img/user_fake_img.png';
 
-  constructor(private formBuilderLogin: FormBuilder, private userService: UserService, private dialogService: DialogService) { }
+  constructor(private router: Router, private formBuilderLogin: FormBuilder, private userService: UserService, private dialogService: DialogService, private authService: AuthenticationService) { }
 
   ngOnInit() {
     this.userService.getUser().subscribe(
