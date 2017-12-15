@@ -50,7 +50,7 @@ export class ProfilePageComponent implements OnInit {
 
   deleteUser() {
     console.log('[MyProfile][deleteUser]');
-    this.dialogService.confirmation('Delete user account', 'Are you sure to delete your user account?', function () {
+    this.dialogService.confirmation('Delete user account', 'Are you sure you want to delete your user account?', function () {
       console.log('[MyProfile][deleteUser][callback]');
       this.userService.deleteUser()
         .then(
