@@ -5,7 +5,7 @@
       <div class="box-for overflow">
         <div class="col-md-12 col-xs-12 login-blocks">
           <h2>Login : </h2>
-          <form [formGroup]="loginForm" #f="ngForm" (keydown)="keyDownFunction($event)" (keyup.enter)="yourMethod()">
+          <form [formGroup]="loginForm" #f="ngForm" (keydown)="keyDownFunction($event)" >
             <div class="form-group">
               <label for="email">Email</label>
               <input id = "email" type="text" class="form-control" formControlName="email" required  #spy>
