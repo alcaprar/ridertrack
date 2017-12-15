@@ -35,10 +35,30 @@ export class RegistrationPageComponent implements OnInit {
       name: ['',[Validators.required, Validators.minLength(2)]],
       surname:  ['',[Validators.required, Validators.minLength(2)]],
       email:  ['',[Validators.required, Validators.email]],
-      password:['',[Validators.required, Validators.minLength(5)]]
-      });
+      password:['',[Validators.required, Validators.minLength(5)]],
+      confirmPassword:['',[Validators.required, Validators.minLength(5)]]
+      },{validator: this.checkIfMatchingPasswords('password', 'confirmPassword')});
 
     this.errors = [];
+  }
+
+  checkIfMatchingPasswords(passwordKey: string, passwordConfirmationKey: string) {
+    return (group: FormGroup) => {
+      let passwordInput = group.controls[passwordKey],
+          passwordConfirmationInput = group.controls[passwordConfirmationKey];
+      if (passwordInput.value !== passwordConfirmationInput.value) {
+        return passwordConfirmationInput.setErrors({notEquivalent: true})
+      }
+      else {
+          return passwordConfirmationInput.setErrors(null);
+      }
+    }
+  }
+
+  keyDownFunction(event) {
+    if(event.keyCode == 13) {
+      this.register();
+    }
   }
 
   showErrors(errors: Error[]){

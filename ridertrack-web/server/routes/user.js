@@ -193,7 +193,7 @@ router.post('/', function (req, res) {
 /**
  * It updates the fields passed in the body of the given userId
  */
-router.put('/:userId', function (req, res) {
+router.put('/:userId',authMiddleware.hasValidToken, function (req, res) {
     User.update(req.params.userId, req.body, function (err, user) {
         if(err){
             res.status(400).send({
@@ -213,7 +213,7 @@ router.put('/:userId', function (req, res) {
  * Can be called only by the given user.
  * This will delete permanently everything related to it.
  */
-router.delete('/:userId', function (req, res) {
+router.delete('/:userId', authMiddleware.hasValidToken, function (req, res) {
     User.delete(req.params.userId, function (err, user) {
         if(err){
             res.status(400).send({

@@ -71,6 +71,12 @@ export class LoginPageComponent implements OnInit {
       )
   }
 
+  keyDownFunction(event) {
+    if(event.keyCode == 13) {
+      this.login();
+    }
+  }
+
   showErrors(errors: Error[]){
     console.log('[Login COmponent][showErrors]', errors);
     this.errors = errors;
