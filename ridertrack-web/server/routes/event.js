@@ -70,6 +70,11 @@ router.get('/', function(req, res) {
             ];
         }
     }
+    if(req.query.status){
+        if(['passed', 'ongoing', 'future'].indexOf(req.query.status) > -1){
+            conditions.status = req.query.status;
+        }
+    }
     if(req.query.length){
         // it must be a range so the query param must be an object
         if(typeof req.query.length === 'object' && req.query.length.length === 2){
