@@ -8,10 +8,10 @@ localhostUrl = "http://localhost:5000"
 ridertrackUrl = "https://rider-track-dev.herokuapp.com"
 
 #set url for serverRequests
-url = localhostUrl
+url = ridertrackUrl
 
 participants = []
-eventId = '5a2ea1fff0aacb037cee1ea3'
+eventId = '5a2f8b9f00e2030004da1dce'
 
 f = open('users.txt','r')
 

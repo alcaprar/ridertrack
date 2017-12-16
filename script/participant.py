@@ -80,7 +80,7 @@ class Participant(User):
         self._checkpoint = checkpoint
 
     def setMaxSpeed(self,length):
-        self._maxSpeed = length /1.105
+        self._maxSpeed = length*2.25
 
     def updatePosition(self,xVector,yVector):
         
