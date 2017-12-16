@@ -1,0 +1,7 @@
+<agm-map *ngIf="initCoords" #map [longitude]="initCoords.lng" [latitude]="initCoords.lat" [zoom]="zoom"
+[streetViewControl]="false">
+  <agm-marker *ngIf="initMarker" [latitude]="initMarker.lat" [longitude]="initMarker.lng" ></agm-marker>
+  <map-direction *ngIf="directions != null" [origin]="directions.origin" [destination]="directions.destination"
+                 [waypoints]="directions.waypoints"></map-direction>
+</agm-map>
+<p *ngIf="initCoords === null || initCoords ===undefined">*TBD</p>

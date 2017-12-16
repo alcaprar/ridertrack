@@ -1,11 +1,10 @@
-import { Component, NgZone, OnInit} from '@angular/core';
+import {Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
 import { MapsAPILoader} from "@agm/core";
 import { EventService } from '../../shared/services/event.service';
 import { Event } from '../../shared/models/event';
 import { } from '@types/googlemaps';
 import { RouteService } from "../../shared/services/route.service";
 import { ActivatedRoute, Router } from "@angular/router";
-import {ParticipantProgress} from "../../shared/models/participantProgress";
 
 declare var google: any;
 
@@ -29,12 +28,12 @@ export class EventProgressComponent implements OnInit {
   private participantsList: any;
   private event: Event = new Event;
   private city: any;
-  travelModeInput = "WALKING";
-  private initMarker: {lat:number, lng: number};
-
   private participantsMarkers = [];
 
   private refreshInterval;
+
+  @ViewChild("search")
+  public searchElementRef: ElementRef;
 
   constructor(private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private routeService: RouteService,
     private route: ActivatedRoute, private router: Router, private eventService: EventService) { }
@@ -78,8 +77,6 @@ export class EventProgressComponent implements OnInit {
           (error) => {
             console.log('[Participants Management][OnInit][error]', error);
           });
-
-
 
       this.routeService.getRoute(this.eventId)
         .then(
@@ -137,17 +134,19 @@ export class EventProgressComponent implements OnInit {
         (event) => {
           console.log('[Event Progress][OnInit][EventService.getEvent][success]', event);
           this.event = event;
+          this.mapPoints = [];
+          //TODO: SOLVE THE CITY VISUALIZATION
           var address = this.event.city;
           var geocoder = new google.maps.Geocoder();
           geocoder.geocode({ 'address': address }, function (results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
               this.initLat = Number(results[0].geometry.location.lat());
               this.initLong = Number(results[0].geometry.location.lng());
-              this.initMarker = {lat: this.initLat, lng: this.initLong};
               console.log('[Event Progress][city coordinates] lat: ' + this.initLat + ' lng: ' + this.initLong + 'marker:'
               +this.initMarker);
+              this.mapPoints =[{lat: this.initLat, lng: this.initLong}];
             }
-          });
+          })
         })
         .catch(
         (error) => {
@@ -156,6 +155,7 @@ export class EventProgressComponent implements OnInit {
         });
     }
   }
+
 
   getRoutePointsAndWaypoints() {
     let waypoints = [];
@@ -187,5 +187,7 @@ export class EventProgressComponent implements OnInit {
     console.log("[Directions][Update]", this.directions);
   }
 
+  search() {
 
+  }
 }

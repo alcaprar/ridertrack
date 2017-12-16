@@ -61,9 +61,11 @@ var eventSchema = Schema({
         default: 100
     },
     enrollmentOpeningAt: {
+		//default:Date.Now,
         type: Date
     },
     enrollmentClosingAt: {
+		//default:Date.Now,
         type: Date
     },
     logo: {
@@ -192,11 +194,11 @@ eventSchema.statics.update = function (eventId, eventJson, callback) {
 
             console.log('event updated', event);
 
-            event.save(function (err) {
+            event.save(function (err,updatedEvent) {
                 if (err) {
                     return callback(err)
                 } else {
-                    return callback(null, event)
+                    return callback(null, updatedEvent)
                 }
             })
         }

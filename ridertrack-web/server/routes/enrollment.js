@@ -60,7 +60,7 @@ router.post('/', authMiddleware.hasValidToken, function(req, res){
                 }
 
                 var currentDate = new Date();
-                //if(currentDate >= new Date(event.enrollmentOpeningAt) && currentDate <= new Date(event.enrollmentClosingAt)){
+                if(currentDate >= new Date(event.enrollmentOpeningAt) && currentDate <= new Date(event.enrollmentClosingAt)){
                     Enrollment.find({eventId: req.body.eventId}, function (err, enrollments) {
                         if (err) {
                             callback(err)
@@ -79,18 +79,18 @@ router.post('/', authMiddleware.hasValidToken, function(req, res){
                                     }
                                 })
                             } else {
-                                return res.status(401).send({
+                                return res.status(400).send({
                                     errors: "The event has reached the maximum of participants."
                                 })
                             }
                         }
                     })
-                //}
-			//	else{
-              //      return res.status(400).send({
-                //        errors: "The enrollment is not opened."
-                  //  })
-                //}
+                }
+				else{
+                    return res.status(400).send({
+                        errors: "The enrollment is not opened."
+                    })
+                }
 
 
             }
@@ -157,17 +157,22 @@ router.delete('/:eventId/:userId', authMiddleware.hasValidToken, function (req, 
     if(req.params.userId === req.userId) {
         Enrollment.delete(req.params.eventId, req.params.userId, function (err, deleted_enrollment) {
             if (err) {
-                res.status(400).send({
+               return res.status(400).send({
                     errors: err
                 })
             }else {
-                res.status(200).send({
+               return res.status(200).send({
                     enrollment: deleted_enrollment,
                     message: 'Enrollment successfully deleted'
                 })
             }
         })
     }
+	else{
+		return res.status(401).send({
+			errors:"You are not authorized to delete this enrollment"
+		})
+	}
 });
 
 module.exports = router;
