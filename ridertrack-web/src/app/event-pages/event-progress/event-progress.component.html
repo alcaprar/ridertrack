@@ -4,9 +4,10 @@
   <form (ngSubmit)="search()" class="form-inline">
     <div class="row ">
       <div class="col-md-4 col-md-offset-4">
-        <select #searchType class="selectpicker show-tick form-control">
+        <select #searchType class="selectpicker show-tick form-control" >
           <option value="default">Choose a participant to track</option>
-          <option *ngFor="let participant of participantsList" [value]="participant" style="text-transform: capitalize">{{participant}}</option>
+          <option *ngFor="let participant of participantsList" [value]="participant" style="text-transform: capitalize">
+            {{participant.name}} {{participant.surname}}</option>
         </select>
       </div>
     </div>
@@ -30,6 +31,5 @@
     <agm-info-window [closeWhenOthersOpen]="true" >{{participantM.user.name}} {{participantM.user.surname}}</agm-info-window>
   </agm-marker>
   <map-direction *ngIf="directions != null" [origin]="directions.origin" [destination]="directions.destination"
-  [waypoints]="directions.waypoints" [travelMode]="travelModeInput"></map-direction>
-
+  [waypoints]="directions.waypoints"></map-direction>
 </agm-map>

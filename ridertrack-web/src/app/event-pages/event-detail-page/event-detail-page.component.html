@@ -112,8 +112,12 @@
             </div>
           </div>
           <!-- End description area  -->
-
-
+          <div *ngIf="event" class="section">
+            <h4 class="s-property-title">Route</h4>
+            <div class="s-property-content">
+            <app-display-map [event]="event" [eventid]="eventId"></app-display-map>
+            </div>
+          </div>
 
           <div class="section property-share">
             <h4 class="s-property-title">Share with your friends </h4>

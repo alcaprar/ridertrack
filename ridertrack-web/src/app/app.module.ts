@@ -54,6 +54,7 @@ import { EventManageRouteComponent } from './event-pages/event-manage-route/even
 import { DirectionDirective } from './shared/map/direction.directive';
 import {RouteService} from "./shared/services/route.service";
 import { EventProgressComponent } from './event-pages/event-progress/event-progress.component';
+import { DisplayMapComponent } from './shared/map/display-map/display-map.component';
 
 @NgModule({
   declarations: [
@@ -90,7 +91,8 @@ import { EventProgressComponent } from './event-pages/event-progress/event-progr
     AddRouteMapComponent,
     EventManageRouteComponent,
     DirectionDirective,
-    EventProgressComponent
+    EventProgressComponent,
+    DisplayMapComponent
   ],
   imports: [
     BrowserModule,

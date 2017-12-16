@@ -4,7 +4,6 @@ import {} from '@types/googlemaps';
 import {FormControl} from "@angular/forms";
 import {RouteService} from "../../services/route.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {isNullOrUndefined} from "util";
 import {DialogService} from "../../dialog/dialog.service";
 
 declare var google: any;
@@ -23,7 +22,6 @@ export class AddRouteMapComponent implements OnInit {
 
     public mapPoints : any = [] ; //latLng array
     directions : any;
-    travelModeInput: string = 'WALKING';
 
     private eventId: String;
 
@@ -140,10 +138,6 @@ export class AddRouteMapComponent implements OnInit {
         console.log("[Directions][Update]", this.directions);
     }
 
-    setTravelMode(value: string) {
-      this.travelModeInput = value;
-    }
-
     clearAll() {
       this.mapPoints = [];
       this.directions = null;
@@ -163,7 +157,7 @@ export class AddRouteMapComponent implements OnInit {
    * It then calls the routeService to update the route passing the points.
    */
     saveRoute(){
-      this.routeService.updateRoute(this.eventId, this.mapPoints).then((success)=> {
+      this.routeService.updateRoute(this.eventId, this.mapPoints).then(()=> {
         this.dialogService.alert("Route", " The route is correctly saved.");
       }).catch((err) => {
         this.errors = err;
