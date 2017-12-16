@@ -104,6 +104,7 @@ export class EventProgressComponent implements OnInit {
       this.participantsMarkers.push({
         lat: Number(participantsProgress[i].lastPosition.lat),
         lng: Number(participantsProgress[i].lastPosition.lng),
+        timestamp: participantsProgress[i].timestamp,
         user: participantsProgress[i].userId
       });
     }
@@ -188,6 +189,6 @@ export class EventProgressComponent implements OnInit {
   }
 
   search() {
-    //TODO: filter participants
+    //TODO: filter participants and show the corresponding marker
   }
 }
