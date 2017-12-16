@@ -26,6 +26,16 @@ var positionSchema = Schema({
             timestamp: {type: Date}
         }
     },
+    secondLastPosition: {
+        type:{
+            lat: {type: Number},
+            lng: {type: Number},
+            timestamp: {type: Date}
+        }
+    },
+    Checkpoint: {
+        type: Number
+    },
     positions: {
         type:[{
             lat:{type: Number},
@@ -83,7 +93,7 @@ positionSchema.statics.add = function (userId, eventId, positionJson, callback) 
             lng: positionJson.lng,
             timestamp: positionJson.timestamp
         };
-
+        positions.secondLastPosition = positions.lastPosition
         positions.lastPosition = positionToAdd;
         positions.positions.push(positionToAdd);
 
@@ -112,6 +122,8 @@ positionSchema.statics.getLastPositionOfUser = function (userId, eventId, callba
         }
     })
 };
+
+
 
 positionSchema.statics.getLastPositionOfAllParticipants = function (eventId, callback) {
     this.find({eventId: eventId}, {positions: 0})

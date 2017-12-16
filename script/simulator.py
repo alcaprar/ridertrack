@@ -4,7 +4,7 @@ import requests
 from participant import *
 from route import *
 
-def postPosition(url,token,userId,position):
+def postPosition(url,token,userId,position,checkpoint = -1 ):
 
     headers = {u'content-type':u'application/json',
                u'Authorization':token
@@ -12,6 +12,7 @@ def postPosition(url,token,userId,position):
     
     payload = {
         "userId":userId,
+        "checkpoint": checkpoint,
         "lat":position[0],
         "lng":position[1]
     }
@@ -33,7 +34,7 @@ def simulate(url,eventId,competitors,r):
         competitor.setPosition(startingPosition[0],startingPosition[1])
         competitor.setMaxSpeed(length)
         #set position
-        postPosition(url,competitor.token,competitor.userId,startingPosition)
+        postPosition(url,competitor.token,competitor.userId,startingPosition, competitor.Checkpoint)
 
     input("Press any key to start sending data")
     while (len(competitors) > len(finishedCompetitors)):
@@ -50,7 +51,7 @@ def simulate(url,eventId,competitors,r):
                 currentPosition = competitor.getCurrentPosition()
 
                 #set position
-                postPosition(url,competitor.token,competitor.userId,currentPosition)
+                postPosition(url,competitor.token,competitor.userId,currentPosition,competitor.Checkpoint)
                  
                 print ("Name\t:" + competitor.name + " " + competitor.surname + "\nPosition : " + str(currentPosition) + "\n")
                 checkpointReached = r.setCheckpoint (checkpoint,currentPosition)

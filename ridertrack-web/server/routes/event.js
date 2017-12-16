@@ -10,6 +10,7 @@ var User = require('../models/user');
 var Enrollment = require('../models/enrollment');
 var Route = require ('../models/route');
 var Positions = require('../models/positions');
+var Positions = require('../models/ranking');
 
 
 var authMiddleware = require('../middlewares/auth');
@@ -307,11 +308,21 @@ router.post('/:eventId/participants/positions', /*authMiddleware.hasValidToken, 
                 errors: [err]
             })
         }else{
-            res.status(200).send({
-                message: "Positions updated successfully",
-                location: userPositions
-            });
-            // TODO update the ranking logic
+                res.status(200).send({
+                    message: "Positions updated successfully",
+                    location: userPositions
+                });
+
+                Ranking.update(userId, eventId, req.body, function(err, updatedRanking){
+                    if (err){
+                        res.status(400).send({
+                            errors: err
+                        })
+                    }else{
+                        //pass
+
+                    }
+                })
         }
     })
 });
