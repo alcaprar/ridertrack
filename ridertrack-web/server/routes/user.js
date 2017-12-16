@@ -70,6 +70,24 @@ router.get('/:userId/enrolledEvents', authMiddleware.hasValidToken, function (re
     options.skip = (parseInt(page) -1) * parseInt(itemsPerPage);
     options.limit = itemsPerPage;
 
+    // check sorting
+    if(req.query.sort){
+        var sort = {};
+        // keys are divided by comma
+        let keys = req.query.sort.split(',');
+        for(let i = 0; i < keys.length; i++){
+            // check if it is also specify the way
+            // default is ascending
+            let key = keys[i].split(':');
+
+            // sorting possible only on date, price, length
+            if(['startingDate', 'price', 'length'].indexOf(key[0]) > -1){
+                sort[key[0]] = (typeof key[1] !== 'undefined' && ['asc', 'desc'].indexOf(key[1]) > -1) ? key[1] : 'asc';
+            }
+        }
+        options.sort = sort
+    }
+
     // using async lib to find the total number and find the events in parallel
     var countEnrollments = function (callback) {
         Enrollment.find({userId: req.params.userId}, function (err, enrollments) {
@@ -131,6 +149,24 @@ router.get('/:userId/organizedEvents', authMiddleware.hasValidToken, function(re
     var itemsPerPage = parseInt(req.query.itemsPerPage) || 10;
     options.skip = (parseInt(page) -1) * parseInt(itemsPerPage);
     options.limit = itemsPerPage;
+
+    // check sorting
+    if(req.query.sort){
+        var sort = {};
+        // keys are divided by comma
+        let keys = req.query.sort.split(',');
+        for(let i = 0; i < keys.length; i++){
+            // check if it is also specify the way
+            // default is ascending
+            let key = keys[i].split(':');
+
+            // sorting possible only on date, price, length
+            if(['startingDate', 'price', 'length'].indexOf(key[0]) > -1){
+                sort[key[0]] = (typeof key[1] !== 'undefined' && ['asc', 'desc'].indexOf(key[1]) > -1) ? key[1] : 'asc';
+            }
+        }
+        options.sort = sort
+    }
 
     // using async lib to find the total number and find the events in parallel
     var countEvents = function (callback) {
