@@ -27,7 +27,7 @@
   <agm-marker *ngIf="initMarker" [latitude]="initMarker.lat" [longitude]="initMarker.lng"></agm-marker>
   <agm-marker *ngFor="let participantM of participantsMarkers"
               [latitude]="participantM.lat"
-              [longitude]="participantM.lng">
+              [longitude]="participantM.lng" >
     <agm-info-window [closeWhenOthersOpen]="true" >{{participantM.user.name}} {{participantM.user.surname}}
       <br> timestamp: {{participantM.timestamp}}
     </agm-info-window>

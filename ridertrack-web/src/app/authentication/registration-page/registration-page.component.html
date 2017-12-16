@@ -40,7 +40,7 @@
               <label for="confirmPassword">Confirm password</label>
               <input type="password" class="form-control" id="confirmPassword" formControlName="confirmPassword" #spy>
               <div invalidMessage="confirmPassword"  class="alert alert-danger">
-                <p *invalidType="'required' || 'minlength'">Please repeat your password</p>
+                <p *invalidType="'required'">Please repeat your password</p>
               </div>
             </div>
 
