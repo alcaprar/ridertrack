@@ -188,6 +188,6 @@ export class EventProgressComponent implements OnInit {
   }
 
   search() {
-
+    //TODO: filter participants
   }
 }

@@ -7,7 +7,7 @@
         <select #searchType class="selectpicker show-tick form-control" >
           <option value="default">Choose a participant to track</option>
           <option *ngFor="let participant of participantsList" [value]="participant" style="text-transform: capitalize">
-            {{participant.name}} {{participant.surname}}</option>
+            {{participant}}</option>
         </select>
       </div>
     </div>
