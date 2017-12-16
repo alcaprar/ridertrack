@@ -9,6 +9,7 @@ import {Subscription} from "rxjs/Subscription";
 export class InvalidMessageDirective implements  OnInit, OnDestroy{
 
   @Input() invalidMessage: string;
+
   control: AbstractControl;
   controlValue$: Observable<any>;
   controlSubscription: Subscription;
@@ -34,7 +35,7 @@ export class InvalidMessageDirective implements  OnInit, OnDestroy{
    *  This method is called when the value control is changed
    */
   private setVisible() {
-    if(this.control.invalid) {
+    if(this.control.invalid && (this.control.dirty )) {
       this.render.removeStyle(this.elem.nativeElement, 'display');
     } else {
       this.render.setStyle(this.elem.nativeElement, 'display', 'none');
