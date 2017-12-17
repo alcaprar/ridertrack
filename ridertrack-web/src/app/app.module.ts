@@ -55,6 +55,7 @@ import { DirectionDirective } from './shared/map/direction.directive';
 import {RouteService} from "./shared/services/route.service";
 import { EventProgressComponent } from './event-pages/event-progress/event-progress.component';
 import { DisplayMapComponent } from './shared/map/display-map/display-map.component';
+import { EventArchiveComponent } from './event-pages/event-archive/event-archive.component';
 
 @NgModule({
   declarations: [
@@ -92,7 +93,8 @@ import { DisplayMapComponent } from './shared/map/display-map/display-map.compon
     EventManageRouteComponent,
     DirectionDirective,
     EventProgressComponent,
-    DisplayMapComponent
+    DisplayMapComponent,
+    EventArchiveComponent
   ],
   imports: [
     BrowserModule,
@@ -119,6 +121,11 @@ import { DisplayMapComponent } from './shared/map/display-map/display-map.compon
       {
         path: 'events',
         component: EventsListPageComponent,
+        pathMatch: 'full'
+      },
+      {
+        path: 'archive',
+        component: EventArchiveComponent,
         pathMatch: 'full'
       },
       {

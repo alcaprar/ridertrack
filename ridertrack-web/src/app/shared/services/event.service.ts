@@ -48,6 +48,27 @@ export class EventService {
       });
   }
 
+    /**
+   * Perform an HTTP GET request to the REST API to read all the passed events
+   * @returns {Promise<Event[]>}
+   */
+  getAllPassedEvents(queryParams: EventsListQueryParams) {
+    const url = `${this.BASE_EVENT_URL}?status=passed&${this.serializeQueryString(queryParams)}`;
+
+    console.log('[EventService][getAllPassedEvents]', url);
+
+    return this.http.get(url).toPromise()
+      .then( (response) => {
+        const body = response.json();
+        const events = body.events as Event[];
+        console.log('[EventService][getAllPassedEvents][success]', body);
+        return [events, body.page, body.itemsPerPage, body.totalPages];
+      }, (err) => {
+        console.log('[EventService][getAllPassedEvents][error]', err);
+        return null;
+      });
+  }
+
   /**
    * Perform an HTTP GET request to the REST API to read all the events that specific user has organized
    * @returns {Promise<Event[]>}
