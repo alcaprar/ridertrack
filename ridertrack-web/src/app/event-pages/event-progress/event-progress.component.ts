@@ -32,6 +32,12 @@ export class EventProgressComponent implements OnInit {
 
   private refreshInterval;
 
+  public marker_background_colors = ["#FF0000", "#FFFF00", "#80FF00", "#00FF00", "#00FF80",
+  "#00FFFF", "#0080FF", "#0000FF", "#7F00FF", "#7F00FF", "#7F00FF", "#FF00FF",
+  "#FF007F", "#808080"];
+  public color_index = 0;
+  public stroke_color_index =0;
+
   @ViewChild('searchType') searchType: ElementRef;
 
   constructor(private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private routeService: RouteService,
@@ -105,7 +111,8 @@ export class EventProgressComponent implements OnInit {
         lng: Number(participantsProgress[i].lastPosition.lng),
         timestamp: participantsProgress[i].timestamp,
         user: participantsProgress[i].userId,
-        select: true
+        select: true,
+        color: this.marker_background_colors[i % this.marker_background_colors.length]
       });
       this.participantsList.push({
         name: participantsProgress[i].userId.name,

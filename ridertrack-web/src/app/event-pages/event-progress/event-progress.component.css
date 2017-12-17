@@ -17,11 +17,12 @@ p{
     box-sizing: border-box;
     border:none;
     position: relative;
+    margin-left: 1em;
     z-index: 9;
 }
 .search-form .form-inline .form-group {
-    width: 235px;
-    text-align: left;
+    width: 480px;
+    text-align: center;
     letter-spacing: 0.5px;
 }
 

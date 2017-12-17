@@ -25,7 +25,7 @@
 <div class="row search-form wow pulse animated"
      data-wow-delay="0.8s" style="visibility: visible; animation-delay: 0.8s; animation-name: pulse;">
 <form *ngIf="participantsList" (ngSubmit)="search()" class="form-inline">
-  <div class="col-md-10">
+  <div class="col-md-8">
 <div class="form-group">
   <select id="race" #searchType class="selectpicker" data-live-search="true" data-live-search-style="begins"
           title="Select a participant">
@@ -35,7 +35,7 @@
   </select>
 </div>
   </div>
-  <div class="col-md-4 col-md-offset-4">
+  <div class="col-md-2">
 <button class="btn search-btn" type="submit"><i class="fa fa-search"></i></button>
   </div>
 </form>
@@ -45,7 +45,8 @@
   <div *ngFor="let participantM of participantsMarkers">
     <div *ngIf="participantM.select">
   <agm-marker [latitude]="participantM.lat"
-              [longitude]="participantM.lng">
+              [longitude]="participantM.lng"
+              [label]="participantM.color">
     <agm-info-window [closeWhenOthersOpen]="true" >{{participantM.user.name}} {{participantM.user.surname}}
       <br> timestamp: {{participantM.timestamp}}
     </agm-info-window>
