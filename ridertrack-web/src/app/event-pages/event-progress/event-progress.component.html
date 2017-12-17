@@ -37,14 +37,15 @@
 </div>
 
 <agm-map id="map" #map [longitude]="initLong" [latitude]="initLat" [zoom]="zoom">
-  <div *ngIf="participantsMarkers ">
-  <agm-marker *ngFor="let participantM of participantsMarkers "
-              [latitude]="participantM.lat"
+  <div *ngFor="let participantM of participantsMarkers">
+    <div *ngIf="participantM.select">
+  <agm-marker [latitude]="participantM.lat"
               [longitude]="participantM.lng">
     <agm-info-window [closeWhenOthersOpen]="true" >{{participantM.user.name}} {{participantM.user.surname}}
       <br> timestamp: {{participantM.timestamp}}
     </agm-info-window>
   </agm-marker>
+    </div>
   </div>
   <map-direction *ngIf="directions != null" [origin]="directions.origin" [destination]="directions.destination"
   [waypoints]="directions.waypoints"></map-direction>
