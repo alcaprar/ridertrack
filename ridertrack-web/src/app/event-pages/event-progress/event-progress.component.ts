@@ -32,8 +32,7 @@ export class EventProgressComponent implements OnInit {
 
   private refreshInterval;
 
-  @ViewChild("search")
-  public searchElementRef: ElementRef;
+  @ViewChild('searchType') searchType: ElementRef;
 
   constructor(private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private routeService: RouteService,
     private route: ActivatedRoute, private router: Router, private eventService: EventService) { }
@@ -105,7 +104,13 @@ export class EventProgressComponent implements OnInit {
         lat: Number(participantsProgress[i].lastPosition.lat),
         lng: Number(participantsProgress[i].lastPosition.lng),
         timestamp: participantsProgress[i].timestamp,
-        user: participantsProgress[i].userId
+        user: participantsProgress[i].userId,
+        select: true
+      });
+      this.participantsList.push({
+        name: participantsProgress[i].userId.name,
+        surname: participantsProgress[i].userId.surname,
+        id: participantsProgress[i].userId._id
       });
     }
   }
@@ -188,7 +193,10 @@ export class EventProgressComponent implements OnInit {
     console.log("[Directions][Update]", this.directions);
   }
 
-  search() {
-    //TODO: filter participants and show the corresponding marker
-  }
+ search(){
+   var participant = (this.searchType.nativeElement.value == -1) ? undefined : this.searchType.nativeElement.value;
+   for(let pm of this.participantsMarkers){
+     pm.select = (pm.user._id === participant._id);
+   }
+ }
 }

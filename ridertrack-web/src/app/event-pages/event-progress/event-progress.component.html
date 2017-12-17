@@ -1,5 +1,5 @@
 <app-page-header title="Track progress"></app-page-header>
-
+<!--
 <div class="search-form wow pulse">
   <form (ngSubmit)="search()" class="form-inline">
     <div class="row ">
@@ -21,17 +21,31 @@
       </div>
     </div>
   </form>
+</div>-->
+<div class="row search-form wow pulse animated" data-wow-delay="0.8s" style="visibility: visible; animation-delay: 0.8s; animation-name: pulse;">
+<form *ngIf="" (ngSubmit)="search()" class="form-inline">
+<div class="form-group">
+  <select id="race" #searchType class="selectpicker" data-live-search="true" data-live-search-style="begins"
+          title="Select a participant">
+    <option value="-1" selected>All types</option>
+    <option *ngFor="let participant of participantsList" [value]="participant" style="text-transform: capitalize">
+      {{participant.name}} {{participant.surname}}</option>
+  </select>
+</div>
+<button class="btn search-btn" type="submit"><i class="fa fa-search"></i></button>
+</form>
 </div>
 
 <agm-map id="map" #map [longitude]="initLong" [latitude]="initLat" [zoom]="zoom">
-  <agm-marker *ngIf="initMarker" [latitude]="initMarker.lat" [longitude]="initMarker.lng"></agm-marker>
-  <agm-marker *ngFor="let participantM of participantsMarkers"
+  <div *ngIf="participantsMarkers ">
+  <agm-marker *ngFor="let participantM of participantsMarkers "
               [latitude]="participantM.lat"
-              [longitude]="participantM.lng" >
+              [longitude]="participantM.lng">
     <agm-info-window [closeWhenOthersOpen]="true" >{{participantM.user.name}} {{participantM.user.surname}}
       <br> timestamp: {{participantM.timestamp}}
     </agm-info-window>
   </agm-marker>
+  </div>
   <map-direction *ngIf="directions != null" [origin]="directions.origin" [destination]="directions.destination"
   [waypoints]="directions.waypoints"></map-direction>
 </agm-map>
