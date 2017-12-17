@@ -25,11 +25,11 @@
 <div class="row search-form wow pulse animated"
      data-wow-delay="0.8s" style="visibility: visible; animation-delay: 0.8s; animation-name: pulse;">
 <form *ngIf="participantsList" (ngSubmit)="search()" class="form-inline">
-  <div class="col-md-4 col-md-offset-4">
+  <div class="col-md-10">
 <div class="form-group">
   <select id="race" #searchType class="selectpicker" data-live-search="true" data-live-search-style="begins"
           title="Select a participant">
-    <option value="-1" selected>All types</option>
+    <option value="-1" selected>Select a Participant</option>
     <option *ngFor="let participant of participantsList" [value]="participant" style="text-transform: capitalize">
       {{participant.name}} {{participant.surname}}</option>
   </select>
