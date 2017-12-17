@@ -22,8 +22,10 @@
     </div>
   </form>
 </div>-->
-<div class="row search-form wow pulse animated" data-wow-delay="0.8s" style="visibility: visible; animation-delay: 0.8s; animation-name: pulse;">
+<div class="row search-form wow pulse animated"
+     data-wow-delay="0.8s" style="visibility: visible; animation-delay: 0.8s; animation-name: pulse;">
 <form *ngIf="participantsList" (ngSubmit)="search()" class="form-inline">
+  <div class="col-md-4 col-md-offset-4">
 <div class="form-group">
   <select id="race" #searchType class="selectpicker" data-live-search="true" data-live-search-style="begins"
           title="Select a participant">
@@ -32,7 +34,10 @@
       {{participant.name}} {{participant.surname}}</option>
   </select>
 </div>
+  </div>
+  <div class="col-md-4 col-md-offset-4">
 <button class="btn search-btn" type="submit"><i class="fa fa-search"></i></button>
+  </div>
 </form>
 </div>
 
