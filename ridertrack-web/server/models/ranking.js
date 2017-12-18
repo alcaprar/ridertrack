@@ -110,6 +110,7 @@ rankingSchema.methods.rerank = function(eventId , userId, callback){
         else {
             var position = {};
 
+            // Gets last position of participant
             var coordinates = route.coordinates;
             Positions.getLastPositionOfUser(userId, eventId, function (err, lastPos) {
                 if (err) {
@@ -121,8 +122,10 @@ rankingSchema.methods.rerank = function(eventId , userId, callback){
                 }
             });
 
-            // Did not use let - in method of iterating because order is not guaranteed
-            // disFromRoute is the each distance to each point on the route
+            /* Uses pythagoras to calculate distance
+             * Did not use let - in method of iterating because order is not guaranteed
+             * disFromRoute is the each distance to each point on the route
+             */
             var disFromRoute = [];
             for (var i = 0; i < coordinates.length; i++) {
                 var x_dif = abs(coordinates[i].lat - position.lat);
@@ -132,6 +135,7 @@ rankingSchema.methods.rerank = function(eventId , userId, callback){
 
             }
 
+            // Out of all checkpoints, finds the closest one
             var shortestDistance = Math.min.apply(Math, disFromRoute);
             // this is the checkpoint the participant is either nearing or leaving
             var checkpointNumber = disFromRoute.indexOf(shortestDistance);
@@ -144,7 +148,7 @@ rankingSchema.methods.rerank = function(eventId , userId, callback){
              */
             var checkpointDict = ranking.ranking[0];
 
-            // Checking if key-value pair exists, else creates it
+            // Checking if key-value pair exists update the tuple, else creates it and add.
             if (checkpointDict.hasOwnProperty(checkpointNumber)) {
                 checkpointDict[checkpointNumber].push([shortestDistance, userId])
             }
@@ -157,22 +161,25 @@ rankingSchema.methods.rerank = function(eventId , userId, callback){
             // reordering the list of ranked participants, only top 10 displayed
             var rankingList = ranking.ranking[1];
 
+            /* Block of code to sort each group of runners (a group is between each checkpoint),
+             * then pick the 10 closests to the last checkpoint, which are the first ones.
+             */
             var NeedsSorting = true;
             for (var i = 0; i < coordinates.length; i++) {
                 if (checkpointDict.hasOwnProperty(i + 1)) {
                     continue;
                 } else {
                     for (var group = i ;rankingList.length <= 10, NeedsSorting = true; group--) {
-                        while (NeedsSorting == true) {
+                        while (NeedsSorting === true) {
                             var currentCheckpointGroup = checkpointDict[group];
 
                             //for (var it = 0; it < currentCheckpointGroup.length; it++) {
-                                // Todo: sort the list by going into the first index of each it in currentCheckpointGroup
-                                // Todo: Apppend(push) to the rankingList
+                            // Todo: sort the list by going into the first index of each it in currentCheckpointGroup
+                            // Todo: Apppend(push) to the rankingList
                             //}
 
                             this.methods.sort(currentCheckpointGroup, function(err, sorted_arr){
-                                if(err){console.log("Ranking ErrorL Sorting Error ")
+                                if(err){console.log("Ranking Error: Sorting Error ")
                                 }else{rankingList.push(sorted_arr[sorted_arr.length]) }
                             });
 
@@ -184,6 +191,7 @@ rankingSchema.methods.rerank = function(eventId , userId, callback){
                 }
             }
         }
+        // save the ranking
         ranking.save(function (err) {
             if (err) {
                 return callback(err)
@@ -195,6 +203,7 @@ rankingSchema.methods.rerank = function(eventId , userId, callback){
 };
 
 
+//  Method to return sorted array. Accesses the first index of each iteration, i.e 4.6 in [4.6 , 'Bob The Runner']
 rankingSchema.methods.sort = function(list){
     var len = list.length;
 
