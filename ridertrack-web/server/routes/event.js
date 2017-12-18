@@ -322,7 +322,10 @@ router.post('/:eventId/participants/positions', /*authMiddleware.hasValidToken, 
                             errors: err
                         })
                     }else{
-                        //pass
+                        res.status(200).send({
+                            message: "Ranking updated successfully",
+                            location: updatedRanking
+                        });
 
                     }
                 })

@@ -100,7 +100,6 @@ rankingSchema.statics.update = function (userId, eventId, locationJson ,callback
     })
 };
 
-
 rankingSchema.methods.rerank = function(eventId , userId, callback){
     var ranking = this;
     Route.findByEventId(eventId, function(err, route){
@@ -137,8 +136,8 @@ rankingSchema.methods.rerank = function(eventId , userId, callback){
             // this is the checkpoint the participant is either nearing or leaving
             var checkpointNumber = disFromRoute.indexOf(shortestDistance);
 
-            // Update checkpoint of the user
-            // Use Second Last Position to determine nearing or leaving.
+            // TODO: Update checkpoint of the user
+            // TODO : Use Second Last Position to determine nearing or leaving.
 
             /* CheckpointDict is a dictionary with the checkpoint as the key i.e '1' and a list of shortestDictance tuples
              * Information should be added to this dictionary values as a const tuple like this [4.7 ,'Mariano']
@@ -158,7 +157,6 @@ rankingSchema.methods.rerank = function(eventId , userId, callback){
             // reordering the list of ranked participants, only top 10 displayed
             var rankingList = ranking.ranking[1];
 
-
             var NeedsSorting = true;
             for (var i = 0; i < coordinates.length; i++) {
                 if (checkpointDict.hasOwnProperty(i + 1)) {
@@ -167,10 +165,17 @@ rankingSchema.methods.rerank = function(eventId , userId, callback){
                     for (var group = i ;rankingList.length <= 10, NeedsSorting = true; group--) {
                         while (NeedsSorting == true) {
                             var currentCheckpointGroup = checkpointDict[group];
-                            for (var it = 0; it < currentCheckpointGroup.length; it++) {
-                                // sort the list by going into the first index of each it in currentCheckpointGroup
-                                // Apppend to the rankingList
-                            }
+
+                            //for (var it = 0; it < currentCheckpointGroup.length; it++) {
+                                // Todo: sort the list by going into the first index of each it in currentCheckpointGroup
+                                // Todo: Apppend(push) to the rankingList
+                            //}
+
+                            this.methods.sort(currentCheckpointGroup, function(err, sorted_arr){
+                                if(err){console.log("Ranking ErrorL Sorting Error ")
+                                }else{rankingList.push(sorted_arr[sorted_arr.length]) }
+                            });
+
                             if (rankingList.length >= 10 || currentCheckpointGroup.length < 10) {
                                 NeedsSorting = false
                             }
@@ -190,5 +195,24 @@ rankingSchema.methods.rerank = function(eventId , userId, callback){
 };
 
 
+rankingSchema.methods.sort = function(list){
+    var len = list.length;
+
+    for (var i = len-1; i>=0; i--){
+        for(var j = 1; j<=i; j++){
+            if(list[j-1][0]>list[j][0]){
+                var temp = list[j-1][0];
+                list[j-1][0] = list[j][0];
+                list[j][0] = temp;
+            }
+        }
+    }
+    return list;
+
+};
+
+
 var Ranking = mongoose.model('Ranking', rankingSchema);
 module.exports = Ranking;
+
+
