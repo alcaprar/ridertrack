@@ -5,7 +5,7 @@ import { Event } from '../../shared/models/event';
 import { } from '@types/googlemaps';
 import { RouteService } from "../../shared/services/route.service";
 import { ActivatedRoute, Router } from "@angular/router";
-
+declare var $:any;
 declare var google: any;
 
 @Component({
@@ -95,7 +95,14 @@ export class EventProgressComponent implements OnInit {
           console.log('[Progress Management][OnInit][error]', error);
         });
     });
+  }
 
+  /**
+   * Called after the page has been rendered.
+   * It initializes some UI components.
+   */
+  ngAfterViewInit() {
+    $('.selectpicker').selectpicker()
   }
 
   /**

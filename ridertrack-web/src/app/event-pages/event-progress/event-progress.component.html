@@ -1,4 +1,4 @@
-<app-page-header title="Track progress"></app-page-header>
+<app-page-header title="progress: {{event.name}}"></app-page-header>
 <!--
 <div class="search-form wow pulse">
   <form (ngSubmit)="search()" class="form-inline">
@@ -23,22 +23,21 @@
   </form>
 </div>-->
 
-<div class="row  search-form wow pulse animated"
-     data-wow-delay="0.8s" style="visibility: visible; animation-delay: 0.8s; animation-name: pulse;">
-<form *ngIf="participantsList" (ngSubmit)="search()" class="form-inline">
-  <div class="col-md-8">
-    <div class="form-group">
-  <select id="race" #searchType class="selectpicker" data-live-search="true" data-live-search-style="begins"
-          title="Select a participant">
-    <option value="-1" selected>Select a Participant</option>
-    <option *ngFor="let participant of participantsList" [value]="participant" style="text-transform: capitalize">
-      {{participant.name}} {{participant.surname}}</option>
-  </select>
-  </div>
-  </div>
-  <div class="col-md-2">
-<button class="btn search-btn" type="submit"><i class="fa fa-search"></i></button></div>
-</form>
+<div class="row  search-form wow pulse animated" data-wow-delay="0.8s" style="visibility: visible; animation-delay: 0.8s; animation-name: pulse;">
+  <form *ngIf="participantsList" (ngSubmit)="search()" class="form-inline">
+    <div class="col-xs-12 col-md-8">
+      Select a participant to track:
+      <div class="form-group">
+        <select id="race" #searchType class="selectpicker" data-live-search="true" data-live-search-style="begins" title="Select a participant">
+          <option value="-1" selected>Select a Participant</option>
+          <option *ngFor="let participant of participantsList" [value]="participant" style="text-transform: capitalize">
+            {{participant.name}} {{participant.surname}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <button class="btn search-btn" type="submit"><i class="fa fa-search"></i></button></div>
+  </form>
 </div>
 
 
@@ -46,15 +45,15 @@
 <agm-map id="map" #map [longitude]="initLong" [latitude]="initLat" [zoom]="zoom">
   <div *ngFor="let participantM of participantsMarkers">
     <div *ngIf="participantM.select">
-  <agm-marker [latitude]="participantM.lat"
-              [longitude]="participantM.lng"
-              [label]="participantM.color">
-    <agm-info-window [closeWhenOthersOpen]="true" >{{participantM.user.name}} {{participantM.user.surname}}
-      <br> timestamp: {{participantM.timestamp}}
-    </agm-info-window>
-  </agm-marker>
+      <agm-marker [latitude]="participantM.lat"
+                  [longitude]="participantM.lng"
+                  [label]="participantM.color">
+        <agm-info-window [closeWhenOthersOpen]="true" >{{participantM.user.name}} {{participantM.user.surname}}
+          <br> timestamp: {{participantM.timestamp}}
+        </agm-info-window>
+      </agm-marker>
     </div>
   </div>
   <map-direction *ngIf="directions != null" [origin]="directions.origin" [destination]="directions.destination"
-  [waypoints]="directions.waypoints"></map-direction>
+                 [waypoints]="directions.waypoints"></map-direction>
 </agm-map>
