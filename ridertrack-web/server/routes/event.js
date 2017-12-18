@@ -10,7 +10,7 @@ var User = require('../models/user');
 var Enrollment = require('../models/enrollment');
 var Route = require ('../models/route');
 var Positions = require('../models/positions');
-var Positions = require('../models/ranking');
+var Ranking = require('../models/ranking');
 
 
 var authMiddleware = require('../middlewares/auth');
@@ -352,7 +352,7 @@ router.get('/:eventId/participants/positions', function (req, res, next) {
                             errors: [err]
                         })
                     }else{
-                        res.status(200).send({
+                        return res.status(200).send({
                             positions: usersPositions
                         });
                     }
