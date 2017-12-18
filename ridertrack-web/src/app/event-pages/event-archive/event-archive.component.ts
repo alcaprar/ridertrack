@@ -13,25 +13,25 @@ declare var $: any;
   styleUrls: ['./event-archive.component.css']
 })
 export class EventArchiveComponent implements OnInit {
-  
+
     @ViewChild('searchKeyword') searchKeyword: ElementRef;
     @ViewChild('searchCity') searchCity: ElementRef;
     @ViewChild('searchType') searchType: ElementRef;
     @ViewChild('itemsPerPage') itemsPerPageSelect: ElementRef;
-  
+
     private currentUser: User;
     private eventsList: Event[] = [];
     private eventTypes: String[];
     private allowedItemsPerPage = [3, 6, 9, 12, 15];
-  
+
     private queryParams: EventsListQueryParams = new EventsListQueryParams;
     private totalPages: number = 0;
-  
+
     constructor(private eventService: EventService, private route: ActivatedRoute, private userService: UserService, private router: Router, private appRef: ApplicationRef) {
       // retrieve the event types
       this.eventTypes = this.eventService.getEventTypes();
     }
-  
+
     // When the component is created saves the list of all events and the current user
     ngOnInit() {
       this.userService.getUser()
@@ -39,12 +39,12 @@ export class EventArchiveComponent implements OnInit {
           user => {
             this.currentUser = user
           });
-  
+
       // get query params for pagination
       this.route.queryParams
         .subscribe(
           params=> {
-  
+
             this.queryParams.page = +params['page'] || 1; // the plus before params is used to cast it to a number
             this.queryParams.itemsPerPage = (this.allowedItemsPerPage.indexOf(+params['itemsPerPage']) > -1) ? +params['itemsPerPage'] : 12;
             this.queryParams.keyword = params['keyword'] || undefined;
@@ -53,9 +53,9 @@ export class EventArchiveComponent implements OnInit {
             this.queryParams.length = +params['length'] || undefined;
             this.queryParams.city = params['city'] || undefined;
             this.queryParams.country = params['country'] || undefined;
-  
+
             console.log('[EventList][ngOnInit]', this.queryParams);
-  
+
             // get events
             this.eventService.getAllPassedEvents(this.queryParams)
               .then(
@@ -69,7 +69,7 @@ export class EventArchiveComponent implements OnInit {
           }
         )
     }
-  
+
     ngAfterViewInit(){
       $('#price-range').slider();
       $('#length-range').slider();
@@ -82,22 +82,22 @@ export class EventArchiveComponent implements OnInit {
       $('.layout-grid').on('click', function () {
         $('.layout-grid').addClass('active');
         $('.layout-list').removeClass('active');
-  
+
         $('#list-type').removeClass('proerty-th-list');
         $('#list-type').addClass('proerty-th');
-  
+
       });
-  
+
       $('.layout-list').on('click', function () {
         $('.layout-grid').removeClass('active');
         $('.layout-list').addClass('active');
-  
+
         $('#list-type').addClass('proerty-th-list');
         $('#list-type').removeClass('proerty-th');
-  
+
       });
     }
-  
+
     /**
      * It is called when the user clicks on the prev page.
      */
@@ -107,7 +107,7 @@ export class EventArchiveComponent implements OnInit {
         this.updateEventsList()
       }
     }
-  
+
     /**
      * It is called when the user clicks on the next page.
      */
@@ -117,12 +117,12 @@ export class EventArchiveComponent implements OnInit {
         this.updateEventsList();
       }
     }
-  
+
     changePage(page){
       this.queryParams.page = page;
       this.updateEventsList()
     }
-  
+
     /**
      * Triggered when the dropdown chages the selection.
      */
@@ -132,7 +132,7 @@ export class EventArchiveComponent implements OnInit {
       this.queryParams.page = 1
       this.updateEventsList()
     }
-  
+
     /**
      * It is called when the search button is clicked.
      */
@@ -140,27 +140,26 @@ export class EventArchiveComponent implements OnInit {
       this.queryParams.keyword = (this.searchKeyword.nativeElement.value === '') ? undefined : this.searchKeyword.nativeElement.value;
       this.queryParams.city = (this.searchCity.nativeElement.value === '') ? undefined : this.searchCity.nativeElement.value;
       this.queryParams.type = (this.searchType.nativeElement.value == -1) ? undefined : this.searchType.nativeElement.value;
-  
+
       this.queryParams.sort = undefined;
       this.queryParams.page = undefined;
       this.queryParams.itemsPerPage = undefined;
-  
+
       console.log('[EventsList][search]', this.queryParams);
-  
+
       this.updateEventsList();
     }
-  
+
     /**
      * It navigate to the route with the new query params.
      */
     private updateEventsList(){
     this.queryParams.price = undefined; // TODO remove when price slider is activated
     this.queryParams.length = undefined; // TODO remove when length slider is activated
-  
-    this.router.navigate([ '/events' ], {
+
+    this.router.navigate([ '/archive' ], {
       queryParams: this.queryParams
     });
   }
-  
+
   }
-  

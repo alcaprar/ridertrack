@@ -71,10 +71,13 @@ router.get('/', function(req, res) {
             ];
         }
     }
-    if(req.query.status){
-        if(['passed', 'ongoing', 'future'].indexOf(req.query.status) > -1){
-            conditions.status = req.query.status;
-        }
+    // check status param
+    if(req.query.status && ['planned', 'ongoing', 'passed'].indexOf(req.query.status) > -1){
+        // if condition is set and it's a valid value, use it
+        conditions.status = req.query.status;
+    }else{
+        // if condition is not set or not valid, returns only ongoing and future events
+        conditions.status = { $in: ['planned', 'ongoing']}
     }
     if(req.query.length){
         // it must be a range so the query param must be an object
