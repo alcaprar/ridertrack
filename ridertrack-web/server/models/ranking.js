@@ -88,7 +88,7 @@ rankingSchema.statics.update = function (userId, eventId, locationJson ,callback
             });
         }
 
-        ranking.methods.rerank(eventId, userId, function (err, new_ranking) {
+        ranking.rerank(eventId, userId, function (err, new_ranking) {
             if (err) {
                 console.log("Error Reranking")
             } else {
@@ -100,7 +100,7 @@ rankingSchema.statics.update = function (userId, eventId, locationJson ,callback
     })
 };
 
-ranking.rerank = function(eventId , userId, callback){
+rankingSchema.methods.rerank = function(eventId , userId, callback){
     var ranking = this;
     Route.findByEventId(eventId, function(err, route){
         if (err){
