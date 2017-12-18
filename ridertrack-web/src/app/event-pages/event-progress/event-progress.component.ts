@@ -154,7 +154,6 @@ export class EventProgressComponent implements OnInit {
         (event) => {
           console.log('[Event Progress][OnInit][EventService.getEvent][success]', event);
           this.event = event;
-          this.mapPoints = [];
           //TODO: SOLVE THE CITY VISUALIZATION
           var address = this.event.city;
           var geocoder = new google.maps.Geocoder();
@@ -164,7 +163,6 @@ export class EventProgressComponent implements OnInit {
               this.initLong = Number(results[0].geometry.location.lng());
               console.log('[Event Progress][city coordinates] lat: ' + this.initLat + ' lng: ' + this.initLong + 'marker:'
               +this.initMarker);
-              this.mapPoints =[{lat: this.initLat, lng: this.initLong}];
             }
           })
         })
@@ -207,8 +205,8 @@ export class EventProgressComponent implements OnInit {
     console.log("[Directions][Update]", this.directions);
   }
 
- search(){
-   var participant = (this.searchType.nativeElement.value == -1) ? undefined : this.searchType.nativeElement.value;
+  onChange(event){
+   var participant = event.target.value;
    for(let pm of this.participantsMarkers){
      pm.select = (pm.user._id === participant._id);
    }

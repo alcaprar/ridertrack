@@ -23,21 +23,19 @@
   </form>
 </div>-->
 
-<div class="row  search-form wow pulse animated" data-wow-delay="0.8s" style="visibility: visible; animation-delay: 0.8s; animation-name: pulse;">
+<div class="row search-form wow pulse animated" data-wow-delay="0.8s" style="visibility: visible; animation-delay: 0.8s; animation-name: pulse;">
   <form *ngIf="participantsList" (ngSubmit)="search()" class="form-inline">
     <div class="col-xs-12 col-md-8">
       Select a participant to track:
       <div class="form-group">
-        <select id="race" #searchType class="selectpicker" data-live-search="true" data-live-search-style="begins" title="Select a participant">
+        <select id="race" #searchType class="selectpicker" (change)="onChange($event)"
+                data-live-search="true" data-live-search-style="begins"
+                title="Select a participant">
           <option value="-1" selected>Select a Participant</option>
           <option *ngFor="let participant of participantsList" [value]="participant" style="text-transform: capitalize">
             {{participant.name}} {{participant.surname}}</option>
         </select>
       </div>
-    </div>
-    <div class="col-md-2">
-      <button class="btn search-btn" type="submit"><i class="fa fa-search"></i></button></div>
-  </form>
 </div>
 
 
