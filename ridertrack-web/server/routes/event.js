@@ -424,6 +424,25 @@ router.get('/:eventId/:userId/lastLocation', function (req, res) {
     })
 });
 
+/*
+ * This method gets the second last known location of a user
+ */
+router.get('/:eventId/:userId/secondLastLocation', function (req, res) {
+
+    Location.findOne({userId: req.params.userId, eventId: req.params.eventId}, function (err, location) {
+        if (err) {
+            res.status(400).send({
+                errors: [err]
+            })
+        }else{
+            res.status(200).send({
+                secondLastUserCoordinate: location.coordinates[location.coordinates.length-2],
+                time :'Location was sent on: ' + location.updated_at
+            })
+        }
+    })
+});
+
 /**
  * It updates the fields passed in the body of the given eventId
  */

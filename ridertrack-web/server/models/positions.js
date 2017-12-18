@@ -123,6 +123,20 @@ positionSchema.statics.getLastPositionOfUser = function (userId, eventId, callba
     })
 };
 
+positionSchema.statics.getSecondLastPositionOfUser = function (userId, eventId, callback) {
+    this.findOne({eventId: eventId, userId: userId}, function (err, userPositions) {
+        if(err){
+            console.log('[PositionsModel][getSecondLastPositionOfUserInEvent] error:', err);
+            return callback({message: err.message})
+        }
+
+        if(!userPositions){
+            return callback(null, null)
+        }else{
+            return callback(null, userPositions.secondLastPosition)
+        }
+    })
+};
 
 
 positionSchema.statics.getLastPositionOfAllParticipants = function (eventId, callback) {
