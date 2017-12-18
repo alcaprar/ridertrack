@@ -100,7 +100,7 @@ rankingSchema.statics.update = function (userId, eventId, locationJson ,callback
     })
 };
 
-rankingSchema.methods.rerank = function(eventId , userId, callback){
+ranking.rerank = function(eventId , userId, callback){
     var ranking = this;
     Route.findByEventId(eventId, function(err, route){
         if (err){
@@ -173,15 +173,25 @@ rankingSchema.methods.rerank = function(eventId , userId, callback){
                         while (NeedsSorting === true) {
                             var currentCheckpointGroup = checkpointDict[group];
 
-                            //for (var it = 0; it < currentCheckpointGroup.length; it++) {
-                            // Todo: sort the list by going into the first index of each it in currentCheckpointGroup
-                            // Todo: Apppend(push) to the rankingList
-                            //}
+                            //for (var it = 0; it < currentCheckpointGroup.length; it++) {}
 
-                            this.methods.sort(currentCheckpointGroup, function(err, sorted_arr){
-                                if(err){console.log("Ranking Error: Sorting Error ")
-                                }else{rankingList.push(sorted_arr[sorted_arr.length]) }
-                            });
+
+                            var len = currentCheckpointGroup.length;
+
+                            for (var i = len-1; i>=0; i--){
+                                for(var j = 1; j<=i; j++){
+                                    if(currentCheckpointGroup[j-1][0]>currentCheckpointGroup[j][0]){
+                                        var temp = currentCheckpointGroup[j-1][0];
+                                        currentCheckpointGroup[j-1][0] = currentCheckpointGroup[j][0];
+                                        currentCheckpointGroup[j][0] = temp;
+                                    }
+                                }
+                            }
+
+                            //this.methods.sort(currentCheckpointGroup, function(err, sorted_arr){
+                                //if(err){console.log("Ranking Error: Sorting Error ")
+                                //}else{rankingList.push(sorted_arr[sorted_arr.length]) }
+                            //});
 
                             if (rankingList.length >= 10 || currentCheckpointGroup.length < 10) {
                                 NeedsSorting = false
