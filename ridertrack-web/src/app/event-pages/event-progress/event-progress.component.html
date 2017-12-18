@@ -24,7 +24,7 @@
 </div>-->
 
 <div class="row search-form wow pulse animated" data-wow-delay="0.8s" style="visibility: visible; animation-delay: 0.8s; animation-name: pulse;">
-  <form *ngIf="participantsList" (ngSubmit)="search()" class="form-inline">
+  <form *ngIf="participantsList" class="form-inline">
     <div class="col-xs-12 col-md-8">
       Select a participant to track:
       <div class="form-group">
@@ -36,8 +36,9 @@
             {{participant.name}} {{participant.surname}}</option>
         </select>
       </div>
+    </div>
+  </form>
 </div>
-
 
 
 <agm-map id="map" #map [longitude]="initLong" [latitude]="initLat" [zoom]="zoom">
