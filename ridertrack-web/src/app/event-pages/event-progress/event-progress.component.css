@@ -21,10 +21,10 @@ p{
     z-index: 9;
 }
 .search-form .form-inline .form-group {
-    width: 900px;
+    width: 760px;
     text-align: center;
     letter-spacing: 0.5px;
-    justify-content: center;
+
 }
 
 @media(max-width: 480px){
@@ -40,3 +40,4 @@ p{
 .form-inline .form-control, .form-inline .form-control {
     background: rgba(252, 252, 252, 0.8);
 }
+
