@@ -71,7 +71,7 @@ rankingSchema.statics.update = function (userId, eventId, locationJson ,callback
             return callback({message: err.message})
         }
 
-        if (!ranking) {
+        if (ranking == null) {
             Ranking.create(eventId, function (err, ranking) {
                 if (err) {
                     console.log('ERROR: Could Not Create Ranking.', err);
