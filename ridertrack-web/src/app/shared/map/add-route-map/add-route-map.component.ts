@@ -110,7 +110,6 @@ export class AddRouteMapComponent implements OnInit {
 
     getRoutePointsAndWaypoints(){
         let waypoints = [];
-
         if (this.mapPoints.length > 2){
             for(let i=1; i<this.mapPoints.length-1; i++){
                 let address = this.mapPoints[i];
@@ -159,6 +158,7 @@ export class AddRouteMapComponent implements OnInit {
     saveRoute(){
       this.routeService.updateRoute(this.eventId, this.mapPoints).then(()=> {
         this.dialogService.alert("Route", " The route is correctly saved.");
+        this.router.navigate(['/events', this.eventId, 'manage'])
       }).catch((err) => {
         this.errors = err;
       });

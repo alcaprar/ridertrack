@@ -32,9 +32,8 @@ export class EventProgressComponent implements OnInit {
 
   private refreshInterval;
 
-  public marker_background_colors = ["#FF0000", "#FFFF00", "#80FF00", "#00FF00", "#00FF80",
-  "#00FFFF", "#0080FF", "#0000FF", "#7F00FF", "#7F00FF", "#7F00FF", "#FF00FF",
-  "#FF007F", "#808080"];
+  public marker_background_colors = ["green", "red", "yellow", "orange", "purple", "pink",
+  "blue", "black", "gray", "white", "brown"];
   public color_index = 0;
   public stroke_color_index =0;
 
@@ -119,7 +118,8 @@ export class EventProgressComponent implements OnInit {
         timestamp: participantsProgress[i].timestamp,
         user: participantsProgress[i].userId,
         select: true,
-        color: this.marker_background_colors[i % this.marker_background_colors.length]
+        icon: "http:// labs.google.com/ridefinder/images/mm_20_"+
+        this.marker_background_colors[i % this.marker_background_colors.length]+".png"
       });
       this.participantsList.push({
         name: participantsProgress[i].userId.name,
@@ -154,7 +154,6 @@ export class EventProgressComponent implements OnInit {
         (event) => {
           console.log('[Event Progress][OnInit][EventService.getEvent][success]', event);
           this.event = event;
-          this.mapPoints = [];
           //TODO: SOLVE THE CITY VISUALIZATION
           var address = this.event.city;
           var geocoder = new google.maps.Geocoder();
@@ -164,7 +163,6 @@ export class EventProgressComponent implements OnInit {
               this.initLong = Number(results[0].geometry.location.lng());
               console.log('[Event Progress][city coordinates] lat: ' + this.initLat + ' lng: ' + this.initLong + 'marker:'
               +this.initMarker);
-              this.mapPoints =[{lat: this.initLat, lng: this.initLong}];
             }
           })
         })
@@ -207,8 +205,8 @@ export class EventProgressComponent implements OnInit {
     console.log("[Directions][Update]", this.directions);
   }
 
- search(){
-   var participant = (this.searchType.nativeElement.value == -1) ? undefined : this.searchType.nativeElement.value;
+  onChange(event){
+   var participant = event.target.value;
    for(let pm of this.participantsMarkers){
      pm.select = (pm.user._id === participant._id);
    }

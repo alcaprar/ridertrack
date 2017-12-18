@@ -4,7 +4,7 @@
         <input id="search" placeholder="Insert starting area" type="text" class="form-control"
                    #search [formControl]="searchControl">
     </div>
-    <div class="row align-items-start">
+    <div class="row">
         <!--
         <div class="col-4 col-md-2">
             <p>TRAVEL MODE: </p>
@@ -18,7 +18,7 @@
             <input type="radio" name="travelMode" (click)="setTravelMode('BICYCLING')"
                    id="bicycling">
         </div>-->
-        <div class="col-8 col-md-6">
+        <div class="col-md-12">
         <button class="btn-manage" (click)="clearLast()">Clear Last</button>
         <button class="btn-manage bounceInRight" (click)="clearAll()" >Clear Map</button>
         </div>
