@@ -389,18 +389,26 @@ router.get('/:eventId/:userId/location', function (req, res) {
  * This method gets the latest ranking of the event
  */
 router.get('/:eventId/ranking', function (req, res) {
-
     Ranking.findOne({eventId: req.params.eventId}, function (err, ranking) {
         if (err) {
             res.status(400).send({
                 errors: [err]
             })
         }else{
-            // before add function which uses ranking.update and user position to re-rank
-            res.status(200).send({
-                ranking: ranking.ranking,
-                time :'Ranking was sent on: ' + ranking.updated_at
+            ranking.rerank(req.params.eventId, req.params.userId, function(err, new_ranking){
+                if (err){
+                    console.log("Error Reranking")
+                }else{
+                    console.log("Reranked")
+                    res.status(200).send({
+                        ranking: new_ranking,
+                        time :'Ranking was sent on: ' + new_ranking.updated_at
+                    })
+                }
+
+
             })
+
         }
     })
 });

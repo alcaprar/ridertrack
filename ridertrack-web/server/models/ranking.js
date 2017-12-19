@@ -71,7 +71,7 @@ rankingSchema.statics.update = function (userId, eventId, locationJson ,callback
             return callback({message: err.message})
         }
 
-        if (ranking == null) {
+        if (ranking === null) {
             Ranking.create(eventId, function (err, ranking) {
                 if (err) {
                     console.log('ERROR: Could Not Create Ranking.', err);
@@ -83,42 +83,40 @@ rankingSchema.statics.update = function (userId, eventId, locationJson ,callback
                     //res.status(200).send({
                     //ranking: ranking
                     //})
-                    console.log("Re-Ranking...")
+                    console.log("Adding Position to Ranking...")
                 }
             });
         }
 
-        ranking.rerank(eventId, userId, function (err, new_ranking) {
+        ranking.add(eventId, userId, function (err, updated_ranking {
             if (err) {
-                console.log("Error Reranking")
+                console.log("Ranking Error: Trying to add position to ranking")
             } else {
-                console.log("Reranked")
-                console.log(new_ranking)
+                console.log("Updated Ranking")
+                console.log(updated_ranking)
             }
         });
 
     })
 };
 
-rankingSchema.methods.rerank = function(eventId , userId, callback){
+rankingSchema.methods.add = function(eventId , userId, callback){
     var ranking = this;
     Route.findByEventId(eventId, function(err, route){
         if (err){
             console.log("Error Reranking: Finding Route");
             return callback(err)
-        }
-        else {
+        }else{
             var position = {};
 
             // Gets last position of participant
             var coordinates = route.coordinates;
+
             Positions.getLastPositionOfUser(userId, eventId, function (err, lastPos) {
                 if (err) {
                     console.log("Error Re-ranking: Getting last position")
-                }
-                else {
+                }else{
                     position = lastPos;
-
                 }
             });
 
@@ -132,7 +130,6 @@ rankingSchema.methods.rerank = function(eventId , userId, callback){
                 var y_dif = abs(coordinates[i].lng - position.lng);
                 var distance = Math.sqrt(x_dif * x_dif + y_dif * y_dif);
                 disFromRoute.push(distance)
-
             }
 
             // Out of all checkpoints, finds the closest one
@@ -156,51 +153,8 @@ rankingSchema.methods.rerank = function(eventId , userId, callback){
                 checkpointDict[checkpointNumber] = [];
                 checkpointDict[checkpointNumber].push([shortestDistance, userId])
             }
-
-
-            // reordering the list of ranked participants, only top 10 displayed
-            var rankingList = ranking.ranking[1];
-
-            /* Block of code to sort each group of runners (a group is between each checkpoint),
-             * then pick the 10 closests to the last checkpoint, which are the first ones.
-             */
-            var NeedsSorting = true;
-            for (var i = 0; i < coordinates.length; i++) {
-                if (checkpointDict.hasOwnProperty(i + 1)) {
-                    continue;
-                } else {
-                    for (var group = i ;rankingList.length <= 10, NeedsSorting = true; group--) {
-                        while (NeedsSorting === true) {
-                            var currentCheckpointGroup = checkpointDict[group];
-
-                            //for (var it = 0; it < currentCheckpointGroup.length; it++) {}
-
-
-                            var len = currentCheckpointGroup.length;
-
-                            for (var i = len-1; i>=0; i--){
-                                for(var j = 1; j<=i; j++){
-                                    if(currentCheckpointGroup[j-1][0]>currentCheckpointGroup[j][0]){
-                                        var temp = currentCheckpointGroup[j-1][0];
-                                        currentCheckpointGroup[j-1][0] = currentCheckpointGroup[j][0];
-                                        currentCheckpointGroup[j][0] = temp;
-                                    }
-                                }
-                            }
-
-                            //this.methods.sort(currentCheckpointGroup, function(err, sorted_arr){
-                                //if(err){console.log("Ranking Error: Sorting Error ")
-                                //}else{rankingList.push(sorted_arr[sorted_arr.length]) }
-                            //});
-
-                            if (rankingList.length >= 10 || currentCheckpointGroup.length < 10) {
-                                NeedsSorting = false
-                            }
-                        }
-                    }
-                }
-            }
         }
+
         // save the ranking
         ranking.save(function (err) {
             if (err) {
@@ -231,7 +185,56 @@ rankingSchema.methods.sort = function(list){
 };
 
 
+rankingSchema.methods.rerank = function(eventId , userId, callback){
+
+    var ranking = this;
+    var max_ranked = 10 ; // number of participants in the ranking
+
+    // reordering the list of ranked participants, only top 10 displayed
+    var checkpointDict = ranking.ranking[0];
+
+    /* Block of code to sort each group of runners (a group is between each checkpoint),
+     * then pick the 10 closests to the last checkpoint, which are the first ones.
+     */
+
+    var rankingList = [];
+    for (var i = 0; i < coordinates.length; i++) {
+        if (checkpointDict.hasOwnProperty(i + 1)) {
+            continue;
+        } else {
+            for (var group = i; rankingList.length <= max_ranked;  group--) {
+
+                var currentCheckpointGroup = checkpointDict[group];
+                var len = currentCheckpointGroup.length;
+
+                for (var it = len - 1; it >= 0; it--) {
+                    for (var j = 1; j <= i; j++) {
+                        if (currentCheckpointGroup[j - 1][0] > currentCheckpointGroup[j][0]) {
+                            var temp = currentCheckpointGroup[j - 1][0];
+                            currentCheckpointGroup[j - 1][0] = currentCheckpointGroup[j][0];
+                            currentCheckpointGroup[j][0] = temp;
+                        }
+                    }
+                }
+                it = 0;
+                while (rankingList.length < len && rankingList < max_ranked) {
+                    rankingList.push(currentCheckpointGroup[it]);
+                    it++;
+                }
+            }
+            // changing the value (call by address is not available in JS :-(   )
+            ranking.ranking[1] = rankingList;
+            // save the ranking
+            ranking.save(function (err) {
+                if (err) {
+                    return callback(err)
+                } else {
+                    return callback(null, ranking)
+                }
+            });
+        }
+    }
+};
+
 var Ranking = mongoose.model('Ranking', rankingSchema);
 module.exports = Ranking;
-
-
