@@ -207,6 +207,7 @@ rankingSchema.methods.rerank = function(eventId , userId, callback){
                 var currentCheckpointGroup = checkpointDict[group];
                 var len = currentCheckpointGroup.length;
 
+                // Sorts the dict values (lists) in ascending order.
                 for (var it = len - 1; it >= 0; it--) {
                     for (var j = 1; j <= i; j++) {
                         if (currentCheckpointGroup[j - 1][0] > currentCheckpointGroup[j][0]) {
@@ -222,7 +223,7 @@ rankingSchema.methods.rerank = function(eventId , userId, callback){
                     it++;
                 }
             }
-            // changing the value (call by address is not available in JS :-(   )
+            // changing the value (call by address is not available in js)
             ranking.ranking[1] = rankingList;
             // save the ranking
             ranking.save(function (err) {

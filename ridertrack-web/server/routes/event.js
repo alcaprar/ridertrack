@@ -318,15 +318,9 @@ router.post('/:eventId/participants/positions', /*authMiddleware.hasValidToken, 
 
                 Ranking.update(userId, eventId, req.body, function(err, updatedRanking){
                     if (err){
-                        res.status(400).send({
-                            errors: err
-                        })
+                        console.log("Error in updating ranking: " + err);
                     }else{
-                        res.status(200).send({
-                            message: "Ranking updated successfully",
-                            location: updatedRanking
-                        });
-
+                        console.log("Ranking updated successfully");
                     }
                 })
         }
