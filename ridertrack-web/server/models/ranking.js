@@ -88,7 +88,7 @@ rankingSchema.statics.update = function (userId, eventId, locationJson ,callback
             });
         }
 
-        ranking.add(eventId, userId, function (err, updated_ranking {
+        ranking.add(eventId, userId, function (err, updated_ranking) {
             if (err) {
                 console.log("Ranking Error: Trying to add position to ranking")
             } else {
