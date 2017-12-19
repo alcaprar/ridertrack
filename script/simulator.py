@@ -3,6 +3,9 @@ import json
 import requests
 from participant import *
 from route import *
+import os
+
+os.environ["REQUESTS_CA_BUNDLE"] = "cacert.pem"
 
 def postPosition(url,token,userId,position,checkpoint = -1 ):
 
@@ -34,7 +37,7 @@ def simulate(url,eventId,competitors,r):
         competitor.setPosition(startingPosition[0],startingPosition[1])
         competitor.setMaxSpeed(length)
         #set position
-        postPosition(url,competitor.token,competitor.userId,startingPosition, competitor.Checkpoint)
+        postPosition(url,competitor.token,competitor.userId,startingPosition)
 
     input("Press any key to start sending data")
     while (len(competitors) > len(finishedCompetitors)):
@@ -51,7 +54,7 @@ def simulate(url,eventId,competitors,r):
                 currentPosition = competitor.getCurrentPosition()
 
                 #set position
-                postPosition(url,competitor.token,competitor.userId,currentPosition,competitor.Checkpoint)
+                postPosition(url,competitor.token,competitor.userId,currentPosition,checkpoint)
                  
                 print ("Name\t:" + competitor.name + " " + competitor.surname + "\nPosition : " + str(currentPosition) + "\n")
                 checkpointReached = r.setCheckpoint (checkpoint,currentPosition)

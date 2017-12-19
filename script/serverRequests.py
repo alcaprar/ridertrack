@@ -1,5 +1,8 @@
 import json
 import requests
+import os
+
+os.environ["REQUESTS_CA_BUNDLE"] = "cacert.pem"
 
 def register(url,name,surname,email,password):
 
