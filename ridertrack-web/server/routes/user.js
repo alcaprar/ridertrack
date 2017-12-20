@@ -70,23 +70,10 @@ router.get('/:userId/enrolledEvents', authMiddleware.hasValidToken, function (re
     options.skip = (parseInt(page) -1) * parseInt(itemsPerPage);
     options.limit = itemsPerPage;
 
-    // check sorting
-    if(req.query.sort){
-        var sort = {};
-        // keys are divided by comma
-        let keys = req.query.sort.split(',');
-        for(let i = 0; i < keys.length; i++){
-            // check if it is also specify the way
-            // default is ascending
-            let key = keys[i].split(':');
 
-            // sorting possible only on date, price, length
-            if(['startingDate', 'price', 'length'].indexOf(key[0]) > -1){
-                sort[key[0]] = (typeof key[1] !== 'undefined' && ['asc', 'desc'].indexOf(key[1]) > -1) ? key[1] : 'asc';
-            }
-        }
-        options.sort = sort
-    }
+    options.sort = {
+        'startingDate': 'asc'
+    };
 
     // using async lib to find the total number and find the events in parallel
     var countEnrollments = function (callback) {
@@ -150,23 +137,9 @@ router.get('/:userId/organizedEvents', authMiddleware.hasValidToken, function(re
     options.skip = (parseInt(page) -1) * parseInt(itemsPerPage);
     options.limit = itemsPerPage;
 
-    // check sorting
-    if(req.query.sort){
-        var sort = {};
-        // keys are divided by comma
-        let keys = req.query.sort.split(',');
-        for(let i = 0; i < keys.length; i++){
-            // check if it is also specify the way
-            // default is ascending
-            let key = keys[i].split(':');
-
-            // sorting possible only on date, price, length
-            if(['startingDate', 'price', 'length'].indexOf(key[0]) > -1){
-                sort[key[0]] = (typeof key[1] !== 'undefined' && ['asc', 'desc'].indexOf(key[1]) > -1) ? key[1] : 'asc';
-            }
-        }
-        options.sort = sort
-    }
+    options.sort = {
+        'startingDate': 'asc'
+    };
 
     // using async lib to find the total number and find the events in parallel
     var countEvents = function (callback) {
@@ -250,23 +223,31 @@ router.put('/:userId',authMiddleware.hasValidToken, function (req, res) {
  * This will delete permanently everything related to it.
  */
 router.delete('/:userId', authMiddleware.hasValidToken, function (req, res) {
-    Event.findOne({organizerId: req.params.userId}, function (err, event) {
+    // search for events created by that user
+    Event.find({organizerId: req.params.userId}, function (err, events) {
         if (err) {
-            User.delete(req.params.userId, function (err, user) {
-                if(err){
-                    res.status(400).send({
-                        errors: err
-                    })
-                }else{
-                    res.status(200).send({
-                        message: 'User successfully deleted'
-                    })
-                }
+            return res.status(400).send({
+                errors: [err]
             })
         }else{
-            res.status(400).send({
-                message: 'Error: Could not delete User, he/she is an Organizer'
-            })
+            // if the user has not organized yet, he/she can be deleted
+            if(events.length === 0){
+                User.delete(req.params.userId, function (err, user) {
+                    if(err){
+                        res.status(400).send({
+                            errors: [err]
+                        })
+                    }else{
+                        res.status(200).send({
+                            message: 'User successfully deleted'
+                        })
+                    }
+                })
+            }else{
+                return res.status(400).send([{
+                    message: 'You cannot delete your account because you have created events.'
+                }])
+            }
         }
     });
 });
