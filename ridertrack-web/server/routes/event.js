@@ -259,14 +259,16 @@ router.post('/', authMiddleware.hasValidToken, multipart, function (req, res) {
     var event = req.body;
 
     // check image
-
     var tempPath = req.files.logo.path;
     var logoMimeType = req.files.logo.type;
 
     // TODO check allowed extension
 
     if(['image/png', 'image/jpg'].indexOf(logoMimeType) === -1){
-        console.log('[POST /events] logo extension not allowed: ', logoMimeType)
+        console.log('[POST /events] logo extension not allowed: ', logoMimeType);
+        return res.status(400).send({
+            errors: [{message: 'Image extension not supported.'}]
+        })
     }
 
     event.logo = {
@@ -287,6 +289,58 @@ router.post('/', authMiddleware.hasValidToken, multipart, function (req, res) {
         }
 
         // TODO delete the temp file in any case
+    })
+});
+
+
+/**
+ * It updates the fields passed in the body of the given eventId
+ */
+router.put('/:eventId', authMiddleware.hasValidToken, authMiddleware.isOrganizer, multipart, function (req, res) {
+    Event.update(req.params.eventId, req.body, function (err, event) {
+        if (err) {
+            return res.status(400).send({
+                errors: err
+            })
+        } else {
+            if(req.files.logo){
+                console.log('[PUT /event] updating logo...');
+
+                // check image
+                var tempPath = req.files.logo.path;
+                var logoMimeType = req.files.logo.type;
+
+                if(['image/png', 'image/jpg'].indexOf(logoMimeType) === -1){
+                    console.log('[PUT /events] logo extension not allowed: ', logoMimeType);
+                    return res.status(400).send({
+                        errors: [{message: 'Image extension not supported.'}]
+                    })
+                }
+
+                event.logo = {
+                    data: fs.readFileSync(tempPath),
+                    contentType: logoMimeType
+                };
+
+
+                return event.save(function (err) {
+                    console.log('[PUT /events] Logo updated.');
+                    if(err){
+                        return res.status(400).send({
+                            errors: err
+                        })
+                    }else{
+                        return res.status(200).send({
+                            event: event
+                        })
+                    }
+                });
+            }else{
+                return res.status(200).send({
+                    event: event
+                })
+            }
+        }
     })
 });
 
@@ -445,59 +499,6 @@ router.get('/:eventId/:userId/secondLastLocation', function (req, res) {
     })
 });
 
-/**
- * It updates the fields passed in the body of the given eventId
- */
-router.put('/:eventId', authMiddleware.hasValidToken, multipart, function (req, res) {
-    Event.findByEventId(req.params.eventId, function (err, event) {
-        if (err) {
-            return res.status(400).send({
-                errors: err
-            })
-        }
-        //Only organizer can change event
-        else if (event.organizerId !== req.userId) {
-            return res.status(401).send({
-                errors: [{message: "You are not allowed to change event"}]
-            })
-        }
-        //you have been logged in as organizer
-        else {
-            Event.update(req.params.eventId, req.body, function (err, event) {
-                if (err) {
-                    return res.status(400).send({
-                        errors: err
-                    })
-                } else {
-                    if(req.files.logo){
-                        // rename the logo with the id
-                        var tempPath = req.files.logo.path;
-                        var logoExtension = tempPath.split('.').pop();
-                        var newFilename = event._id + '.' + logoExtension;
-                        var newPath = config.uploadImageFolder + '/' + newFilename;
-
-                        return fs.rename(tempPath, newPath, function (err) {
-                            // TODO check the err. it might be thrown when the file is not saved properly
-                            // TODO the event should be deleted and an error to the user should be sent
-
-                            // saving the logo path
-                            event.logo = '/img/' + newFilename;
-                            return event.save(function (err) {
-                                return res.status(200).send({
-                                    event: event
-                                })
-                            })
-                        });
-                    }else{
-                        return res.status(200).send({
-                            event: event
-                        })
-                    }
-                }
-            })
-        }
-    });
-});
 
 /**
  * It deletes the event with the id given in the URI

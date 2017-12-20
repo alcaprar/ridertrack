@@ -123,7 +123,7 @@ export class EventManagePageComponent implements OnInit {
 
     this.event.logo = $('#logo').prop('files')[0];
 
-    console.log('[EventManage][onSubmit]',$('#enrollmentOpeningAt.datepicker').datepicker("getDate" ))
+    console.log('[EventManage][onSubmit]',$('#enrollmentOpeningAt.datepicker').datepicker("getDate" ));
     this.eventService.updateEvent(this.event._id, this.event)
       .then(
         (response) => {

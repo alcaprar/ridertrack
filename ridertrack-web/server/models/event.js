@@ -52,20 +52,14 @@ var eventSchema = Schema({
     length: {
         type: Number
     },
-    price: {
-        type: Number,
-        default: 0
-    },
     maxParticipants: {
         type: Number,
         default: 100
     },
     enrollmentOpeningAt: {
-		//default:Date.Now,
         type: Date
     },
     enrollmentClosingAt: {
-		//default:Date.Now,
         type: Date
     },
     logo: {
@@ -108,7 +102,7 @@ eventSchema.post('save', function (err, doc, next) {
     }
 });
 
-/* It finds an event by name passed
+/** It finds an event by name passed
  * Then, calls callback with either an error or the found event
  */
 eventSchema.statics.findByName = function (name, callback ){
@@ -120,7 +114,8 @@ eventSchema.statics.findByName = function (name, callback ){
         }
     })
 };
-/* It finds an event by id passed
+
+/** It finds an event by id passed
  * Then, calls callback with either an error or the found event
  */
 eventSchema.statics.findByEventId = function (eventId, callback ){
@@ -133,7 +128,7 @@ eventSchema.statics.findByEventId = function (eventId, callback ){
     })
 };
 
-/*
+/**
  * It finds events by passed list of eventsId
  */
 eventSchema.statics.findEventsFromList = function (eventsIdList, callback ){
@@ -147,8 +142,9 @@ eventSchema.statics.findEventsFromList = function (eventsIdList, callback ){
     })
 };
 
- /** It creates an event.
-  *  It then calls a callback passing either an error list or the created event.
+
+/** It creates an event.
+ *  It then calls a callback passing either an error list or the created event.
  */
 eventSchema.statics.create = function (organizerId, eventJson, callback) {
     var event = new Event(eventJson);
@@ -165,7 +161,11 @@ eventSchema.statics.create = function (organizerId, eventJson, callback) {
                     console.log('[EventModel][create] error while creating an empty route.')
                 }
             });
-            // TODO create an empty ranking
+            Ranking.create(event._id, function (err) {
+                if(err){
+                    console.log('[EventModel][create] error while creating an ranking route.')
+                }
+            });
             return callback(null, event)
         }
     })
