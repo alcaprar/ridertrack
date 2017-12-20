@@ -8,7 +8,8 @@ export class EventsListQueryParams{
     public country?: string,
     public keyword?: string,
     public sort?: string,
-    public length?: number,
+    public lengthgte?: number,
+    public lengthlte?: number,
     public price?: number
   ){}
 }

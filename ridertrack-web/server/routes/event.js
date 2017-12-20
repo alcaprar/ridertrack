@@ -79,26 +79,15 @@ router.get('/', function(req, res) {
         // if condition is not set or not valid, returns only ongoing and future events
         conditions.status = { $in: ['planned', 'ongoing']}
     }
-    if(req.query.length && typeof req.query.length === 'string'){
-        let allowedCond = ['gt', 'lt', 'gte', 'lte'];
-        let lengthConditions = {};
-
-        var cond = req.query.length.split(':');
-
-        // first cond
-        if(typeof cond[0] !== 'undefined' && typeof cond[1] !== 'undefined' && allowedCond.indexOf(cond[0]) > -1){
-            if(!isNaN(cond[1])){
-                lengthConditions['$' + cond[0]] = Number(cond[1]);
-            }
+    if(req.query.lengthgte){
+        conditions.length = {};
+        conditions.length['$gte'] = req.query.lengthgte;
+    }
+    if(req.query.lengthlte){
+        if(!conditions.length){
+            conditions.length = {};
         }
-
-        // second cond
-        if(typeof cond[2] !== 'undefined' && typeof cond[3] !== 'undefined' && allowedCond.indexOf(cond[2]) > -1){
-            if(!isNaN(cond[3])){
-                lengthConditions['$' + cond[2]] = Number(cond[3]);
-            }
-        }
-        conditions.length = lengthConditions;
+        conditions.length['$lte'] = req.query.lengthlte;
     }
 
     // using async lib to find the total number and find the events in parallel

@@ -50,7 +50,8 @@ export class EventArchiveComponent implements OnInit {
             this.queryParams.keyword = params['keyword'] || undefined;
             this.queryParams.sort = params['sort'] || undefined;
             this.queryParams.type = params['type'] || undefined;
-            this.queryParams.length = +params['length'] || undefined;
+            this.queryParams.lengthgte = params['lengthgte'] || undefined;
+            this.queryParams.lengthlte = params['lengthlte'] || undefined;
             this.queryParams.city = params['city'] || undefined;
             this.queryParams.country = params['country'] || undefined;
 
@@ -154,8 +155,8 @@ export class EventArchiveComponent implements OnInit {
      * It navigate to the route with the new query params.
      */
     private updateEventsList(){
-    this.queryParams.price = undefined; // TODO remove when price slider is activated
-    this.queryParams.length = undefined; // TODO remove when length slider is activated
+    this.queryParams.lengthgte = undefined; // TODO remove when length slider is activated
+    this.queryParams.lengthlte = undefined; // TODO remove when length slider is activated
 
     this.router.navigate([ '/archive' ], {
       queryParams: this.queryParams

@@ -50,7 +50,8 @@ export class EventsListPageComponent implements OnInit {
           this.queryParams.keyword = params['keyword'] || undefined;
           this.queryParams.sort = params['sort'] || undefined;
           this.queryParams.type = params['type'] || undefined;
-          this.queryParams.length = +params['length'] || undefined;
+          this.queryParams.lengthgte = params['lengthgte'] || undefined;
+          this.queryParams.lengthlte = params['lengthlte'] || undefined;
           this.queryParams.city = params['city'] || undefined;
           this.queryParams.country = params['country'] || undefined;
 
@@ -71,8 +72,17 @@ export class EventsListPageComponent implements OnInit {
   }
 
   ngAfterViewInit(){
-    $('#price-range').slider();
-    $('#length-range').slider();
+    $('#length-range').slider({
+      value: [
+        (this.queryParams.lengthgte >= 0 && this.queryParams.lengthgte <=300 ? this.queryParams.lengthgte : 0),
+        (this.queryParams.lengthlte >= 0 && this.queryParams.lengthlte <=300 ? this.queryParams.lengthlte : 300)
+      ]
+    });
+
+    console.log('slider', [
+      (this.queryParams.lengthgte >= 0 && this.queryParams.lengthgte <=300 ? this.queryParams.lengthgte : 0),
+      (this.queryParams.lengthlte >= 0 && this.queryParams.lengthlte <=300 ? this.queryParams.lengthlte : 300)
+    ])
     $('.selectpicker').selectpicker();
     $('input').iCheck({
       checkboxClass: 'icheckbox_square-yellow',
@@ -141,6 +151,18 @@ export class EventsListPageComponent implements OnInit {
     this.queryParams.city = (this.searchCity.nativeElement.value === '') ? undefined : this.searchCity.nativeElement.value;
     this.queryParams.type = (this.searchType.nativeElement.value == -1) ? undefined : this.searchType.nativeElement.value;
 
+    // length search
+    var length1 = parseInt($('#length-range').val().split(',')[0]);
+    var length2 = parseInt($('#length-range').val().split(',')[1]);
+
+    if(length1 == 0 && length2 == 300){
+      this.queryParams.lengthgte = undefined;
+      this.queryParams.lengthlte = undefined;
+    }else{
+      this.queryParams.lengthgte = length1;
+      this.queryParams.lengthlte = length2;
+    }
+
     this.queryParams.sort = undefined;
     this.queryParams.page = undefined;
     this.queryParams.itemsPerPage = undefined;
@@ -154,8 +176,6 @@ export class EventsListPageComponent implements OnInit {
    * It navigate to the route with the new query params.
    */
   private updateEventsList(){
-  this.queryParams.price = undefined; // TODO remove when price slider is activated
-  this.queryParams.length = undefined; // TODO remove when length slider is activated
 
   this.router.navigate([ '/events' ], {
     queryParams: this.queryParams
