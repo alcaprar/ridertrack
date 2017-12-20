@@ -45,8 +45,8 @@ router.get('/', function(req, res) {
             // default is ascending
             let key = keys[i].split(':');
 
-            // sorting possible only on date, price, length
-            if(['startingDate', 'price', 'length'].indexOf(key[0]) > -1){
+            // sorting possible only on date, length
+            if(['startingDate', 'length'].indexOf(key[0]) > -1){
                 sort[key[0]] = (typeof key[1] !== 'undefined' && ['asc', 'desc'].indexOf(key[1]) > -1) ? key[1] : 'asc';
             }
         }
@@ -79,29 +79,26 @@ router.get('/', function(req, res) {
         // if condition is not set or not valid, returns only ongoing and future events
         conditions.status = { $in: ['planned', 'ongoing']}
     }
-    if(req.query.length){
-        // it must be a range so the query param must be an object
-        if(typeof req.query.length === 'object' && req.query.length.length === 2){
-            let lengthConditions = {};
+    if(req.query.length && typeof req.query.length === 'string'){
+        let allowedCond = ['gt', 'lt', 'gte', 'lte'];
+        let lengthConditions = {};
 
-            for(let i = 0; i < req.query.length.length; i++){
-                let cond = req.query.length[i].split(':');
+        var cond = req.query.length.split(':');
 
-                if(cond.length === 2){
-                    // only key value are allowed: "gt:10" ...
-                    let key = cond[0];
-                    let value = cond[1];
-
-                    // check the condition key is allowed
-                    if(['gt', 'lt', 'gte', 'lte'].indexOf(key) > -1){
-                        if(!isNaN(value)){
-                            lengthConditions['$' + key] = Number(value);
-                        }
-                    }
-                }
+        // first cond
+        if(typeof cond[0] !== 'undefined' && typeof cond[1] !== 'undefined' && allowedCond.indexOf(cond[0]) > -1){
+            if(!isNaN(cond[1])){
+                lengthConditions['$' + cond[0]] = Number(cond[1]);
             }
-            conditions.length = lengthConditions;
         }
+
+        // second cond
+        if(typeof cond[2] !== 'undefined' && typeof cond[3] !== 'undefined' && allowedCond.indexOf(cond[2]) > -1){
+            if(!isNaN(cond[3])){
+                lengthConditions['$' + cond[2]] = Number(cond[3]);
+            }
+        }
+        conditions.length = lengthConditions;
     }
 
     // using async lib to find the total number and find the events in parallel

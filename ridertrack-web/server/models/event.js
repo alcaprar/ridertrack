@@ -191,15 +191,15 @@ eventSchema.statics.update = function (eventId, eventJson, callback) {
             // override the previous value
             console.log('Event ', eventJson);
             for (let key in eventJson) {
-                // if a key in the json passed is null, remove the previous value
-                if([null, 'null'].indexOf(key) > -1 ){
-                    if(typeof event[key] !== 'undefined'){
-                        delete event[key];
-                    }
-                    continue;
-                }
                 if(fieldsNotChangeable.indexOf(key) === -1){
-                    event[key] = eventJson[key]
+                    // if a key in the json passed is null, remove the previous value
+                    if([null, 'null'].indexOf(eventJson[key]) > -1 ){
+                        if(typeof event[key] !== 'undefined'){
+                            event[key] = undefined;
+                        }
+                    }else{
+                        event[key] = eventJson[key]
+                    }
                 }
             }
 
