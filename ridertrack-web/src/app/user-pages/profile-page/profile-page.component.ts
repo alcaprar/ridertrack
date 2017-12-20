@@ -5,6 +5,7 @@ import { User } from '../../shared/models/user';
 import { DialogService } from "../../shared/dialog/dialog.service";
 import { AuthenticationService } from '../../authentication/authentication.service';
 import {Router} from '@angular/router';
+import { Error } from '../../shared/index';
 
 
 @Component({
@@ -65,8 +66,8 @@ export class ProfilePageComponent implements OnInit {
         )
         .catch(
         (error) => {
-          console.log('[MyProfile][deleteUser][error]', error);
-          // TODO show errors
+          console.log('[MyProfile][deleteUser][error]', error );
+          this.dialogService.alert('Cannot delete account', error);
         }
         );
     }.bind(this));
