@@ -148,13 +148,14 @@
       <div class="col-md-4 p0">
         <aside class="sidebar sidebar-property blog-asside-right">
           <div class="buttons clearfix">
-            <button class="btn-delete"  [routerLink]="['/events', event._id, 'progress']">Map</button>
+            <button class="btn-delete" *ngIf="mapPoints && mapPoints.length > 0" [routerLink]="['/events', event._id, 'progress']">Map</button>
           </div>
           <div class="buttons clearfix" *ngIf="isLogged()">
             <button class="btn-manage bounceInRight" (click)="enroll()" *ngIf="!isEnrolled() && event.status==='planned'">Enroll</button>
             <button class="btn-manage bounceInRight" (click)="withdrawEnrollment()"
                     *ngIf="isEnrolled() && event.status==='planned'">Withdraw enrollment</button>
-            <button class="btn-manage bounceInRight" *ngIf="currentUser.email === organizer.email" [routerLink]="['/events', event._id, 'manage']">Edit</button>
+            <button class="btn-manage bounceInRight" *ngIf="currentUser.email === organizer.email"
+                    [routerLink]="['/events', event._id, 'manage']">Edit</button>
           </div>
           <div class="dealer-widget">
             <div class="dealer-content">

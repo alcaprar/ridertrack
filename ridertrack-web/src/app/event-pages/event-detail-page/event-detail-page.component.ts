@@ -27,6 +27,7 @@ export class EventDetailPageComponent implements OnInit {
   private currentUser: User = new User();
   private organizer: User = new User();
   private similarEvents: Event[];
+  private mapPoints: any;
 
   // ids of participants
   private participantsList = [];
@@ -70,6 +71,7 @@ export class EventDetailPageComponent implements OnInit {
             console.log('[EventDetail][OnInit][EventService.getEvent][success]', event);
             // TODO add a check: if the event is null redirect somewhere maybe showing an alert
             this.event = event;
+            this.getRoute();
 
             this.eventService.getSimilarEvents(3, this.event.type)
               .then(
@@ -115,7 +117,18 @@ export class EventDetailPageComponent implements OnInit {
       .catch((e: any) => console.error(e));
   }
 
-
+private getRoute() {
+  this.routeService.getRoute(this.eventId)
+    .then(
+      (coordinates) => {
+        console.log('[Progress Management][OnInit][success]', coordinates);
+        console.log('[Progress Management][OnInit][Coordinates detected]', coordinates);
+        this.mapPoints = coordinates;
+      })
+    .catch((error) => {
+      console.log('[Progress Management][OnInit][error]', error);
+    });
+}
   /**
    * It calls the event service in order to get the organizer profile.
    */
@@ -166,7 +179,7 @@ export class EventDetailPageComponent implements OnInit {
    */
   enroll() {
 
-    if(this.enrollementIsOpen()) {
+    //if(this.enrollementIsOpen()) {
       this.eventService.enrollToEvent(this.eventId)
         .then(
           (response) => {
@@ -182,11 +195,11 @@ export class EventDetailPageComponent implements OnInit {
             this.errors = error;
           }
         );
-    } else {
-      this.dialogService.confirmation("Enrollement",
-        "Sorry the registration period is CLOSED or not yet AVAILABLE",function(){
-      });
-    }
+   // } else {
+   // this.dialogService.confirmation("Enrollement",
+   //     "Sorry the registration period is CLOSED or not yet AVAILABLE",function(){
+   //   });
+   // }
   }
 
   enrollementIsOpen(): boolean {
