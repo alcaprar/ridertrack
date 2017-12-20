@@ -189,20 +189,12 @@ eventSchema.statics.update = function (eventId, eventJson, callback) {
             return callback(err)
         } else {
             // override the previous value
-            console.log('Event ', eventJson)
+            console.log('Event ', eventJson);
             for (let key in eventJson) {
-                // remove time if they are null and continue
-                // they are passed as string sometimes, therefore the need to check also against 'null'
-                if([null, 'null'].indexOf(eventJson.enrollmentOpeningAt) > -1 ){
-                    if(typeof event.enrollmentOpeningAt !== 'undefined'){
-                        delete event[enrollmentOpeningAt];
-                    }
-                    continue;
-                }
-                if([null, 'null'].indexOf(eventJson.enrollmentClosingAt) > -1){
-                    console.log('Closing null');
-                    if(typeof event.enrollmentClosingAt !== 'undefined'){
-                        delete event.enrollmentClosingAt;
+                // if a key in the json passed is null, remove the previous value
+                if([null, 'null'].indexOf(key) > -1 ){
+                    if(typeof event[key] !== 'undefined'){
+                        delete event[key];
                     }
                     continue;
                 }
