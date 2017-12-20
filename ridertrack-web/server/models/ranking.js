@@ -147,6 +147,7 @@ rankingSchema.methods.add = function(eventId , userId, callback){
 
             // Checking if key-value pair exists update the tuple, else creates it and add.
             if (checkpointDict.hasOwnProperty(checkpointNumber)) {
+                // Todo: update it
                 checkpointDict[checkpointNumber].push([shortestDistance, userId])
             }
             else {

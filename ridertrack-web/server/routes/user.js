@@ -250,17 +250,25 @@ router.put('/:userId',authMiddleware.hasValidToken, function (req, res) {
  * This will delete permanently everything related to it.
  */
 router.delete('/:userId', authMiddleware.hasValidToken, function (req, res) {
-    User.delete(req.params.userId, function (err, user) {
-        if(err){
-            res.status(400).send({
-                errors: err
+    Event.findOne({OrganizerId: req.params.userId}, function (err, event) {
+        if (err) {
+            User.delete(req.params.userId, function (err, user) {
+                if(err){
+                    res.status(400).send({
+                        errors: err
+                    })
+                }else{
+                    res.status(200).send({
+                        message: 'User successfully deleted'
+                    })
+                }
             })
         }else{
-            res.status(200).send({
-                message: 'User successfully deleted'
+            res.status(400).send({
+                message: 'Error: Could not delete User, he/she is an Organizer'
             })
         }
-    })
+    });
 });
 
 module.exports = router;
