@@ -7,12 +7,12 @@ import sys
 
 localhostUrl = "http://localhost:5000"
 ridertrackUrl = "https://rider-track-dev.herokuapp.com"
-eventId = '5a2f8b9f00e2030004da1dce'
+eventId = '5a2fd2ee5f884200041c5a4c'
 
 def main(argv):
 
     #set url for serverRequests
-    url = localhostUrl
+    url = ridertrackUrl
 
     participants = []
     
@@ -36,7 +36,7 @@ def main(argv):
         user = Participant(line[0],line[1],line[2],line[3])
         participants.append(user)
         print (user.email)
-        counting+=1
+        counting = counting + 1
     f.close()
 
     for p in participants:
