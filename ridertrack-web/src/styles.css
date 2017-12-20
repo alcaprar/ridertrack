@@ -1527,6 +1527,7 @@ proerty-th
   color: #9B9B9B;
   letter-spacing: 2px;
   position: relative;
+  white-space: nowrap;
 }
 .proerty-th .proerty-item  .item-entry h5::after {
   background: transparent url("./assets/img/chevron-down.png") no-repeat scroll center center;
