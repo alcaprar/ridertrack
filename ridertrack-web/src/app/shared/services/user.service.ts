@@ -53,7 +53,7 @@ export class UserService {
       return message})
     .catch((error) => {
       console.log('[UserService][deleteUser][error]', error);
-      return Promise.reject(error.message || error);
+      return Promise.reject(error._body);
     });
   }
 
