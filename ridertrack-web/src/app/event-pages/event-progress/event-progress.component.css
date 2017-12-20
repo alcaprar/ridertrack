@@ -40,4 +40,6 @@ p{
 .form-inline .form-control, .form-inline .form-control {
     background: rgba(252, 252, 252, 0.8);
 }
-
+a {
+    text-decoration: underline;
+}
