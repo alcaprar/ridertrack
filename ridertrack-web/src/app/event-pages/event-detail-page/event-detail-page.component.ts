@@ -179,7 +179,7 @@ private getRoute() {
    */
   enroll() {
 
-    if(this.enrollementIsOpen()) {
+    //if(this.enrollementIsOpen()) {
       this.eventService.enrollToEvent(this.eventId)
         .then(
           (response) => {
@@ -195,11 +195,11 @@ private getRoute() {
             this.errors = error;
           }
         );
-    } else {
-      this.dialogService.confirmation("Enrollement",
-        "Sorry the registration period is CLOSED or not yet AVAILABLE",function(){
-      });
-    }
+   // } else {
+   // this.dialogService.confirmation("Enrollement",
+   //     "Sorry the registration period is CLOSED or not yet AVAILABLE",function(){
+   //   });
+   // }
   }
 
   enrollementIsOpen(): boolean {
