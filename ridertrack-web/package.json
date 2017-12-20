@@ -70,6 +70,7 @@
     "ng-pick-datetime": "^5.0.0-beta.15",
     "ng2-input-autocomplete": "0.0.11",
     "ngx-facebook": "^2.4.0",
+    "node-mailjet": "^3.2.1",
     "nodemon": "^1.12.7",
     "osenv": "^0.1.4",
     "passport": "^0.4.0",

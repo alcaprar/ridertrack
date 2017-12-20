@@ -230,8 +230,8 @@ router.delete('/:userId', authMiddleware.hasValidToken, function (req, res) {
                 errors: [err]
             })
         }else{
-            // if the user has not organized yet, he/she can be deleted
             if(events.length === 0){
+                // if the user has not organized yet, he/she can be deleted
                 User.delete(req.params.userId, function (err, user) {
                     if(err){
                         res.status(400).send({
@@ -244,6 +244,7 @@ router.delete('/:userId', authMiddleware.hasValidToken, function (req, res) {
                     }
                 })
             }else{
+                // otherwise return an error
                 return res.status(400).send([{
                     message: 'You cannot delete your account because you have created events.'
                 }])

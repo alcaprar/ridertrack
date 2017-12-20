@@ -43,4 +43,7 @@ if(process.env.MONGODB_URI){
   config.mongodb.uri =  'mongodb://' + config.mongodb.host + '/' + config.mongodb.database_name;
 }
 
+config.MJ_APIKEY_PUBLIC = '9d0558db00f4cb9dc6bcb7879861f4ab';
+config.MJ_APIKEY_PRIVATE = '1fe3ff8e7eb0631b96d0ebdb0fd1f4e9';
+
 module.exports = config;

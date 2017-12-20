@@ -15,6 +15,8 @@ router.use('/api/events', require('./event'));
 // require enrollment endpoint
 router.use('/api/enrollments', require('./enrollment'));
 
+router.use('/api/utils', require('./utils'));
+
 router.get('/health-check', function (req, res) {
   res.send('Server up.')
 });
