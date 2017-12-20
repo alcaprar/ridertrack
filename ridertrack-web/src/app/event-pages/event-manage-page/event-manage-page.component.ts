@@ -179,8 +179,33 @@ export class EventManagePageComponent implements OnInit {
    * It navigates to the route page.
    */
   editRoute() {
-    this.onSubmit();
+    this.event.startingDate = $('#startingDate.datepicker').val();
+    this.event.enrollmentOpeningAt = $('#enrollmentOpeningAt.datepicker').datepicker("getDate" );
+    this.event.enrollmentClosingAt = $('#enrollmentClosingAt.datepicker').datepicker("getDate" );
+
+    // get the logo from the input image
+    this.event.logo = $('#logo').prop('files')[0];
+
+    console.log('[EventManage][onSubmit]',$('#enrollmentOpeningAt.datepicker').datepicker("getDate" ))
+    this.eventService.updateEvent(this.event._id, this.event)
+      .then(
+        (response) => {
+          console.log('[UpdateEvent][onSubmit][success]', response);
+          if(response[0] !== null){
+            // errors occureed
+            this.errors = response[0] as Error[];
+          }else{
+            var event: Event = response[1] as Event;
+            this.router.navigate(['/events/' + this.eventId + '/manage/route']);
+          }
+        }
+      )
+      .catch(
+        (error) => {
+          console.log('[CreateEvent][onSubmit][error]', error);
+          this.router.navigate(['/events/' + this.eventId + '/manage/route']);
+        }
+      );
     console.log('[EventManage][editRoute]');
-    this.router.navigate(['/events/' + this.eventId + '/manage/route']);
   }
 }
