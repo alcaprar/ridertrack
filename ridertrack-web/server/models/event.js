@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var Route = require('./route');
+var Ranking = require('./ranking');
 
 // list of fields that an user can not change
 const fieldsNotChangeable = ['_id', 'organizerId', '__v', 'created_at', 'updated_at'];
@@ -45,6 +46,9 @@ var eventSchema = Schema({
     },
     startingTime: {
         type: String
+    },
+    actualStartingTime: {
+        type: Date
     },
     maxDuration: {
         type: Number
@@ -184,15 +188,28 @@ eventSchema.statics.update = function (eventId, eventJson, callback) {
         if (err) {
             return callback(err)
         } else {
-            console.log('event to update', eventJson)
             // override the previous value
+            console.log('Event ', eventJson)
             for (let key in eventJson) {
+                // remove time if they are null and continue
+                // they are passed as string sometimes, therefore the need to check also against 'null'
+                if([null, 'null'].indexOf(eventJson.enrollmentOpeningAt) > -1 ){
+                    if(typeof event.enrollmentOpeningAt !== 'undefined'){
+                        delete event[enrollmentOpeningAt];
+                    }
+                    continue;
+                }
+                if([null, 'null'].indexOf(eventJson.enrollmentClosingAt) > -1){
+                    console.log('Closing null');
+                    if(typeof event.enrollmentClosingAt !== 'undefined'){
+                        delete event.enrollmentClosingAt;
+                    }
+                    continue;
+                }
                 if(fieldsNotChangeable.indexOf(key) === -1){
                     event[key] = eventJson[key]
                 }
             }
-
-            console.log('event updated', event);
 
             event.save(function (err,updatedEvent) {
                 if (err) {
@@ -205,12 +222,12 @@ eventSchema.statics.update = function (eventId, eventJson, callback) {
     })
 };
 
-//deletes an event
-
+/**
+ * It deletes an event.
+ * @param eventId
+ * @param callback
+ */
 eventSchema.statics.delete = function (eventId, callback){
-    /* find logged user and compare with organizerId
-    * if they match then the event can be deleted
-    */
     this.findOne({_id: eventId}, function (err, event){
         if(err) {
             return callback(err)
@@ -238,6 +255,7 @@ eventSchema.methods.startTracking = function (callback) {
         // if the status is planned is possible to start the tracking
         // change the status and save
         this.status = 'ongoing';
+        this.actualStartingTime = new Date;
         this.save(function (err) {
             if(err){
                 console.log('[EventModel][startTracking] error while saving', err);
