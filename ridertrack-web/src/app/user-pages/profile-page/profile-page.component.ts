@@ -52,78 +52,84 @@ export class ProfilePageComponent implements OnInit {
     }
   }
 
+  /**
+   * it is triggered when the user clicks the delete account button.
+   * It calls the user service.
+   * If any error occurred, it shows them.
+   */
   deleteUser() {
     console.log('[MyProfile][deleteUser]');
     this.dialogService.confirmation('Delete user account', 'Are you sure you want to delete your user account?', function () {
       console.log('[MyProfile][deleteUser][callback]');
       this.userService.deleteUser()
         .then(
-        (message) => {
-          console.log('[MyProfile][deleteUser][success]', message);
-          this.authService.logout();
-          this.router.navigate(['']);
-        }
+          (errors) => {
+            if(errors){
+              this.dialogService.alert('Delete user account', errors[0].message)
+            }else{
+              console.log('[MyProfile][deleteUser][success]');
+            }
+          }
         )
         .catch(
-        (error) => {
-          console.log('[MyProfile][deleteUser][error]', error );
-          this.dialogService.alert('Cannot delete account', error);
-        }
+          (error) => {
+            console.log('[MyProfile][deleteUser][error]', error);
+          }
         );
     }.bind(this));
   }
 
   /* updateUserProfile() {
-    console.log('[MyProfile][updateUserProfile]');
-      console.log('[MyProfile][updateUserProfile][callback]');
-      this.userService.updateUserProfile(this.authService.getUserId())
-        .then(
-        (message) => {
-          console.log('[MyProfile][updateUserProfile][success]', message);
-          this.authService.logout();
-          this.router.navigate(['']);
-        }
-        )
-        .catch(
-        (error) => {
-          console.log('[MyProfile][updateUserProfile][error]', error);
-          // TODO show errors
-        }
-        );
-  }*/
+   console.log('[MyProfile][updateUserProfile]');
+   console.log('[MyProfile][updateUserProfile][callback]');
+   this.userService.updateUserProfile(this.authService.getUserId())
+   .then(
+   (message) => {
+   console.log('[MyProfile][updateUserProfile][success]', message);
+   this.authService.logout();
+   this.router.navigate(['']);
+   }
+   )
+   .catch(
+   (error) => {
+   console.log('[MyProfile][updateUserProfile][error]', error);
+   // TODO show errors
+   }
+   );
+   }*/
 
-    /**
+  /**
    * It is called when the user clicks on the create button.
    * It calls the method of event service waiting for a response.
    */
   /* onSubmit(){
-    // the datepicker is not detected by angular form
-    this.event.startingDate = $('#startingDate.datepicker').val();
-    this.event.enrollmentOpeningAt = $('#enrollmentOpeningAt.datepicker').datepicker("getDate" );
-    this.event.enrollmentClosingAt = $('#enrollmentClosingAt.datepicker').datepicker("getDate" );
+   // the datepicker is not detected by angular form
+   this.event.startingDate = $('#startingDate.datepicker').val();
+   this.event.enrollmentOpeningAt = $('#enrollmentOpeningAt.datepicker').datepicker("getDate" );
+   this.event.enrollmentClosingAt = $('#enrollmentClosingAt.datepicker').datepicker("getDate" );
 
-    this.event.logo = $('#logo').prop('files')[0];
+   this.event.logo = $('#logo').prop('files')[0];
 
-    console.log('[EventManage][onSubmit]',$('#enrollmentOpeningAt.datepicker').datepicker("getDate" ))
-    this.eventService.updateEvent(this.event._id, this.event)
-      .then(
-        (response) => {
-          console.log('[UpdateEvent][onSubmit][success]', response);
-          if(response[0] !== null){
-            // errors occureed
-            this.errors = response[0] as Error[];
-          }else{
-            var event: Event = response[1] as Event;
-            this.router.navigate(['/events/', event._id]);
-          }
-        }
-      )
-      .catch(
-        (error) => {
-          console.log('[CreateEvent][onSubmit][error]', error);
-          this.router.navigate(['/events', 'create']);
-        }
-      );
-  } */
+   console.log('[EventManage][onSubmit]',$('#enrollmentOpeningAt.datepicker').datepicker("getDate" ))
+   this.eventService.updateEvent(this.event._id, this.event)
+   .then(
+   (response) => {
+   console.log('[UpdateEvent][onSubmit][success]', response);
+   if(response[0] !== null){
+   // errors occureed
+   this.errors = response[0] as Error[];
+   }else{
+   var event: Event = response[1] as Event;
+   this.router.navigate(['/events/', event._id]);
+   }
+   }
+   )
+   .catch(
+   (error) => {
+   console.log('[CreateEvent][onSubmit][error]', error);
+   this.router.navigate(['/events', 'create']);
+   }
+   );
+   } */
 
 }
