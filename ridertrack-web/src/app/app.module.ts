@@ -1,9 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
-import {AgmCoreModule, AgmMap, GoogleMapsAPIWrapper} from '@agm/core';
-import { RouterModule, Routes } from '@angular/router';
+import {AgmCoreModule, GoogleMapsAPIWrapper} from '@agm/core';
+import { RouterModule} from '@angular/router';
 import { HttpModule } from '@angular/http';
-import { HttpClient } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -26,9 +25,6 @@ import {EventDetailPageComponent} from './event-pages/event-detail-page/event-de
 import { ProfilePageComponent} from "./user-pages/profile-page/profile-page.component";
 import {EventCreatePageComponent} from "./event-pages/event-create-page/event-create-page.component";
 import {EventManagePageComponent} from "./event-pages/event-manage-page/event-manage-page.component";
-
-
-
 
 import { FacebookModule } from 'ngx-facebook';
 import { MyEventsComponent } from './event-pages/my-events/my-events.component';
@@ -56,6 +52,8 @@ import {RouteService} from "./shared/services/route.service";
 import { EventProgressComponent } from './event-pages/event-progress/event-progress.component';
 import { DisplayMapComponent } from './shared/map/display-map/display-map.component';
 import { EventArchiveComponent } from './event-pages/event-archive/event-archive.component';
+import { MapComponent } from './event-pages/event-progress/map/map.component';
+import { LeaderboardComponent } from './event-pages/event-progress/leaderboard/leaderboard.component';
 import { ContactService } from './shared/services/contact.service';
 
 @NgModule({
@@ -95,7 +93,9 @@ import { ContactService } from './shared/services/contact.service';
     DirectionDirective,
     EventProgressComponent,
     DisplayMapComponent,
-    EventArchiveComponent
+    EventArchiveComponent,
+    MapComponent,
+    LeaderboardComponent
   ],
   imports: [
     BrowserModule,
@@ -155,7 +155,11 @@ import { ContactService } from './shared/services/contact.service';
       {
         path: 'events/:eventId/progress',
         component: EventProgressComponent,
-        pathMatch: 'full'
+        children: [
+          {path: '', redirectTo: 'map',pathMatch: 'full'},
+          { path: 'map', pathMatch: 'full', component: MapComponent},
+          { path: 'leaderboard', pathMatch: 'full', component: LeaderboardComponent}
+        ]
       },
       {
         path: 'my-events',

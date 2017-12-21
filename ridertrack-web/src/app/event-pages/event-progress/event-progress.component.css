@@ -1,45 +1,20 @@
-agm-map {
-    cursor: crosshair;
+.content-area {
+    margin-top: 5em;
 }
-p{
-    margin-top:0.4em;
-   font-weight: bold;
+.page-title {
+    padding-top: 1em !important;
 }
-#map , #map:hover{
-    cursor: crosshair;
-    height: 55rem;
+.disabled {
+    cursor: not-allowed;
+    pointer-events: all !important;
 }
 
-.search-form {
-    background-color: rgba(255, 255, 255, 0.5);
-    border-radius: 5px;
-    padding: 20px 0;
-    box-sizing: border-box;
+.large-search .search-form{
     border:none;
-    position: relative;
-    margin-left: 1em;
-    z-index: 9;
 }
-.search-form .form-inline .form-group {
-    width: 760px;
-    text-align: center;
-    letter-spacing: 0.5px;
-
+.form-inline input[type=submit]{
+    background: #d30000;
 }
-
-@media(max-width: 480px){
-    .search-form{
-        padding: 15px
-    }
-}
-@media (max-width: 480px) {
-    .search-form .form-inline .form-group {
-        width: 100%;
-    }
-}
-.form-inline .form-control, .form-inline .form-control {
-    background: rgba(252, 252, 252, 0.8);
-}
-a {
-    text-decoration: underline;
+a :hover {
+    background-color:#FDC600;
 }

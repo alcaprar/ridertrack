@@ -40,7 +40,7 @@ export class HomePageComponent {
   }
 
   ngAfterViewInit(){
-    $('.selectpicker').selectpicker()
+    $('.selectpicker').selectpicker();
 
     setTimeout(function () {
       $('#counter').text('0');

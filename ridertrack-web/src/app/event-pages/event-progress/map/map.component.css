@@ -1,0 +1,61 @@
+agm-map{
+    width: 100%;
+}
+p{
+    margin-top:0.4em;
+    font-weight: bold;
+}
+#map , #map:hover{
+    cursor: crosshair;
+    height: 55rem;
+}
+
+.search-form {
+    border-radius: 5px;
+    padding: 20px 0;
+    box-sizing: border-box;
+    border:none;
+    position: relative;
+    z-index: 9;
+}
+.search-form .form-inline .form-group {
+    width: 760px;
+    text-align: center;
+    letter-spacing: 0.5px;
+
+}
+
+@media(max-width: 480px){
+    .search-form{
+        padding: 15px
+    }
+}
+@media (max-width: 480px) {
+    .search-form .form-inline .form-group {
+        width: 100%;
+    }
+}
+a {
+    text-decoration: underline;
+}
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:    #A5A5A5;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:    #A5A5A5;
+    opacity:  1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:    #A5A5A5;
+    opacity:  1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color:    #A5A5A5;
+}
+:-ms-input-placeholder { /* Microsoft Edge */
+    color:    #A5A5A5;
+}
+
+::placeholder { /* Most modern browsers support this now. */
+    color:    #A5A5A5;
+}
