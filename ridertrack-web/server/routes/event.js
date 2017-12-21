@@ -19,6 +19,8 @@ var multipart = require('connect-multiparty')({
     maxFilesSize: 1024 * 3000 // 1 MB
 });
 
+var allowedImgExtension = ['image/png', 'image/jpg', 'image/jpeg'];
+
 /**
  * It returns the list of all the events.
  * It accepts query params for filtering the events: name, type, country, city.
@@ -250,7 +252,7 @@ router.post('/', authMiddleware.hasValidToken, multipart, function (req, res) {
 
     // TODO check allowed extension
 
-    if(['image/png', 'image/jpg'].indexOf(logoMimeType) === -1){
+    if(allowedImgExtension.indexOf(logoMimeType) === -1){
         console.log('[POST /events] logo extension not allowed: ', logoMimeType);
         return res.status(400).send({
             errors: [{message: 'Image extension not supported.'}]
@@ -296,7 +298,7 @@ router.put('/:eventId', authMiddleware.hasValidToken, authMiddleware.isOrganizer
                 var tempPath = req.files.logo.path;
                 var logoMimeType = req.files.logo.type;
 
-                if(['image/png', 'image/jpg'].indexOf(logoMimeType) === -1){
+                if(allowedImgExtension.indexOf(logoMimeType) === -1){
                     console.log('[PUT /events] logo extension not allowed: ', logoMimeType);
                     return res.status(400).send({
                         errors: [{message: 'Image extension not supported.'}]
