@@ -7,7 +7,7 @@ var utils = require('../utils');
  */
 router.post('/sendEmail', function (req, res) {
     utils.email.send(
-        {name: 'Contact form', email: 'caprarelli.alessandro@gmail.com'},
+        {name: 'Contact form', email: 'ante.brescic@gmail.com'},
         '[CF] ' + req.body.firstname + ' ' + req.body.lastname + ' | ' + req.body.subject,
         req.body.message,
         function (err) {
