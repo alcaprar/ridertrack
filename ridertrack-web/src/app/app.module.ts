@@ -56,6 +56,7 @@ import {RouteService} from "./shared/services/route.service";
 import { EventProgressComponent } from './event-pages/event-progress/event-progress.component';
 import { DisplayMapComponent } from './shared/map/display-map/display-map.component';
 import { EventArchiveComponent } from './event-pages/event-archive/event-archive.component';
+import { ContactService } from './shared/services/contact.service';
 
 @NgModule({
   declarations: [
@@ -211,7 +212,8 @@ import { EventArchiveComponent } from './event-pages/event-archive/event-archive
     GoogleMapsAPIWrapper,
     HttpClientService,
     DialogService,
-    RouteService
+    RouteService,
+    ContactService
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
