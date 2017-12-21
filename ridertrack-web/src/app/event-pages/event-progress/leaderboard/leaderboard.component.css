@@ -1,0 +1,10 @@
+.thead-yellow {
+    background-color:#FDC600 ;
+}
+.title{
+    color: white;
+}
+th[sortable-column]{
+    text-align: left;
+    cursor: pointer;
+}

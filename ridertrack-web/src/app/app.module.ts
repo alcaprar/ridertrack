@@ -55,6 +55,9 @@ import { EventArchiveComponent } from './event-pages/event-archive/event-archive
 import { MapComponent } from './event-pages/event-progress/map/map.component';
 import { LeaderboardComponent } from './event-pages/event-progress/leaderboard/leaderboard.component';
 import { ContactService } from './shared/services/contact.service';
+import {SortService} from "./event-pages/event-progress/sort.service";
+import {SortableTableDirective} from "./event-pages/event-progress/sortable-table.directive";
+import {SortableColumnComponent} from "./event-pages/event-progress/sortable-column/sortable-column.component";
 
 @NgModule({
   declarations: [
@@ -95,7 +98,9 @@ import { ContactService } from './shared/services/contact.service';
     DisplayMapComponent,
     EventArchiveComponent,
     MapComponent,
-    LeaderboardComponent
+    LeaderboardComponent,
+    SortableTableDirective,
+    SortableColumnComponent
   ],
   imports: [
     BrowserModule,
@@ -217,7 +222,8 @@ import { ContactService } from './shared/services/contact.service';
     HttpClientService,
     DialogService,
     RouteService,
-    ContactService
+    ContactService,
+    SortService
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
