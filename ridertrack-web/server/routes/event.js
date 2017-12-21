@@ -553,6 +553,7 @@ router.post('/:eventId/route', authMiddleware.hasValidToken, authMiddleware.isOr
             });
         }else{
             return res.status(200).send({
+                message: 'Route successfully created',
                 coordinates: routeCoordinates
             });
         }
