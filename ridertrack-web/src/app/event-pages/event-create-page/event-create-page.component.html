@@ -18,9 +18,11 @@
                 <div class="col-sm-4 col-sm-offset-1">
                   <div class="picture-container">
                     <div class="picture">
+                      <label for="logo">Logo <small>(required)</small></label>
+                      <span>Only .png, .jpg, .jpeg supported.</span>
                       <img [src]="urlImage != null ? urlImage : urlNoImage" style="height: 100%" class="picture-src"
                            id="wizardPicturePreview" title=""/>
-                      <input type="file" (change)="readUrl($event)" id="logo">
+                      <input id="logo" type="file" (change)="readUrl($event)" id="logo">
                     </div>
                   </div>
                 </div>
