@@ -11,37 +11,22 @@
             <div class="form-group">
               <label for="name">Name</label>
               <input type="text" class="form-control" id="name"  formControlName="name" #spy>
-              <div invalidMessage="name"  class="alert alert-danger">
-                <p *invalidType="'required' || 'minlength'">Please insert a valid name</p>
-              </div>
             </div>
             <div class="form-group">
               <label for="surname">Surname</label>
               <input type="text" class="form-control" id="surname" formControlName="surname" #spy>
-              <div invalidMessage="surname"  class="alert alert-danger">
-                <p *invalidType="'required' || 'minlength'">Please insert a valid surname</p>
-              </div>
             </div>
             <div class="form-group">
               <label for="email">Email</label>
               <input type="text" class="form-control" id="email" formControlName="email" #spy>
-              <div invalidMessage="email" class="alert alert-danger">
-                <p *invalidType="'required' || 'email'">Please insert a valid email address</p>
-              </div>
             </div>
             <div class="form-group">
               <label for="password">Password</label>
               <input type="password" class="form-control" id="password" formControlName="password" #spy>
-              <div invalidMessage="password"  class="alert alert-danger">
-                <p *invalidType="'required' || 'minlength'">Please insert a password with at least 5 characters</p>
-              </div>
             </div>
             <div class="form-group">
               <label for="confirmPassword">Confirm password</label>
               <input type="password" class="form-control" id="confirmPassword" formControlName="confirmPassword" #spy>
-              <div invalidMessage="confirmPassword"  class="alert alert-danger">
-                <p *invalidType="'required'">Please repeat your password</p>
-              </div>
             </div>
             <div style="text-align: center;">
               <div style="display: inline-block" id="g-recaptcha"></div>

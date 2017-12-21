@@ -33,8 +33,6 @@ import {EventService} from "./shared/services/event.service";
 import {HttpClientService} from "./shared/services/http-client.service";
 import {EventBoxComponent} from "./event-pages/event-box/event-box.component";
 import {HomeEventBoxComponent} from "./home-page/home-event-box/home-event-box.component";
-import { InvalidMessageDirective } from './authentication/invalid-message.directive';
-import {InvalidTypeDirective} from "./authentication/invalid-type.directive";
 import {FooterEventBoxComponent} from "./shared/layout/footer/footer-event-box/footer-event-box.component";
 import { FaqPageComponent } from './faq-page/faq-page.component';
 import {WhyRidertrackBestPageComponent} from "./why-ridertrack-best-page/why-ridertrack-best-page.component";
@@ -81,8 +79,6 @@ import {SortableColumnComponent} from "./event-pages/event-progress/sortable-col
     EventBoxOrganizedComponent,
     EventManagePageComponent,
     HomeEventBoxComponent,
-    InvalidMessageDirective,
-    InvalidTypeDirective,
     FooterEventBoxComponent,
     WhyRidertrackBestPageComponent,
     FooterEventBoxComponent,
