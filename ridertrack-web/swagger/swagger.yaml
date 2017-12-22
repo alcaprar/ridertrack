@@ -96,12 +96,12 @@ paths:
         type: "string"
         required: true
         schema:
-          $ref: "#/definitions/updateUser"
+          $ref: "#/definitions/User"
       responses:
         200:
           description: "User successfully updated"
           schema:
-            $ref: '#/definitions/updateUser'
+            $ref: '#/definitions/User'
         400:
           description: "Error message"
     delete:
@@ -180,7 +180,7 @@ paths:
         200:
           description: "successful operation"
           schema:
-            $ref: '#/definitions/Event'
+            $ref: '#/definitions/createEvent'
         400:
           description: "Error message"
     post:
@@ -800,20 +800,6 @@ definitions:
         enum:
         - "user"
         - "administrator"
-  updateUser:
-      type: "object"
-      properties:
-        email:
-          type: "string"
-        name:
-          type: "string"
-        surname:
-          type: "string"
-        role:
-          type: "string"
-          enum:
-          - "user"
-          - "administrator"
   Event:
     type: "object"
     properties:
@@ -840,10 +826,12 @@ definitions:
   createEvent:
      type: "object"
      required:
-     - "email"
+     - "organizerId"
      - "name"
-     - "surname"
-     - "password"
+     - "country"
+     - "city"
+     - "startingDate"
+     - "type"
      properties:
        organizerId:
          type: "string"
