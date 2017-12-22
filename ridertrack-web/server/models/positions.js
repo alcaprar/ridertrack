@@ -93,7 +93,7 @@ positionSchema.statics.add = function (userId, eventId, positionJson, callback) 
             lng: positionJson.lng,
             timestamp: positionJson.timestamp
         };
-        positions.secondLastPosition = positions.lastPosition
+        positions.secondLastPosition = positions.lastPosition;
         positions.lastPosition = positionToAdd;
         positions.positions.push(positionToAdd);
 
@@ -108,10 +108,31 @@ positionSchema.statics.add = function (userId, eventId, positionJson, callback) 
     })
 };
 
+/**
+ * It returns the positions of the user for the given event.
+ * @param userId
+ * @param eventId
+ * @param callback
+ */
+positionSchema.statics.getPositionsOfUser = function (userId, eventId, callback) {
+    this.findOne({eventId: eventId, userId: userId}, function (err, userPositions) {
+        if(err){
+            console.log('[PositionsModel][getPositionsOfUser] error:', err);
+            return callback({message: err.message})
+        }
+
+        if(!userPositions){
+            return callback(null, null)
+        }else{
+            return callback(null, userPositions)
+        }
+    })
+};
+
 positionSchema.statics.getLastPositionOfUser = function (userId, eventId, callback) {
     this.findOne({eventId: eventId, userId: userId}, function (err, userPositions) {
         if(err){
-            console.log('[PositionsModel][getLastPositionOfUserInEvent] error:', err);
+            console.log('[PositionsModel][getLastPositionOfUser] error:', err);
             return callback({message: err.message})
         }
 
