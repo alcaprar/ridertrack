@@ -106,16 +106,7 @@ export class EventDetailPageComponent implements OnInit {
     this.random = Math.random();
   }
 
-  shareWithFacebook(){
-    let params: UIParams = {
-      href: this.href,
-      method: 'share'
-    };
 
-    this.fb.ui(params)
-      .then((res: UIResponse) => console.log(res))
-      .catch((e: any) => console.error(e));
-  }
 
 private getRoute() {
   this.routeService.getRoute(this.eventId)
@@ -271,6 +262,28 @@ private getRoute() {
     }.bind(this));
   }
 
+  shareWithFacebook(){
+    let params: UIParams = {
+      href: this.href,
+      method: 'share'
+    };
+
+    this.fb.ui(params)
+      .then((res: UIResponse) => console.log(res))
+      .catch((e: any) => console.error(e));
+  }
+
+  shareWithTumblr() {
+    window.open("http://www.tumblr.com/share/link?url="+this.href,
+      'mywin','left=60,top=30,height=500, width=600,toolbar=1,resizable=0');
+    return false;
+  }
+
+  shareWithTwitter() {
+    window.open("https://twitter.com/home?status=Look this amazing event! "+this.href,
+      'mywin','left=60,top=30,height=500, width=600,toolbar=1,resizable=0');
+    return false;
+  }
  /** similarEvents() {
     this.eventService.getSimilarEvents(3)
       .then(
