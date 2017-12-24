@@ -281,7 +281,7 @@ private getRoute() {
 
   shareWithTwitter() {
     window.open("https://twitter.com/home?status=Look this amazing event! "+this.href,
-      'mywin','left=60,top=30,height=500, width=600,toolbar=1,resizable=0');
+      'mywin','left=60,top=30,height=400, width=600,toolbar=1,resizable=0');
     return false;
   }
  /** similarEvents() {
