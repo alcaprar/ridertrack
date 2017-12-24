@@ -5,6 +5,7 @@ import { } from '@types/googlemaps';
 import { RouteService } from "../../../shared/services/route.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import {Event} from '../../../shared/models/event';
+import {User} from "../../../shared/models";
 
 declare var $:any;
 declare var google: any;
@@ -25,10 +26,13 @@ export class MapComponent implements OnInit {
 
   private event= new Event();
   private eventId;
-  private participantsList = [];
-  private participantsMarkers = [];
+  private participantsList: any = [];
+  private participantsMarkers : Progress[] = [];
 
   private refreshInterval;
+
+  private participantSelection : Boolean = false;
+  private selectedUser: Progress[]  = [];
 
   public marker_background_colors = ["green", "red", "yellow", "orange", "purple", "pink",
     "blue", "black", "gray", "white", "brown"];
@@ -63,6 +67,7 @@ export class MapComponent implements OnInit {
                   //TODO: Show errors
                 })
               }, 5 * 1000);
+            this.initParticipantList();
           }
         });
     this.routeService.getRoute(this.eventId)
@@ -83,7 +88,7 @@ export class MapComponent implements OnInit {
    * It initializes some UI components.
    */
   ngAfterViewInit() {
-    $('.selectpicker').selectpicker()
+    $('.selectpicker').selectpicker("render");
   }
 
   /**
@@ -93,21 +98,44 @@ export class MapComponent implements OnInit {
   transformParticipantsMaker(participantsProgress){
     // clean the previous markers
     this.participantsMarkers = [];
-    for(let i = 0; i < participantsProgress.length; i++){
-      this.participantsMarkers.push({
-        lat: Number(participantsProgress[i].lastPosition.lat),
-        lng: Number(participantsProgress[i].lastPosition.lng),
-        timestamp: participantsProgress[i].timestamp,
-        user: participantsProgress[i].userId,
-        select: true,
-        icon: "http:// labs.google.com/ridefinder/images/mm_20_"+
-        this.marker_background_colors[i % this.marker_background_colors.length]+".png"
-      });
-      this.participantsList.push({
-        name: participantsProgress[i].userId.name,
-        surname: participantsProgress[i].userId.surname,
-        id: participantsProgress[i].userId._id
-      });
+      for (let i = 0; i < participantsProgress.length; i++) {
+        this.participantsMarkers.push({
+          lat: Number(participantsProgress[i].lastPosition.lat),
+          lng: Number(participantsProgress[i].lastPosition.lng),
+          timestamp: participantsProgress[i].timestamp,
+          user: participantsProgress[i].userId,
+          select: this.getParticipantSelection(participantsProgress[i].userId),
+          icon: "http:// labs.google.com/ridefinder/images/mm_20_" +
+          this.marker_background_colors[i % this.marker_background_colors.length] + ".png"
+        });
+    }
+  }
+
+  /**
+   * if a user is selected then the array selectedUser contains the values of each user
+   * @param {User} user
+   * @returns {Boolean} if that user was previously selected or not
+   */
+  getParticipantSelection ( user: User): Boolean {
+    if(this.selectedUser.length > 0){
+      for(let sel of this.selectedUser){
+        if(sel.user.id === user.id){
+          return sel.select;
+        }
+      }
+    }else {
+      return true;
+    }
+}
+
+  initParticipantList() {
+    this.participantsList = [];
+    if(this.participantsMarkers.length>0) {
+      for (let participant of this.participantsMarkers) {
+        this.participantsList.push({
+          user: participant.user
+        });
+      }
     }
   }
 
@@ -152,6 +180,7 @@ export class MapComponent implements OnInit {
     }
   }
 
+
   updateDirections(originAddress, destinationAddress, waypoints) {
     this.directions = {
       origin: { lat: originAddress.lat, lng: originAddress.lng },
@@ -161,16 +190,31 @@ export class MapComponent implements OnInit {
     console.log("[Directions][Update]", this.directions);
   }
 
+  /**
+   *  Called when a participant is selected
+   * @param event
+   */
   onChange(event){
     var participant = event.target.value;
     if(participant !== -1) {
-      for (let pm of this.participantsMarkers) {
-        pm.select = (pm.user._id === participant._id);
+      for (let p of this.participantsList) {
+        this.selectedUser.push({
+          user: p.user,
+          select: (p.user.id === participant.id)
+          }
+        )
       }
-    }else {
-      for (let pm of this.participantsMarkers) {
-        pm.select = true;
-      }
+    }else{
+      this.selectedUser = [];
     }
   }
+}
+
+export interface Progress {
+lat?: Number;
+lng?: Number;
+timestamp?: Number;
+user: User;
+select: Boolean;
+icon?: String;
 }
