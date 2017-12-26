@@ -11,6 +11,9 @@ export class EventBoxComponent implements OnInit {
   @Input()
   event: any;
 
+  @Input()
+  enrolled: boolean;
+
   constructor(private router: Router) { }
 
   ngOnInit() {
