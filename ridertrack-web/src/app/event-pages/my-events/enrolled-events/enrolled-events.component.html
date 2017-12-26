@@ -20,7 +20,7 @@
 
   <div class="col-md-12 clear ">
     <div id="list-type" class="proerty-th" *ngFor="let event of enrolledEvents">
-      <app-event-box [event]="event"></app-event-box>
+      <app-event-box [event]="event" [enrolled]="true"></app-event-box>
     </div>
     <div *ngIf="enrolledEvents === null  || enrolledEvents.length === 0">
      <p> NO ENROLLED EVENTS</p>
