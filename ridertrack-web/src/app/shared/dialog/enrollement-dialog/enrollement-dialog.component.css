@@ -1,0 +1,64 @@
+label.btn span {
+    font-size: 1.5em ;
+}
+
+label:hover input[type="radio"] ~ i.fa {
+    color: #FDC600;
+}
+
+label input[type="checkbox"] ~ i.fa.fa-square-o{
+    color: darkgray;    display: inline;
+}
+label input[type="checkbox"] ~ i.fa.fa-check-square-o{
+    display: none;
+}
+label input[type="checkbox"]:checked ~ i.fa.fa-square-o{
+    display: none;
+}
+label input[type="checkbox"]:checked ~ i.fa.fa-check-square-o{
+    color: #FDC600;    display: inline;
+}
+label input[type="checkbox"]:disabled ~ i.fa.fa-check-square-o{
+    color: #FDC600;    display: inline;
+}
+label input[type="checkbox"]:disabled ~ i.fa.fa-square-o{
+    display: none;
+}
+label:hover input[type="checkbox"] ~ i.fa {
+    color: #FDC600;
+}
+
+div[data-toggle="buttons"] label.active{
+    color: darkgray;
+}
+
+div[data-toggle="buttons"] label {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 2em;
+    text-align: left;
+    white-space: nowrap;
+    vertical-align: top;
+    cursor: pointer;
+    border: 0 solid
+    darkgray;
+    border-radius: 3px;
+    color: darkgray;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+div[data-toggle="buttons"] label:hover {
+    color: #FDC600;
+}
+
+div[data-toggle="buttons"] label:active, div[data-toggle="buttons"] label.active {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}

@@ -41,6 +41,7 @@ import { EnrolledEventsComponent } from './event-pages/my-events/enrolled-events
 import { OrganizedEventsComponent } from './event-pages/my-events/organized-events/organized-events.component';
 import { ConfirmationDialogComponent } from './shared/dialog/confirmation-dialog/confirmation-dialog.component';
 import { AlertDialogComponent } from './shared/dialog/alert-dialog/alert-dialog.component';
+import { EnrollementDialogComponent } from './shared/dialog/enrollement-dialog/enrollement-dialog.component';
 import {DialogService} from "./shared/dialog/dialog.service";
 import {CommonModule} from "@angular/common";
 import { AddRouteMapComponent } from './shared/map/add-route-map/add-route-map.component';
@@ -56,6 +57,7 @@ import { ContactService } from './shared/services/contact.service';
 import {SortService} from "./event-pages/event-progress/sort.service";
 import {SortableTableDirective} from "./event-pages/event-progress/sortable-table.directive";
 import {SortableColumnComponent} from "./event-pages/event-progress/sortable-column/sortable-column.component";
+import {ConfigurationPageComponent} from "./configuration-page/configuration-page.component";
 
 @NgModule({
   declarations: [
@@ -80,6 +82,7 @@ import {SortableColumnComponent} from "./event-pages/event-progress/sortable-col
     EventManagePageComponent,
     HomeEventBoxComponent,
     FooterEventBoxComponent,
+    EnrollementDialogComponent,
     WhyRidertrackBestPageComponent,
     FooterEventBoxComponent,
     FaqPageComponent,
@@ -96,7 +99,8 @@ import {SortableColumnComponent} from "./event-pages/event-progress/sortable-col
     MapComponent,
     LeaderboardComponent,
     SortableTableDirective,
-    SortableColumnComponent
+    SortableColumnComponent,
+    ConfigurationPageComponent
   ],
   imports: [
     BrowserModule,
@@ -118,6 +122,11 @@ import {SortableColumnComponent} from "./event-pages/event-progress/sortable-col
       {
         path: 'faq',
         component: FaqPageComponent,
+        pathMatch: 'full'
+      },
+      {
+        path: 'configuration',
+        component: ConfigurationPageComponent,
         pathMatch: 'full'
       },
       {

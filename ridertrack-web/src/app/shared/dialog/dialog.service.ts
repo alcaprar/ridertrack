@@ -21,4 +21,9 @@ export class DialogService {
     this.dialogs['alert'].show(title, body);
   }
 
+  enrollement(title, callback){
+    console.log('[DialogService][enrollement]', this.dialogs);
+    this.dialogs['enrollement'].show(title, callback);
+  }
+
 }

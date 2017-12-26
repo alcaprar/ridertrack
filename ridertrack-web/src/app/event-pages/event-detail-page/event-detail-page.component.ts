@@ -171,13 +171,13 @@ private getRoute() {
   enroll() {
 
     //if(this.enrollementIsOpen()) {
+    this.dialogService.enrollement("Add Tracking Device", function() {
       this.eventService.enrollToEvent(this.eventId)
         .then(
           (response) => {
             console.log('[EventDetail][enroll][success]', response);
             // get the new list of particpants to update the buttons
             this.getParticipants();
-            this.dialogService.alert("Success", "You are correctly enrolled");
           }
         )
         .catch(
@@ -185,7 +185,8 @@ private getRoute() {
             console.log('[EventDetail][enroll][error]', error);
             this.errors = error;
           }
-        );
+        )}.bind(this)
+    );
    // } else {
    // this.dialogService.confirmation("Enrollement",
    //     "Sorry the registration period is CLOSED or not yet AVAILABLE",function(){
@@ -211,7 +212,8 @@ private getRoute() {
    */
   withdrawEnrollment() {
     console.log('[EventDetail][withdrawEnrollment]');
-    this.dialogService.confirmation('Withdraw enrollment', 'Are you sure to withdraw your enrollment for this event?', function () {
+    this.dialogService.confirmation('Withdraw enrollment', 'Are you sure to withdraw your enrollment for this event?',
+      function () {
       console.log('[EventDetail][withdrawEnrollment][callback]');
       this.eventService.withdrawEnrollment(this.eventId, this.currentUser.id)
         .then(

@@ -1,0 +1,36 @@
+<div class="modal fade" id="enrollementDialog" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">{{title}}</h4>
+      </div>
+      <div class="modal-body">
+        <p>To be track during the event, you can add your available devices, our application can be used as default.
+        <br>Select an additional tracking device or add it later:</p>
+        <div class="row">
+          <div class="btn-group" data-toggle="buttons">
+            <label class="btn disabled" disabled="true">
+              <input type="checkbox" id="ridertrack" value="ridertrack" checked disabled>
+              <i class="fa fa-square-o fa-2x"></i><i class="fa fa-check-square-o fa-2x"></i>
+              <span> Ridertrack App(*)</span>
+            </label>
+            <label class="btn" (click)="changeRadioButton()">
+              <input type="checkbox" id="spotgen" value="spotgen">
+              <i class="fa fa-square-o fa-2x"></i><i class="fa fa-check-square-o fa-2x"></i><span> Spot Gen 3</span>
+            </label>
+          </div>
+        </div>
+        <br>
+        <p>(*)the mobile application is given by default</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="skip()">Skip</button>
+        <button type="button" class="btn btn-default" (click)="save()">Save</button>
+      </div>
+    </div>
+
+  </div>
+</div>
