@@ -27,16 +27,20 @@ export class EnrollementDialogComponent implements OnInit {
     console.log('[EnrollementDialog][show]', title);
     this.title = title;
     this.callback = callback;
+    if(this.isSelected){
+      $('#form').modal('show');
+    }else {
+      $('#form').modal('hide');
+    }
     $('#enrollementDialog').modal('show');
   }
+
   save(){
     console.log('[EnrollementDialog][Save]');
     this.callback();
-    if(this.isSelected ){
-      this.router.navigate(["configuration"]);
-    }
+    //TODO: SAVE ID IN THE BACKEND ASSOCIATED TO THE USER
     $('#enrollementDialog').modal('hide');
-
+    $('#form').modal('hide');
   }
 
   skip(){
@@ -48,8 +52,10 @@ export class EnrollementDialogComponent implements OnInit {
   changeRadioButton() {
     if(this.isSelected){
       this.isSelected = false;
+      $('#form').modal('hide');
     }else {
       this.isSelected = true;
+      $('#form').modal('show');
     }
     console.log("[Selection Changed][Spot Gen] "+ this.isSelected);
   }

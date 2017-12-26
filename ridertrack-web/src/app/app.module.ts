@@ -57,7 +57,6 @@ import { ContactService } from './shared/services/contact.service';
 import {SortService} from "./event-pages/event-progress/sort.service";
 import {SortableTableDirective} from "./event-pages/event-progress/sortable-table.directive";
 import {SortableColumnComponent} from "./event-pages/event-progress/sortable-column/sortable-column.component";
-import {ConfigurationPageComponent} from "./configuration-page/configuration-page.component";
 import {Ng4GeoautocompleteModule} from "ng4-geoautocomplete";
 
 @NgModule({
@@ -100,8 +99,7 @@ import {Ng4GeoautocompleteModule} from "ng4-geoautocomplete";
     MapComponent,
     LeaderboardComponent,
     SortableTableDirective,
-    SortableColumnComponent,
-    ConfigurationPageComponent
+    SortableColumnComponent
   ],
   imports: [
     BrowserModule,
@@ -124,11 +122,6 @@ import {Ng4GeoautocompleteModule} from "ng4-geoautocomplete";
       {
         path: 'faq',
         component: FaqPageComponent,
-        pathMatch: 'full'
-      },
-      {
-        path: 'configuration',
-        component: ConfigurationPageComponent,
         pathMatch: 'full'
       },
       {
