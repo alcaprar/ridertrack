@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import { Router } from '@angular/router';
 import {EventService} from "../../shared/services/event.service";
 import {Event} from "../../shared/models/event"
@@ -8,6 +8,7 @@ declare var $: any;
 
 @Component({
   selector: 'app-event-create-page',
+  encapsulation: ViewEncapsulation.None,
   templateUrl: './event-create-page.component.html',
   styleUrls: ['./event-create-page.component.css']
 })
@@ -22,11 +23,18 @@ export class EventCreatePageComponent implements OnInit {
   private urlImage: any;
   private urlNoImage = '../../../assets/img/logofoto.png';
 
+  public userSettingCity: any = {
+    showSearchButton: false,
+    geoTypes: ['(cities)'],
+    showCurrentLocation: false,
+    inputPlaceholderText: 'INSERT A CITY'
+  };
+
   constructor(private eventService: EventService, private router: Router) {
   }
 
   ngOnInit() {
-    this.eventTypes = this.eventService.getEventTypes()
+    this.eventTypes = this.eventService.getEventTypes();
   }
 
   /**
@@ -50,6 +58,21 @@ export class EventCreatePageComponent implements OnInit {
 
     function formatDate(date){
       return date.getDate() + '/' + (date.getMonth() < 12 ? date.getMonth() + 1 : 1) + '/' + date.getFullYear()
+    }
+  }
+
+  autocompleteCity(selectedData: any){
+
+    for(let i=0; i< selectedData.data.address_components.length; i++){
+      if(selectedData.data.address_components[i].types[0]==='locality') {
+        this.event.city = selectedData.data.address_components[i].long_name;
+        console.log("[Updated][City]" + this.event.city);
+      }
+      if (selectedData.data.address_components[i].types[0]=== 'country'
+        && selectedData.data.address_components[i].types[1]==='political'){
+        this.event.country = selectedData.data.address_components[i].long_name;
+        console.log ("[Updated][Country]"+ this.event.country);
+      }
     }
   }
 

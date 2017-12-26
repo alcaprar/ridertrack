@@ -43,17 +43,13 @@
                     <input [(ngModel)]="event.startingDate" #startingDate="ngModel" id="startingDate" name="startingDate" type="text" class="form-control datepicker" placeholder="15/12/2017">
                     <div [hidden]="startingDate.valid || startingDate.pristine" class="alert alert-danger">Date is required.</div>
                   </div>
-                  <div class="form-group">
-                    <label for="country">Country <small>(required)</small></label>
-                    <input [(ngModel)]="event.country" #country="ngModel" id="country" name="country" type="text" class="form-control" placeholder="Italy" required>
-                    <div [hidden]="country.valid || country.pristine" class="alert alert-danger">Country is required.</div>
+                   <div >
+                     <label for="city">City <small>(required)</small></label>
+                     <ng4geo-autocomplete id="city" (componentCallback)="autocompleteCity($event)"
+                                          [userSettings]="userSettingCity">
+                     </ng4geo-autocomplete>
                   </div>
-                  <div class="form-group">
-                    <label for="city">City <small>(required)</small></label>
-                    <input [(ngModel)]="event.city" #city="ngModel" id="city" name="city" type="text" class="form-control" placeholder="Milano" required>
-                    <div [hidden]="city.valid || city.pristine" class="alert alert-danger">City is required.</div>
-                  </div>
-                  <div *ngIf="errors.length > 0" class="alert alert-danger">
+                 <div *ngIf="errors.length > 0" class="alert alert-danger">
                     <span *ngFor="let error of errors">{{error.message}}</span>
                   </div>
                 </div>
@@ -63,7 +59,8 @@
 
             <div class="wizard-footer">
               <div class="pull-right">
-                <button type='submit' class='btn btn-default' [disabled]="!createEventForm.form.valid">Create</button>
+                <button type='submit' class='btn btn-default' [disabled]="!createEventForm.form.valid && event.city && event.country">
+                  Create</button>
               </div>
 
               <div class="pull-left">

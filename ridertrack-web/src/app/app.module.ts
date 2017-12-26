@@ -58,6 +58,7 @@ import {SortService} from "./event-pages/event-progress/sort.service";
 import {SortableTableDirective} from "./event-pages/event-progress/sortable-table.directive";
 import {SortableColumnComponent} from "./event-pages/event-progress/sortable-column/sortable-column.component";
 import {ConfigurationPageComponent} from "./configuration-page/configuration-page.component";
+import {Ng4GeoautocompleteModule} from "ng4-geoautocomplete";
 
 @NgModule({
   declarations: [
@@ -108,6 +109,7 @@ import {ConfigurationPageComponent} from "./configuration-page/configuration-pag
     FormsModule,
     CommonModule,
     HttpClientModule,
+    Ng4GeoautocompleteModule.forRoot(),
     FacebookModule.forRoot(),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyCWY7J8-bVG3TxQbVvgXb-F5lQV6XrTM5s',

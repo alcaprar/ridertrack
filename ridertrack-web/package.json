@@ -69,6 +69,7 @@
     "mydatepicker": "^2.6.1",
     "ng-pick-datetime": "^5.0.0-beta.15",
     "ng2-input-autocomplete": "0.0.11",
+    "ng4-geoautocomplete": "^0.1.0",
     "ngx-facebook": "^2.4.0",
     "node-mailjet": "^3.2.1",
     "nodemon": "^1.12.7",
