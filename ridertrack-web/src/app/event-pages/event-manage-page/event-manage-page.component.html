@@ -44,14 +44,11 @@
                            class="form-control datepicker">
                     <div [hidden]="startingDate.valid || startingDate.pristine" class="alert alert-danger">Date is required.</div>
                   </div>
-                  <div class="form-group">
-                    <label for="country">Country <small>(required)</small></label>
-                    <input [(ngModel)]="event.country" #country="ngModel" id="country" name="country" type="text" class="form-control" placeholder="Italy" required>
-                    <div [hidden]="country.valid || country.pristine" class="alert alert-danger">Country is required.</div>
-                  </div>
-                  <div class="form-group">
+                  <div>
                     <label for="city">City <small>(required)</small></label>
-                    <input [(ngModel)]="event.city" #city="ngModel" id="city" name="city" type="text" class="form-control" placeholder="Milano" required>
+                    <ng4geo-autocomplete id="city" (componentCallback)="autocompleteCity($event)"
+                                         [userSettings]="userSettingCity">
+                    </ng4geo-autocomplete>
                   </div>
                   <div class="form-group">
                     <label for="length">Length<small>(KM)</small></label>
