@@ -89,7 +89,7 @@ export class MapComponent implements OnInit {
    */
   ngAfterViewInit() {
     setTimeout(function () {
-      console.log("Map page view init", $('.selectpicker'))
+      console.log("Map page view init", $('.selectpicker'));
       $('.selectpicker').selectpicker("render");
     }, 1000)
   }
