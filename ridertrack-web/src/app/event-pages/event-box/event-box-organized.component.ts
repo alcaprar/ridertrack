@@ -46,10 +46,10 @@ export class EventBoxOrganizedComponent implements OnInit {
   startTracking(event){
   //  if(this.checkStarting()) {
       this.eventService.startTracking(event).then(
-        (errors) => {
-          if(errors){
-            console.log("[Start Tracking][error]", errors);
-            this.dialogService.alert("Start tracking", errors[0].message)
+        (error) => {
+          if(error){
+            console.log("[Start Tracking][error]", error);
+            this.dialogService.alert("Start tracking", error.message)
           }else{
             console.log("[Start Tracking][Success]");
             this.event.status = "ongoing";
