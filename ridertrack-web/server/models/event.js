@@ -243,19 +243,34 @@ eventSchema.statics.delete = function (eventId, callback){
  * @returns {*}
  */
 eventSchema.methods.startTracking = function (callback) {
-    if(this.status === 'planned'){
+    var event = this;
+    if(event.status === 'planned'){
         // if the status is planned is possible to start the tracking
-        // change the status and save
-        this.status = 'ongoing';
-        this.actualStartingTime = new Date;
-        this.save(function (err) {
+
+        // check if the route is set
+        // events with no route can not be started
+        Route.findByEventId(event._id, function (err, route) {
             if(err){
-                console.log('[EventModel][startTracking] error while saving', err);
-                return callback({message: 'Error while updating the status of the event.'});
+                console.log('[EventModel][startTracking][findroute]', err);
+                return callback(err)
             }else{
-                return callback(null)
+                if(route.coordinates.length === 0){
+                    return callback({message: 'The event does not have a route. The tracking cannot be started.'})
+                }else{
+                    // change the status and save
+                    event.status = 'ongoing';
+                    event.actualStartingTime = new Date;
+                    event.save(function (err) {
+                        if(err){
+                            console.log('[EventModel][startTracking] error while saving', err);
+                            return callback({message: 'Error while updating the status of the event.'});
+                        }else{
+                            return callback(null)
+                        }
+                    })
+                }
             }
-        })
+        });
     }else{
         // if the status is different than planned is not possible to start the tracking
         return callback({message:  'The event is already ongoing or passed.'})
