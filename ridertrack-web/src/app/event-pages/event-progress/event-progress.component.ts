@@ -1,5 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {EventService} from "../../shared/services";
 
 
@@ -10,12 +10,19 @@ import {EventService} from "../../shared/services";
 })
 export class EventProgressComponent implements OnInit {
 
-
-  constructor(){}
+  private eventId;
+  private eventName = '';
+  constructor(private router: Router, private eventService: EventService, private route: ActivatedRoute){}
 
   ngOnInit(): void {
-
-    }
-
-
+    this.route.params.subscribe(params => {
+      this.eventId = params['eventId'];
+      this.eventService.getEvent(this.eventId)
+        .then(
+          (event) => {
+            console.log('[EventProgress][OnInit]', this.eventId, event);
+            this.eventName = event.name;
+          });
+    });
+  }
 }

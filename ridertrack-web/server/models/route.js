@@ -124,6 +124,55 @@ routeSchema.statics.delete = function (eventId,callback){
     })
 };
 
+/**
+ * It calculates the distance to the end from the given checkpoint.
+ * @param eventId
+ * @param checkpointIndex
+ */
+routeSchema.methods.calculateDistanceToTheEnd = function (checkpointIndex, callback) {
+    var route = this;
+    var distance = 0;
+
+    // iterate until the length-1 coordinate
+    for(let i = checkpointIndex; i < route.coordinates.length -1; i++){
+        /*var x_dif = Math.abs(route.coordinates[checkpointIndex].lat - route.coordinates[checkpointIndex + 1].lat);
+        var y_dif = Math.abs(route.coordinates[checkpointIndex].lng - route.coordinates[checkpointIndex + 1].lng);
+        var diff = Math.sqrt(x_dif * x_dif + y_dif * y_dif);*/
+
+        var lat1 = route.coordinates[checkpointIndex].lat;
+        var lat2 =  route.coordinates[checkpointIndex + 1].lat;
+        var lng1 = route.coordinates[checkpointIndex].lng;
+        var lng2 = route.coordinates[checkpointIndex + 1].lng;
+        distance += distanceInKmBetweenEarthCoordinates(lat1, lng1, lat2, lng2)
+    }
+
+    if(typeof callback !== 'undefined'){
+        callback(distance)
+    }else{
+        return callback
+    }
+};
+
+function degreesToRadians(degrees) {
+    return degrees * Math.PI / 180;
+}
+
+function distanceInKmBetweenEarthCoordinates(lat1, lon1, lat2, lon2) {
+    var earthRadiusKm = 6371;
+
+    var dLat = degreesToRadians(lat2-lat1);
+    var dLon = degreesToRadians(lon2-lon1);
+
+    lat1 = degreesToRadians(lat1);
+    lat2 = degreesToRadians(lat2);
+
+    var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return earthRadiusKm * c;
+}
+
+
 var Route = mongoose.model('Route', routeSchema);
 
 module.exports = Route;

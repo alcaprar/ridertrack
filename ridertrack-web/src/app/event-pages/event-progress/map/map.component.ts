@@ -31,11 +31,12 @@ export class MapComponent implements OnInit {
 
   private refreshInterval;
 
-  private participantSelection : Boolean = false;
-  private selectedUser: Progress[]  = [];
+  private participantSelected : String = "";
 
   public marker_background_colors = ["green", "red", "yellow", "orange", "purple", "pink",
     "blue", "black", "gray", "white", "brown"];
+
+  private lastUpdate = new Date();
 
   @ViewChild('searchType') searchType: ElementRef;
 
@@ -56,18 +57,18 @@ export class MapComponent implements OnInit {
           // check the status
           if(this.event.status === 'ongoing'){
             // retrieve the last position every 5 seconds
+            this.getLastPositions();
             this.refreshInterval = setInterval(
               ()=>{
-                this.eventService.getLastPositions(this.eventId)
-                  .then((participantsProgress) => {
-                    console.log("[Progress Management][OnInit][GetLastPositions][Success]", participantsProgress);
-                    this.transformParticipantsMaker(participantsProgress);
-                  }).catch((error)=> {
-                  console.log("[Progress Management][OnInit][GetLastPositions][Error]", error);
-                  //TODO: Show errors
-                })
+                this.getLastPositions()
               }, 5 * 1000);
-            this.initParticipantList();
+            this.eventService.getParticipants(this.eventId)
+              .then(
+                (participants) => {
+                  console.log('[EventProgress Map][OnInit][EventService.getParticipants]', participants);
+                  this.participantsList = participants;
+                }
+              );
           }
         });
     this.routeService.getRoute(this.eventId)
@@ -95,52 +96,40 @@ export class MapComponent implements OnInit {
   }
 
   /**
+   * It calls the event service in order to get the last positions of the users.
+   */
+  getLastPositions(){
+    this.eventService.getLastPositions(this.eventId)
+      .then((participantsProgress) => {
+        this.lastUpdate = new Date()
+        console.log("[Progress Management][OnInit][GetLastPositions][Success]", participantsProgress);
+        this.transformParticipantsMaker(participantsProgress);
+      }).catch((error)=> {
+      console.log("[Progress Management][OnInit][GetLastPositions][Error]", error);
+      //TODO: Show errors
+    })
+  }
+
+
+  /**
    * It goes through the data received from the service and creates an array of markers.
    * @param participantsProgress
    */
   transformParticipantsMaker(participantsProgress){
     // clean the previous markers
     this.participantsMarkers = [];
-      for (let i = 0; i < participantsProgress.length; i++) {
-        this.participantsMarkers.push({
-          lat: Number(participantsProgress[i].lastPosition.lat),
-          lng: Number(participantsProgress[i].lastPosition.lng),
-          timestamp: participantsProgress[i].timestamp,
-          user: participantsProgress[i].userId,
-          select: this.getParticipantSelection(participantsProgress[i].userId),
-          icon: "http:// labs.google.com/ridefinder/images/mm_20_" +
-          this.marker_background_colors[i % this.marker_background_colors.length] + ".png"
-        });
+    for (let i = 0; i < participantsProgress.length; i++) {
+      this.participantsMarkers.push({
+        lat: Number(participantsProgress[i].lastPosition.lat),
+        lng: Number(participantsProgress[i].lastPosition.lng),
+        timestamp: new Date(participantsProgress[i].lastPosition.timestamp),
+        user: participantsProgress[i].userId,
+        icon: "http://labs.google.com/ridefinder/images/mm_20_" +
+        this.marker_background_colors[i % this.marker_background_colors.length] + ".png"
+      });
     }
   }
 
-  /**
-   * if a user is selected then the array selectedUser contains the values of each user
-   * @param {User} user
-   * @returns {Boolean} if that user was previously selected or not
-   */
-  getParticipantSelection ( user: User): Boolean {
-    if(this.selectedUser.length > 0){
-      for(let sel of this.selectedUser){
-        if(sel.user.id === user.id){
-          return sel.select;
-        }
-      }
-    }else {
-      return true;
-    }
-}
-
-  initParticipantList() {
-    this.participantsList = [];
-    if(this.participantsMarkers.length>0) {
-      for (let participant of this.participantsMarkers) {
-        this.participantsList.push({
-          user: participant.user
-        });
-      }
-    }
-  }
 
   /**
    * It is called when the user changes page.
@@ -194,30 +183,25 @@ export class MapComponent implements OnInit {
   }
 
   /**
-   *  Called when a participant is selected
+   * Called when a participant is selected
    * @param event
    */
   onChange(event){
     var participant = event.target.value;
-    if(participant !== -1) {
-      for (let p of this.participantsList) {
-        this.selectedUser.push({
-          user: p.user,
-          select: (p.user.id === participant.id)
-          }
-        )
-      }
+    if(participant != -1) {
+      this.participantSelected = participant
     }else{
-      this.selectedUser = [];
+      this.participantSelected = ""
     }
+
+    console.log('[EventProgressMap][onChange]', this.participantSelected)
   }
 }
 
 export interface Progress {
-lat?: Number;
-lng?: Number;
-timestamp?: Number;
-user: User;
-select: Boolean;
-icon?: String;
+  lat?: Number;
+  lng?: Number;
+  timestamp?: Date;
+  user: User;
+  icon?: String;
 }

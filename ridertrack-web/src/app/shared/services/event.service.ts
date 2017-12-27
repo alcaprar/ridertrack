@@ -278,12 +278,12 @@ export class EventService {
         (response) => {
           const body = response.json();
           var participants = body.participants as String[];
-          console.log('[EventService][updateEvent][success]', body, participants);
+          console.log('[EventService][getParticipantsList][success]', body, participants);
           return participants;
         })
       .catch(
         (error) => {
-          console.log('[EventService][updateEvent][error]', error);
+          console.log('[EventService][getParticipantsList][error]', error);
           return [];
         });
   }

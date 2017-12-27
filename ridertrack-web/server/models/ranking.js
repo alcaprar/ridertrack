@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+var ObjectId = mongoose.Schema.Types.ObjectId;
+
 var Route = require('./route');
 var Positions = require('./positions');
 
@@ -12,16 +14,11 @@ var rankingSchema = Schema({
         required: true
     },
     ranking: {
-        type: [{},[]],
-        required: false
-    },
-    timeStamp : {
-        type: Date,
-        required: false
-    },
-    trackingSources: {
-        type: String,
-        required: false
+        type: [{
+            type: ObjectId,
+            ref: 'User'
+        }],
+        default: []
     },
     created_at: {
         type: Date,
@@ -49,6 +46,11 @@ rankingSchema.pre('save', function(next) {
     next();
 });
 
+/**
+ * It creates the ranking instance.
+ * @param eventId
+ * @param callback
+ */
 rankingSchema.statics.create = function(eventId, callback) {
     var ranking = new Ranking({eventId: eventId});
 
@@ -57,47 +59,47 @@ rankingSchema.statics.create = function(eventId, callback) {
             console.log("Error Here!");
             return callback(err)
         } else {
-            console.log("All good with adding ranking!");
-            console.log(ranking);
             return callback(null, ranking)
         }
     })
 };
 
-rankingSchema.statics.update = function (userId, eventId, locationJson ,callback) {
-    this.findOne({eventId: eventId}, function (err, ranking) {
-        if (err) {
-            console.log("Creating Ranking.... ");
-            return callback({message: err.message})
-        }
-
-        if (ranking === null) {
-            Ranking.create(eventId, function (err, ranking) {
-                if (err) {
-                    console.log('ERROR: Could Not Create Ranking.', err);
-                    res.status(400).send({
-                        errors: [err]
+/**
+ * It updates the ranking using the distance to the end of each participant.
+ * @param eventId
+ * @param callback
+ */
+rankingSchema.statics.update = function (eventId, callback) {
+    // get positions ordered by distance to the lenght
+    Positions.find({eventId: eventId}, {userId: 1}, {sort: {distanceToTheEnd: 'asc'}}, function (err, usersPositions) {
+        if(err){
+            console.log('[RankingModel][update] error while finding positions: ', err);
+            return callback(err)
+        }else{
+            // update the ranking with the new order
+            Ranking.findOne({eventId: eventId}, function (err, ranking) {
+                if(err){
+                    console.log('[RankingModel][update] error while finding ranking: ', err);
+                    return callback(err)
+                }else{
+                    console.log('[RankingModel][update] found', ranking, usersPositions);
+                    var tempRanking = [];
+                    for(let i =0; i < usersPositions.length; i++){
+                        tempRanking.push(usersPositions[i].userId)
+                    }
+                    ranking.ranking = tempRanking;
+                    ranking.save(function (err) {
+                        if(err){
+                            console.log('[RankingModel][update] error while saving ranking: ', err);
+                            return callback(err)
+                        }else{
+                            return callback(null)
+                        }
                     })
-                } else {
-                    console.log("Created Ranking...")
-                    //res.status(200).send({
-                    //ranking: ranking
-                    //})
-                    console.log("Adding Position to Ranking...")
                 }
-            });
+            })
         }
-
-        ranking.add(eventId, userId, function (err, updated_ranking) {
-            if (err) {
-                console.log("Ranking Error: Trying to add position to ranking")
-            } else {
-                console.log("Updated Ranking")
-                console.log(updated_ranking)
-            }
-        });
-
-    })
+    });
 };
 
 rankingSchema.methods.add = function(eventId , userId, callback){

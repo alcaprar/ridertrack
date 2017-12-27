@@ -5,30 +5,35 @@
       <div class="row search-form wow pulse animated" data-wow-delay="1s"
            style="visibility: visible; animation-delay: 1s; animation-name: pulse;">
         <form class="form-inline">
-          <div class="col-xs-12 col-md-8">
-            Select a participant to track:
-            <div class="form-group">
-              <select id="race" #searchType class="selectpicker" (change)="onChange($event)"
+          <div class="col-xs-12 col-md-12">
+            <div class="form-group" style="width: 100%">
+              <label for="participantToTrack">Select a participant to track:</label>
+              <select id="participantToTrack" #searchType class="selectpicker" (change)="onChange($event)"
                       data-live-search="true" data-live-search-style="begins"
                       title="Select a participant">
-                <option value="-1" selected>Select a Participant</option>
-                <option *ngFor="let participant of participantsList" [value]="participant" style="text-transform: capitalize">
-                  {{participant.name}} {{participant.surname}}</option>
+                <option value="-1" selected>All the participants</option>
+                <option *ngFor="let participant of participantsList"
+                        [value]="participant.userId._id"
+                        [attr.data-tokens]="participant.userId.name + participant.userId.surname"
+                        style="text-transform: capitalize">{{participant.userId.name}} {{participant.userId.surname}}</option>
               </select>
             </div>
           </div>
         </form>
       </div>
+      <div class="row text-center">
+        Last update: {{lastUpdate | date: 'dd/MM/yy HH:mm:ss'}}
+      </div>
       <!-- MAP PROGRESS -->
       <agm-map id="map" #map [longitude]="initLong" [latitude]="initLat" [zoom]="zoom"
       [streetViewControl]="false" [rotateControl]="true">
         <div *ngFor="let participantM of participantsMarkers">
-          <div *ngIf="participantM.select">
+          <div *ngIf="participantSelected === '' || participantSelected === participantM.user._id">
             <agm-marker [latitude]="participantM.lat"
                         [longitude]="participantM.lng"
                         [iconUrl]="participantM.icon">
               <agm-info-window [closeWhenOthersOpen]="true" >{{participantM.user.name}} {{participantM.user.surname}}
-                <br> timestamp: {{participantM.timestamp}}
+                <br> Last update received: {{participantM.timestamp | date: 'dd/MM/yy HH:mm:ss'}}
               </agm-info-window>
             </agm-marker>
           </div>
