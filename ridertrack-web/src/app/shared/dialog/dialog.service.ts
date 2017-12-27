@@ -21,6 +21,11 @@ export class DialogService {
     this.dialogs['alert'].show(title, body);
   }
 
+  adminEditUser(title, body){
+    console.log('[DialogService][adminEditUser]', body);
+    this.dialogs['alert'].show(title, body.email);
+  }
+
   enrollement(title, callback){
     console.log('[DialogService][enrollement]', this.dialogs);
     this.dialogs['enrollement'].show(title, callback);

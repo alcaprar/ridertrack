@@ -58,6 +58,8 @@ import {SortService} from "./event-pages/event-progress/sort.service";
 import {SortableTableDirective} from "./event-pages/event-progress/sortable-table.directive";
 import {SortableColumnComponent} from "./event-pages/event-progress/sortable-column/sortable-column.component";
 import {Ng4GeoautocompleteModule} from "ng4-geoautocomplete";
+import { ManageUsersComponent } from './admin/manage-users/manage-users.component';
+import { ManageEventsComponent } from './admin/manage-events/manage-events.component';
 
 @NgModule({
   declarations: [
@@ -99,7 +101,9 @@ import {Ng4GeoautocompleteModule} from "ng4-geoautocomplete";
     MapComponent,
     LeaderboardComponent,
     SortableTableDirective,
-    SortableColumnComponent
+    SortableColumnComponent,
+    ManageUsersComponent,
+    ManageEventsComponent
   ],
   imports: [
     BrowserModule,
@@ -132,6 +136,16 @@ import {Ng4GeoautocompleteModule} from "ng4-geoautocomplete";
       {
         path: 'archive',
         component: EventArchiveComponent,
+        pathMatch: 'full'
+      },
+      {
+        path: 'admin-users',
+        component: ManageUsersComponent,
+        pathMatch: 'full'
+      },
+      {
+        path: 'admin-events',
+        component: ManageEventsComponent,
         pathMatch: 'full'
       },
       {
