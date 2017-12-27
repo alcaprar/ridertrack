@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+var ObjectId = mongoose.Schema.Types.ObjectId;
+
 var Positions = require('./positions');
 
 var enrollmentSchema = Schema({
@@ -8,9 +10,10 @@ var enrollmentSchema = Schema({
         type: String,
         required: true
     },
-    userId : {
-        type: String,
-        required: true
+    userId: {
+        type: ObjectId,
+        required: true,
+        ref: 'User'
     },
     additionalInfo : {
         type: Object,
@@ -79,13 +82,15 @@ enrollmentSchema.statics.create = function(userId, enrollmentJson, callback){
 /**
  * Static method to find all enrollments by id .
  */
-enrollmentSchema.statics.findAllByEventId = function (eventId, callback ){
-    this.find({eventId: eventId}, function (err, enrollment) {
-        if(err){
-            return callback(err)
-        }else{
-            return callback(null, enrollment)
-        }
+enrollmentSchema.statics.findByEventId = function (eventId, callback ){
+    this.find({eventId: eventId})
+        .populate('userId')
+        .exec(function (err, enrollment) {
+            if(err){
+                return callback(err)
+            }else{
+                return callback(null, enrollment)
+            }
     })
 };
 

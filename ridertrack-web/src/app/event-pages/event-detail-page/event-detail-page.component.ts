@@ -238,7 +238,13 @@ private getRoute() {
    * @returns {boolean}
    */
   isEnrolled() {
-    return this.participantsList.includes(this.currentUser.id)
+    for(let i = 0; i < this.participantsList.length; i++){
+      if(this.participantsList[i].userId._id === this.currentUser.id){
+        return true;
+      }
+    }
+
+    return false;
   }
 
   /**

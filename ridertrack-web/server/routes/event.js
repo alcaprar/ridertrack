@@ -152,25 +152,17 @@ router.get('/allCities', function (req, res, next) {
  */
 router.get('/:eventId/participantsList', function (req, res, next) {
     var eventId = req.params.eventId;
-    Enrollment.find(
-        {eventId: eventId},
-        {userId: 1},
-        function (err, users) {
-            if(err) {
-                res.status(400).send({
-                    errors: err
-                })
-            } else {
-                var participants = [];
-                for(let i =0; i < users.length; i++){
-                    participants.push(users[i].userId)
-                }
-                res.status(200).send({
-                    participants: participants
-                })
-            }
+    Enrollment.findByEventId(eventId, function (err, participants) {
+        if(err) {
+            res.status(400).send({
+                errors: [err]
+            })
+        } else {
+            res.status(200).send({
+                participants: participants
+            })
         }
-    )
+    })
 });
 
 router.get('/:eventId/logo', function (req, res, next) {
@@ -338,48 +330,56 @@ router.put('/:eventId', authMiddleware.hasValidToken, authMiddleware.isOrganizer
  * if a location for an user in an event isn't created it creates it
  * if it is created than it updates it with adding the coordinates(String)
  */
-router.post('/:eventId/participants/positions', /*authMiddleware.hasValidToken, authMiddleware.isEnrolled,*/ function (req, res, next) {
-    var userId = req.body.userId; // TODO to remove, needed only for testing the mobile app without token
-    //var userId = req.user._id;
+router.post('/:eventId/participants/positions', authMiddleware.hasValidToken, authMiddleware.isEnrolled, function (req, res, next) {
+    //var userId = req.body.userId;
+    var userId = req.userId;
     var eventId = req.params.eventId;
 
     console.log('[POST /positions]', req.body);
 
     // check if the event has started
-    Event.isOnGoing(eventId, function (err, isOnGoing) {
+    Event.findByEventId(eventId, function (err, event) {
         if(err){
             return res.status(400).send({
                 errors: [err]
             })
+        }else if(event.status === 'ongoing'){
+            // the event is ongoing and the position can be accepted
+            Positions.add(userId, eventId, req.body, function (err, userPositions) {
+                if (err) {
+                    res.status(400).send({
+                        errors: [err]
+                    })
+                }else{
+                    res.status(200).send({
+                        message: "Positions updated successfully",
+                        location: userPositions,
+                        distanceToTheEnd: (userPositions.distanceToTheEnd) ? userPositions.distanceToTheEnd : -1
+                    });
+
+                    console.log('Updating ranking')
+                    Ranking.update(eventId, function(err){
+                        if (err){
+                            console.log("Error in updating ranking: ", err);
+                        }else{
+                            console.log("Ranking updated successfully");
+                        }
+                    })
+                }
+            })
+        }else if(event.status === 'passed'){
+            return res.status(400).send({
+                errors: [{message: "The event has finished."}]
+            })
+        }else if(event.status === 'planned'){
+            return res.status(400).send({
+                errors: [{message: "The event has not started yet."}]
+            })
         }else{
-
-            if(isOnGoing){
-                // the event is ongoing and the position can be accepted
-                Positions.add(userId, eventId, req.body, function (err, userPositions) {
-                    if (err) {
-                        res.status(400).send({
-                            errors: [err]
-                        })
-                    }else{
-                        res.status(200).send({
-                            message: "Positions updated successfully",
-                            location: userPositions
-                        });
-
-                        Ranking.update(userId, eventId, req.body, function(err, updatedRanking){
-                            if (err){
-                                console.log("Error in updating ranking: " + err);
-                            }else{
-                                console.log("Ranking updated successfully");
-                            }
-                        })
-                    }
-                })
-            }else{
-                return res.status(400).send({
-                    errors: [{message: "The event has not started yet."}]
-                })
-            }
+            console.log('[EventRoute][POST positions] unexpected event status', status);
+            return res.status(400).send({
+                errors: [{message: "Unexpected error while checking the event."}]
+            })
         }
     });
 
@@ -441,28 +441,18 @@ router.get('/:eventId/:userId/location', function (req, res) {
  * This method gets the latest ranking of the event
  */
 router.get('/:eventId/ranking', function (req, res) {
-    Ranking.findOne({eventId: req.params.eventId}, function (err, ranking) {
+    var eventId = req.params.eventId;
+    Ranking.findOne({eventId: eventId}, function (err, ranking) {
         if (err) {
             res.status(400).send({
                 errors: [err]
             })
-        }else{
-            ranking.rerank(req.params.eventId, req.params.userId, function(err, new_ranking){
-                if (err){
-                    console.log("Error Reranking")
-                }else{
-                    console.log("Reranked")
-                    res.status(200).send({
-                        ranking: new_ranking,
-                        time :'Ranking was sent on: ' + new_ranking.updated_at
-                    })
-                }
-
-
+        }else {
+            res.status(200).send({
+                ranking: ranking
             })
-
         }
-    })
+    });
 });
 
 /**

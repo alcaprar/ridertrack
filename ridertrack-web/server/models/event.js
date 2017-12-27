@@ -315,10 +315,31 @@ eventSchema.statics.isOnGoing = function (eventId, callback) {
         }
         
         // check the status
-        if(event.status === 'ongoing'){
+        if(event && event.status === 'ongoing'){
             return callback(null, true)
         }else{
             return callback(null, false)
+        }
+    })
+};
+
+/**
+ * It returns the status of the event.
+ * @param eventId
+ * @param callback
+ */
+eventSchema.statics.getStatus = function (eventId, callback) {
+    // retrieve the event
+    this.findOne({_id: eventId}, function (err, event) {
+        if(err){
+            return callback({message: "Error while retrieving event status."})
+        }
+
+        // check the status
+        if(event){
+            return callback(null, event.status)
+        }else{
+            return callback({message: "The event does not exist."})
         }
     })
 };

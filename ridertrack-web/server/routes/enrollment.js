@@ -102,7 +102,7 @@ router.post('/', authMiddleware.hasValidToken, function(req, res){
  * It return the enrollments of the requested eventId
  */
 router.get('/:eventId', function (req, res) {
-    Enrollment.findAllByEventId(req.params.eventId, function (err, enrollment) {
+    Enrollment.findByEventId(req.params.eventId, function (err, enrollment) {
         if(err){
             res.status(400).send({
                 errors: err
