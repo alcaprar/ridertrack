@@ -37,12 +37,24 @@ export class EventBoxOrganizedComponent implements OnInit {
     }
   }
 
+  /**
+   * It is triggered when the user clicks the button.
+   * It call the method of the eventService and shows errros, if any.
+   * If the call is successfull it redirects to the progress page.
+   * @param event
+     */
   startTracking(event){
   //  if(this.checkStarting()) {
-      this.eventService.startTracking(event).then((success) => {
-        console.log("[Start Tracking][Success]");
-        this.event.status = "ongoing";
-        this.router.navigate(['/events/', event._id, 'progress']);
+      this.eventService.startTracking(event).then(
+        (errors) => {
+          if(errors){
+            console.log("[Start Tracking][error]", errors);
+            this.dialogService.alert("Start tracking", errors[0].message)
+          }else{
+            console.log("[Start Tracking][Success]");
+            this.event.status = "ongoing";
+            this.router.navigate(['/events/', event._id, 'progress']);
+          }
       }).catch((error) => {
         console.log("[Start Tracking][Error]", error);
       });

@@ -344,15 +344,27 @@ export class EventService {
     return str.join("&");
   }
 
-  startTracking(event: Event) {
+  /**
+   * It calls the endpoint to start the tracking of an event.
+   * If the call is successful, it does nothing.
+   * If the call fails, it returns the error.
+   * @param event
+   * @returns {any|Promise<Error>|Promise<T>}
+     */
+  startTracking(event: Event): Promise<any> {
     const url = `${this.BASE_EVENT_URL}/${event._id}/tracking/start`;
 
     return this.http.post(url,"").toPromise()
       .then((response) => {
         console.log("[EventService][StartTracking][Success]", response);
-      }).catch((errors) => {
-        console.log("[EventService][StartTracking][Error]", errors);
-      });
+        return null;
+      }).catch(
+        (errorResponse: any) => {
+          var errors = errorResponse.json().errors as Error[];
+          console.log('[EventService][startTracking][error]', errors);
+          return errors[0];
+        }
+      );
   }
   stopTracking(event: Event) {
     const url = `${this.BASE_EVENT_URL}/${event._id}/tracking/stop`;
