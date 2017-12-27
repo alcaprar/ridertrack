@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {DialogService} from "../dialog.service";
+import { User } from '../../models/user';
 declare var $: any;
 
 @Component({
@@ -11,7 +12,7 @@ export class AdminEditUserDialogComponent implements OnInit {
 
   private callback;
   private title = 'Title';
-  private body = 'Body';
+  private body: User;
 
   constructor(private dialogService: DialogService) {
     this.dialogService.register('adminEditUser', this)
