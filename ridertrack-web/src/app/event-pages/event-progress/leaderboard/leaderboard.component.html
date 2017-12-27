@@ -1,0 +1,45 @@
+<div *ngIf="started; else notstarted">
+  <div class="row  pr0 padding-top-40 properties-page">
+    <div class="col-md-12 clear">
+      <table class="table" sortable-table (sorted)="onSorted($event)">
+        <thead class="thead-yellow">
+        <tr>
+          <th sortable-column="position" class ="title">#</th>
+          <th sortable-column="name" class="title">First Name</th>
+          <th sortable-column="surname" class="title">Last Name</th>
+        </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let p of mockParticipants">
+              <td>{{p.position}}</td>
+              <td>{{p.name}}</td>
+              <td>{{p.surname}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<ng-template #notstarted>
+  <div class="container">
+    <div class="row  pr0 padding-top-40 properties-page">
+      <div class="col-md-12 clear">
+        <div class="clearfix" >
+          <div class="wizard-container">
+
+            <div class="wizard-card ct-wizard-orange" id="wizardProperty">
+              <div class="wizard-header">
+                <h3>
+                  <b>The Leaderboard </b> IS NOT AVAILABLE YET<br>
+                </h3>
+                <a  [routerLink]="['/events', event._id]" > < Come Back to the event </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+</ng-template>

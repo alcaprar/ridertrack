@@ -1,0 +1,17 @@
+<app-page-header title="Manage users"></app-page-header>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-4 wow fadeInRight animated">
+      <div class="single-footer">
+        <h4>List of all users <small>(click on an user for editing it)</small></h4>
+        <div class="footer-title-line"></div>
+        <ul class="footer-menu">
+          <li *ngFor="let user of users">
+            <a (click)="userClicked(user)">{{user.name}} {{user.surname}}, {{user.email}}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

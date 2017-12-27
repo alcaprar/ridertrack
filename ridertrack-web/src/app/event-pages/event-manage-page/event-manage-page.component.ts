@@ -1,5 +1,5 @@
 ///<reference path="../../shared/models/event.ts"/>
-import {Component, Injectable, OnInit, ViewChild} from '@angular/core';
+import {Component, Injectable, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {EventService} from "../../shared/services/event.service";
 import {Event} from "../../shared/models/event";
@@ -9,6 +9,7 @@ declare var $: any;
 
 @Component({
   selector: 'app-event-manage-page',
+  encapsulation: ViewEncapsulation.None,
   templateUrl: './event-manage-page.component.html',
   styleUrls: ['./event-manage-page.component.css']
 })
@@ -24,6 +25,7 @@ export class EventManagePageComponent implements OnInit {
   private urlNoImage = '../../../assets/img/logofoto.png';
 
   errors: Error[] = [];
+  public userSettingCity: any;
 
   constructor(private eventService: EventService, private router: Router, private route: ActivatedRoute, private dialogService: DialogService) {
   }
@@ -42,7 +44,12 @@ export class EventManagePageComponent implements OnInit {
             console.log('[EventManage][OnInit][getEvent][success]', event);
             this.event = event;
             this.urlImage = '/api/events/' + this.event._id + '/logo';
-
+            this.userSettingCity = {
+              showSearchButton: false,
+              geoTypes: ['(cities)'],
+              showCurrentLocation: false,
+              inputPlaceholderText: this.event.city + ', '+ this.event.country
+            };
             // init the input of the datepicker
             $('#enrollmentOpeningAt.datepicker').datepicker("setDate" , new Date(this.event.enrollmentOpeningAt));
             $('#enrollmentClosingAt.datepicker').datepicker("setDate" , new Date(this.event.enrollmentClosingAt));
@@ -110,6 +117,21 @@ export class EventManagePageComponent implements OnInit {
     this.router.navigate(['/my-events']);
   }
 
+
+  autocompleteCity(selectedData: any){
+
+    for(let i=0; i< selectedData.data.address_components.length; i++){
+      if(selectedData.data.address_components[i].types[0]==='locality') {
+        this.event.city = selectedData.data.address_components[i].long_name;
+        console.log("[Updated][City]" + this.event.city);
+      }
+      if (selectedData.data.address_components[i].types[0]=== 'country'
+        && selectedData.data.address_components[i].types[1]==='political'){
+        this.event.country = selectedData.data.address_components[i].long_name;
+        console.log ("[Updated][Country]"+ this.event.country);
+      }
+    }
+  }
 
   /**
    * It is called when the user clicks on the create button.

@@ -62,6 +62,9 @@ app.use(express.static(__dirname + '/dist'));
 // public folder for images
 app.use(express.static(__dirname + '/public'));
 
+// public folder for images
+app.use(express.static(__dirname + '/swagger'));
+
 // configuring favicon
 // TODO to remove the comment once we have an icon
 // app.use(favicon(__dirname + '/public/img/favicon.ico'));

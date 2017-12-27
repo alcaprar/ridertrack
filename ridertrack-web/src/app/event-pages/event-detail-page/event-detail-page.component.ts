@@ -106,16 +106,7 @@ export class EventDetailPageComponent implements OnInit {
     this.random = Math.random();
   }
 
-  shareWithFacebook(){
-    let params: UIParams = {
-      href: this.href,
-      method: 'share'
-    };
 
-    this.fb.ui(params)
-      .then((res: UIResponse) => console.log(res))
-      .catch((e: any) => console.error(e));
-  }
 
 private getRoute() {
   this.routeService.getRoute(this.eventId)
@@ -180,13 +171,13 @@ private getRoute() {
   enroll() {
 
     //if(this.enrollementIsOpen()) {
+    this.dialogService.enrollement("Add Tracking Device", function() {
       this.eventService.enrollToEvent(this.eventId)
         .then(
           (response) => {
             console.log('[EventDetail][enroll][success]', response);
             // get the new list of particpants to update the buttons
             this.getParticipants();
-            this.dialogService.alert("Success", "You are correctly enrolled");
           }
         )
         .catch(
@@ -194,7 +185,8 @@ private getRoute() {
             console.log('[EventDetail][enroll][error]', error);
             this.errors = error;
           }
-        );
+        )}.bind(this)
+    );
    // } else {
    // this.dialogService.confirmation("Enrollement",
    //     "Sorry the registration period is CLOSED or not yet AVAILABLE",function(){
@@ -220,7 +212,8 @@ private getRoute() {
    */
   withdrawEnrollment() {
     console.log('[EventDetail][withdrawEnrollment]');
-    this.dialogService.confirmation('Withdraw enrollment', 'Are you sure to withdraw your enrollment for this event?', function () {
+    this.dialogService.confirmation('Withdraw enrollment', 'Are you sure to withdraw your enrollment for this event?',
+      function () {
       console.log('[EventDetail][withdrawEnrollment][callback]');
       this.eventService.withdrawEnrollment(this.eventId, this.currentUser.id)
         .then(
@@ -271,6 +264,28 @@ private getRoute() {
     }.bind(this));
   }
 
+  shareWithFacebook(){
+    let params: UIParams = {
+      href: this.href,
+      method: 'share'
+    };
+
+    this.fb.ui(params)
+      .then((res: UIResponse) => console.log(res))
+      .catch((e: any) => console.error(e));
+  }
+
+  shareWithTumblr() {
+    window.open("http://www.tumblr.com/share/link?url="+this.href,
+      'mywin','left=60,top=30,height=500, width=600,toolbar=1,resizable=0');
+    return false;
+  }
+
+  shareWithTwitter() {
+    window.open("https://twitter.com/home?status=Look this amazing event! "+this.href,
+      'mywin','left=60,top=30,height=400, width=600,toolbar=1,resizable=0');
+    return false;
+  }
  /** similarEvents() {
     this.eventService.getSimilarEvents(3)
       .then(

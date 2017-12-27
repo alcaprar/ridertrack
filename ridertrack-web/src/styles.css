@@ -1963,14 +1963,19 @@ single property page
 .property-features ul li a:hover{
   color: black;
 }
-.roperty-social ul{
+.property-social ul{
   padding: 0px;
   margin: 0px;
   list-style: outside none none ;
 }
-.roperty-social ul li{
+.property-social ul li{
+   display: inline-block;
+   margin: 5px;
+ }
+.property-social ul li:hover{
   display: inline-block;
   margin: 5px;
+  cursor: pointer;
 }
 .property-style2 .dealer-widget {
   background-color: #838383;

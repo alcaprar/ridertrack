@@ -1,9 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
-import {AgmCoreModule, AgmMap, GoogleMapsAPIWrapper} from '@agm/core';
-import { RouterModule, Routes } from '@angular/router';
+import {AgmCoreModule, GoogleMapsAPIWrapper} from '@agm/core';
+import { RouterModule} from '@angular/router';
 import { HttpModule } from '@angular/http';
-import { HttpClient } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -27,9 +26,6 @@ import { ProfilePageComponent} from "./user-pages/profile-page/profile-page.comp
 import {EventCreatePageComponent} from "./event-pages/event-create-page/event-create-page.component";
 import {EventManagePageComponent} from "./event-pages/event-manage-page/event-manage-page.component";
 
-
-
-
 import { FacebookModule } from 'ngx-facebook';
 import { MyEventsComponent } from './event-pages/my-events/my-events.component';
 import {GuestGuard} from "./shared/guards/guest.guard";
@@ -37,8 +33,6 @@ import {EventService} from "./shared/services/event.service";
 import {HttpClientService} from "./shared/services/http-client.service";
 import {EventBoxComponent} from "./event-pages/event-box/event-box.component";
 import {HomeEventBoxComponent} from "./home-page/home-event-box/home-event-box.component";
-import { InvalidMessageDirective } from './authentication/invalid-message.directive';
-import {InvalidTypeDirective} from "./authentication/invalid-type.directive";
 import {FooterEventBoxComponent} from "./shared/layout/footer/footer-event-box/footer-event-box.component";
 import { FaqPageComponent } from './faq-page/faq-page.component';
 import {WhyRidertrackBestPageComponent} from "./why-ridertrack-best-page/why-ridertrack-best-page.component";
@@ -47,6 +41,7 @@ import { EnrolledEventsComponent } from './event-pages/my-events/enrolled-events
 import { OrganizedEventsComponent } from './event-pages/my-events/organized-events/organized-events.component';
 import { ConfirmationDialogComponent } from './shared/dialog/confirmation-dialog/confirmation-dialog.component';
 import { AlertDialogComponent } from './shared/dialog/alert-dialog/alert-dialog.component';
+import { EnrollementDialogComponent } from './shared/dialog/enrollement-dialog/enrollement-dialog.component';
 import {DialogService} from "./shared/dialog/dialog.service";
 import {CommonModule} from "@angular/common";
 import { AddRouteMapComponent } from './shared/map/add-route-map/add-route-map.component';
@@ -56,7 +51,15 @@ import {RouteService} from "./shared/services/route.service";
 import { EventProgressComponent } from './event-pages/event-progress/event-progress.component';
 import { DisplayMapComponent } from './shared/map/display-map/display-map.component';
 import { EventArchiveComponent } from './event-pages/event-archive/event-archive.component';
+import { MapComponent } from './event-pages/event-progress/map/map.component';
+import { LeaderboardComponent } from './event-pages/event-progress/leaderboard/leaderboard.component';
 import { ContactService } from './shared/services/contact.service';
+import {SortService} from "./event-pages/event-progress/sort.service";
+import {SortableTableDirective} from "./event-pages/event-progress/sortable-table.directive";
+import {SortableColumnComponent} from "./event-pages/event-progress/sortable-column/sortable-column.component";
+import {Ng4GeoautocompleteModule} from "ng4-geoautocomplete";
+import { ManageUsersComponent } from './admin/manage-users/manage-users.component';
+import { ManageEventsComponent } from './admin/manage-events/manage-events.component';
 
 @NgModule({
   declarations: [
@@ -80,9 +83,8 @@ import { ContactService } from './shared/services/contact.service';
     EventBoxOrganizedComponent,
     EventManagePageComponent,
     HomeEventBoxComponent,
-    InvalidMessageDirective,
-    InvalidTypeDirective,
     FooterEventBoxComponent,
+    EnrollementDialogComponent,
     WhyRidertrackBestPageComponent,
     FooterEventBoxComponent,
     FaqPageComponent,
@@ -95,7 +97,13 @@ import { ContactService } from './shared/services/contact.service';
     DirectionDirective,
     EventProgressComponent,
     DisplayMapComponent,
-    EventArchiveComponent
+    EventArchiveComponent,
+    MapComponent,
+    LeaderboardComponent,
+    SortableTableDirective,
+    SortableColumnComponent,
+    ManageUsersComponent,
+    ManageEventsComponent
   ],
   imports: [
     BrowserModule,
@@ -103,6 +111,7 @@ import { ContactService } from './shared/services/contact.service';
     FormsModule,
     CommonModule,
     HttpClientModule,
+    Ng4GeoautocompleteModule.forRoot(),
     FacebookModule.forRoot(),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyCWY7J8-bVG3TxQbVvgXb-F5lQV6XrTM5s',
@@ -127,6 +136,16 @@ import { ContactService } from './shared/services/contact.service';
       {
         path: 'archive',
         component: EventArchiveComponent,
+        pathMatch: 'full'
+      },
+      {
+        path: 'admin-users',
+        component: ManageUsersComponent,
+        pathMatch: 'full'
+      },
+      {
+        path: 'admin-events',
+        component: ManageEventsComponent,
         pathMatch: 'full'
       },
       {
@@ -155,7 +174,11 @@ import { ContactService } from './shared/services/contact.service';
       {
         path: 'events/:eventId/progress',
         component: EventProgressComponent,
-        pathMatch: 'full'
+        children: [
+          {path: '', redirectTo: 'map',pathMatch: 'full'},
+          { path: 'map', pathMatch: 'full', component: MapComponent},
+          { path: 'leaderboard', pathMatch: 'full', component: LeaderboardComponent}
+        ]
       },
       {
         path: 'my-events',
@@ -213,7 +236,8 @@ import { ContactService } from './shared/services/contact.service';
     HttpClientService,
     DialogService,
     RouteService,
-    ContactService
+    ContactService,
+    SortService
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

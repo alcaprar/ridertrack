@@ -1,0 +1,902 @@
+swagger: "2.0"
+info:
+  description: "You can visit out RiderTrack page at [https://rider-track-dev.herokuapp.com]" 
+  version: "1.0.0"
+  title: "Ridertrack Swagger"
+host: "rider-track-dev.herokuapp.com"
+basePath: "/api"
+schemes:
+- "https"
+paths:
+  /users:
+    get:
+      tags:
+      - "user"
+      summary: "It returns the list of all the users."
+      description: "It returns the list of all the users. It accepts query params for filtering the user: email, name, surname"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "email"
+        in: "query"
+        description: "Filter by email"
+        type: "string"
+      - name: "name"
+        in: "query"
+        description: "Filter by name"
+        type: "string"
+      - name: "surname"
+        in: "query"
+        description: "Filter by surname"
+        type: "string" 
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: '#/definitions/User'
+        400:
+          description: "Error message"
+    post:
+      tags:
+      - "user"
+      summary: "Creates a new user"
+      description: "creates a new user with given parameters"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "body"
+        in: "body"
+        description: "User object that needs to be added"
+        type: "string"
+        required: true
+        schema:
+          $ref: "#/definitions/createUser"
+      responses:
+        400:
+          description: "errors"
+        200:
+          description: "User successfully created"
+  /users/{userId}:
+    get:
+      tags:
+      - "user"
+      summary: "Find a user by given Id"
+      description: "Find a user by given Id"
+      produces: "application/json"
+      parameters:
+      - in: "path"
+        name: "userId"
+        type: "string"
+        description: "The id of the user you want to get"
+        required: true
+      responses:
+        200:
+          schema:
+            $ref: '#/definitions/User'
+        400:
+          description: "Error message"
+    put:
+      tags:
+      - "user"
+      summary: "Update a user by given Id"
+      description: "Update the data of a user by given Id"
+      consumes: "application/json"
+      produces: "application/json"
+      parameters:
+      - in: "path"
+        name: "userId"
+        type: "string"
+        description: "The id of the user you want to update"
+        required: true
+      - name: "body"
+        in: "body"
+        description: "User object that needs to be updated"
+        type: "string"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        200:
+          description: "User successfully updated"
+          schema:
+            $ref: '#/definitions/User'
+        400:
+          description: "Error message"
+    delete:
+      tags:
+      - "user"
+      summary: "Delete a user"
+      description: "Delete a user by given Id"
+      produces: "application/json"
+      parameters:
+      - in: path
+        name: "userId"
+        type: "string"
+        description: "The id of the user you want to delete."
+        required: true
+      responses:
+        200:
+          description: "User successfully deleted"
+        400:
+          description: "Error message"
+  /users/{userId}/organizedEvents:
+    get:
+      tags:
+      - "user"
+      summary: "Find users organized events by given Id"
+      description: "Find data of events an user has organized"
+      produces: "application/json"
+      parameters:
+      - in: "path"
+        name: "userId"
+        type: "string"
+        description: "The id of the user you want to get"
+        required: true
+      responses:
+        200:
+          schema:
+            $ref: '#/definitions/Event'
+        400:
+          description: "Error message"
+  /users/{userId}/enrolledEvents:
+    get:
+      tags:
+      - "user"
+      summary: "Find users enrolled events by given Id"
+      description: "Find data of events an user has enrolled"
+      produces: "application/json"
+      parameters:
+      - in: "path"
+        name: "userId"
+        type: "string"
+        description: "The id of the user you want to get"
+        required: true
+      responses:
+        200:
+          schema:
+            $ref: '#/definitions/Event'
+        400:
+            description: "Error message"
+  /events:
+    get:
+      tags:
+      - "event"
+      summary: "Finds all events"
+      description: "It returns the list of all the events. It accepts query params for filtering events: country, type"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "country"
+        in: "query"
+        description: "Filter by country"
+        type: "string"
+      - name: "type"
+        in: "query"
+        description: "Filter by type"
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: '#/definitions/createEvent'
+        400:
+          description: "Error message"
+    post:
+      tags:
+      - "event"
+      summary: "Creates a new event"
+      description: "creates a new event with given parameters"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "body"
+        in: "body"
+        description: "Event object that needs to be added"
+        type: "string"
+        required: true
+        schema:
+          $ref: "#/definitions/createEvent"
+      responses:
+        400:
+          description: "errors"
+        200:
+          description: "Event successfully created"
+  /events/{eventId}:
+    get:
+      tags:
+      - "event"
+      summary: "Find a event by given Id"
+      description: "Find a event by given Id"
+      produces: "application/json"
+      parameters:
+      - in: "path"
+        name: "eventId"
+        type: "string"
+        description: "The id of the event you want to get"
+        required: true
+      responses:
+        200:
+          schema:
+            $ref: '#/definitions/Event'
+        400:
+          description: "Error message"
+    put:
+      tags:
+      - "event"
+      summary: "Update a event by given Id"
+      description: "Update the data of a event by given Id"
+      consumes: "application/json"
+      produces: "application/json"
+      parameters:
+      - in: "path"
+        name: "eventId"
+        type: "string"
+        description: "The id of the event you want to update"
+        required: true
+      - name: "body"
+        in: "body"
+        description: "Event object with parameters that you want to update"
+        type: "string"
+        required: true
+        schema:
+          $ref: "#/definitions/Event"
+      responses:
+        200:
+          schema:
+            $ref: '#/definitions/Event'
+        400:
+          description: "Error message"
+        401:
+          description: "You are not allowed to change event"
+    delete:
+      tags:
+      - "event"
+      summary: "Delete a event"
+      description: "Delete a event by given Id"
+      produces: "application/json"
+      parameters:
+      - in: path
+        name: "eventId"
+        type: "string"
+        description: "The id of the event you want to delete."
+        required: true
+      responses:
+        200:
+          description: "Event successfully deleted"
+        400:
+          description: "Error message"
+        401:
+          description: "You are not allowed to delete this event"
+  /events/allCities:
+    get:
+      tags:
+      - "event"
+      summary: "Find all cities from all events"
+      description: "Find all cities from all events"
+      produces: "application/json"
+      responses:
+        200:
+          description: "{cities: London, NY, Milano}"
+        400:
+          description: "Error message"
+  /events/{eventId}/participantsList:
+    get:
+      tags:
+      - "event"
+      summary: "Find all participant of an event "
+      description: "Find all participants of an event by given Id"
+      produces: "application/json"
+      parameters:
+      - in: path
+        name: "eventId"
+        type: "string"
+        description: "The id of the event of which you want to see participants list."
+        required: true
+      responses:
+        200:
+          description: "{participants: id1, id2, id3}"
+        400:
+          description: "Error message"
+  /events/{eventId}/logo:
+    get:
+      tags:
+      - "event"
+      summary: "Find the logo of an event "
+      description: "Find the logo of an event by given Id"
+      produces: "application/json"
+      parameters:
+      - in: path
+        name: "eventId"
+        type: "string"
+        description: "The id of the event of which you want to see the logo."
+        required: true
+      responses:
+        200:
+          description: "*showing the logo of event"
+        400:
+          description: "Error message"
+  /events/{eventId}/organizer:
+    get:
+      tags:
+      - "event"
+      summary: "Find an organizer of an event"
+      description: "Finds an organizer of an event"
+      produces: "application/json"
+      parameters:
+      - in: path
+        name: "eventId"
+        type: "string"
+        description: "The id of the event of which you want to see who organized it."
+        required: true
+      responses:
+        200:
+          schema:
+            $ref: '#/definitions/User'
+        400:
+          description: "Error message"
+  /events/{eventId}/participants/positions:
+    get:
+      tags:
+      - "event"
+      summary: "Finds last positions of all participants"
+      description: "It returns a list with the most recent positions of all the users in the event."
+      produces:
+      - "application/json"
+      parameters:
+      - name: "eventId"
+        in: "path"
+        type: "string"
+        required: true
+      responses:
+        200:
+          description: "list of positions"
+          schema:
+            $ref: "#/definitions/arrayOfPositions"
+        400:
+          description: "Error message"
+    post:
+      tags:
+      - "event"
+      summary: "Adding a position"
+      description: "Gets the location from a mobile app in form of an object[lat,lon]. Adds the coordinates(String) of last location to the end of location list. If a location for an user in an event isn't created it creates it, if it is created than it updates it with adding the coordinates(String)."
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "body"
+        in: "body"
+        description: "Position object that is going to be added"
+        type: "string"
+        required: true
+      responses:
+        400:
+          description: "errors"
+        200:
+          description: "Positions updated successfully"
+          schema:
+            $ref: "#/definitions/Position"
+  /events/{eventId}/{userId}/location:
+    get:
+      tags:
+      - "event"
+      summary: "Last location of an user"
+      description: "Gets the last location of an user."
+      produces: "application/json"
+      parameters:
+      - in: path
+        name: "eventId"
+        type: "string"
+        required: true
+      - in: path
+        name: "userId"
+        type: "string"
+        description: "The id of the user of which you want to know location."
+        required: true
+      responses:
+        200:
+          schema:
+            $ref: '#/definitions/lastPosition'
+        400:
+          description: "Error message"
+  /events/{eventId}/ranking:
+    get:
+      tags:
+      - "event"
+      summary: "Latest ranking of an event"
+      description: "This method gets the latest ranking of the event"
+      produces: "application/json"
+      parameters:
+      - in: path
+        name: "eventId"
+        type: "string"
+        required: true
+      responses:
+        200:
+          description: "Ranking here : ranking was sent on: "
+        400:
+          description: "Error message"
+  /events/{eventId}/{userId}/secondLastLocation:
+    get:
+      tags:
+      - "event"
+      summary: "Second last location of an user"
+      description: "Gets the second last location of an user."
+      produces: "application/json"
+      parameters:
+      - in: path
+        name: "eventId"
+        type: "string"
+        required: true
+      - in: path
+        name: "userId"
+        type: "string"
+        required: true
+      responses:
+        200:
+          schema:
+            $ref: '#/definitions/lastPosition'
+        400:
+          description: "Error message"
+  /events/{eventId}/route:
+    get:
+      tags:
+      - "route"
+      summary: "It returns the route of the requested event."
+      description: "It returns the route of the requested event."
+      produces:
+      - "application/json"
+      parameters:
+      - name: "eventId"
+        in: "path"
+        type: "string"
+        required: true
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/Route"
+        400:
+          description: "Error message"
+    post:
+      tags:
+      - "route"
+      summary: "It creates the route for the given event."
+      description: "It creates the route for the given event."
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "eventId"
+        in: "path"
+        type: "string"
+      - name: "body"
+        in: "body"
+        description: "Object of coordinates that make a route"
+        type: "string"
+        required: true
+      responses:
+        400:
+          description: "errors"
+        200:
+          description: "Route successfully created"
+          schema:
+            $ref: "#/definitions/Coordinates"
+    put:
+      tags:
+      - "route"
+      summary: "Update route of an event"
+      description: "It updates the route for the given event."
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "eventId"
+        in: "path"
+        type: "string"
+      - name: "body"
+        in: "body"
+        description: "Object of coordinates that make a route"
+        type: "string"
+        required: true
+      responses:
+        200:
+          description: "Route successfully updated"
+          schema:
+            $ref: "#/definitions/Coordinates"
+        400:
+          description: "Error message"
+    delete:
+      tags:
+      - "route"
+      summary: "Delete a route"
+      description: "Delete route of an event by given Id"
+      produces: "application/json"
+      parameters:
+      - in: path
+        name: "eventId"
+        type: "string"
+        required: true
+      responses:
+        200:
+          description: "Route successfully deleted"
+        400:
+          description: "Error message"
+  /events/{eventId}/tracking/start:
+    post:
+      tags:
+      - "tracking"
+      summary: "It starts the tracking of an event."
+      description: "It starts the tracking of an event. It uses the method on the event model."
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "eventId"
+        in: "path"
+        type: "string"
+        required: true
+      responses:
+        400:
+          description: "errors"
+        200:
+          description: "Tracking started successfully."
+  /events/{eventId}/tracking/stop:
+    post:
+      tags:
+      - "tracking"
+      summary: "It stops the tracking of an event."
+      description: "It stops the tracking of an event. It uses the method on the event model."
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "eventId"
+        in: "path"
+        type: "string"
+        required: true
+      responses:
+        400:
+          description: "errors"
+        200:
+          description: "Tracking stopped successfully."
+  /enrollments:
+    get:
+      tags:
+      - "enrollment"
+      summary: "It returns the list of all the enrollments."
+      description: "It returns the list of all the enrollments. It accepts query params for filtering the enrollments: eventId, userId."
+      produces:
+      - "application/json"
+      parameters:
+      - name: "eventId"
+        in: "query"
+        description: "Filter by eventId"
+        type: "string"
+      - name: "userId"
+        in: "query"
+        description: "Filter by userId"
+        type: "string"
+      responses:
+        200:
+          schema:
+            $ref: '#/definitions/Enrollment'
+        400:
+          description: "Error message"
+    post:
+      tags:
+      - "enrollment"
+      summary: "It creates the enrollment passed in the body after checking the user is logged in."
+      description: "It creates the enrollment passed in the body after checking the user is logged in. It returns the detail of the enrollment just created."
+      consumes: "application/json"
+      produces: "application/json"
+      parameters:
+      - name: "body"
+        in: "body"
+        description: "Enrollment object with parameters that you want to create"
+        type: "string"
+        required: true
+        schema:
+          $ref: "#/definitions/Enrollment"
+      responses:
+        200:
+          schema:
+            description: "User enrolled successfully!"
+            $ref: '#/definitions/Enrollment'
+        400:
+          description: "Error message"
+  /enrollments/{eventId}:
+    get:
+      tags:
+      - "enrollment"
+      summary: "It return the enrollments of the requested eventId"
+      description: "It return the enrollments of the requested eventId"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "eventId"
+        in: "path"
+        type: "string"
+        required: true
+      responses:
+        200:
+          schema:
+            $ref: '#/definitions/Enrollment'
+        400:
+          description: "Error message"
+  /enrollments/{enrollmentId}:
+    put:
+      tags:
+      - "enrollment"
+      summary: " It updates the fields passed in the body of the given enrollmentId"
+      description: " It updates the fields passed in the body of the given enrollmentId"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "enrollmentId"
+        in: "path"
+        type: "string"
+        required: true
+      - name: "body"
+        in: "body"
+        type: "string"
+        required: true
+      responses:
+        200:
+          description: "Enrollment successfully updated"
+          schema:
+            $ref: '#/definitions/Enrollment'
+        400:
+          description: "Error message"
+        401:
+          description: "You are not authorized to update this enrollment."
+  /enrollments/{eventId}/{userId}:
+    delete:
+      tags:
+      - "enrollment"
+      summary: " It deletes the given enrollment by eventId and userId"
+      description: "It deletes the given enrollment by eventId and userId. Can be called only by the given user if he/she is enrollment on the event. This will delete permanently everything related to it."
+      produces:
+      - "application/json"
+      parameters:
+      - name: "eventId"
+        in: "path"
+        type: "string"
+        required: true
+      - name: "userId"
+        in: "path"
+        type: "string"
+        required: true
+      responses:
+        200:
+          description: "Enrollment successfully deleted"
+          schema:
+            $ref: '#/definitions/Enrollment'
+        400:
+          description: "Error message"
+        401:
+          description: "You are not authorized to delete this enrollment."
+  /auth/login:
+    post:
+      tags:
+      - "authenication"
+      summary: "Sign in an user"
+      description: "It checks the given email and password in the db. If matches it creates a jwt and return it."
+      consumes: "application/json"
+      produces: "application/json"
+      parameters:
+      - name: "body"
+        in: "body"
+        description: "Object with parameters(email and password) used to sign in an user"
+        type: "string"
+        required: true
+      responses:
+        200:
+          headers:
+            userId:
+              type: "string"
+              description: "Id of signed user"
+            role:
+              type: "string"
+              description: "role of signed user"
+            jwt-token:
+              type: "string"
+              description: "jwt token for this user"
+            expiresIn:
+              type: "number"
+              description: "time in which token expires in this session"
+        400:
+          description: "Error message"
+  /auth/login/facebook:
+    get:
+      tags:
+      - "authenication"
+      summary: "Sign in an google user"
+      description: "Sign in an user with facebook authentication"
+      consumes: "application/json"
+      produces: "application/json"
+      responses:
+        200:
+          headers:
+            userId:
+              type: "string"
+              description: "Id of signed user"
+            role:
+              type: "string"
+              description: "role of signed user"
+            jwt-token:
+              type: "string"
+              description: "jwt token for this user"
+            expiresIn:
+              type: "number"
+              description: "User is not found or password is incorrect"
+        400:
+          description: "Error message"
+  /auth/login/google:
+    get:
+      tags:
+      - "authenication"
+      summary: "Sign in an google user"
+      description: "Sign in an user with google authentication"
+      consumes: "application/json"
+      produces: "application/json"
+      responses:
+        200:
+          headers:
+            userId:
+              type: "string"
+              description: "Id of signed user"
+            role:
+              type: "string"
+              description: "role of signed user"
+            jwt-token:
+              type: "string"
+              description: "jwt token for this user"
+            expiresIn:
+              type: "number"
+              description: "time in which token expires in this session"
+        400:
+          description: "Error message"
+definitions:
+  User:
+    type: "object"
+    properties:
+      _id:
+        type: "string"
+      email:
+        type: "string"
+      name:
+        type: "string"
+      surname:
+        type: "string"
+      role:
+        type: "string"
+        enum:
+        - "user"
+        - "administrator"
+  createUser:
+    type: "object"
+    required:
+    - "email"
+    - "name"
+    - "surname"
+    - "password"
+    properties:
+      email:
+        type: "string"
+      name:
+        type: "string"
+      surname:
+        type: "string"
+      role:
+        type: "string"
+        enum:
+        - "user"
+        - "administrator"
+  Event:
+    type: "object"
+    properties:
+      _id:
+        type: "string"
+      organizerId:
+        type: "string"
+      name:
+        type: "string"
+      country:
+        type: "string"
+      city:
+        type: "string"
+      startingDate:
+        type: "string"
+      type:
+        type: "string"
+        enum:
+        - "running"
+        - "cycling"
+        - "hiking"
+        - "triathlon"
+        - "other"
+  createEvent:
+     type: "object"
+     required:
+     - "organizerId"
+     - "name"
+     - "country"
+     - "city"
+     - "startingDate"
+     - "type"
+     properties:
+       organizerId:
+         type: "string"
+       name:
+         type: "string"
+       country:
+         type: "string"
+       city:
+         type: "string"
+       startingDate:
+         type: "string"
+       type:
+         type: "string"
+         enum:
+         - "running"
+         - "cycling"
+         - "hiking"
+         - "triathlon"
+         - "other"
+  Position:
+    type: "object"
+    properties:
+      eventId:
+        type: "string"
+      userId:
+        type: "string"
+      lastPosition:
+        $ref: "#/definitions/lastPosition"
+  lastPosition:
+    type: "object"
+    properties:
+      lat:
+        type: "number"
+      lon:
+        type: "number"
+      timestamp:
+        type: "number"
+  arrayOfPositions:
+    type: "object"
+    properties:
+      positions:
+        type: "array"
+        $ref: "#/definitions/Position"
+  Route:
+    type: "object"
+    properties:
+      _id:
+        type: "string"
+      eventId:
+        type: "string"
+      coordinates:
+        $ref: "#/definitions/Coordinates"
+  Coordinates:
+    type: "object"
+    properties:
+      lat:
+        type: "number"
+      lon:
+        type: "number"
+  Enrollment:
+    type: "object"
+    properties:
+      _id:
+        type: "string"
+      eventId:
+        type: "string"
+      userId:
+        type: "string"

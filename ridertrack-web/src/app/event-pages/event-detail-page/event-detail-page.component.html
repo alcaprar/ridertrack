@@ -121,20 +121,20 @@
 
           <div class="section property-share">
             <h4 class="s-property-title">Share with your friends </h4>
-            <div class="roperty-social">
+            <div class="property-social">
               <ul>
                 <li>
-                  <a title="Share this on facebok " (click)="shareWithFacebook()">
+                  <a title="Share this on facebook " (click)="shareWithFacebook()">
                     <img src="../../../assets/img/social_big/facebook_grey.png">
                   </a>
                 </li>
                 <li>
-                  <a title="Share this on tumblr " href="http://www.tumblr.com/share/link?url={{href}}" target="_blank">
+                  <a title="Share this on tumblr " (click)="shareWithTumblr()" target="_blank">
                     <img src="../../../assets/img/social_big/tumblr_grey.png">
                   </a>
                 </li>
                 <li>
-                  <a title="Share this on twitter " href="https://twitter.com/home?status=Look this amazing event!" target="_blank">
+                  <a title="Share this on twitter " (click)="shareWithTwitter()" target="_blank">
                     <img src="../../../assets/img/social_big/twitter_grey.png">
                   </a>
                 </li>
@@ -148,7 +148,8 @@
       <div class="col-md-4 p0">
         <aside class="sidebar sidebar-property blog-asside-right">
           <div class="buttons clearfix">
-            <button class="btn-delete" *ngIf="mapPoints && mapPoints.length > 0" [routerLink]="['/events', event._id, 'progress']">Map</button>
+            <button class="btn-delete" *ngIf="mapPoints && mapPoints.length > 0 && event.status !== 'passed'"
+                    [routerLink]="['/events', event._id, 'progress']">Map</button>
           </div>
           <div class="buttons clearfix" *ngIf="isLogged()">
             <button class="btn-manage bounceInRight" (click)="enroll()" *ngIf="!isEnrolled() && event.status==='planned'">Enroll</button>
