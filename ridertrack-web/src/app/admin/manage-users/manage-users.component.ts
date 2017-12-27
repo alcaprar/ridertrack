@@ -37,6 +37,8 @@ export class ManageUsersComponent implements OnInit {
   }
 
   userClicked(user){
+    console.log('USER: ');
+    console.log(user);
     this.dialogService.adminEditUser('Edit user account', user);
   }
 
