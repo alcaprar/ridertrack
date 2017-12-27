@@ -302,5 +302,26 @@ eventSchema.methods.stopTracking = function (callback) {
     }
 };
 
+/**
+ * It checks if the event is ongoing.
+ * @param eventId
+ * @param callback
+ */
+eventSchema.statics.isOnGoing = function (eventId, callback) {
+    // retrieve the event
+    this.findOne({_id: eventId}, function (err, event) {
+        if(err){
+            return callback({message: "Error while checking event status."})
+        }
+        
+        // check the status
+        if(event.status === 'ongoing'){
+            return callback(null, true)
+        }else{
+            return callback(null, false)
+        }
+    })
+};
+
 var Event = mongoose.model('Event', eventSchema);
 module.exports = Event;

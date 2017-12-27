@@ -343,30 +343,46 @@ router.post('/:eventId/participants/positions', /*authMiddleware.hasValidToken, 
     //var userId = req.user._id;
     var eventId = req.params.eventId;
 
-    // TODO add check if the event status is ongoing
-
     console.log('[POST /positions]', req.body);
 
-    Positions.add(userId, eventId, req.body, function (err, userPositions) {
-        if (err) {
-            res.status(400).send({
+    // check if the event has started
+    Event.isOnGoing(eventId, function (err, isOnGoing) {
+        if(err){
+            return res.status(400).send({
                 errors: [err]
             })
         }else{
-                res.status(200).send({
-                    message: "Positions updated successfully",
-                    location: userPositions
-                });
 
-                Ranking.update(userId, eventId, req.body, function(err, updatedRanking){
-                    if (err){
-                        console.log("Error in updating ranking: " + err);
+            if(isOnGoing){
+                // the event is ongoing and the position can be accepted
+                Positions.add(userId, eventId, req.body, function (err, userPositions) {
+                    if (err) {
+                        res.status(400).send({
+                            errors: [err]
+                        })
                     }else{
-                        console.log("Ranking updated successfully");
+                        res.status(200).send({
+                            message: "Positions updated successfully",
+                            location: userPositions
+                        });
+
+                        Ranking.update(userId, eventId, req.body, function(err, updatedRanking){
+                            if (err){
+                                console.log("Error in updating ranking: " + err);
+                            }else{
+                                console.log("Ranking updated successfully");
+                            }
+                        })
                     }
                 })
+            }else{
+                return res.status(400).send({
+                    errors: [{message: "The event has not started yet."}]
+                })
+            }
         }
-    })
+    });
+
 });
 
 /**
@@ -449,11 +465,10 @@ router.get('/:eventId/ranking', function (req, res) {
     })
 });
 
-/*
+/**
  * This method gets the last known location of a user and its freshness data
  */
 router.get('/:eventId/:userId/lastLocation', function (req, res) {
-
     Location.findOne({userId: req.params.userId, eventId: req.params.eventId}, function (err, location) {
         if (err) {
             res.status(400).send({
@@ -468,11 +483,10 @@ router.get('/:eventId/:userId/lastLocation', function (req, res) {
     })
 });
 
-/*
+/**
  * This method gets the second last known location of a user
  */
 router.get('/:eventId/:userId/secondLastLocation', function (req, res) {
-
     Location.findOne({userId: req.params.userId, eventId: req.params.eventId}, function (err, location) {
         if (err) {
             res.status(400).send({
@@ -491,32 +505,18 @@ router.get('/:eventId/:userId/secondLastLocation', function (req, res) {
 /**
  * It deletes the event with the id given in the URI
  */
-router.delete('/:eventId', authMiddleware.hasValidToken, function(req,res){
-    Event.findByEventId(req.params.eventId, function (err, event) {
+router.delete('/:eventId', authMiddleware.hasValidToken, authMiddleware.isOrganizer, function(req,res){
+    Event.delete(req.params.eventId, function (err){
         if (err) {
             res.status(400).send({
                 errors: err
             })
-        }
-        else if (event.organizerId !== req.userId) {
-            res.status(401).send({
-                errors: "You are not allowed to delete this event"
+        } else {
+            res.status(200).send({
+                message: "The event has been successfully deleted."
             })
         }
-        else {
-            Event.delete(req.params.eventId, function (err){
-                if (err) {
-                    res.status(400).send({
-                        errors: err
-                    })
-                } else {
-                    res.status(200).send({
-                        event: event
-                    })
-                }
-            })
-        }
-    });
+    })
 });
 
 /**
