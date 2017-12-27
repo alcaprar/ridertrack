@@ -62,7 +62,7 @@ app.use(express.static(__dirname + '/dist'));
 // public folder for images
 app.use(express.static(__dirname + '/public'));
 
-// public folder for images
+// public folder for swagger
 app.use(express.static(__dirname + '/swagger'));
 
 // configuring favicon

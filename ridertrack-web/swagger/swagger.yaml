@@ -5,98 +5,113 @@ info:
   title: "Ridertrack Swagger"
 host: "rider-track-dev.herokuapp.com"
 basePath: "/api"
+tags:
+  - name: user
+    description: Operations for users
+  - name: event
+    description: Access to events and their data
+  - name: route
+    description: Operations with route
+  - name: tracking
+    description: Operations for start/stop tracking
+  - name: enrollment
+    description: Operations about enrollments
+  - name: authentication
+    description: Operations for authentication of a user
 schemes:
 - "https"
 paths:
   /users:
     get:
       tags:
-      - "user"
-      summary: "It returns the list of all the users."
-      description: "It returns the list of all the users. It accepts query params for filtering the user: email, name, surname"
+      - user
+      summary: It returns the list of all the users.
+      description: 'It returns the list of all the users. It accepts query params for filtering the user: email, name, surname'
       produces:
-      - "application/json"
+      - application/json
       parameters:
-      - name: "email"
-        in: "query"
-        description: "Filter by email"
-        type: "string"
-      - name: "name"
-        in: "query"
-        description: "Filter by name"
-        type: "string"
-      - name: "surname"
-        in: "query"
-        description: "Filter by surname"
-        type: "string" 
+      - name: email
+        in: query
+        description: Filter by email
+        type: string
+      - name: name
+        in: query
+        description: Filter by name
+        type: string
+      - name: surname
+        in: query
+        description: Filter by surname
+        type: string
       responses:
         200:
-          description: "successful operation"
+          description: successful operation
           schema:
             $ref: '#/definitions/User'
         400:
-          description: "Error message"
+          description: Error message
     post:
       tags:
-      - "user"
-      summary: "Creates a new user"
-      description: "creates a new user with given parameters"
+      - user
+      summary: Creates a new user
+      description: creates a new user with given parameters
       consumes:
-      - "application/json"
+      - application/json
       produces:
-      - "application/json"
+      - application/json
       parameters:
-      - name: "body"
-        in: "body"
-        description: "User object that needs to be added"
-        type: "string"
+      - name: body
+        in: body
+        description: User object that needs to be added
         required: true
         schema:
-          $ref: "#/definitions/createUser"
+          $ref: '#/definitions/createUser'
       responses:
         400:
-          description: "errors"
+          description: errors
         200:
-          description: "User successfully created"
-  /users/{userId}:
+          description: User successfully created
+  '/users/{userId}':
     get:
       tags:
-      - "user"
-      summary: "Find a user by given Id"
-      description: "Find a user by given Id"
-      produces: "application/json"
+      - user
+      summary: Find a user by given Id
+      description: Find a user by given Id
+      produces:
+        - application/json
       parameters:
-      - in: "path"
+      - in: path
         name: "userId"
         type: "string"
         description: "The id of the user you want to get"
         required: true
       responses:
         200:
+          description: ''
           schema:
             $ref: '#/definitions/User'
         400:
           description: "Error message"
     put:
       tags:
-      - "user"
-      summary: "Update a user by given Id"
-      description: "Update the data of a user by given Id"
-      consumes: "application/json"
-      produces: "application/json"
+      - user
+      summary: Update a user by given Id
+      description: Update the data of a user by given Id
+      consumes:
+        - application/json
+      produces:
+        - application/json
       parameters:
-      - in: "path"
-        name: "userId"
-        type: "string"
-        description: "The id of the user you want to update"
-        required: true
-      - name: "body"
-        in: "body"
-        description: "User object that needs to be updated"
-        type: "string"
-        required: true
-        schema:
-          $ref: "#/definitions/User"
+        - name: userId
+          in: path
+          description: The id of the user you want to update
+          type: string
+          required: true
+        - in: body
+          name: body
+          description: User object that needs to be updated
+          required: true
+          schema:
+            $ref: "#/definitions/User"
       responses:
         200:
           description: "User successfully updated"
@@ -109,7 +124,8 @@ paths:
       - "user"
       summary: "Delete a user"
       description: "Delete a user by given Id"
-      produces: "application/json"
+      produces:
+        - application/json
       parameters:
       - in: path
         name: "userId"
@@ -127,7 +143,8 @@ paths:
       - "user"
       summary: "Find users organized events by given Id"
       description: "Find data of events an user has organized"
-      produces: "application/json"
+      produces:
+        - application/json
       parameters:
       - in: "path"
         name: "userId"
@@ -136,6 +153,7 @@ paths:
         required: true
       responses:
         200:
+          description: ""
           schema:
             $ref: '#/definitions/Event'
         400:
@@ -146,7 +164,8 @@ paths:
       - "user"
       summary: "Find users enrolled events by given Id"
       description: "Find data of events an user has enrolled"
-      produces: "application/json"
+      produces:
+        - application/json
       parameters:
       - in: "path"
         name: "userId"
@@ -155,6 +174,7 @@ paths:
         required: true
       responses:
         200:
+          description: ""
           schema:
             $ref: '#/definitions/Event'
         400:
@@ -166,7 +186,7 @@ paths:
       summary: "Finds all events"
       description: "It returns the list of all the events. It accepts query params for filtering events: country, type"
       produces:
-      - "application/json"
+        - application/json
       parameters:
       - name: "country"
         in: "query"
@@ -193,10 +213,9 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: "body"
-        in: "body"
+      - in: body
+        name: body
         description: "Event object that needs to be added"
-        type: "string"
         required: true
         schema:
           $ref: "#/definitions/createEvent"
@@ -211,7 +230,8 @@ paths:
       - "event"
       summary: "Find a event by given Id"
       description: "Find a event by given Id"
-      produces: "application/json"
+      produces:
+        - application/json
       parameters:
       - in: "path"
         name: "eventId"
@@ -220,6 +240,7 @@ paths:
         required: true
       responses:
         200:
+          description: ""
           schema:
             $ref: '#/definitions/Event'
         400:
@@ -229,23 +250,25 @@ paths:
       - "event"
       summary: "Update a event by given Id"
       description: "Update the data of a event by given Id"
-      consumes: "application/json"
-      produces: "application/json"
+      consumes:
+        - application/json
+      produces:
+        - application/json
       parameters:
-      - in: "path"
+      - in: path
         name: "eventId"
         type: "string"
         description: "The id of the event you want to update"
         required: true
-      - name: "body"
-        in: "body"
+      - in: body
+        name: body
         description: "Event object with parameters that you want to update"
-        type: "string"
         required: true
         schema:
           $ref: "#/definitions/Event"
       responses:
         200:
+          description: ""
           schema:
             $ref: '#/definitions/Event'
         400:
@@ -257,7 +280,8 @@ paths:
       - "event"
       summary: "Delete a event"
       description: "Delete a event by given Id"
-      produces: "application/json"
+      produces:
+        - application/json
       parameters:
       - in: path
         name: "eventId"
@@ -277,7 +301,8 @@ paths:
       - "event"
       summary: "Find all cities from all events"
       description: "Find all cities from all events"
-      produces: "application/json"
+      produces:
+        - application/json
       responses:
         200:
           description: "{cities: London, NY, Milano}"
@@ -289,7 +314,8 @@ paths:
       - "event"
       summary: "Find all participant of an event "
       description: "Find all participants of an event by given Id"
-      produces: "application/json"
+      produces:
+        - application/json
       parameters:
       - in: path
         name: "eventId"
@@ -307,7 +333,8 @@ paths:
       - "event"
       summary: "Find the logo of an event "
       description: "Find the logo of an event by given Id"
-      produces: "application/json"
+      produces:
+        - application/json
       parameters:
       - in: path
         name: "eventId"
@@ -325,7 +352,8 @@ paths:
       - "event"
       summary: "Find an organizer of an event"
       description: "Finds an organizer of an event"
-      produces: "application/json"
+      produces:
+        - application/json
       parameters:
       - in: path
         name: "eventId"
@@ -334,6 +362,7 @@ paths:
         required: true
       responses:
         200:
+          description: ""
           schema:
             $ref: '#/definitions/User'
         400:
@@ -345,10 +374,10 @@ paths:
       summary: "Finds last positions of all participants"
       description: "It returns a list with the most recent positions of all the users in the event."
       produces:
-      - "application/json"
+        - application/json
       parameters:
-      - name: "eventId"
-        in: "path"
+      - name: eventId
+        in: path
         type: "string"
         required: true
       responses:
@@ -368,11 +397,16 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: "body"
-        in: "body"
-        description: "Position object that is going to be added"
-        type: "string"
+      - name: eventId
+        in: path
+        type: string
         required: true
+      - in: body
+        name: body
+        description: "Position object that is going to be added"
+        required: true
+        schema:
+          description: ""
       responses:
         400:
           description: "errors"
@@ -386,7 +420,8 @@ paths:
       - "event"
       summary: "Last location of an user"
       description: "Gets the last location of an user."
-      produces: "application/json"
+      produces:
+        - application/json
       parameters:
       - in: path
         name: "eventId"
@@ -399,6 +434,7 @@ paths:
         required: true
       responses:
         200:
+          description: ""
           schema:
             $ref: '#/definitions/lastPosition'
         400:
@@ -409,7 +445,8 @@ paths:
       - "event"
       summary: "Latest ranking of an event"
       description: "This method gets the latest ranking of the event"
-      produces: "application/json"
+      produces:
+        - application/json
       parameters:
       - in: path
         name: "eventId"
@@ -426,7 +463,8 @@ paths:
       - "event"
       summary: "Second last location of an user"
       description: "Gets the second last location of an user."
-      produces: "application/json"
+      produces:
+        - application/json
       parameters:
       - in: path
         name: "eventId"
@@ -438,6 +476,7 @@ paths:
         required: true
       responses:
         200:
+          description: ""
           schema:
             $ref: '#/definitions/lastPosition'
         400:
@@ -451,12 +490,13 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: "eventId"
-        in: "path"
+      - name: eventId
+        in: path
         type: "string"
         required: true
       responses:
         200:
+          description: ""
           schema:
             $ref: "#/definitions/Route"
         400:
@@ -471,14 +511,16 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: "eventId"
-        in: "path"
-        type: "string"
-      - name: "body"
-        in: "body"
-        description: "Object of coordinates that make a route"
+      - in: path
+        name: eventId
         type: "string"
         required: true
+      - in: body
+        name: body
+        description: "Object of coordinates that make a route"
+        required: true
+        schema:
+          description: ""
       responses:
         400:
           description: "errors"
@@ -496,14 +538,16 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: "eventId"
-        in: "path"
-        type: "string"
-      - name: "body"
-        in: "body"
-        description: "Object of coordinates that make a route"
-        type: "string"
+      - name: eventId
+        in: path
+        type: string
         required: true
+      - in: body
+        name: body
+        description: "Object of coordinates that make a route"
+        required: true
+        schema:
+          description: ""
       responses:
         200:
           description: "Route successfully updated"
@@ -516,7 +560,8 @@ paths:
       - "route"
       summary: "Delete a route"
       description: "Delete route of an event by given Id"
-      produces: "application/json"
+      produces:
+      - "application/json"
       parameters:
       - in: path
         name: "eventId"
@@ -586,6 +631,7 @@ paths:
         type: "string"
       responses:
         200:
+          description: ""
           schema:
             $ref: '#/definitions/Enrollment'
         400:
@@ -595,20 +641,21 @@ paths:
       - "enrollment"
       summary: "It creates the enrollment passed in the body after checking the user is logged in."
       description: "It creates the enrollment passed in the body after checking the user is logged in. It returns the detail of the enrollment just created."
-      consumes: "application/json"
-      produces: "application/json"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
       parameters:
-      - name: "body"
-        in: "body"
+      - in: "body"
+        name: "body"
         description: "Enrollment object with parameters that you want to create"
-        type: "string"
         required: true
         schema:
           $ref: "#/definitions/Enrollment"
       responses:
         200:
+          description: "User enrolled successfully!"
           schema:
-            description: "User enrolled successfully!"
             $ref: '#/definitions/Enrollment'
         400:
           description: "Error message"
@@ -627,6 +674,7 @@ paths:
         required: true
       responses:
         200:
+          description: ""
           schema:
             $ref: '#/definitions/Enrollment'
         400:
@@ -644,10 +692,11 @@ paths:
         in: "path"
         type: "string"
         required: true
-      - name: "body"
-        in: "body"
-        type: "string"
+      - in: "body"
+        name: "body"
         required: true
+        schema:
+          description: ""
       responses:
         200:
           description: "Enrollment successfully updated"
@@ -689,16 +738,20 @@ paths:
       - "authenication"
       summary: "Sign in an user"
       description: "It checks the given email and password in the db. If matches it creates a jwt and return it."
-      consumes: "application/json"
-      produces: "application/json"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
       parameters:
-      - name: "body"
-        in: "body"
+      - in: "body"
+        name: "body"
         description: "Object with parameters(email and password) used to sign in an user"
-        type: "string"
         required: true
+        schema:
+          description: ""
       responses:
         200:
+          description: ""
           headers:
             userId:
               type: "string"
@@ -718,12 +771,15 @@ paths:
     get:
       tags:
       - "authenication"
-      summary: "Sign in an google user"
+      summary: "Sign in as an facebook user"
       description: "Sign in an user with facebook authentication"
-      consumes: "application/json"
-      produces: "application/json"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
       responses:
         200:
+          description: ""
           headers:
             userId:
               type: "string"
@@ -743,12 +799,15 @@ paths:
     get:
       tags:
       - "authenication"
-      summary: "Sign in an google user"
+      summary: "Sign in as an google user"
       description: "Sign in an user with google authentication"
-      consumes: "application/json"
-      produces: "application/json"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
       responses:
         200:
+          description: ""
           headers:
             userId:
               type: "string"
@@ -874,7 +933,8 @@ definitions:
     properties:
       positions:
         type: "array"
-        $ref: "#/definitions/Position"
+        items:
+          $ref: "#/definitions/Position"
   Route:
     type: "object"
     properties:
