@@ -23,7 +23,7 @@ export class DialogService {
 
   adminEditUser(title, body){
     console.log('[DialogService][adminEditUser]', body);
-    this.dialogs['alert'].show(title, body.email);
+    this.dialogs['adminEditUser'].show(title, body);
   }
 
   enrollement(title, callback){

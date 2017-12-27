@@ -60,6 +60,7 @@ import {SortableColumnComponent} from "./event-pages/event-progress/sortable-col
 import {Ng4GeoautocompleteModule} from "ng4-geoautocomplete";
 import { ManageUsersComponent } from './admin/manage-users/manage-users.component';
 import { ManageEventsComponent } from './admin/manage-events/manage-events.component';
+import { AdminEditUserDialogComponent } from './shared/dialog/admin-edit-user-dialog/admin-edit-user-dialog.component';
 
 @NgModule({
   declarations: [
@@ -103,7 +104,8 @@ import { ManageEventsComponent } from './admin/manage-events/manage-events.compo
     SortableTableDirective,
     SortableColumnComponent,
     ManageUsersComponent,
-    ManageEventsComponent
+    ManageEventsComponent,
+    AdminEditUserDialogComponent
   ],
   imports: [
     BrowserModule,
