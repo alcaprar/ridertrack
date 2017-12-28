@@ -30,7 +30,8 @@
         <small>(*)the mobile application is given by default</small>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" (click)="skip()">Skip</button>
+        <button type="button" class="btn btn-danger" *ngIf="!isEnrolled" (click)="skip()">Skip</button>
+        <button type="button" class="btn btn-danger" *ngIf="isEnrolled" (click)="withdrawEnrollement()">Withdraw Enrollement</button>
         <button type="button" class="btn btn-default" (click)="save()" >Save</button>
       </div>
     </div>
