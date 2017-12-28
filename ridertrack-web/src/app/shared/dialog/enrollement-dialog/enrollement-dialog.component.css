@@ -1,11 +1,9 @@
 label.btn span {
     font-size: 1.5em ;
 }
-
-label:hover input[type="radio"] ~ i.fa {
-    color: #FDC600;
+label  input[type="checkbox"] {
+    display: none;
 }
-
 label input[type="checkbox"] ~ i.fa.fa-square-o{
     color: darkgray;    display: inline;
 }
@@ -21,7 +19,6 @@ label input[type="checkbox"]:checked ~ i.fa.fa-check-square-o{
 label input[type="checkbox"]:disabled ~ i.fa.fa-check-square-o{
     color: #FDC600;    display: inline;
 }
-
 label input[type="checkbox"]:disabled ~ i.fa.fa-square-o{
     display: none;
 }
@@ -48,11 +45,6 @@ div[data-toggle="buttons"] label {
     darkgray;
     border-radius: 3px;
     color: darkgray;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    -o-user-select: none;
-    user-select: none;
 }
 
 div[data-toggle="buttons"] label:hover {
