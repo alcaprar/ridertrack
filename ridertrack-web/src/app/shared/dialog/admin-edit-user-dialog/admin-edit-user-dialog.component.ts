@@ -13,6 +13,7 @@ export class AdminEditUserDialogComponent implements OnInit {
   private callback;
   private title = 'Title';
   private body = 'Body';
+  private editedUser: User;
 
   constructor(private dialogService: DialogService) {
     this.dialogService.register('adminEditUser', this)
@@ -23,6 +24,9 @@ export class AdminEditUserDialogComponent implements OnInit {
 
 
   show(title, body) {
+     /* this.editedUser = body;
+     console.log('[EditedUser]:');
+     console.log(this.editedUser); */
     console.log('[adminEditUserDialog][show]', title, body);
     this.title = title;
     this.body = body;
@@ -38,6 +42,17 @@ export class AdminEditUserDialogComponent implements OnInit {
   cancel(){
     console.log('[adminEditUserDialog][cancel]');
     $('#adminEditUserDialog').modal('hide');
+  }
+
+  user(body){
+    // this.editedUser = body;
+    this.editedUser.email = body.email;
+    this.editedUser.name = body.name;
+    this.editedUser.surname = body.surname;
+    this.editedUser.id = body._id;
+    console.log('[EditedUser]:');
+    console.log(this.editedUser);
+
   }
 
 

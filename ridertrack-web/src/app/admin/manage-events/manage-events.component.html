@@ -1,1 +1,17 @@
 <app-page-header title="Manage events"></app-page-header>
+
+<div class="container">
+    <div class="row">
+      <div class="col-md-6 wow fadeInRight animated">
+        <div class="single-footer">
+          <h4>List of all events <small>(click on an event for editing it)</small></h4>
+          <div class="footer-title-line"></div>
+          <ul class="footer-menu">
+            <li *ngFor="let event of eventsList">
+              <a (click)="eventClicked(event)">{{event.name}}, {{event.city}}</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>

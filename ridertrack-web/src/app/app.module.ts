@@ -61,6 +61,7 @@ import {Ng4GeoautocompleteModule} from "ng4-geoautocomplete";
 import { ManageUsersComponent } from './admin/manage-users/manage-users.component';
 import { ManageEventsComponent } from './admin/manage-events/manage-events.component';
 import { AdminEditUserDialogComponent } from './shared/dialog/admin-edit-user-dialog/admin-edit-user-dialog.component';
+import { AdminEditEventDialogComponent } from './shared/dialog/admin-edit-event-dialog/admin-edit-event-dialog.component';
 
 @NgModule({
   declarations: [
@@ -105,7 +106,8 @@ import { AdminEditUserDialogComponent } from './shared/dialog/admin-edit-user-di
     SortableColumnComponent,
     ManageUsersComponent,
     ManageEventsComponent,
-    AdminEditUserDialogComponent
+    AdminEditUserDialogComponent,
+    AdminEditEventDialogComponent
   ],
   imports: [
     BrowserModule,
