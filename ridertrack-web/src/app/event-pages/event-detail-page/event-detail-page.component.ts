@@ -186,7 +186,7 @@ private getRoute() {
             this.errors = error;
           }
         )}.bind(this)
-    );
+   , false, null);
    // } else {
    // this.dialogService.confirmation("Enrollement",
    //     "Sorry the registration period is CLOSED or not yet AVAILABLE",function(){
@@ -210,25 +210,27 @@ private getRoute() {
   /**
    * It calls the event service to withdraw the enrollment of the user.
    */
-  withdrawEnrollment() {
-    console.log('[EventDetail][withdrawEnrollment]');
-    this.dialogService.confirmation('Withdraw enrollment', 'Are you sure to withdraw your enrollment for this event?',
-      function () {
-      console.log('[EventDetail][withdrawEnrollment][callback]');
-      this.eventService.withdrawEnrollment(this.eventId, this.currentUser.id)
-        .then(
-          (response) => {
-            console.log('[EventDetail][withdrawEnrollment][success]', response);
-            // get the new list of particpants to update the buttons
-            this.getParticipants()
-          }
-        )
-        .catch(
-          (error) => {
-            console.log('[EventDetail][withdrawEnrollment][error]', error);
-              this.errors = error;
-          }
-        );
+  manageEnrollment() {
+    console.log('[EventDetail][ManageEnrollment]');
+    this.dialogService.enrollement("Manage Enrollement", null, true, function () {
+      this.dialogService.confirmation('Withdraw enrollment', 'Are you sure to withdraw your enrollment for this event?',
+        function () {
+          console.log('[EventDetail][withdrawEnrollment][callback]');
+          this.eventService.withdrawEnrollment(this.eventId, this.currentUser.id)
+            .then(
+              (response) => {
+                console.log('[EventDetail][withdrawEnrollment][success]', response);
+                // get the new list of particpants to update the buttons
+                this.getParticipants()
+              }
+            )
+            .catch(
+              (error) => {
+                console.log('[EventDetail][withdrawEnrollment][error]', error);
+                this.errors = error;
+              }
+            );
+        }.bind(this));
     }.bind(this));
 
   }
