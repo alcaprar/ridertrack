@@ -29,7 +29,7 @@ export class DialogService {
   adminEditEvent(title, body){
     console.log('[DialogService][adminEditEvent]', body);
     // this.dialogs['adminEditEvent'].user(body);
-    this.dialogs['adminEditEvent'].show(title, body.name);
+    this.dialogs['adminEditEvent'].show(title, body);
   }
 
   enrollement(title, callback, isEnrolled, callbackWithdrawEnrollement){

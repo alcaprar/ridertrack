@@ -46,7 +46,7 @@ export class ManageEventsComponent implements OnInit {
 
 
   eventClicked(event){
-    this.dialogService.adminEditEvent('Edit event', event);
+    this.dialogService.adminEditEvent('Edit event', event._id);
   }
 
 }
