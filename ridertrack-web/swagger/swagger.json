@@ -6,7 +6,7 @@
       "title": "Ridertrack Swagger"
    },
    "host": "rider-track-dev.herokuapp.com",
-   "basePath": "/swagger",
+   "basePath": "/api",
    "tags": [
       {
          "name": "user",
