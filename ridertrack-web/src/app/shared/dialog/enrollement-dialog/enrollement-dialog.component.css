@@ -1,9 +1,10 @@
 label.btn span {
     font-size: 1.5em ;
 }
-label  input[type="checkbox"] {
+label input[type="checkbox"]{
     display: none;
 }
+
 label input[type="checkbox"] ~ i.fa.fa-square-o{
     color: darkgray;    display: inline;
 }
@@ -45,6 +46,10 @@ div[data-toggle="buttons"] label {
     darkgray;
     border-radius: 3px;
     color: darkgray;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 div[data-toggle="buttons"] label:hover {
