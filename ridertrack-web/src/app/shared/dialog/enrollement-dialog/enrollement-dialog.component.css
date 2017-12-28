@@ -1,10 +1,12 @@
 label.btn span {
     font-size: 1.5em ;
 }
+input[type="checkbox"]{
+    display: none;
+}
 label input[type="checkbox"]{
     display: none;
 }
-
 label input[type="checkbox"] ~ i.fa.fa-square-o{
     color: darkgray;    display: inline;
 }
@@ -26,11 +28,9 @@ label input[type="checkbox"]:disabled ~ i.fa.fa-square-o{
 label:hover input[type="checkbox"] ~ i.fa {
     color: #FDC600;
 }
-
 div[data-toggle="buttons"] label.active{
     color: darkgray;
 }
-
 div[data-toggle="buttons"] label {
     display: inline-block;
     padding: 6px 12px;
