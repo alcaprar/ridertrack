@@ -12,7 +12,7 @@ export class AdminEditUserDialogComponent implements OnInit {
 
   private callback;
   private title = 'Title';
-  private body: User;
+  private body = 'Body';
 
   constructor(private dialogService: DialogService) {
     this.dialogService.register('adminEditUser', this)
@@ -32,6 +32,11 @@ export class AdminEditUserDialogComponent implements OnInit {
 
   ok() {
     console.log('[adminEditUserDialog][ok]');
+    $('#adminEditUserDialog').modal('hide');
+  }
+
+  cancel(){
+    console.log('[adminEditUserDialog][cancel]');
     $('#adminEditUserDialog').modal('hide');
   }
 

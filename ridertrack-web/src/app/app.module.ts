@@ -141,12 +141,12 @@ import { AdminEditUserDialogComponent } from './shared/dialog/admin-edit-user-di
         pathMatch: 'full'
       },
       {
-        path: 'admin-users',
+        path: 'admin/users',
         component: ManageUsersComponent,
         pathMatch: 'full'
       },
       {
-        path: 'admin-events',
+        path: 'admin/events',
         component: ManageEventsComponent,
         pathMatch: 'full'
       },

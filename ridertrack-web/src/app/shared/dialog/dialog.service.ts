@@ -9,6 +9,8 @@ export class DialogService {
 
   register(id, component){
     this.dialogs[id] = component;
+    console.log('Checkpoint: ');
+    console.log(this.dialogs[id],id,component);
   }
 
   confirmation(title, body, callback){
@@ -23,7 +25,7 @@ export class DialogService {
 
   adminEditUser(title, body){
     console.log('[DialogService][adminEditUser]', body);
-    this.dialogs['adminEditUser'].show(title, body);
+    this.dialogs['adminEditUser'].show(title, body.email);
   }
 
   enrollement(title, callback){

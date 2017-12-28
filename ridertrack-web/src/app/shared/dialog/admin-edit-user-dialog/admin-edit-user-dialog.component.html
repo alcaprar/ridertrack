@@ -1,4 +1,4 @@
-<div class="modal fade" id="alertDialog" role="dialog">
+<div class="modal fade" id="adminEditUserDialog" role="dialog">
     <div class="modal-dialog">
   
       <!-- Modal content-->
@@ -8,10 +8,11 @@
           <h4 class="modal-title">{{title}}</h4>
         </div>
         <div class="modal-body">
-          <p></p>
+          <p>{{body}}</p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" (click)="ok()">Ok</button>
+          <button type="button" class="btn btn-danger" (click)="ok()">Ok</button>
+          <button type="button" class="btn btn-default" (click)="cancel()">Cancel</button>
         </div>
       </div>
   
