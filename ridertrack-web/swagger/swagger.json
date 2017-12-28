@@ -1275,6 +1275,12 @@
             "surname": {
                "type": "string"
             },
+            "city": {
+               "type": "string"
+            },
+            "aboutMe": {
+               "type": "string"
+            },
             "role": {
                "type": "string",
                "enum": [

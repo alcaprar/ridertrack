@@ -34,6 +34,12 @@ var userSchema = Schema({
         required: true,
         minlength: 1
     },
+    city: {
+        type: String
+    },
+    aboutMe: {
+        type: String
+    },
     role: {
         type: String,
         required: true,
