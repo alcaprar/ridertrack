@@ -1,7 +1,9 @@
 var express = require('express'),
     bodyParser = require('body-parser'), //to retrieve post parameters
     favicon = require('serve-favicon'),
-    cors = require('cors');
+    cors = require('cors'),
+    swaggerUi = require('swagger-ui-express'),
+    swaggerDocument = require('./swagger/swagger.json');
 
 var app = express();
 
@@ -64,6 +66,12 @@ app.use(express.static(__dirname + '/public'));
 
 // public folder for swagger
 app.use(express.static(__dirname + '/swagger'));
+
+var options = {
+    explorer: true
+};
+
+app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument,options));
 
 // configuring favicon
 // TODO to remove the comment once we have an icon

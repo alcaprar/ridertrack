@@ -4,7 +4,7 @@ info:
   version: "1.0.0"
   title: "Ridertrack Swagger"
 host: "rider-track-dev.herokuapp.com"
-basePath: "/api"
+basePath: "/swagger"
 tags:
   - name: user
     description: Operations for users
@@ -735,7 +735,7 @@ paths:
   /auth/login:
     post:
       tags:
-      - "authenication"
+      - "authentication"
       summary: "Sign in an user"
       description: "It checks the given email and password in the db. If matches it creates a jwt and return it."
       consumes:
@@ -770,7 +770,7 @@ paths:
   /auth/login/facebook:
     get:
       tags:
-      - "authenication"
+      - "authentication"
       summary: "Sign in as an facebook user"
       description: "Sign in an user with facebook authentication"
       consumes:
@@ -798,7 +798,7 @@ paths:
   /auth/login/google:
     get:
       tags:
-      - "authenication"
+      - "authentication"
       summary: "Sign in as an google user"
       description: "Sign in an user with google authentication"
       consumes:
