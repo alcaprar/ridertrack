@@ -92,11 +92,6 @@ export class EventsListPageComponent implements OnInit {
       (this.queryParams.lengthlte >= 0 && this.queryParams.lengthlte <=300 ? this.queryParams.lengthlte : 300)
     ])
     $('.selectpicker').selectpicker();
-    $('input').iCheck({
-      checkboxClass: 'icheckbox_square-yellow',
-      radioClass: 'iradio_square-yellow',
-      increaseArea: '20%' // optional
-    });
     $('.layout-grid').on('click', function () {
       $('.layout-grid').addClass('active');
       $('.layout-list').removeClass('active');
