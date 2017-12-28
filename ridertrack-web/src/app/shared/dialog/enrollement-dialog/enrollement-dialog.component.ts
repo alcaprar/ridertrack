@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {DialogService} from "../dialog.service";
 import {Router} from "@angular/router";
 import {User} from "../../models";
@@ -8,6 +8,7 @@ declare var $: any;
 
 @Component({
   selector: 'app-enrollement-dialog',
+  encapsulation: ViewEncapsulation.None,
   templateUrl: './enrollement-dialog.component.html',
   styleUrls: ['./enrollement-dialog.component.css']
 })

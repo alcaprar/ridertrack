@@ -1,4 +1,4 @@
-import { Component, OnInit, ApplicationRef, ViewChild, ElementRef } from '@angular/core';
+import {Component, OnInit, ApplicationRef, ViewChild, ElementRef, ViewEncapsulation} from '@angular/core';
 import {EventService} from '../../shared/services/event.service';
 import {UserService} from '../../shared/services/user.service';
 import {User} from '../../shared/models/user';
@@ -9,13 +9,13 @@ declare var $: any;
 
 @Component({
   selector: 'app-events-list-page',
+  encapsulation: ViewEncapsulation.None,
   templateUrl: './events-list-page.component.html',
   styleUrls: ['./events-list-page.component.css']
 })
 export class EventsListPageComponent implements OnInit {
 
   @ViewChild('searchKeyword') searchKeyword: ElementRef;
-  @ViewChild('searchCity') searchCity: ElementRef;
   @ViewChild('searchType') searchType: ElementRef;
   @ViewChild('itemsPerPage') itemsPerPageSelect: ElementRef;
 
@@ -23,6 +23,14 @@ export class EventsListPageComponent implements OnInit {
   private eventsList: Event[] = [];
   private eventTypes: String[];
   private allowedItemsPerPage = [3, 6, 9, 12, 15];
+
+  public userSettingCity: any = {
+    showSearchButton: false,
+    geoTypes: ['(cities)'],
+    showCurrentLocation: false,
+    inputPlaceholderText: 'City'
+
+  };
 
   private queryParams: EventsListQueryParams = new EventsListQueryParams;
   private totalPages: number = 0;
@@ -148,7 +156,6 @@ export class EventsListPageComponent implements OnInit {
    */
   search(){
     this.queryParams.keyword = (this.searchKeyword.nativeElement.value === '') ? undefined : this.searchKeyword.nativeElement.value;
-    this.queryParams.city = (this.searchCity.nativeElement.value === '') ? undefined : this.searchCity.nativeElement.value;
     this.queryParams.type = (this.searchType.nativeElement.value == -1) ? undefined : this.searchType.nativeElement.value;
 
     // length search
@@ -170,6 +177,16 @@ export class EventsListPageComponent implements OnInit {
     console.log('[EventsList][search]', this.queryParams);
 
     this.updateEventsList();
+  }
+
+  autocompleteCity(selectedData: any){
+
+    for(let i=0; i< selectedData.data.address_components.length; i++){
+      if(selectedData.data.address_components[i].types[0]==='locality') {
+        this.queryParams.city = selectedData.data.address_components[i].long_name;
+        console.log("[Updated][City]" + this.queryParams.city);
+      }
+    }
   }
 
   /**

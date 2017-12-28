@@ -12,7 +12,9 @@
                 <input type="text" #searchKeyword class="form-control" [value]="(queryParams.keyword === undefined) ? '' : queryParams.keyword" placeholder="Key word">
               </div>
               <div class="col-md-4">
-                <input type="text" #searchCity class="form-control" [value]="(queryParams.city === undefined) ? '' : queryParams.city" placeholder="City">
+                <ng4geo-autocomplete id="city" (componentCallback)="autocompleteCity($event)"
+                                     [userSettings]="userSettingCity">
+                </ng4geo-autocomplete>
                 <!--<select id="lunchBegins" class="selectpicker" data-live-search="true" data-live-search-style="begins" title="Select your city">
                   <option>New york</option>
                   <option>Paris</option>
