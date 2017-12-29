@@ -19,12 +19,18 @@ p{
 
 .btn-manage {
     background-color: #FDC600;
-    margin-bottom: 0.5em;
+    margin-bottom: 0;
+    margin-top: 0.5em;
     color: white;
+    font-weight: bold;
     padding: 0.5em;
-    width: 15%;
+    width: 40%;
     margin-right: 0.5em;
     float: right;
+}
+.btn-manage:hover {
+    cursor: pointer;
+    background-color: #FFC500;
 }
 .btn-save{
     margin-top: 0.5em;
@@ -32,9 +38,79 @@ p{
     padding: 0.5em;
     color: white;
     width: 100%;
+    font-weight: bold;
 }
 
 #search-container{
     padding: 1em 1em 1em 1em;
     background-color: ghostwhite;
 }
+
+/****** RADIO BUTTONS ********/
+label input[type="radio"]{
+    display: none;
+}
+input[type="radio"]{
+    display: none;
+}
+label.btn span {
+    font-size: 1.5em ;
+}
+
+label input[type="radio"] ~ i.fa.fa-circle-o{
+    color: grey;    display: inline;
+}
+label input[type="radio"] ~ i.fa.fa-dot-circle-o{
+    display: none;
+}
+label input[type="radio"]:checked ~ i.fa.fa-circle-o{
+    display: none;
+}
+label input[type="radio"]:checked ~ i.fa.fa-dot-circle-o{
+    color: #FDC600;    display: inline;
+}
+label:hover input[type="radio"] ~ i.fa {
+    color: #FDC600;
+}
+
+div[data-toggle="buttons"] label.active{
+    color: grey;
+}
+
+div[data-toggle="buttons"] label {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 2em;
+    text-align: left;
+    white-space: nowrap;
+    vertical-align: top;
+    cursor: pointer;
+    border: 0px solid
+    grey;
+    border-radius: 3px;
+    color: grey;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+div[data-toggle="buttons"] label:hover {
+    color: #FDC600;
+}
+
+div[data-toggle="buttons"] label:active, div[data-toggle="buttons"] label.active {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+p{
+    padding: 6px 12px;
+    line-height: 2em;
+}
+
+
+
+

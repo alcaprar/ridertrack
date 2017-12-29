@@ -1,20 +1,48 @@
-
 <div class="container" id="search-container">
     <div class="form-group">
         <input id="search" placeholder="Insert starting area" type="text" class="form-control"
                    #search [formControl]="searchControl">
     </div>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-8">
+            <div class="btn-group" data-toggle="buttons">
+                <p>Choose "Draw" method :
+                    <label class="btn" (click)="setRadio('waypoints')">
+                    <input type="radio" name='radioButton' value="waypoints" (click)="setRadio('waypoints')">
+                    <i class="fa fa-circle-o fa-2x"></i><i class="fa fa-dot-circle-o fa-2x"></i> <span> Directions</span>
+                    <small>(*max 23 checkpoints)</small>
+                    </label>
+                    <label class="btn" (click)="setRadio('polylines')">
+                        <input type="radio" name='radioButton' value="polylines"  (click)="setRadio('polylines')">
+                        <i class="fa fa-circle-o fa-2x"></i><i class="fa fa-dot-circle-o fa-2x"></i><span> Lines</span>
+                    </label>
+                </p>
+                </div>
+        </div>
+        <div class="col-md-4">
         <button class="btn-manage" (click)="clearLast()">Clear Last</button>
         <button class="btn-manage bounceInRight" (click)="clearAll()" >Clear Map</button>
         </div>
     </div>
 
-        <agm-map id="map" #map [longitude]="initLong" [latitude]="initLat" [zoom]="zoom" (mapClick)="mapClicked($event)">
+    <!-- MAP SECTION-->
+    <agm-map id="map" #map [longitude]="initLong" [latitude]="initLat" [zoom]="zoom"
+             (mapClick)="mapClicked($event)" [streetViewControl]="false" [clickableIcons]="false">
+        <!-- MAP CONTENT FOR DIRECTIONS-->
+        <div id="waypoints" *ngIf="selected==='waypoints'">
             <map-direction *ngIf="directions != null" [origin]="directions.origin" [destination]="directions.destination"
                            [waypoints]="directions.waypoints" ></map-direction>
-        </agm-map >
+            </div>
+        <!-- MAP CONTENT FOR POLYLINES-->
+        <div id="polylines" *ngIf="selected === 'polylines' && mapPoints.length>0">
+                <agm-polyline [strokeColor]="'#00BFFF'" [strokeWeight]="7">
+                    <agm-polyline-point *ngFor="let point of mapPoints" [latitude]="point.lat" [longitude]="point.lng"></agm-polyline-point>
+                </agm-polyline>
+            <agm-marker *ngFor="let point of mapPoints" [latitude]="point.lat" [longitude]="point.lng"></agm-marker>
+        </div>
+    </agm-map >
+    <!--END MAP SECTION-->
+
     <div class="row ">
         <div class="col-20 col-md-12 justify-content-center">
             <button class="btn-save" (click)="saveRoute()">Save Route</button>
@@ -23,8 +51,8 @@
     <div *ngIf="errors != null && errors.length > 0" class="alert alert-danger" style="margin-top: 20px">
         <span *ngFor="let err of errors">{{err.message}}</span>
     </div>
-
 </div>
+
 
 
 
