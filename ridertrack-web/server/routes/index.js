@@ -15,6 +15,9 @@ router.use('/api/events', require('./event'));
 // require enrollment endpoint
 router.use('/api/enrollments', require('./enrollment'));
 
+// require admin endpoint
+router.use('/api/admin', require('./admin'));
+
 router.use('/api/utils', require('./utils'));
 
 router.get('/health-check', function (req, res) {
