@@ -124,6 +124,10 @@ export class AddRouteMapComponent implements OnInit {
 
     getRoutePointsAndWaypoints(){
         let waypoints = [];
+        if(this.mapPoints.length > 25){
+          this.dialogService.alert("Error", "The maximum number of checkpoints is 23! If you want more than you can use 'Lines'.");
+          return;
+        }
         if (this.mapPoints.length > 2){
             for(let i=1; i<this.mapPoints.length-1; i++){
                 let address = this.mapPoints[i];
