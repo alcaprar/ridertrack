@@ -8,12 +8,14 @@
             <div class="btn-group" data-toggle="buttons">
                 <p>Choose "Draw" method :
                     <label class="btn" (click)="setRadio('waypoints')">
-                    <input type="radio" name='radioButton' value="waypoints" (click)="setRadio('waypoints')">
+                    <input type="radio" name='radioButton' value="waypoints" (click)="setRadio('waypoints')"
+                           [checked]="selected === 'waypoints'">
                     <i class="fa fa-circle-o fa-2x"></i><i class="fa fa-dot-circle-o fa-2x"></i> <span> Directions</span>
                     <small>(*max 23 checkpoints)</small>
                     </label>
                     <label class="btn" (click)="setRadio('polylines')">
-                        <input type="radio" name='radioButton' value="polylines"  (click)="setRadio('polylines')">
+                        <input type="radio" name='radioButton' value="polylines"  (click)="setRadio('polylines')"
+                        [checked]="selected==='polylines'">
                         <i class="fa fa-circle-o fa-2x"></i><i class="fa fa-dot-circle-o fa-2x"></i><span> Lines</span>
                     </label>
                 </p>

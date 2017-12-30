@@ -23,6 +23,7 @@ export class DisplayMapComponent implements OnInit{
   public zoom = 15;
   public lat: number;
   public lng: number;
+  public selected: String = '';
 
   public mapPoints; //latLng array
   directions: any;
@@ -32,14 +33,15 @@ export class DisplayMapComponent implements OnInit{
 
       this.routeService.getRoute(this.eventid)
         .then(
-          (coordinates) => {
-            console.log('[Progress Management][OnInit][success]', coordinates);
-            console.log('[Progress Management][OnInit][Coordinates detected]', coordinates);
-            this.mapPoints = coordinates;
-            this.initMap();
+          (route) => {
+            console.log('[DisplayMap][OnInit][success]', route);
+            this.mapPoints = route.coordinates as [{lat: number, lng: number}];
+            this.selected = route.type;
+            console.log('[DisplayMap][OnInit][Coordinates detected]', this.mapPoints);
+            console.log('[DisplayMap][OnInit][Type Detected]', this.selected);
           })
-        .catch((error) => {
-          console.log('[Progress Management][OnInit][error]', error);
+        .catch((err) => {
+          console.log('[DisplayMap][OnInit][error]', err);
         });
     }
 
@@ -51,7 +53,9 @@ export class DisplayMapComponent implements OnInit{
       this.initCoords ={lat: this.mapPoints[0].lat, lng: this.mapPoints[0].lng } ;
       this.origin = this.initCoords;
       this.destination = this.mapPoints[this.mapPoints.length - 1];
-      this.getRoutePointsAndWaypoints();
+      if(this.selected === 'waypoints'){
+        this.getRoutePointsAndWaypoints();
+      }
     }
   }
 

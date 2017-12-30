@@ -43,10 +43,12 @@ export class AddRouteMapComponent implements OnInit {
 
       this.routeService.getRoute(this.eventId)
         .then(
-          (coordinates) => {
-            console.log('[Route Management][OnInit][success]', coordinates);
-              console.log('[Route Management][OnInit][Coordinates detected]', coordinates);
-              this.mapPoints = coordinates;
+          (route) => {
+            console.log('[Route Management][OnInit][success]', route);
+              this.mapPoints = route.coordinates as [{lat: number, lng: number}];
+              this.selected = route.type;
+            console.log('[Route Management][OnInit][Coordinates detected]', this.mapPoints);
+            console.log('[Route Management][OnInit][Type Detected]', this.selected);
             this.initMap();
           }
         )
@@ -66,7 +68,9 @@ export class AddRouteMapComponent implements OnInit {
       if(this.mapPoints.length > 0){
         this.initLat = this.mapPoints[0].lat;
         this.initLong = this.mapPoints[0].lng;
-        this.getRoutePointsAndWaypoints();
+        if(this.selected === 'waypoints'){
+          this.getRoutePointsAndWaypoints();
+        }
       } else {
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(position => {
@@ -176,8 +180,7 @@ export class AddRouteMapComponent implements OnInit {
    * It then calls the routeService to update the route passing the points.
    */
     saveRoute(){
-      //TODO: Save also the type
-      this.routeService.updateRoute(this.eventId, this.mapPoints).then(()=> {
+      this.routeService.updateRoute(this.eventId, this.mapPoints, this.selected).then(()=> {
         this.dialogService.alert("Route", " The route is correctly saved.");
         this.router.navigate(['/events', this.eventId, 'manage']);
       }).catch((err) => {

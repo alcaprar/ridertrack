@@ -14,48 +14,33 @@ export class RouteService {
 
     return this.http.get(url).toPromise()
       .then(
-        (response)=> {
-          console.log('[RouteService][getRoute][success]', response);
-          const body = response.json();
-          const coordinates = body.coordinates as [{lat:number , lng: number}];
-          console.log('[RouteService][getRoute] coordinates', coordinates);
-          return coordinates;
+        (route)=> {
+          console.log('[RouteService][getRoute][success]', route);
+          const body = route.json();
+          console.log('[RouteService][getRoute] coordinates', body.coordinates);
+          console.log('[RouteService][getRoute] type', body.type);
+          return body;
         }
       ).catch(
-        (errorResponse: any) => {
-          this.catchErrors(errorResponse);
+        (err) => {
+          this.catchErrors(err);
         }
       );
   }
 
-  createRoute(eventId, coordinates ){
+  updateRoute(eventId, coordinates, type){
     const url = `${this.BASE_EVENT_URL}/${eventId}/route`;
 
-    return this.http.post(url, coordinates).toPromise()
+    return this.http.put(url, {routeType: type, newCoordinates: coordinates}).toPromise()
       .then(
-        (res)=> {
-          this.getCoordinates(res);
-          console.log('[RouteService][Route created]');
+        (route) => {
+          let body = route.json();
+          console.log('[RouteService][Route updated]', route);
+          return [null,body];
         }
       ).catch(
-        (errorResponse: any) => {
-          this.catchErrors(errorResponse);
-        }
-      );
-  }
-
-  updateRoute(eventId, coordinates){
-    const url = `${this.BASE_EVENT_URL}/${eventId}/route`;
-
-    return this.http.put(url, coordinates).toPromise()
-      .then(
-        (res) => {
-          this.getCoordinates(res);
-          console.log('[RouteService][Route updated]');
-        }
-      ).catch(
-        (errorResponse: any) => {
-          this.catchErrors(errorResponse);
+        (err: any) => {
+          this.catchErrors(err);
         }
       );
   }
@@ -65,8 +50,9 @@ export class RouteService {
 
     return this.http.delete(url).toPromise()
       .then((res)=> {
-      this.getCoordinates(res);
+      let body = res.json();
         console.log('[RouteService][Route deleted]');
+        return [null, body];
       }).catch(
         (errorResponse: any) => {
           this.catchErrors(errorResponse);
@@ -74,12 +60,6 @@ export class RouteService {
       );
   }
 
-  private getCoordinates(result){
-    const body = result.json();
-    const coordinates = body.coordinates as [{lat:number , lng: number}];
-    console.log('[RouteService][getCoordinates][success]', coordinates);
-    return [null, coordinates];
-  }
 
   private catchErrors(err){
     var errors = err.json().errors as Error[];

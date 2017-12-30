@@ -293,7 +293,7 @@ export class EventService {
    * @param eventid
    * @returns enrollment message
    */
-  enrollToEvent(eventId): Promise<Error>{
+  enrollToEvent(eventId, device): Promise<Error>{
     const url = `${this.BASE_URL}/enrollments`;
     var body = {
       eventId: eventId
@@ -313,6 +313,9 @@ export class EventService {
         });
   }
 
+  updateEnrollement(eventId, userId, device){
+    //TODO: UPDATE ENROLLEMENT
+  }
   /**
    * Perform an HTTP DELETE to REST API to withdraw enrollment to an event
    * @param eventid
