@@ -449,7 +449,7 @@ router.get('/:eventId/ranking', function (req, res) {
             })
         }else {
             res.status(200).send({
-                ranking: ranking
+                ranking: ranking.ranking
             })
         }
     });
@@ -522,6 +522,7 @@ router.get('/:eventId/route', function(req, res){
         }
         else{
             return res.status(200).send({
+                type: (route) ? route.type : '',
                 coordinates: (route) ? route.coordinates : []
             });
         }
@@ -533,19 +534,18 @@ router.get('/:eventId/route', function(req, res){
  * It before checks if the user is logged in and if he/she is the owner of the event.
  */
 router.post('/:eventId/route', authMiddleware.hasValidToken, authMiddleware.isOrganizer, function(req, res){
-    console.log('[POST /events]', req.params.eventId, req.body);
-    var userId = req.userId;
+    console.log('[POST /events/route]', req.params.eventId, req.body);
     var eventId = req.params.eventId;
-    var coordinates = req.body.coordinates;
+    var routeType = req.body.type;
+    var routeCoordinates = req.body.coordinates;
 
-    Route.create(eventId, coordinates, function(err, routeCoordinates){
+    Route.create(eventId, routeType, routeCoordinates, function(err, routeCoordinates){
         if(err){
             return res.status(400).send({
                 errors: [err]
             });
         }else{
             return res.status(200).send({
-                message: 'Route successfully created',
                 coordinates: routeCoordinates
             });
         }
@@ -556,10 +556,11 @@ router.post('/:eventId/route', authMiddleware.hasValidToken, authMiddleware.isOr
  * It updates the route for the given event.
  */
 router.put('/:eventId/route', authMiddleware.hasValidToken, authMiddleware.isOrganizer, function(req,res){
-    var coordinates = req.body;
     var eventId = req.event._id;
+    var routeType = req.body.type;
+    var routeCoordinates = req.body.coordinates;
 
-    Route.update(eventId, coordinates, function(err, updatedCoordinates){
+    Route.update(eventId, routeType, routeCoordinates, function(err, updatedCoordinates){
         if (err){
             return res.status(400).send({
                 errors: [err]

@@ -15,13 +15,11 @@ var enrollmentSchema = Schema({
         required: true,
         ref: 'User'
     },
-    additionalInfo : {
-        type: Object,
-        required: false
-    },
-    trackingSources: {
-        type: [Object],
-        required: false
+    device: {
+        type: {
+            deviceType: String,
+            deviceId: String
+        }
     },
     created_at: {
         type: Date,
@@ -47,6 +45,7 @@ enrollmentSchema.pre('save', function(next) {
     }
     next();
 });
+
 /**
  * Static method to create an enrollment.
  */
@@ -73,10 +72,44 @@ enrollmentSchema.statics.create = function(userId, enrollmentJson, callback){
             });
 
             return callback(null, enrollment);
-
-
         }
     });
+};
+
+/**
+ * It updates the enrollment for the given user and event.
+ * @param userId
+ * @param eventId
+ * @param enrollmentJson
+ * @param callback
+ */
+enrollmentSchema.statics.update = function (userId, eventId, enrollmentJson, callback) {
+    this.findOne({userId: userId, eventId: eventId}, function (err, enrollment) {
+        if (err) {
+            return callback(err)
+        } else {
+            // override the previous value
+            console.log('Enrollment to update', enrollmentJson);
+            for (let key in enrollmentJson) {
+                // if a key in the json passed is null, remove the previous value
+                if([null, 'null', undefined, 'undefined'].indexOf(enrollmentJson[key]) > -1 ){
+                    if(typeof enrollment[key] !== 'undefined'){
+                        enrollment[key] = undefined;
+                    }
+                }else{
+                    enrollment[key] = enrollmentJson[key]
+                }
+            }
+
+            enrollment.save(function (err, updatedEnrollment) {
+                if (err) {
+                    return callback(err)
+                } else {
+                    return callback(null, updatedEnrollment)
+                }
+            })
+        }
+    })
 };
 
 /**

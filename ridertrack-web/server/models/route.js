@@ -7,6 +7,11 @@ var routeSchema = Schema({
         type: String,
         required: true
     },
+    type: {
+        type: String,
+        enum: ['polylines', 'waypoints'],
+        default: 'polylines'
+    },
     coordinates :[{
         lat: Number,
         lng: Number

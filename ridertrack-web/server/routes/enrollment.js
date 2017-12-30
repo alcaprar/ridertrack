@@ -118,30 +118,18 @@ router.get('/:eventId', function (req, res) {
 /**
  * It updates the fields passed in the body of the given enrollmentId
  */
-router.put('/:enrollmentId', authMiddleware.hasValidToken, function (req, res) {
-    Enrollment.findOne({_id: req.params.enrollmentId}, function(err, enrollment) {
+router.put('/:eventId/:userId', authMiddleware.hasValidToken, authMiddleware.isEnrolled, function (req, res) {
+    var userId = req.user._id;
+    var eventId = req.params.eventId;
+
+    Enrollment.update(userId, eventId, req.body, function (err, enrollment) {
         if (err) {
             res.status(400).send({
                 errors: err
             })
-        }
-        else if (enrollment.userId !== req.userId) {
-            res.status(401).send({
-                errors: "You are not allowed to update this enrollment"
-            })
-        }
-        else {
-            Enrollment.update(req.params.enrollmentId, req.body, function (err, enrollment) {
-                if (err) {
-                    res.status(400).send({
-                        errors: err
-                    })
-                } else {
-                    res.status(200).send({
-                        message: 'Enrollment successfully updated',
-                        enrollment: enrollment
-                    })
-                }
+        } else {
+            res.status(200).send({
+                enrollment: enrollment
             })
         }
     })
