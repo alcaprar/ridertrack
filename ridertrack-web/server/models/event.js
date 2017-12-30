@@ -93,6 +93,45 @@ eventSchema.pre('save', function(next) {
     next();
 });
 
+eventSchema.pre('save',function(next){
+	var event = this;
+	var err = new Error();
+	
+	if (!event.enrollmentOpeningAt || !event.enrollmentClosingAt){
+		err.message = 'Enrollment opening date and/or enrollment closing date is not defined';
+		next(err);
+	}
+	else{
+		var strDate = event.startingDate.split('/') // e.g. 30/12/2017 
+		if (!event.startingTime)
+		{
+			//Month in Date object is defined from 0-11
+			var startingDate = new Date(parseInt(strDate[2]),parseInt(strDate[1]) - 1,parseInt(strDate[0]))
+		}
+		else{
+			var strTime = event.startingTime.split(':') // e.g. 12:00
+			var startingDate = new Date(parseInt(strDate[2]),parseInt(strDate[1]) - 1,parseInt(strDate[0]),parseInt(strTime[0]),parseInt(strTime[1]),0)
+		}
+		
+		//Enrollment check
+		if (event.enrollmentOpeningAt > event.enrollmentClosingAt){
+			err.message = 'Enrollment opening date is defined after enrollment closing date'
+			next(err)
+		}
+		
+		else if (event.enrollmentOpeningAt > startingDate){
+			err.message = 'Enrollment opening date cannot be defined after event starting date'
+			next(err)
+		}
+		else if (event.enrollmentClosingAt > startingDate){
+			err.message = 'Enrollment closing date cannot be defined after event starting date'
+			next(err)
+		}
+		else {
+			next(null)
+		}
+	}
+})
 /**
  * Error handler. It is executed on every save if errors occur.
  * Inspired here. http://thecodebarbarian.com/mongoose-error-handling
