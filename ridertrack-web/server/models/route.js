@@ -72,7 +72,7 @@ routeSchema.statics.create = function (eventId, coordinates, callback){
  * @param newCoordinates
  * @param callback
  */
-routeSchema.statics.update = function (eventId, newCoordinates, callback) {
+routeSchema.statics.update = function (eventId, routeType, newCoordinates, callback) {
     this.findByEventId(eventId, function (err, route) {
         if(err){
             return callback({
@@ -87,6 +87,7 @@ routeSchema.statics.update = function (eventId, newCoordinates, callback) {
         }
 
         // route has been found. updating the coordinates
+        route.type = routeType;
         route.coordinates = newCoordinates;
         route.save(function (err) {
             if(err){
