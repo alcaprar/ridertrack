@@ -1,4 +1,4 @@
-import { Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, NgZone, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import { MapsAPILoader, MouseEvent as AGMMouseEvent} from "@agm/core";
 import {} from '@types/googlemaps';
 import {FormControl} from "@angular/forms";
@@ -10,6 +10,7 @@ declare var google: any;
 
 @Component({
     selector: 'app-add-route-map',
+    encapsulation: ViewEncapsulation.None,
     templateUrl: './add-route-map.component.html',
     styleUrls: ['./add-route-map.component.css']
 })
@@ -19,6 +20,7 @@ export class AddRouteMapComponent implements OnInit {
     public initLong: number;
     public zoom = 15;
     public searchControl: FormControl= new FormControl();
+    public selected: String = '';
 
     public mapPoints : any = [] ; //latLng array
     directions : any;
@@ -100,16 +102,32 @@ export class AddRouteMapComponent implements OnInit {
 
     mapClicked($event : AGMMouseEvent){
 
+      if(this.selected === ''){
+        this.dialogService.alert("Error", "You have to select a method to start draw the route !!!")
+      }else {
         let currentpoint = $event.coords; //latLng literal coords
         console.log("[Map][Clicked][Coordinates detected]", currentpoint);
         this.mapPoints.push(currentpoint);
-        this.initLat= this.mapPoints[this.mapPoints.length-1].lat;
-        this.initLong = this.mapPoints[this.mapPoints.length-1].lng;
-        this.getRoutePointsAndWaypoints();
+        this.initLat = this.mapPoints[this.mapPoints.length - 1].lat;
+        this.initLong = this.mapPoints[this.mapPoints.length - 1].lng;
+        if (this.selected === 'waypoints') {
+          this.getRoutePointsAndWaypoints();
+        }
+      }
+    }
+
+    setRadio(value: String){
+      this.selected = value;
+      this.clearAll();
+      console.log("[EditRoute][Selection]"+ this.selected);
     }
 
     getRoutePointsAndWaypoints(){
         let waypoints = [];
+        if(this.mapPoints.length > 25){
+          this.dialogService.alert("Error", "The maximum number of checkpoints is 23! If you want more than you can use 'Lines'.");
+          return;
+        }
         if (this.mapPoints.length > 2){
             for(let i=1; i<this.mapPoints.length-1; i++){
                 let address = this.mapPoints[i];
@@ -145,7 +163,9 @@ export class AddRouteMapComponent implements OnInit {
     clearLast() {
       if(this.mapPoints.length> 1){
         this.mapPoints.pop();
-        this.getRoutePointsAndWaypoints();
+        if(this.selected ==="waypoints"){
+          this.getRoutePointsAndWaypoints();
+        }
       } else {
           this.clearAll();
         }
@@ -156,6 +176,7 @@ export class AddRouteMapComponent implements OnInit {
    * It then calls the routeService to update the route passing the points.
    */
     saveRoute(){
+      //TODO: Save also the type
       this.routeService.updateRoute(this.eventId, this.mapPoints).then(()=> {
         this.dialogService.alert("Route", " The route is correctly saved.");
         this.router.navigate(['/events', this.eventId, 'manage']);

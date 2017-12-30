@@ -129,7 +129,7 @@ var authMiddlewares = {
                     errors: [{message: 'Error while controlling the permissions.'}]
                 })
             }
-            
+
             if(!enrollment){
                 console.log('[middleware][isEnrolled] user is not enrolled.');
                 return res.status(400).send({
@@ -157,6 +157,18 @@ var authMiddlewares = {
                 }
             });
         }
+    },
+    hasAdministratorRole: function(req, res, next) {
+        var userId = req.userId;
+        User.findById(userId, function (err, user) {
+            if(user.role === 'administrator'){
+                return next()
+            }else{
+                return res.status(401).send({
+                    errors: ['Unauthorized for administrator']
+                })
+            }
+        });
     }
 };
 

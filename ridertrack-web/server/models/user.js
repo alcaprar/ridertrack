@@ -276,7 +276,7 @@ userSchema.statics.update = function (userId, userJson, callback) {
     this.findOne({_id: userId}, function (err, user) {
         if(err){
             return callback({
-                message:"Error occurred during finding an user.Maybe user doesn't exist"
+                message:"Error occurred during finding an user. Maybe user doesn't exist"
                 });
         }else{
             // override the previous value
