@@ -111,13 +111,12 @@ export class EventDetailPageComponent implements OnInit {
 private getRoute() {
   this.routeService.getRoute(this.eventId)
     .then(
-      (coordinates) => {
-        console.log('[Progress Management][OnInit][success]', coordinates);
-        console.log('[Progress Management][OnInit][Coordinates detected]', coordinates);
-        this.mapPoints = coordinates;
+      (route) => {
+        console.log('[EventDetailPage][OnInit][success]', route);
+        this.mapPoints = route.coordinates;
       })
-    .catch((error) => {
-      console.log('[Progress Management][OnInit][error]', error);
+    .catch((err) => {
+      console.log('[Progress Management][OnInit][error]', err);
     });
 }
   /**

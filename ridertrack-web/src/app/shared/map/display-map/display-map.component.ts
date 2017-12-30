@@ -39,6 +39,7 @@ export class DisplayMapComponent implements OnInit{
             this.selected = route.type;
             console.log('[DisplayMap][OnInit][Coordinates detected]', this.mapPoints);
             console.log('[DisplayMap][OnInit][Type Detected]', this.selected);
+            this.initMap();
           })
         .catch((err) => {
           console.log('[DisplayMap][OnInit][error]', err);
@@ -55,9 +56,17 @@ export class DisplayMapComponent implements OnInit{
       this.destination = this.mapPoints[this.mapPoints.length - 1];
       if(this.selected === 'waypoints'){
         this.getRoutePointsAndWaypoints();
+      }else{
+        this.recenterMap();
       }
     }
   }
+
+  recenterMap(){
+    this.initCoords = {lat: this.mapPoints[this.mapPoints.length%2].lat,lng: this.mapPoints[this.mapPoints.length%2].lng};
+    this.zoom = 14;
+  }
+
 
   getRoutePointsAndWaypoints() {
     let waypoints = [];

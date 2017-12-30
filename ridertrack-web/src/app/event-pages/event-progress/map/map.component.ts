@@ -21,6 +21,7 @@ export class MapComponent implements OnInit {
   public initLong: number;
   public zoom = 15;
 
+
   public mapPoints; //latLng array
   directions: any;
 
@@ -28,6 +29,7 @@ export class MapComponent implements OnInit {
   private eventId;
   private participantsList: any = [];
   private participantsMarkers : Progress[] = [];
+  private selectedType: string = '';
 
   private refreshInterval;
 
@@ -73,10 +75,10 @@ export class MapComponent implements OnInit {
         });
     this.routeService.getRoute(this.eventId)
       .then(
-        (coordinates) => {
-          console.log('[Progress Management][OnInit][success]', coordinates);
-          console.log('[Progress Management][OnInit][Coordinates detected]', coordinates);
-          this.mapPoints = coordinates;
+        (route) => {
+          console.log('[Progress Management][OnInit][success]', route);
+          this.mapPoints = route.coordinates as [{lat:number, lng:number}];
+          this.selectedType = route.type;
           this.initMap();
         })
       .catch((error) => {
@@ -147,8 +149,18 @@ export class MapComponent implements OnInit {
       console.log('Route exists');
       this.initLat = this.mapPoints[0].lat;
       this.initLong = this.mapPoints[0].lng;
-      this.getRoutePointsAndWaypoints();
+      if(this.selectedType === 'waypoints'){
+        this.getRoutePointsAndWaypoints();
+      }else {
+        this.recenterMap();
+      }
     }
+  }
+
+  recenterMap(){
+    this.initLat = this.mapPoints[this.mapPoints.length%2].lat;
+    this.initLong = this.mapPoints[this.mapPoints.length%2].lng;
+    this.zoom = 14;
   }
 
   getRoutePointsAndWaypoints() {

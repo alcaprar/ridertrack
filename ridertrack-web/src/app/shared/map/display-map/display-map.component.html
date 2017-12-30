@@ -9,7 +9,8 @@
     <agm-polyline [strokeColor]="'#00BFFF'" [strokeWeight]="7">
       <agm-polyline-point *ngFor="let point of mapPoints" [latitude]="point.lat" [longitude]="point.lng"></agm-polyline-point>
     </agm-polyline>
-    <agm-marker *ngFor="let point of mapPoints" [latitude]="point.lat" [longitude]="point.lng"></agm-marker>
+    <agm-marker *ngFor="let point of mapPoints" [latitude]="point.lat" [longitude]="point.lng"
+                [iconUrl]="'http://labs.google.com/ridefinder/images/mm_20_red.png'"></agm-marker>
   </div>
 </agm-map>
 <p *ngIf="initCoords === null || initCoords ===undefined">*TBD</p>

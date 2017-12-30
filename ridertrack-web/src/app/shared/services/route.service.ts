@@ -31,7 +31,7 @@ export class RouteService {
   updateRoute(eventId, coordinates, type){
     const url = `${this.BASE_EVENT_URL}/${eventId}/route`;
 
-    return this.http.put(url, {routeType: type, newCoordinates: coordinates}).toPromise()
+    return this.http.put(url, {type: type, coordinates: coordinates}).toPromise()
       .then(
         (route) => {
           let body = route.json();

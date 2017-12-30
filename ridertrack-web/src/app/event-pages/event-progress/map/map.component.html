@@ -38,8 +38,15 @@
             </agm-marker>
           </div>
         </div>
+        <div *ngIf="selectedType === 'waypoints'">
         <map-direction *ngIf="directions != null" [origin]="directions.origin" [destination]="directions.destination"
                        [waypoints]="directions.waypoints"></map-direction>
+        </div>
+        <div *ngIf="selectedType=== 'polylines'">
+          <agm-polyline [strokeColor]="'#00BFFF'" [strokeWeight]="7">
+            <agm-polyline-point *ngFor="let point of mapPoints" [latitude]="point.lat" [longitude]="point.lng"></agm-polyline-point>
+          </agm-polyline>
+        </div>
       </agm-map>
     </div>
   </div>
