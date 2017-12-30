@@ -170,26 +170,10 @@ private getRoute() {
   enroll() {
 
     //if(this.enrollementIsOpen()) {
-    this.dialogService.enrollement("Add Tracking Device", function() {
-      this.eventService.enrollToEvent(this.eventId)
-        .then(
-          (response) => {
-            console.log('[EventDetail][enroll][success]', response);
-            // get the new list of particpants to update the buttons
-            this.getParticipants();
-          }
-        )
-        .catch(
-          (error) => {
-            console.log('[EventDetail][enroll][error]', error);
-            this.errors = error;
-          }
-        )}.bind(this)
-   , false, null);
+    this.dialogService.enrollement("Add Tracking Device", this.eventId, false, null);
    // } else {
-   // this.dialogService.confirmation("Enrollement",
-   //     "Sorry the registration period is CLOSED or not yet AVAILABLE",function(){
-   //   });
+   // this.dialogService.alert("Enrollement",
+   //     "Sorry the registration period is CLOSED or not yet AVAILABLE")
    // }
   }
 
@@ -211,28 +195,9 @@ private getRoute() {
    */
   manageEnrollment() {
     console.log('[EventDetail][ManageEnrollment]');
-    this.dialogService.enrollement("Manage Enrollement", null, true, function () {
-      this.dialogService.confirmation('Withdraw enrollment', 'Are you sure to withdraw your enrollment for this event?',
-        function () {
-          console.log('[EventDetail][withdrawEnrollment][callback]');
-          this.eventService.withdrawEnrollment(this.eventId, this.currentUser.id)
-            .then(
-              (response) => {
-                console.log('[EventDetail][withdrawEnrollment][success]', response);
-                // get the new list of particpants to update the buttons
-                this.getParticipants()
-              }
-            )
-            .catch(
-              (error) => {
-                console.log('[EventDetail][withdrawEnrollment][error]', error);
-                this.errors = error;
-              }
-            );
-        }.bind(this));
-    }.bind(this));
-
+    this.dialogService.enrollement("Manage Enrollement", this.eventId, true, null);
   }
+
 
   /**
    * It says if the logged user, if any, is already enrolled in the events.

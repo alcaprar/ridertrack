@@ -293,28 +293,51 @@ export class EventService {
    * @param eventid
    * @returns enrollment message
    */
-  enrollToEvent(eventId, device): Promise<Error>{
+  enrollToEvent(eventId, device): Promise<any>{
     const url = `${this.BASE_URL}/enrollments`;
     var body = {
-      eventId: eventId
+      eventId: eventId,
+      device: {type: {
+        deviceType: device.deviceType,
+          deviceId: device.deviceId
+        }}
     };
 
     return this.http.post(url, body).toPromise()
       .then(
-        (res) => {
-          const eventBody = res.json();
-          console.log('[EventService][enroll][success]', eventBody);
-          return null;
+        (enrollement) => {
+          const body = enrollement.json();
+          console.log('[EventService][enroll][success]', body);
+          return [enrollement,null];
         })
       .catch(
-        (error) => {
-          console.log('[EventService][enroll][error]', error);
-          return (error as Error[])[0];
+        (err) => {
+          console.log('[EventService][enroll][error]', err);
+          return (err as Error[])[0];
         });
   }
 
-  updateEnrollement(eventId, userId, device){
-    //TODO: UPDATE ENROLLEMENT
+  updateEnrollement(eventId, device){
+    const url = `${this.BASE_URL}/enrollments`;
+    var body = {
+      eventId: eventId,
+      device: {type: {
+          deviceType: device.deviceType,
+          deviceId: device.deviceId
+        }}
+    };
+    return this.http.put(url, body).toPromise()
+      .then(
+        (updatedEnrollment) => {
+          const body = updatedEnrollment.json();
+          console.log('[EventService][UpdateEnrollement][success]', body);
+          return [body,null];
+        })
+      .catch(
+        (err) => {
+          console.log('[EventService][UpdateEnrollement][error]', err);
+          return (err as Error[])[0];
+        });
   }
   /**
    * Perform an HTTP DELETE to REST API to withdraw enrollment to an event

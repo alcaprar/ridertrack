@@ -2,7 +2,7 @@ import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {DialogService} from "../dialog.service";
 import {Router} from "@angular/router";
 import {User} from "../../models";
-import {UserService} from "../../services";
+import {EventService, UserService} from "../../services";
 
 declare var $: any;
 
@@ -14,15 +14,16 @@ declare var $: any;
 })
 export class EnrollementDialogComponent implements OnInit {
 
-  private callback;
-  private callbackWithdrawEnrollement;
   private title = 'Title';
   private isSelected: boolean;
   private isEnrolled: boolean;
+  private eventId: string;
+  private device: {deviceType: string, deviceId: string};
 
   private currentUser: User = new User();
 
-  constructor(private dialogService: DialogService, private router: Router, private userService: UserService) {
+  constructor(private dialogService: DialogService, private router: Router, private userService: UserService,
+              private eventService: EventService) {
     this.dialogService.register('enrollement', this);
     this.isSelected= false;
   }
@@ -33,15 +34,14 @@ export class EnrollementDialogComponent implements OnInit {
         (user) => {
           this.currentUser = user
         });
-    //TODO: Get current option of the enrollement for the user
   }
 
-  show(title, callback, isEnrolled, callbackWithdrawEnrollement){
+  show(title, eventId, isEnrolled, device){
     console.log('[EnrollementDialog][show]', title);
     this.title = title;
-    this.callback = callback;
+    this.eventId = eventId;
     this.isEnrolled = isEnrolled;
-    this.callbackWithdrawEnrollement = callbackWithdrawEnrollement;
+    this.device = device;
     if(this.isSelected){
       $('#form').modal('show');
     }else {
@@ -52,20 +52,35 @@ export class EnrollementDialogComponent implements OnInit {
 
   save(){
     console.log('[EnrollementDialog][Save]');
-    if(this.callback) {
-      this.callback();
-    }
-    //TODO: Save enrollement option in the backend
+    this.device.deviceId =$('#spotgenId').value;
+    this.device.deviceType = "Spot gen";
+    this.enroll();
     $('#enrollementDialog').modal('hide');
     $('#form').modal('hide');
   }
 
   skip(){
     console.log('[ConfirmationDialog][Skip]');
-    if(this.callback) {
-      this.callback();
-    }
+    this.device = null;
+    this.enroll();
     $('#enrollementDialog').modal('hide');
+  }
+
+  private enroll(){
+    this.eventService.enrollToEvent(this.eventId, this.device)
+      .then(
+        (response) => {
+          console.log('[Enroll][success]', response);
+        }
+      )
+      .catch(
+        (error) => {
+          console.log('[EventDetail][enroll][error]', error);
+        });
+  }
+
+  private updateEnrollement() {
+    this.eventService.updateEnrollement(this.eventId, this.device);
   }
 
   changeRadioButton() {
@@ -80,7 +95,24 @@ export class EnrollementDialogComponent implements OnInit {
   }
 
   withdrawEnrollement() {
-  this.callbackWithdrawEnrollement();
+    this.dialogService.confirmation('Withdraw enrollment', 'Are you sure to withdraw your enrollment for this event?',
+      function () {
+        console.log('[EventDetail][withdrawEnrollment][callback]');
+        this.eventService.withdrawEnrollment(this.eventId, this.currentUser.id)
+          .then(
+            (response) => {
+              console.log('[EventDetail][withdrawEnrollment][success]', response);
+              // get the new list of particpants to update the buttons
+              this.getParticipants()
+            }
+          )
+          .catch(
+            (error) => {
+              console.log('[EventDetail][withdrawEnrollment][error]', error);
+              this.errors = error;
+            }
+          );
+      }.bind(this));
   $('#enrollementDialog').modal('hide');
   }
 }

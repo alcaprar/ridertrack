@@ -32,9 +32,9 @@ export class DialogService {
     this.dialogs['adminEditEvent'].show(title, body);
   }
 
-  enrollement(title, callback, isEnrolled, callbackWithdrawEnrollement){
+  enrollement(title, eventId, isEnrolled, device){
     console.log('[DialogService][enrollement]', this.dialogs);
-    this.dialogs['enrollement'].show(title, callback, isEnrolled, callbackWithdrawEnrollement);
+    this.dialogs['enrollement'].show(title, eventId, isEnrolled, device);
   }
 
 }
