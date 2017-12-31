@@ -168,7 +168,8 @@ private getRoute() {
    * It opens the dialog for enrolling.
    */
   enroll() {
-    this.dialogService.enrollement("Add Tracking Device", this.eventId, false, null);
+    this.dialogService.enrollement("Add Tracking Device", this.eventId, false);
+    this.getParticipants();
   }
 
   enrollementIsOpen(): boolean {
@@ -189,7 +190,8 @@ private getRoute() {
    */
   manageEnrollment() {
     console.log('[EventDetail][ManageEnrollment]');
-    this.dialogService.enrollement("Manage Enrollement", this.eventId, true, null);
+    this.dialogService.enrollement("Manage Enrollement", this.eventId, true);
+    this.getParticipants();
   }
 
 

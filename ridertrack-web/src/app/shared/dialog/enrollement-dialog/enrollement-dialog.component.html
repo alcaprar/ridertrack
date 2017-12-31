@@ -18,14 +18,15 @@
               <span> Ridertrack App(*)</span>
             </label>
             <label class="btn" (click)="changeRadioButton()">
-              <input type="checkbox" id="device-spotgen" value="spotgen" (click)="changeRadioButton()">
+              <input type="checkbox" id="device-spotgen" value="spotgen" (click)="changeRadioButton()" [checked]="device !== null">
               <i class="fa fa-square-o fa-2x"></i><i class="fa fa-check-square-o fa-2x"></i><span> Spot Gen 3</span>
             </label>
           </div>
         </div>
-        <div id="form" *ngIf="isSelected">
+        <div id="form" *ngIf="isSelected || device!== null">
           <label for="spotgenId" >ID: <small>(*required)</small></label>
-          <input #spotgenId id="spotgenId" type="text" name="spotgenId" placeholder="Insert your Spot Gen ID" required>
+          <input #spotgenId id="spotgenId" type="text" name="spotgenId"
+                 [placeholder]="device !==null ? device.deviceId : 'Insert your Spot Gen ID'">
         </div>
         <small>(*)the mobile application is given by default</small>
       </div>

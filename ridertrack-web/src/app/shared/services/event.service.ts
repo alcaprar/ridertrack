@@ -430,5 +430,20 @@ export class EventService {
       });
   }
 
+  getEnrollement(userId, eventId): Promise<any>{
+    const url = `${this.BASE_URL}/enrollments/${eventId}/${userId}`;
+
+    return this.http.get(url).toPromise()
+      .then((response)=> {
+        let body = response.json();
+        console.log("[EventService][GetEnrollement][Success]", body);
+        return body.enrollment;
+      }).catch((err)=> {
+        let body = err.json();
+        console.log("[EventService][GetEnrollement][Error]", body);
+        return (body.errors as Error)[0];
+      });
+  }
+
 }
 

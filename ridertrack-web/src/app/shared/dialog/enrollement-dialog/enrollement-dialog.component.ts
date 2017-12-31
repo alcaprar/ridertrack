@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnChanges, OnInit, SimpleChanges, ViewEncapsulation} from '@angular/core';
 import {DialogService} from "../dialog.service";
 import {Router} from "@angular/router";
 import {User} from "../../models";
@@ -13,13 +13,13 @@ declare var $: any;
   templateUrl: './enrollement-dialog.component.html',
   styleUrls: ['./enrollement-dialog.component.css']
 })
-export class EnrollementDialogComponent implements OnInit {
+export class EnrollementDialogComponent implements OnInit{
 
   private title = 'Title';
   private isSelected: boolean;
   private isEnrolled: boolean;
   private eventId: string;
-  private device: Device;
+  private device: Device = null;
 
   private currentUser: User = new User();
 
@@ -28,25 +28,41 @@ export class EnrollementDialogComponent implements OnInit {
   constructor(private dialogService: DialogService, private router: Router, private userService: UserService,
               private eventService: EventService) {
     this.dialogService.register('enrollement', this);
-    this.isSelected= false;
+    this.isSelected = false;
   }
 
   ngOnInit() {
+
+  }
+
+  getUser() {
     this.userService.getUser()
       .subscribe(
         (user) => {
           this.currentUser = user;
-
+          if(this.isEnrolled){
+            this.eventService.getEnrollement(this.currentUser.id, this.eventId)
+              .then((enrollment)=> {
+                console.log("[EnrollementDialog][GetEnrollement][Success]", enrollment);
+                if(enrollment.device.deviceId !== null) {
+                  console.log("[EnrollementDialog][GetEnrollement][DeviceDetected]");
+                  this.device = new Device(enrollment.device.deviceType, enrollment.device.deviceId);
+                }
+              }).catch((err)=> {
+              console.log("[EnrollementDialog][OnInit][getEnrollement][Error]", err);
+              this.errors = err;
+            })
+          }
         });
   }
 
-  show(title, eventId, isEnrolled, device){
+  show(title, eventId, isEnrolled){
     console.log('[EnrollementDialog][show]', title);
     this.errors = [];
     this.title = title;
     this.eventId = eventId;
     this.isEnrolled = isEnrolled;
-    this.device = device;
+    this.getUser();
     if(this.isSelected){
       $('#form').modal('show');
     }else {
@@ -127,8 +143,6 @@ export class EnrollementDialogComponent implements OnInit {
           .then(
             (response) => {
               console.log('[EventDetail][withdrawEnrollment][success]', response);
-              // get the new list of particpants to update the buttons
-              this.getParticipants()
             }
           )
           .catch(
