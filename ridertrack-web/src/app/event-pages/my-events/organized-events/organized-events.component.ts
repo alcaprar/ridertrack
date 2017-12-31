@@ -23,6 +23,8 @@ export class OrganizedEventsComponent implements OnInit {
 
   private errors: Error[]=[];
 
+  private loading = true;
+
   constructor(private authService: AuthenticationService, private route: ActivatedRoute,
               private router: Router, private eventService: EventService) {
 
@@ -45,8 +47,10 @@ export class OrganizedEventsComponent implements OnInit {
   }
 
   getOrganizedEvents() {
+    this.loading = true;
     this.eventService.getOrganizedEventsForUser(this.authService.getUserId(), this.queryParams).then(
       (response) =>{
+        this.loading = false;
         console.log('[My-Events][getOrganizedEventsForUser][success]', response);
         this.organizedEvents = response[0] as Event[];
         this.queryParams.page = response[1];
@@ -56,6 +60,7 @@ export class OrganizedEventsComponent implements OnInit {
     )
       .catch(
         (error) => {
+          this.loading = false;
           console.log('[My-Events][getOrganizedEventsForUser][error]', error);
         }
       )

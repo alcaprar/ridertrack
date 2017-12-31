@@ -19,6 +19,8 @@ export class EnrolledEventsComponent implements OnInit {
   private totalPages: number = 0;
 
   private enrolledEvents: Event[] = [];
+  
+  private loading = true;
 
   constructor(private authService: AuthenticationService, private eventService: EventService, private route: ActivatedRoute, private router: Router) { }
 
@@ -39,8 +41,10 @@ export class EnrolledEventsComponent implements OnInit {
   }
 
   getEnrolledEvents(){
+    this.loading = true;
     this.eventService.getEnrolledEventsForUser(this.authService.getUserId(), this.queryParams).then(
       (response) =>{
+        this.loading = false;
         console.log('[My-Events][OnInit][getEnrolledEventsForUser][success]', response);
         this.enrolledEvents = response[0] as Event[];
         this.queryParams.page = response[1];
@@ -50,6 +54,7 @@ export class EnrolledEventsComponent implements OnInit {
     )
       .catch(
         (error) =>{
+          this.loading = false;
           console.log('[My-Events][OnInit][getEnrolledEventsForUser][error]', error);
         }
       )

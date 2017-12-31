@@ -35,7 +35,7 @@ export class EventsListPageComponent implements OnInit {
   private queryParams: EventsListQueryParams = new EventsListQueryParams;
   private totalPages: number = 0;
 
-  private loading = false;
+  private loading = true;
 
   constructor(private eventService: EventService, private route: ActivatedRoute, private userService: UserService, private router: Router, private appRef: ApplicationRef) {
     // retrieve the event types
