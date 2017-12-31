@@ -145,7 +145,7 @@ eventSchema.post('save', function (err, doc, next) {
     }
 });
 
-/** 
+/**
  * It finds an event by name passed
  * Then, calls callback with either an error or the found event
  */
@@ -228,6 +228,10 @@ eventSchema.statics.update = function (eventId, eventJson, callback) {
         if (err) {
             return callback(err)
         } else {
+            if(event.status !== 'planned'){
+                return callback(new Error('You cannot edit an event that is ongoing or already passed.'))
+            }
+
             // override the previous value
             console.log('Event ', eventJson);
             for (let key in eventJson) {
