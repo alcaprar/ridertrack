@@ -280,7 +280,7 @@ router.put('/:eventId', authMiddleware.hasValidToken, authMiddleware.isOrganizer
     Event.update(req.params.eventId, req.body, function (err, event) {
         if (err) {
             return res.status(400).send({
-                errors: err
+                errors: [err]
             })
         } else {
             if(req.files.logo){

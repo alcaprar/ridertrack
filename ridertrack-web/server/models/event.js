@@ -229,7 +229,7 @@ eventSchema.statics.update = function (eventId, eventJson, callback) {
             return callback(err)
         } else {
             if(event.status !== 'planned'){
-                return callback(new Error('You cannot edit an event that is ongoing or already passed.'))
+                return callback({message: 'You cannot edit an event that is ongoing or already passed.'});
             }
 
             // override the previous value
