@@ -34,7 +34,7 @@ var consumer = {
                         // the event is still ongoing
                         // get data from spot api
                         // id of the feed to scrape
-                        var spotFeedId = '';
+                        var spotFeedId = enrollment.device.deviceId;
                         // base url of spot gen api
                         var spotBaseUrl = {
                             protocol: 'https',
