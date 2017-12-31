@@ -291,30 +291,32 @@ export class EventService {
   /**
    * Perform an HTTP POST to REST API to enroll to an event
    * @param eventid
+   * @param device
    * @returns enrollment message
    */
   enrollToEvent(eventId, device): Promise<any>{
     const url = `${this.BASE_URL}/enrollments`;
     var body = {
       eventId: eventId,
-      device: {type: {
-        deviceType: device.deviceType,
-          deviceId: device.deviceId
-        }}
     };
-
-    return this.http.post(url, body).toPromise()
-      .then(
-        (enrollement) => {
-          const body = enrollement.json();
-          console.log('[EventService][enroll][success]', body);
-          return [enrollement,null];
-        })
-      .catch(
-        (err) => {
-          console.log('[EventService][enroll][error]', err);
-          return (err as Error[])[0];
-        });
+    if(device){
+      body.device = device
+    }
+    return new Promise((resolve, reject) => {
+      this.http.post(url, body).toPromise()
+        .then(
+          (response) => {
+            const body = response.json();
+            console.log('[EventService][enroll][success]', body);
+            resolve(body.enrollment);
+          })
+        .catch(
+          (errResponse) => {
+            const body = errResponse.json();
+            console.log('[EventService][enroll][error]', body);
+            reject((body.errors as Error[]));
+          });
+    });
   }
 
   updateEnrollement(eventId, device){

@@ -33,7 +33,10 @@ var enrollmentSchema = Schema({
 
 enrollmentSchema.index({eventId: 1, userId: 1}, {name: 'one_enrollment_per_event_idx', unique: true});
 
-// on every save, add the date
+/**
+ * Function called on every save.
+ * It adds timing info about creation and update.
+ */
 enrollmentSchema.pre('save', function(next) {
     // get the current date
     var currentDate = new Date();
@@ -45,6 +48,34 @@ enrollmentSchema.pre('save', function(next) {
     }
     next();
 });
+
+/**
+ * Error handler. It is executed on every save if errors occur.
+ * Inspired here. http://thecodebarbarian.com/mongoose-error-handling
+ */
+enrollmentSchema.post('save', function (err, doc, next) {
+    console.log('[EnrollmentModel][error]', err);
+    if(err.name === 'MongoError' && err.code === 11000){
+        next({message: 'An enrollment for this event and user already exists.'})
+    }else{
+        next({message: err.msg})
+    }
+});
+
+/**
+ * Static method to find all enrollments by id .
+ */
+enrollmentSchema.statics.findByEventId = function (eventId, callback ){
+    this.find({eventId: eventId})
+        .populate('userId')
+        .exec(function (err, enrollment) {
+            if(err){
+                return callback(err)
+            }else{
+                return callback(null, enrollment)
+            }
+        })
+};
 
 /**
  * Static method to create an enrollment.
@@ -112,20 +143,6 @@ enrollmentSchema.statics.update = function (userId, eventId, enrollmentJson, cal
     })
 };
 
-/**
- * Static method to find all enrollments by id .
- */
-enrollmentSchema.statics.findByEventId = function (eventId, callback ){
-    this.find({eventId: eventId})
-        .populate('userId')
-        .exec(function (err, enrollment) {
-            if(err){
-                return callback(err)
-            }else{
-                return callback(null, enrollment)
-            }
-    })
-};
 
 /**
  * Static method to delete an enrollment.

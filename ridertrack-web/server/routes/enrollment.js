@@ -7,34 +7,6 @@ var User = require('../models/user');
 
 var authMiddleware = require('../middlewares/auth');
 
-/**
- * It returns the list of all the enrollments.
- * It accepts query params for filtering the enrollments: eventId, userId
- */
-router.get('/', function (req, res) {
-    var conditions = {};
-
-    // check for query parameters
-    // if they are present, add them to the conditions
-    if(req.query.eventId){
-        conditions.eventId = req.query.eventId
-    }
-    if(req.query.userId){
-        conditions.userId = req.query.userId
-    }
-
-    Enrollment.find(conditions, function (err, enrollment) {
-        if(err){
-            res.status(400).send({
-                errors: err
-            })
-        }else{
-            res.status(200).send({
-                enrollments: enrollment
-            })
-        }
-    })
-});
 
 /**
  * It creates the enrollment passed in the body after checking the user is logged in.
@@ -44,7 +16,7 @@ router.post('/', authMiddleware.hasValidToken, function(req, res){
     Event.findOne({_id: req.body.eventId}, function(err, event){
         if(err){
             res.status(400).send({
-                errors: err
+                errors: [err]
             })
         }else {
             if(!event){
@@ -59,40 +31,45 @@ router.post('/', authMiddleware.hasValidToken, function(req, res){
                     })
                 }
 
-                var currentDate = new Date();
-               // if(currentDate >= new Date(event.enrollmentOpeningAt) && currentDate <= new Date(event.enrollmentClosingAt)){
-                    Enrollment.find({eventId: req.body.eventId}, function (err, enrollments) {
-                        if (err) {
-                            callback(err)
-                        } else {
-                            if (enrollments.length < event.maxParticipants) {
-                                Enrollment.create(req.userId, req.body, function (err, enrollment) {
-                                    if (err) {
-                                        res.status(400).send({
-                                            errors: err
-                                        })
-                                    } else {
-                                        res.status(200).send({
-                                            message: 'User enrolled successfully!',
-                                            enrollment: enrollment
-                                        })
-                                    }
+                if(event.status === 'planned'){
+                    var currentDate = new Date();
+                    if(currentDate >= new Date(event.enrollmentOpeningAt) && currentDate <= new Date(event.enrollmentClosingAt)){
+                        Enrollment.find({eventId: req.body.eventId}, function (err, enrollments) {
+                            if (err) {
+                                res.status(400).send({
+                                    errors: [err]
                                 })
                             } else {
-                                return res.status(400).send({
-                                    errors: "The event has reached the maximum of participants."
-                                })
+                                if(enrollments.length < event.maxParticipants) {
+                                    Enrollment.create(req.userId, req.body, function (err, enrollment) {
+                                        if (err) {
+                                            res.status(400).send({
+                                                errors: [err]
+                                            })
+                                        } else {
+                                            res.status(200).send({
+                                                message: 'User enrolled successfully!',
+                                                enrollment: enrollment
+                                            })
+                                        }
+                                    })
+                                } else {
+                                    return res.status(400).send({
+                                        errors: [{message: "The event has reached the maximum of participants."}]
+                                    })
+                                }
                             }
-                        }
+                        })
+                    }else{
+                        return res.status(400).send({
+                            errors: [{message: "The enrollment is not opened."}]
+                        })
+                    }
+                }else{
+                    return res.status(400).send({
+                        errors: [{message: "The event is ongoing or already passed."}]
                     })
-             //   }
-			//	else{
-            //        return res.status(400).send({
-            //            errors: "The enrollment is not opened."
-            //        })
-            //    }
-
-
+                }
             }
         }
     })
@@ -105,7 +82,27 @@ router.get('/:eventId', function (req, res) {
     Enrollment.findByEventId(req.params.eventId, function (err, enrollment) {
         if(err){
             res.status(400).send({
-                errors: err
+                errors: [err]
+            })
+        }else{
+            res.status(200).send({
+                enrollment: enrollment
+            })
+        }
+    })
+});
+
+/**
+ * It return the enrollment of the requested eventId and userId.
+ */
+router.get('/:eventId/:userId', authMiddleware.hasValidToken, authMiddleware.isEnrolled, function (req, res) {
+    var eventId = req.params.eventId;
+    var userId = req.userId;
+
+    Enrollment.findOne({eventId: eventId, userId: userId}, function (err, enrollment) {
+        if(err){
+            res.status(400).send({
+                errors: [err]
             })
         }else{
             res.status(200).send({
@@ -119,7 +116,7 @@ router.get('/:eventId', function (req, res) {
  * It updates the fields passed in the body of the given enrollmentId
  */
 router.put('/:eventId/:userId', authMiddleware.hasValidToken, authMiddleware.isEnrolled, function (req, res) {
-    var userId = req.user._id;
+    var userId = req.userId;
     var eventId = req.params.eventId;
 
     Enrollment.update(userId, eventId, req.body, function (err, enrollment) {
@@ -141,26 +138,22 @@ router.put('/:eventId/:userId', authMiddleware.hasValidToken, authMiddleware.isE
  * Can be called only by the given user if he/she is enrollment on the event.
  * This will delete permanently everything related to it.
  */
-router.delete('/:eventId/:userId', authMiddleware.hasValidToken, function (req, res) {
-    if(req.params.userId === req.userId) {
-        Enrollment.delete(req.params.eventId, req.params.userId, function (err, deleted_enrollment) {
-            if (err) {
-               return res.status(400).send({
-                    errors: err
-                })
-            }else {
-               return res.status(200).send({
-                    enrollment: deleted_enrollment,
-                    message: 'Enrollment successfully deleted'
-                })
-            }
-        })
-    }
-	else{
-		return res.status(401).send({
-			errors:"You are not authorized to delete this enrollment"
-		})
-	}
+router.delete('/:eventId/:userId', authMiddleware.hasValidToken, authMiddleware.isEnrolled, function (req, res) {
+    var userId = req.userId;
+    var eventId = req.params.eventId;
+
+    Enrollment.delete(eventId, userId, function (err, deleted_enrollment) {
+        if (err) {
+            return res.status(400).send({
+                errors: [err]
+            })
+        }else {
+            return res.status(200).send({
+                enrollment: deleted_enrollment,
+                message: 'Enrollment successfully deleted'
+            })
+        }
+    })
 });
 
 module.exports = router;

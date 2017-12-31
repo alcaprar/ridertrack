@@ -3,6 +3,7 @@ import {DialogService} from "../dialog.service";
 import {Router} from "@angular/router";
 import {User} from "../../models";
 import {EventService, UserService} from "../../services";
+import {Device} from "../../models/device";
 
 declare var $: any;
 
@@ -18,9 +19,11 @@ export class EnrollementDialogComponent implements OnInit {
   private isSelected: boolean;
   private isEnrolled: boolean;
   private eventId: string;
-  private device: {deviceType: string, deviceId: string};
+  private device: Device;
 
   private currentUser: User = new User();
+
+  private errors: Error[] = [];
 
   constructor(private dialogService: DialogService, private router: Router, private userService: UserService,
               private eventService: EventService) {
@@ -38,6 +41,7 @@ export class EnrollementDialogComponent implements OnInit {
 
   show(title, eventId, isEnrolled, device){
     console.log('[EnrollementDialog][show]', title);
+    this.errors = [];
     this.title = title;
     this.eventId = eventId;
     this.isEnrolled = isEnrolled;
@@ -52,30 +56,37 @@ export class EnrollementDialogComponent implements OnInit {
 
   save(){
     console.log('[EnrollementDialog][Save]');
-    this.device.deviceId =$('#spotgenId').value;
-    this.device.deviceType = "Spot gen";
+    if($('#device-spotgen').is(':checked')){
+      this.device = new Device("spot-gen-3", $('#spotgenId').val());
+    }
     this.enroll();
-    $('#enrollementDialog').modal('hide');
-    $('#form').modal('hide');
   }
 
   skip(){
     console.log('[ConfirmationDialog][Skip]');
     this.device = null;
-    this.enroll();
+    // this.enroll();
     $('#enrollementDialog').modal('hide');
   }
 
+  /**
+   * It is triggered when the user clicks the button.
+   * It calls the eventService in order to enroll the user passing also the selected devices.
+   */
   private enroll(){
+    this.errors = [];
     this.eventService.enrollToEvent(this.eventId, this.device)
       .then(
         (response) => {
           console.log('[Enroll][success]', response);
+          $('#enrollementDialog').modal('hide');
+          $('#form').modal('hide');
         }
       )
       .catch(
-        (error) => {
-          console.log('[EventDetail][enroll][error]', error);
+        (errors) => {
+          console.log('[EventDetail][enroll][error]', errors);
+          this.errors = errors
         });
   }
 

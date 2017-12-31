@@ -18,7 +18,7 @@
               <span> Ridertrack App(*)</span>
             </label>
             <label class="btn" (click)="changeRadioButton()">
-              <input type="checkbox" id="spotgen" value="spotgen" (click)="changeRadioButton()">
+              <input type="checkbox" id="device-spotgen" value="spotgen" (click)="changeRadioButton()">
               <i class="fa fa-square-o fa-2x"></i><i class="fa fa-check-square-o fa-2x"></i><span> Spot Gen 3</span>
             </label>
           </div>
@@ -29,10 +29,13 @@
         </div>
         <small>(*)the mobile application is given by default</small>
       </div>
+      <div *ngIf="errors != null && errors.length > 0" class="alert alert-danger" style="margin: 15px">
+        <span *ngFor="let err of errors">{{err.message}}</span>
+      </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" *ngIf="!isEnrolled" (click)="skip()">Skip</button>
+        <button type="button" class="btn btn-danger" *ngIf="!isEnrolled" (click)="skip()">Cancel</button>
         <button type="button" class="btn btn-danger" *ngIf="isEnrolled" (click)="withdrawEnrollement()">Withdraw Enrollement</button>
-        <button type="button" class="btn btn-default" (click)="save()" >Save</button>
+        <button type="button" class="btn btn-default" (click)="save()" >Enroll</button>
       </div>
     </div>
 

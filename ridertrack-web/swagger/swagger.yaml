@@ -657,16 +657,51 @@ paths:
             $ref: '#/definitions/Enrollment'
         400:
           description: "Error message"
-  /enrollments/{enrollmentId}:
+  /enrollments/{eventId}/{userId}:
+      get:
+        tags:
+        - "enrollment"
+        summary: " It returns the details of the requested enrollment."
+        description: " It returns the details of the requested enrollment"
+        produces:
+        - "application/json"
+        parameters:
+        - name: "eventId"
+          in: "path"
+          type: "string"
+          required: true
+        - name: "userId"
+          in: "path"
+          type: "string"
+          required: true
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            description: ""
+        responses:
+          200:
+            description: "Enrollment successfully updated"
+            schema:
+              $ref: '#/definitions/Enrollment'
+          400:
+            description: "Error message"
+          401:
+            description: "You are not authorized to update this enrollment."
+  /enrollments/{eventId}/{userId}:
     put:
       tags:
       - "enrollment"
-      summary: " It updates the fields passed in the body of the given enrollmentId"
-      description: " It updates the fields passed in the body of the given enrollmentId"
+      summary: " It updates the fields passed in the body of the given enrollment."
+      description: " It updates the fields passed in the body of the given enrollment"
       produces:
       - "application/json"
       parameters:
-      - name: "enrollmentId"
+      - name: "eventId"
+        in: "path"
+        type: "string"
+        required: true
+      - name: "userId"
         in: "path"
         type: "string"
         required: true

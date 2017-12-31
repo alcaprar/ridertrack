@@ -165,16 +165,10 @@ private getRoute() {
   }
 
   /**
-   * It calls the event service to enroll the user.
+   * It opens the dialog for enrolling.
    */
   enroll() {
-
-    //if(this.enrollementIsOpen()) {
     this.dialogService.enrollement("Add Tracking Device", this.eventId, false, null);
-   // } else {
-   // this.dialogService.alert("Enrollement",
-   //     "Sorry the registration period is CLOSED or not yet AVAILABLE")
-   // }
   }
 
   enrollementIsOpen(): boolean {
