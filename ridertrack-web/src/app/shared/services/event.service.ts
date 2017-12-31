@@ -294,20 +294,19 @@ export class EventService {
    * @param device
    * @returns enrollment message
    */
-  enrollToEvent(eventId, device): Promise<any>{
+  enrollToEvent(eventId, device = null): Promise<any>{
     const url = `${this.BASE_URL}/enrollments`;
     var body = {
       eventId: eventId,
+      device: device
     };
-    if(device){
-      body.device = device
-    }
     return new Promise((resolve, reject) => {
       this.http.post(url, body).toPromise()
         .then(
           (response) => {
             const body = response.json();
             console.log('[EventService][enroll][success]', body);
+            this.router.navigate(['/events', eventId]);
             resolve(body.enrollment);
           })
         .catch(
@@ -333,6 +332,7 @@ export class EventService {
         (updatedEnrollment) => {
           const body = updatedEnrollment.json();
           console.log('[EventService][UpdateEnrollement][success]', body);
+          this.router.navigate(['/events', eventId]);
           return [body,null];
         })
       .catch(
@@ -354,6 +354,7 @@ export class EventService {
         (res) => {
           const respondMessage = res.json();
           console.log('[EventService][withdrawEnrollment][success]', respondMessage);
+          this.router.navigate(['/events', eventId]);
           return true;
         })
       .catch(

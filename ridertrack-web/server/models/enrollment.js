@@ -81,8 +81,13 @@ enrollmentSchema.statics.findByEventId = function (eventId, callback ){
  * Static method to create an enrollment.
  */
 enrollmentSchema.statics.create = function(userId, enrollmentJson, callback){
-    var enrollment = new Enrollment(enrollmentJson);
-    enrollment.userId = userId;
+    var enrollment = new Enrollment({
+        userId: userId,
+        eventId: enrollmentJson.eventId
+    });
+    if(enrollmentJson.device){
+        enrollment.device = enrollmentJson.device
+    }
 
     enrollment.save(function(err, enrollment){
         if(err) {

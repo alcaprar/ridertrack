@@ -712,7 +712,14 @@ paths:
           description: ""
       responses:
         200:
-          description: "Enrollment successfully updated"
+          description: "An enrollment object."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  enrollment:
+                    $ref: '#/definitions/Enrollment'
           schema:
             $ref: '#/definitions/Enrollment'
         400:
