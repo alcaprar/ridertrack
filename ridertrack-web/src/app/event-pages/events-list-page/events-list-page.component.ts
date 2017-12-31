@@ -35,6 +35,8 @@ export class EventsListPageComponent implements OnInit {
   private queryParams: EventsListQueryParams = new EventsListQueryParams;
   private totalPages: number = 0;
 
+  private loading = false;
+
   constructor(private eventService: EventService, private route: ActivatedRoute, private userService: UserService, private router: Router, private appRef: ApplicationRef) {
     // retrieve the event types
     this.eventTypes = this.eventService.getEventTypes();
@@ -66,9 +68,11 @@ export class EventsListPageComponent implements OnInit {
           console.log('[EventList][ngOnInit]', this.queryParams);
 
           // get events
+          this.loading = true;
           this.eventService.getAllEvents(this.queryParams)
             .then(
               (response) => {
+                this.loading = false;
                 console.log('[AllEvents][getAllEvents]', response);
                 this.eventsList = response[0];
                 this.queryParams.page = response[1];
