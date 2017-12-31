@@ -318,8 +318,9 @@ export class EventService {
     });
   }
 
-  updateEnrollement(eventId, device){
-    const url = `${this.BASE_URL}/enrollments`;
+
+  updateEnrollement(eventId, device, userId): Promise<any>{
+    const url = `${this.BASE_URL}/enrollments/${eventId}/${userId}`;
     var body = {
       eventId: eventId,
       device: {type: {
@@ -327,19 +328,22 @@ export class EventService {
           deviceId: device.deviceId
         }}
     };
-    return this.http.put(url, body).toPromise()
-      .then(
-        (updatedEnrollment) => {
-          const body = updatedEnrollment.json();
-          console.log('[EventService][UpdateEnrollement][success]', body);
-          this.router.navigate(['/events', eventId]);
-          return [body,null];
-        })
-      .catch(
-        (err) => {
-          console.log('[EventService][UpdateEnrollement][error]', err);
-          return (err as Error[])[0];
-        });
+    return new Promise((resolve, reject) => {
+      this.http.put(url, body).toPromise()
+        .then(
+          (response) => {
+            const body = response.json();
+            console.log('[EventService][UpdateEnrollement][success]', body);
+            this.router.navigate(['/events', eventId]);
+            resolve([body.updatedEnrollement, null]);
+          })
+        .catch(
+          (errResponse) => {
+            const body = errResponse.json();
+            console.log('[EventService][UpdateEnrollement][error]', errResponse);
+            reject((body.errors as Error[])[0]);
+          });
+    });
   }
   /**
    * Perform an HTTP DELETE to REST API to withdraw enrollment to an event
