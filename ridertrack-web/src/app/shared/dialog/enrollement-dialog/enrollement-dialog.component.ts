@@ -35,7 +35,8 @@ export class EnrollementDialogComponent implements OnInit {
     this.userService.getUser()
       .subscribe(
         (user) => {
-          this.currentUser = user
+          this.currentUser = user;
+
         });
   }
 
@@ -64,9 +65,14 @@ export class EnrollementDialogComponent implements OnInit {
 
   skip(){
     console.log('[ConfirmationDialog][Skip]');
-    this.device = null;
-    // this.enroll();
     $('#enrollementDialog').modal('hide');
+  }
+
+  update(){
+    if($('#device-spotgen').is(':checked')){
+      this.device = new Device("spot-gen-3", $('#spotgenId').val());
+    }
+    this.updateEnrollement();
   }
 
   /**
@@ -85,13 +91,21 @@ export class EnrollementDialogComponent implements OnInit {
       )
       .catch(
         (errors) => {
-          console.log('[EventDetail][enroll][error]', errors);
+          console.log('[Enroll][error]', errors);
           this.errors = errors
         });
   }
 
   private updateEnrollement() {
-    this.eventService.updateEnrollement(this.eventId, this.device);
+    this.eventService.updateEnrollement(this.eventId, this.device, this.currentUser.id)
+      .then(response=>{
+        console.log('[Enroll][Update][success]');
+        $('#enrollementDialog').modal('hide');
+        $('#form').modal('hide');
+      }).catch((errors)=> {
+      console.log('[Enroll][error]');
+      this.errors = errors
+    });
   }
 
   changeRadioButton() {
