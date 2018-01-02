@@ -123,6 +123,14 @@ input#search_places {
     box-shadow: 0 1px 1px rgba(179, 179, 179, 0.1) inset;
 }
 
+#hover_polylines, #hover_waypoints{
+    display: none;
+    width: 100%;
+    height: 50px;
+    color: #000;
+    background: #DADADA;
+}
+
 
 
 

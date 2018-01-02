@@ -6,6 +6,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {DialogService} from "../../dialog/dialog.service";
 
 declare var google: any;
+declare var $: any;
 
 @Component({
     selector: 'app-add-route-map',
@@ -63,7 +64,6 @@ export class AddRouteMapComponent implements OnInit {
             this.errors = error;
           }
         );
-
 
     }
 

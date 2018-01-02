@@ -118,8 +118,7 @@ import {AdminEditEventDialogComponent} from './shared/dialog/admin-edit-event-di
     Ng4GeoautocompleteModule.forRoot(),
     FacebookModule.forRoot(),
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyCWY7J8-bVG3TxQbVvgXb-F5lQV6XrTM5s',
-      libraries: ["places, address"]
+      apiKey: 'AIzaSyCWY7J8-bVG3TxQbVvgXb-F5lQV6XrTM5s'
     }),
     RouterModule.forRoot([
       {
