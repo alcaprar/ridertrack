@@ -6,7 +6,8 @@
         <div class="col-md-8">
             <div class="btn-group" id="buttons">
                 <p>Choose "Draw" method :
-                   <label class="btn" (click)="setRadio('waypoints')" title="Directions are used when the route is located in a city and does not contain a lot of checkpoints,
+                   <label class="btn" (click)="setRadio('waypoints')"
+                          title="Directions are used when the route is located in a city and does not contain a lot of checkpoints,
                         the route is automatically calulated and returned">
                     <input id="waypoints_radio" type="radio" name='radioButton' value="waypoints" (click)="setRadio('waypoints')"
                            [checked]="selected === 'waypoints'"
@@ -15,7 +16,8 @@
                     <i class="fa fa-circle-o fa-2x"></i><i class="fa fa-dot-circle-o fa-2x"></i> <span> Directions</span>
                     <small>(*max 23 checkpoints)</small>
                     </label>
-                    <label class="btn" (click)="setRadio('polylines')" title="Lines are used when the route includes country roads or unconventional roads,
+                    <label class="btn" (click)="setRadio('polylines')"
+                           title="Lines are used when the route includes country roads or unconventional roads,
                         with this you can personalize the route completely">
                         <input id="polylines_radio" type="radio" name='radioButton' value="polylines"  (click)="setRadio('polylines')"
                         [checked]="selected==='polylines'" alt="Lines are used when the route includes country roads or unconventional roads,
