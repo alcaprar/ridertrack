@@ -22,6 +22,8 @@ export class EventsListPageComponent implements OnInit {
   private currentUser: User;
   private eventsList: Event[] = [];
   private eventTypes: String[];
+  private maxLengthSlider = 300;
+  private minLengthSlider = 0;
   private allowedItemsPerPage = [3, 6, 9, 12, 15];
 
   public userSettingCity: any = {
@@ -60,8 +62,8 @@ export class EventsListPageComponent implements OnInit {
           this.queryParams.keyword = params['keyword'] || undefined;
           this.queryParams.sort = params['sort'] || undefined;
           this.queryParams.type = params['type'] || undefined;
-          this.queryParams.lengthgte = params['lengthgte'] || undefined;
-          this.queryParams.lengthlte = params['lengthlte'] || undefined;
+          this.queryParams.lengthgte = (!isNaN(params['lengthgte'])) ? params['lengthgte'] : undefined;
+          this.queryParams.lengthlte = (!isNaN(params['lengthlte'])) ? params['lengthlte'] : undefined;
           this.queryParams.city = params['city'] || undefined;
           this.queryParams.country = params['country'] || undefined;
 
@@ -158,10 +160,11 @@ export class EventsListPageComponent implements OnInit {
     this.queryParams.type = (this.searchType.nativeElement.value == -1) ? undefined : this.searchType.nativeElement.value;
 
     // length search
+    console.log('[EventsList][search]', $('#length-range').val(), 'a');
     var length1 = parseInt($('#length-range').val().split(',')[0]);
     var length2 = parseInt($('#length-range').val().split(',')[1]);
 
-    if(length1 == 0 && length2 == 300){
+    if(isNaN(length1) || isNaN(length2) || (length1 == 0 && length2 == 300)){
       this.queryParams.lengthgte = undefined;
       this.queryParams.lengthlte = undefined;
     }else{
@@ -179,11 +182,11 @@ export class EventsListPageComponent implements OnInit {
   }
 
   autocompleteCity(selectedData: any){
-
+    console.log('[EventsList][autoCompleteCity]', selectedData.data.address_components);
     for(let i=0; i< selectedData.data.address_components.length; i++){
-      if(selectedData.data.address_components[i].types[0]==='locality') {
+      if(['administrative_area_level_3', 'locality'].indexOf(selectedData.data.address_components[i].types[0]) > -1) {
         this.queryParams.city = selectedData.data.address_components[i].long_name;
-        console.log("[Updated][City]" + this.queryParams.city);
+        console.log("[EventsList][autoCompleteCity][City]" + this.queryParams.city);
       }
     }
   }

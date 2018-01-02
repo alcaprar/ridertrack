@@ -119,9 +119,8 @@ export class EventManagePageComponent implements OnInit {
 
 
   autocompleteCity(selectedData: any){
-
     for(let i=0; i< selectedData.data.address_components.length; i++){
-      if(selectedData.data.address_components[i].types[0]==='locality') {
+      if(['locality', 'administrative_area_level_3'].indexOf(selectedData.data.address_components[i].types[0]) > -1) {
         this.event.city = selectedData.data.address_components[i].long_name;
         console.log("[Updated][City]" + this.event.city);
       }
