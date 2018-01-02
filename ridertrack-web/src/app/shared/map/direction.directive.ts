@@ -68,8 +68,6 @@ export class DirectionDirective implements  OnInit, OnChanges, OnDestroy {
       }
     })
     });
-
-  }
-
+    }
 
 }

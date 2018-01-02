@@ -1,5 +1,5 @@
 <agm-map *ngIf="initCoords" #map [longitude]="initCoords.lng" [latitude]="initCoords.lat" [zoom]="zoom"
-[streetViewControl]="false">
+[streetViewControl]="false" [clickableIcons]="false">
   <div id="waypoints" *ngIf="selected==='waypoints'">
     <map-direction *ngIf="directions != null" [origin]="directions.origin" [destination]="directions.destination"
                    [waypoints]="directions.waypoints" ></map-direction>
@@ -9,8 +9,7 @@
     <agm-polyline [strokeColor]="'#00BFFF'" [strokeWeight]="7">
       <agm-polyline-point *ngFor="let point of mapPoints" [latitude]="point.lat" [longitude]="point.lng"></agm-polyline-point>
     </agm-polyline>
-    <agm-marker *ngFor="let point of mapPoints" [latitude]="point.lat" [longitude]="point.lng"
-                [iconUrl]="'http://labs.google.com/ridefinder/images/mm_20_red.png'"></agm-marker>
+    <agm-marker *ngFor="let bound of bounds" [latitude]="bound.lat" [longitude]="bound.lng" [label]="bound.label"></agm-marker>
   </div>
 </agm-map>
-<p *ngIf="initCoords === null || initCoords ===undefined">*TBD</p>
+<p *ngIf="initCoords === null || initCoords === 'undefined' ">*TBD</p>

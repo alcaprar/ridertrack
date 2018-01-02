@@ -1,3 +1,7 @@
 .ng-invalid:not(form) {
   border-left: 3px solid #a94442;
 }
+
+.login-social:hover {
+  cursor: pointer;
+}

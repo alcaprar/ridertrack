@@ -5,6 +5,7 @@ import {Event} from "../../models/event";
 import {} from '@types/googlemaps';
 
 declare var google:any;
+declare var $:any;
 
 @Component({
   selector: 'app-display-map',
@@ -25,9 +26,12 @@ export class DisplayMapComponent implements OnInit{
   public lng: number;
   public selected: String = '';
 
+  public bounds: any;
+
   public mapPoints; //latLng array
   directions: any;
-  constructor(private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private routeService: RouteService) { }
+  constructor(private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private routeService: RouteService,
+              private googleWrapper: GoogleMapsAPIWrapper) { }
 
   ngOnInit() {
 
@@ -63,8 +67,11 @@ export class DisplayMapComponent implements OnInit{
   }
 
   recenterMap(){
-    this.initCoords = {lat: this.mapPoints[this.mapPoints.length%2].lat,lng: this.mapPoints[this.mapPoints.length%2].lng};
+    this.initCoords = this.mapPoints[this.mapPoints.length%2];
     this.zoom = 14;
+    this.bounds = [{lat:this.mapPoints[0].lat , lng: this.mapPoints[0].lng, label:'A'},
+      {lat:this.mapPoints[this.mapPoints.length - 1].lat, lng:this.mapPoints[this.mapPoints.length-1].lng, label: 'B'}];
+    console.log("bounds: ", this.bounds)
   }
 
 
