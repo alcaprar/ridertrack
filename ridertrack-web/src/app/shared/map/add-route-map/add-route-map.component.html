@@ -37,13 +37,13 @@
     <agm-map id="map" #map [longitude]="initLong" [latitude]="initLat" [zoom]="zoom"
              (mapClick)="mapClicked($event)" [streetViewControl]="false" [clickableIcons]="false">
         <!-- MAP CONTENT FOR DIRECTIONS-->
-        <div id="waypoints" *ngIf="selected==='waypoints'">
+        <div *ngIf="selected==='waypoints'">
             <map-direction *ngIf="directions != null" [origin]="directions.origin" [destination]="directions.destination"
                            [waypoints]="directions.waypoints" ></map-direction>
             </div>
         <!-- MAP CONTENT FOR POLYLINES-->
-        <div id="polylines" *ngIf="selected === 'polylines' && mapPoints.length>0">
-                <agm-polyline [strokeColor]="'#00BFFF'" [strokeWeight]="7">
+        <div *ngIf="selected === 'polylines' && mapPoints.length>0">
+                <agm-polyline id="polylines" [strokeColor]="'#00BFFF'" [strokeWeight]="7">
                     <agm-polyline-point *ngFor="let point of mapPoints" [latitude]="point.lat" [longitude]="point.lng"></agm-polyline-point>
                 </agm-polyline>
             <agm-marker *ngFor="let point of mapPoints" [latitude]="point.lat" [longitude]="point.lng"></agm-marker>

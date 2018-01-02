@@ -55,6 +55,10 @@ input[type="radio"]{
 }
 label.btn span {
     font-size: 1.5em ;
+    color: grey;
+}
+label.btn span:hover {
+    color: #FDC600;
 }
 
 label input[type="radio"] ~ i.fa.fa-circle-o{

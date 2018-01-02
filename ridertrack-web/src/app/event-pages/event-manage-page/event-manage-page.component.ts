@@ -27,7 +27,8 @@ export class EventManagePageComponent implements OnInit {
   errors: Error[] = [];
   public userSettingCity: any;
 
-  constructor(private eventService: EventService, private router: Router, private route: ActivatedRoute, private dialogService: DialogService) {
+  constructor(private eventService: EventService, private router: Router, private route: ActivatedRoute,
+              private dialogService: DialogService) {
   }
 
   ngOnInit() {
