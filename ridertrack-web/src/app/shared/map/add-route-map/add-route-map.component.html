@@ -1,8 +1,7 @@
 <div class="container" id="search-container">
-    <div class="form-group">
-        <input id="search" placeholder="Insert starting area" type="text" class="form-control"
-                   #search [formControl]="searchControl">
-    </div>
+    <ng4geo-autocomplete id="search" (componentCallback)="autocompleteAddress($event)"
+                             [userSettings]="userSettingCity" #search >
+    </ng4geo-autocomplete>
     <div class="row">
         <div class="col-md-8">
             <div class="btn-group" data-toggle="buttons">

@@ -20,6 +20,7 @@ export class MapComponent implements OnInit {
   public initLat: number;
   public initLong: number;
   public zoom = 15;
+  public bounds:any;
 
 
   public mapPoints; //latLng array
@@ -161,6 +162,9 @@ export class MapComponent implements OnInit {
     this.initLat = this.mapPoints[this.mapPoints.length%2].lat;
     this.initLong = this.mapPoints[this.mapPoints.length%2].lng;
     this.zoom = 14;
+    this.bounds = [{lat:this.mapPoints[0].lat , lng: this.mapPoints[0].lng, label:'A'},
+      {lat:this.mapPoints[this.mapPoints.length - 1].lat, lng:this.mapPoints[this.mapPoints.length-1].lng, label: 'B'}];
+    console.log("bounds: ", this.bounds)
   }
 
   getRoutePointsAndWaypoints() {

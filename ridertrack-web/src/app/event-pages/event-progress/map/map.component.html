@@ -46,6 +46,7 @@
           <agm-polyline [strokeColor]="'#00BFFF'" [strokeWeight]="7">
             <agm-polyline-point *ngFor="let point of mapPoints" [latitude]="point.lat" [longitude]="point.lng"></agm-polyline-point>
           </agm-polyline>
+          <agm-marker *ngFor="let bound of bounds" [longitude]="bound.lng" [latitude]="bound.lat" [label]="bound.label"></agm-marker>
         </div>
       </agm-map>
     </div>

@@ -71,7 +71,7 @@ export class DisplayMapComponent implements OnInit{
     this.zoom = 14;
     this.bounds = [{lat:this.mapPoints[0].lat , lng: this.mapPoints[0].lng, label:'A'},
       {lat:this.mapPoints[this.mapPoints.length - 1].lat, lng:this.mapPoints[this.mapPoints.length-1].lng, label: 'B'}];
-    console.log("bounds: ", this.bounds)
+    console.log("bounds: ", this.bounds);
   }
 
 

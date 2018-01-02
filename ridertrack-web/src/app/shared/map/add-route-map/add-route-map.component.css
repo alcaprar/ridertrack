@@ -111,6 +111,18 @@ p{
     line-height: 2em;
 }
 
+input#search_places {
+    display: inline;
+    width: 97%;
+    height: 22px;
+    font-size: 13px;
+    color: grey;
+    background-color: #FFF;
+    border: 1px solid #DADADA;
+    border-radius: 0;
+    box-shadow: 0 1px 1px rgba(179, 179, 179, 0.1) inset;
+}
+
 
 
 

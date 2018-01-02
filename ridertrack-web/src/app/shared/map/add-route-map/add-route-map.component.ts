@@ -1,7 +1,6 @@
 import {Component, ElementRef, NgZone, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import { MapsAPILoader, MouseEvent as AGMMouseEvent} from "@agm/core";
 import {} from '@types/googlemaps';
-import {FormControl} from "@angular/forms";
 import {RouteService} from "../../services/route.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {DialogService} from "../../dialog/dialog.service";
@@ -19,11 +18,17 @@ export class AddRouteMapComponent implements OnInit {
     public initLat: number;
     public initLong: number;
     public zoom = 15;
-    public searchControl: FormControl= new FormControl();
     public selected: String = '';
 
     public mapPoints : any = [] ; //latLng array
     directions : any;
+
+  public userSettingCity: any = {
+    showSearchButton: false,
+    geoTypes: ['address'],
+    showCurrentLocation: false,
+    inputPlaceholderText: 'Insert a Starting Address'
+  };
 
     private eventId: String;
 
@@ -80,28 +85,14 @@ export class AddRouteMapComponent implements OnInit {
           });
         }
       }
-
-        //add listener to Input search
-        this.mapsAPILoader.load().then(()=> {
-            let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
-                types: ["address"]
-            });
-            autocomplete.addListener("place_changed", () => {
-                this.ngZone.run(() => {
-                    let place: google.maps.places.PlaceResult = autocomplete.getPlace();
-
-                    if(place.geometry === undefined || place.geometry === null) {
-                        return;
-                    }
-                    this.initLat= place.geometry.location.lat();
-                    this.initLong= place.geometry.location.lng();
-                    this.zoom = 17;
-
-                    console.log("[Show area inserted]" + "[Lng]" +this.initLong + "[Lat]"+ this.initLong);
-                })
-            })
-        });
     }
+
+  autocompleteAddress(selectedData: any){
+      console.log(selectedData);
+      this.initLat = selectedData.data.geometry.location.lat;
+      this.initLong = selectedData.data.geometry.location.lng;
+      this.zoom = 17;
+  }
 
 
     mapClicked($event : AGMMouseEvent){
