@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {DialogService} from "../dialog.service";
 import { User } from '../../models/user';
+import {UserService} from "../../services";
 declare var $: any;
 
 @Component({
@@ -10,52 +11,47 @@ declare var $: any;
 })
 export class AdminEditUserDialogComponent implements OnInit {
 
-  private callback;
-  private title = 'Title';
-  private body = 'Body';
-  private editedUser: User;
+  private user: User = new User();
+  private userRoles = ['user', 'administrator'];
+  private selection: string;
+  private title: string;
 
-  constructor(private dialogService: DialogService) {
-    this.dialogService.register('adminEditUser', this)
+  constructor(private dialogService: DialogService, private userService: UserService) {
+    this.dialogService.register("adminEditUser", this);
   }
 
   ngOnInit() {
   }
 
 
-  show(title, body) {
-     /* this.editedUser = body;
-     console.log('[EditedUser]:');
-     console.log(this.editedUser); */
-    console.log('[adminEditUserDialog][show]', title, body);
+  show(title, user: User, selection) {
     this.title = title;
-    this.body = body;
+    this.selection = selection;
+    if(user !== null){
+      this.user = user;
+    }
+    console.log("[adminEditUserDialog][User][Show]", this.user);
     $('#adminEditUserDialog').modal('show');
-
   }
 
-  ok() {
-    console.log('[adminEditUserDialog][ok]');
-    $('#adminEditUserDialog').modal('hide');
+  save() {
+    if(this.selection === 'edit' ) {
+      //TODO: Call the update of the user
+      //TODO: Call the update of the role if different from the default one
+      console.log('[adminEditUserDialog][User Updated]');
+      $('#adminEditUserDialog').modal('hide');
+    }
+    if(this.selection === 'create'){
+      //TODO: Call the creation of the user
+      //TODO: Call the update of the role if different from the default one
+      console.log('[adminEditUserDialog][User Created]');
+      $('#adminEditUserDialog').modal('hide');
+    }
   }
 
   cancel(){
-    console.log('[adminEditUserDialog][cancel]');
+    console.log('[adminEditUserDialog][Cancel]');
     $('#adminEditUserDialog').modal('hide');
   }
-
-  user(body){
-    // this.editedUser = body;
-    this.editedUser.email = body.email;
-    this.editedUser.name = body.name;
-    this.editedUser.surname = body.surname;
-    this.editedUser.id = body._id;
-    console.log('[EditedUser]:');
-    console.log(this.editedUser);
-
-  }
-
-
-
 
 }

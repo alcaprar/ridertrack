@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-import {constructDependencies} from '@angular/core/src/di/reflective_provider';
-import {UserService} from './shared/services/user.service';
 import { Router, NavigationEnd } from '@angular/router';
 declare var $:any;
 declare var WOW: any;

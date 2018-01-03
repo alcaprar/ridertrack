@@ -4,6 +4,7 @@ export class User {
  public city: string;
  public aboutMe: string;
  public image: File;
+ public role: string;
 
 
   constructor(

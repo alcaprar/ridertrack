@@ -1,14 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../shared/services/user.service';
-import { EventService } from '../../shared/services/event.service';
-import { User } from '../../shared/models/user';
-import { Event } from '../../shared/models/event';
 import { ActivatedRoute } from '@angular/router';
-import { AuthenticationService } from '../../authentication/authentication.service';
-import { Router } from "@angular/router";
-import { DialogService } from "../../shared/dialog/dialog.service";
-import { RouteService } from "../../shared/services/route.service";
-import { FacebookService, UIParams, UIResponse, InitParams } from "ngx-facebook/dist/esm/index";
+import {SortService} from "../../event-pages/event-progress/sort.service";
+import {User} from "../../shared/models";
+import {DialogService} from "../../shared/dialog/dialog.service";
 
 @Component({
   selector: 'app-manage-users',
@@ -19,27 +14,39 @@ export class ManageUsersComponent implements OnInit {
 
   users: any;
 
-  constructor(private route: ActivatedRoute,
-    private userService: UserService,
-    private eventService: EventService,
-    private authService: AuthenticationService,
-    private router: Router,
-    private routeService: RouteService,
-    private dialogService: DialogService,
-    private fb: FacebookService) { }
+  constructor(private route: ActivatedRoute,private userService: UserService, private sortService: SortService,
+              private dialogService: DialogService) { }
 
   ngOnInit() {
+    this.getUsers();
+  }
+
+  getUsers() {
     this.userService.getAllUsers().then(
       (response) => {
         console.log('[AdminUsers][getAllUsers]', response);
         this.users = response;
+        this.sortService.sortTable({sortColumn: 'name', sortDirection:'asc'}, this.users);
       });
   }
 
-  userClicked(user){
-    // console.log('USER: ');
-    // console.log(user);
-    this.dialogService.adminEditUser('Edit user account', user);
+  onSorted($event){
+    this.sortService.sortTable($event, this.users);
   }
 
+  edit(user: User){
+    this.dialogService.adminEditUser("Edit User", user, 'edit');
+  }
+
+  delete(user: User){
+    this.dialogService.confirmation("Delete", "Are you sure to delete this User?", function () {
+      this.userService.deleteUserById(user.id);
+    }.bind(this));
+    //update table
+    this.getUsers();
+  }
+
+  createUser() {
+    this.dialogService.adminEditUser("Create User", null, 'create');
+  }
 }

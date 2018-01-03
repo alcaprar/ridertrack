@@ -90,4 +90,23 @@ export class UserService {
       });
   }
 
+  deleteUserById(userId): Promise<Error> {
+    const url = `${this.BASE_USERS_URL}${userId}`;
+    console.log(url);
+    return this.http.delete(url).toPromise()
+      .then(
+        (response) => {
+          console.log('[UserService][deleteUser][then]', response);
+          this.authService.logout();
+          this.router.navigate(['']);
+          return null
+        })
+      .catch(
+        (errorResponse: any) => {
+          var errors = errorResponse.json() as Error[];
+          console.log('[UserService][deleteUser][error]', errors);
+          return errors
+        });
+  }
+
 }
