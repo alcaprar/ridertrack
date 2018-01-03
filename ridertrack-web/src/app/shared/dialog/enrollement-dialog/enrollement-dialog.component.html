@@ -34,8 +34,8 @@
         <span *ngFor="let err of errors">{{err.message}}</span>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" *ngIf="!isEnrolled" (click)="skip()">Cancel</button>
-        <button type="button" class="btn btn-danger" *ngIf="isEnrolled" (click)="withdrawEnrollement()">Withdraw Enrollement</button>
+        <button type="button" class="btn btn-danger" id="cancel" *ngIf="!isEnrolled" (click)="skip()">Cancel</button>
+        <button type="button" class="btn btn-danger" id="danger" *ngIf="isEnrolled" (click)="withdrawEnrollement()">Withdraw Enrollement</button>
         <button type="button" class="btn btn-default" *ngIf="!isEnrolled" (click)="save()" >Enroll</button>
         <button type="button" class="btn btn-default" *ngIf="isEnrolled" (click)="update()" >Update</button>
       </div>
