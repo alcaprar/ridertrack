@@ -238,7 +238,7 @@ router.post('/', authMiddleware.hasValidToken, multipart, function (req, res) {
 
     var event = req.body;
 
-    var tempPath = '../ridertrack-web/server/public/img/logo.PNG';
+    var tempPath = config.uploadImageFolder +'/logo.PNG';
     var logoMimeType = 'image/png';
 
     // check image
