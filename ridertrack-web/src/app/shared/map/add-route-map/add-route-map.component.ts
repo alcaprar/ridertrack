@@ -191,9 +191,13 @@ export class AddRouteMapComponent implements OnInit {
       this.eventService.updateEvent(this.eventId, this.event);
     }
 
-    getTotalLength() {
-      this.length =0;
+  /**
+   * Calculates the total length in case of polylines
+   */
+  getTotalLength() {
+
       if(this.selected ==='polylines'){
+        this.length =0;
         for(let i=0,j=1; i<this.mapPoints.length-1,j<this.mapPoints.length;i++,j++){
           let totalRadius = 6371;
           let dLat = (this.mapPoints[j].lat - this.mapPoints[i].lat)*(Math.PI/180);
@@ -201,12 +205,17 @@ export class AddRouteMapComponent implements OnInit {
           let a = Math.sin(dLat/2)*Math.sin(dLat/2) + Math.cos(this.mapPoints[i].lat * Math.PI/180)*
             Math.cos(this.mapPoints[j].lat*Math.PI/180)* Math.sin(dLng/2)*Math.sin(dLng/2);
          let c = 2*Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-         let distance = totalRadius *c;
+         let distance = totalRadius*c;
          this.length += distance;
         }
         this.length = Number(this.length.toFixed(3));
         this.event.length = this.length;
         console.log("[Polylines][getTotalLength]", this.length);
       }
+    }
+
+    handleLengthUpdated(length){
+    this.event.length = length;
+    console.log("[Directions][handleLengthUpdated]", length);
     }
 }

@@ -1,4 +1,4 @@
-import {Directive, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import {Directive, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges} from '@angular/core';
 import {MapsAPILoader, GoogleMapsAPIWrapper} from "@agm/core";
 import {} from "@types/googlemaps"
 
@@ -12,14 +12,19 @@ export class DirectionDirective implements  OnInit, OnChanges, OnDestroy {
   @Input() origin: any;
   @Input() destination: any;
   @Input() waypoints: any;
+  @Output() lengthUpdated = new EventEmitter();
  travelMode: string = "WALKING";
 
   public directionService :any;
   public directionsDisplay: any = undefined;
+  public length: number;
 
-  constructor(private  googleWrapper : GoogleMapsAPIWrapper, private apiLoader: MapsAPILoader) { }
+  constructor(private  googleWrapper : GoogleMapsAPIWrapper, private apiLoader: MapsAPILoader) {
+
+  }
 
   ngOnInit(): void {
+    this.length = 0;
     this.apiLoader.load().then(() => {
       this.directionService = new google.maps.DirectionsService;
       this.drawRoute();
@@ -43,6 +48,8 @@ export class DirectionDirective implements  OnInit, OnChanges, OnDestroy {
 
     this.googleWrapper.getNativeMap().then(map => {
 
+      this.length =0;//init
+
       if (typeof this.directionsDisplay === 'undefined') {
         this.directionsDisplay = new google.maps.DirectionsRenderer;
         this.directionsDisplay.setMap(map);
@@ -62,7 +69,18 @@ export class DirectionDirective implements  OnInit, OnChanges, OnDestroy {
           //this.directionsDisplay.setOptions({preserveViewport: true}); (NOT NEED)
           this.directionsDisplay.setDirections(response);
           //recenter the map to fit the route
+          for(let i=0; i< response.routes[0].legs.length; i++){
+            this.length += response.routes[0].legs[i].distance.value;
+          }
+          console.log("[DirectionService][TotalLength][Meters]" + this.length);
+          //convert length in km
+          this.length = this.length/1000;
+          console.log("[DirectionService][TotalLength][KM]" + this.length);
+          //emit length changed
+          this.lengthUpdated.emit(this.length);
+
           let bounds = response.routes[0].bounds;
+
           map.fitBounds(bounds);
           map.setCenter(bounds.getCenter());
       }
