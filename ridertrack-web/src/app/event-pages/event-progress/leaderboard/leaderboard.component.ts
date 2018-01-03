@@ -39,7 +39,7 @@ export class LeaderboardComponent implements OnInit {
             this.ranking.add({position: i, name: users[i].name, surname: users[i].surname});
           }
           console.log("[LeaderBoard][Ranking][OnInit]", this.ranking);
-          this.sortService.sortParticipants({sortColumn: 'position', sortDirection:'asc'}, this.ranking);
+          this.sortService.sortTable({sortColumn: 'position', sortDirection:'asc'}, this.ranking);
         })
       }else {
         this.started = false;
@@ -48,7 +48,7 @@ export class LeaderboardComponent implements OnInit {
     })
   }
   onSorted($event){
-    this.sortService.sortParticipants($event, this.ranking);
+    this.sortService.sortTable($event, this.ranking);
   }
 }
 export class SearchCriteria {

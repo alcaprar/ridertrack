@@ -19,8 +19,8 @@ export class SortService {
     this.columnSortedSource.next(event);
   }
 
-  sortParticipants(criteria: SearchCriteria, participants: Ranking []) : Ranking []{
-   return participants.sort((a,b) => {
+  sortTable(criteria: SearchCriteria, table: any) {
+   return table.sort((a,b) => {
      if(criteria.sortDirection === 'desc'){
        return a[criteria.sortColumn] < b[criteria.sortColumn] ? 1 : -1;
      }else {
@@ -32,12 +32,6 @@ export class SortService {
 export class SearchCriteria {
   sortColumn: string;
   sortDirection: string;
-}
-
-export class Ranking {
-  position: string;
-  name:string;
-  surname:string;
 }
 
 

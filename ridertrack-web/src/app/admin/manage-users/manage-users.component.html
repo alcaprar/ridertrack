@@ -1,17 +1,34 @@
 <app-page-header title="Manage users"></app-page-header>
 
 <div class="container">
-  <div class="row">
-    <div class="col-md-6 wow fadeInRight animated">
-      <div class="single-footer">
-        <h4>List of all users <small>(click on an user for editing it)</small></h4>
-        <div class="footer-title-line"></div>
-        <ul class="footer-menu">
-          <li *ngFor="let user of users">
-            <a (click)="userClicked(user)">{{user.name}} {{user.surname}}, {{user.email}}</a>
-          </li>
-        </ul>
-      </div>
-    </div>
+<div class="row  pr0 padding-top-40 properties-page">
+  <div class="col-md-12 clear">
+    <table class="table" sortable-table (sorted)="onSorted($event)">
+      <thead class="thead-yellow">
+      <tr>
+        <th sortable-column="name" class="title">First Name</th>
+        <th sortable-column="surname" class="title">Last Name</th>
+        <th sortable-column="email" class="title">Email</th>
+        <th class="title"></th>
+        <th class="title"><i class="fa fa-plus" title="Create a User" aria-hidden="true" (click)="createUser()"></i> </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let user of users">
+        <td>{{user.name}}</td>
+        <td>{{user.surname}}</td>
+        <td>{{user.email}}</td>
+        <td>
+          <div class="pull-left">
+            <input type="button" class="btn btn-default" value="Edit" (click)="edit(user)"/>
+          </div>
+          <div class="pull-rigth">
+          <input type="button" id="btn-delete" class="btn btn-default" value="Delete" (click)="delete(user)"/>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
   </div>
+</div>
 </div>
