@@ -111,11 +111,7 @@ export class EventCreatePageComponent implements OnInit {
     // get the logo from the input image
     var logo = $('#logo').prop('files')[0];
 
-    if(!logo) {
-      // if logo is missing show an error
-      var error = new Error('Logo is missing.');
-      this.errors.push(error);
-    }else if(!this.event.type){
+    if(!this.event.type){
       // if type is missing show an error
       var error = new Error('Type is missing.');
       this.errors.push(error);

@@ -28,7 +28,6 @@ config.env = process.env.NODE_ENV || 'development';
 
 config.rootFolder =  __dirname + '/../';
 config.buildFolder = config.rootFolder + '../dist';
-config.publicFolder = config.rootFolder + '/swagger';
 config.publicFolder = config.rootFolder + '/public';
 config.uploadImageFolder = config.publicFolder + '/img';
 

@@ -238,24 +238,25 @@ router.post('/', authMiddleware.hasValidToken, multipart, function (req, res) {
 
     var event = req.body;
 
+    var tempPath = config.uploadImageFolder+ '/logo.PNG';
+    var logoMimeType = 'image/png';
+
     // check image
-    var tempPath = req.files.logo.path;
-    var logoMimeType = req.files.logo.type;
-
+    if( req.files.logo ) {
+        tempPath = req.files.logo.path;
+        logoMimeType = req.files.logo.type;
+    }
     // TODO check allowed extension
-
     if(allowedImgExtension.indexOf(logoMimeType) === -1){
         console.log('[POST /events] logo extension not allowed: ', logoMimeType);
         return res.status(400).send({
             errors: [{message: 'Image extension not supported.'}]
         })
     }
-
     event.logo = {
         data: fs.readFileSync(tempPath),
-        contentType: req.files.logo.type
+        contentType: logoMimeType
     };
-
     Event.create(req.userId, event, function (err, event) {
         if (err) {
             console.log('[POST/events][error]', err);
