@@ -18,13 +18,13 @@
           </thead>
           <tbody>
           <tr *ngFor="let p of participants">
-            <td>{{p.name}}</td>
-            <td>{{p.surname}}</td>
-            <td>{{p.email}}</td>
+            <td>{{p.userId.name}}</td>
+            <td>{{p.userId.surname}}</td>
+            <td>{{p.userId.email}}</td>
           </tr>
           </tbody>
         </table>
-        <div *ngIf="participants.length === 0" style="align-content: center;">
+        <div *ngIf="participants === '[]'" style="align-content: center;">
           <p> No participant is enrolled in this event yet.</p>
         </div>
       </div>

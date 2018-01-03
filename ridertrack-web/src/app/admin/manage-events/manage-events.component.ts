@@ -62,20 +62,14 @@ export class ManageEventsComponent implements OnInit {
   }
 
   getParticipants(event){
-    let participants = [];
-    let userIds;
+    let users : any =[];
     this.eventService.getParticipants(event._id)
       .then((response)=> {
-        userIds = response;
-        console.log("[GetListOfIds]", userIds);
-        for(let id of userIds){
-          this.eventService.getEnrollement(id, event._id).then((enrollement)=>{
-            participants.push(enrollement.user);
-          });
-        }
-        console.log("[GetListOfParticipants]", participants);
+        console.log("[getParticipants]", response);
+        users = response;
+        console.log("[GetListOfParticipants]", users);
+        this.dialogService.participants(users);
       });
-    //this.dialogService.participants(participants);
   }
 
 }
