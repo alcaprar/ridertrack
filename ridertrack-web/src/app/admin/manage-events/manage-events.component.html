@@ -1,17 +1,43 @@
 <app-page-header title="Manage events"></app-page-header>
 
 <div class="container">
-    <div class="row">
-      <div class="col-md-6 wow fadeInRight animated">
-        <div class="single-footer">
-          <h4>List of all events <small>(click on an event for editing it)</small></h4>
-          <div class="footer-title-line"></div>
-          <ul class="footer-menu">
-            <li *ngFor="let event of eventsList">
-              <a (click)="eventClicked(event)">{{event.name}}, {{event.city}}</a>
-            </li>
-          </ul>
-        </div>
-      </div>
+  <div class="row  pr0 padding-top-40 properties-page">
+    <div class="col-md-12 clear">
+      <table class="table" sortable-table (sorted)="onSorted($event)">
+        <thead class="thead-yellow">
+        <tr>
+          <th sortable-column="name" class="title">Name</th>
+          <th sortable-column="date" class="title">Date</th>
+          <th sortable-column="city" class="title">City</th>
+          <th sortable-column="country" class="title">Country</th>
+          <th sortable-column="enrollementOpen" class="title">Open</th>
+          <th sortable-column="enrollementClose" class="title">Close</th>
+          <th class="title">Length (KM)</th>
+          <th class="title"></th>
+          <th class="title"><i class="fa fa-plus" title="Create an Event" aria-hidden="true" (click)="createEvent()"></i> </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let event of eventsList">
+          <td>{{event.name}}</td>
+          <td>{{event.startingDate}}</td>
+          <td>{{event.city}}</td>
+          <td>{{event.country}}</td>
+          <td>{{(event.enrollmentOpeningAt) ? (event.enrollmentOpeningAt | date: 'dd/MM/yyyy') : '(TBD*)'}}</td>
+          <td>{{(event.enrollmentClosingAt) ? (event.enrollmentClosingAt | date: 'dd/MM/yyyy') : '(TBD*)'}}</td>
+          <td>{{event.length ? event.length : '(TBD*)'}}</td>
+          <td>
+            <div class="pull-left">
+              <input type="button" class="btn btn-default" value="Participants" (click)="getParticipants(event)"/>
+            </div>
+            <div class="pull-right">
+              <input type="button" id="btn-delete" class="btn btn-default" value="Delete" (click)="delete(event)"/>
+            </div>
+            <input type="button" class="btn btn-default" id="edit" value="Edit" (click)="edit(event)"/>
+          </td>
+        </tr>
+        </tbody>
+      </table>
     </div>
   </div>
+</div>

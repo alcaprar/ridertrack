@@ -2,9 +2,6 @@
     height: 132px;
     text-align: start;
   }
-  .wizard-header {
-    padding:4em;
-  }
   .ng-valid[required], .ng-valid.required  {
     border-left: 5px solid #42A948; /* green */
   }
@@ -27,7 +24,7 @@
   
   input#search_places {
     display: inline;
-    width: 96%;
+    width: 95%;
     height: 22px;
     font-size: 13px;
     color: grey;
@@ -36,6 +33,43 @@
     border-radius: 0;
     box-shadow: 0 1px 1px rgba(179, 179, 179, 0.1) inset;
   }
+
+  .picture-container {
+    height: 200px;
+    max-width: 260px;
+    position: relative;
+    cursor: pointer;
+    text-align: center;
+  }
+  .picture {
+    height: 200px;
+    max-width: 260px;
+    background-color: #808080;
+    border: 4px solid #CCC;
+    color: #FFF;
+    border-radius: 4px;
+    overflow: hidden;
+    transition: all 0.2s;
+    -webkit-transition: all 0.2s;
+  }
+.picture:hover{
+  border-color: #FFC500;
+}
+
+ #danger{
+    color:red;
+  }
+
+.picture input[type="file"] {
+  cursor: pointer;
+  display: block;
+  height: 100%;
+  left: 0;
+  opacity: 0 !important;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
   
   
   

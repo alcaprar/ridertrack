@@ -8,114 +8,100 @@
         <h4 class="modal-title">{{title}}</h4>
       </div>
       <div class="modal-body">
-
-        <form (ngSubmit)="onSubmit()" #updateEventForm="ngForm">
-          <div id="create">
-            <div class="row p-b-15  ">
-              <div class="col-sm-4 col-sm-offset-1">
-                <div class="picture-container">
-                  <div class="picture">
-                    <img [src]="urlImage != null ? urlImage : urlNoImage" style="height: 100%" class="picture-src" id="wizardPicturePreview"
-                      title="" />
-                    <input type="file" (change)="urlChanged($event)" id="logo">
+          <form (ngSubmit)="save()" #updateEventForm="ngForm">
+            <div id="create">
+              <div class="row p-b-15 ">
+                <div class="col-md-6">
+                  <div class="picture-container">
+                    <div class="picture">
+                      <img [src]="urlImage != null ? urlImage : urlNoImage"
+                           style="height: 100%" class="picture-src" id="wizardPicturePreview" title=""/>
+                      <input type="file" (change)="urlChanged($event)" id="logo">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label for="name">Name <small>(required)</small></label>
+                    <input [(ngModel)]="event.name" #name="ngModel" id="name" name="name" type="text" class="form-control" placeholder="Marathon" required>
+                    <div [hidden]="name.valid || name.pristine" class="alert alert-danger">Name is required.</div>
+                  </div>
+                  <div>
+                    <label for="city">City <small>(required)</small></label>
+                    <ng4geo-autocomplete id="city" (componentCallback)="autocompleteCity($event)"
+                                         [userSettings]="userSettingCity">
+                    </ng4geo-autocomplete><br>
                   </div>
                 </div>
               </div>
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <label for="name">Name
-                    <small>(required)</small>
-                  </label>
-                  <input [(ngModel)]="event.name" #name="ngModel" id="name" name="name" type="text" class="form-control" placeholder="Marathon"
-                    required>
-                  <div [hidden]="name.valid || name.pristine" class="alert alert-danger">Name is required.</div>
+              <div class="row p-b-15 ">
+           <div class="col-md-6">
+             <div class="form-group" *ngIf="selection === 'edit'">
+               <label for="type">Type <small>(required)</small></label>
+               <select [(ngModel)]="event.type" #type="ngModel" id="type"  name="type"
+                       class="selectpicker" data-live-search="true" data-live-search-style="begins"
+                       [title]="event.type ? event : 'Select a Type'">
+                 <option *ngFor="let type of eventTypes" [ngValue]="type" style="text-transform: capitalize" required>{{type}}</option>
+               </select>
+             </div>
+             <div class="form-group">
+               <label for="startingDate">Date <small>(required)</small></label>
+               <input [(ngModel)]="event.startingDate" #startingDate="ngModel" id="startingDate" name="startingDate" type="text"
+                      class="form-control datepicker">
+               <div [hidden]="startingDate.valid || startingDate.pristine" class="alert alert-danger">Date is required.</div>
+             </div>
+             <div class="form-group"  *ngIf="selection === 'edit'">
+               <label for="enrollmentOpeningAt">Enrollment Opening At</label>
+               <input id="enrollmentOpeningAt" name="enrollmentOpeningAt"
+                      type="text" class="form-control datepicker" placeholder="Enrollment opening at">
+             </div>
+           </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="startingTime">Starting Time</label>
+                    <input [(ngModel)]="event.startingTime" #description="ngModel"
+                           id="startingTime" name="startingTime" type="time" class="form-control"
+                           placeholder="12:00">
+                  </div>
+                  <div class="form-group"  *ngIf="selection === 'edit'">
+                    <label for="maxDuration">Maximum Duration <small>(minutes)</small></label>
+                    <input [(ngModel)]="event.maxDuration" #description="ngModel" id="maxDuration" name="maxDuration"
+                           type="number" class="form-control" placeholder="120" >
+                  </div>
+                  <div class="form-group" *ngIf="selection === 'edit'">
+                    <label for="enrollmentClosingAt">Enrollment Closing At</label>
+                    <input id="enrollmentClosingAt" name="enrollmentClosingAt" type="text" class="form-control datepicker"
+                           placeholder="Enrollment closing at">
+                  </div>
                 </div>
-                <div class="form-group">
-                  <label for="type">Type
-                    <small>(required)</small>
-                  </label>
-                  <select [(ngModel)]="event.type" #type="ngModel" id="type" name="type" class="selectpicker" data-live-search="true" data-live-search-style="begins"
-                    title={{event.type}}>
-                    <option *ngFor="let type of eventTypes" [ngValue]="type" style="text-transform: capitalize" required>{{type}}</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="startingDate">Date
-                    <small>(required)</small>
-                  </label>
-                  <input [(ngModel)]="event.startingDate" #startingDate="ngModel" id="startingDate" name="startingDate" type="text" class="form-control datepicker">
-                  <div [hidden]="startingDate.valid || startingDate.pristine" class="alert alert-danger">Date is required.</div>
-                </div>
-                <div>
-                  <label for="city">City
-                    <small>(required)</small>
-                  </label>
-                  <ng4geo-autocomplete id="city" (componentCallback)="autocompleteCity($event)" [userSettings]="userSettingCity">
-                  </ng4geo-autocomplete>
-                </div>
-                <div class="form-group">
-                  <label for="length">Length
-                    <small>(KM)</small>
-                  </label>
-                  <input [(ngModel)]="event.length" #description="ngModel" id="length" name="length" type="number" class="form-control" placeholder="60.125">
-                </div>
-                <div class="form-group">
-                  <label for="description">Description</label>
-                  <textarea [(ngModel)]="event.description" #description="ngModel" id="description" name="decription" type="text" class="form-control"
-                    cols="40" placeholder="Write here your description...">
-                        </textarea>
-                </div>
-                <div class="form-group">
-                  <label for="startingTime">Starting Time</label>
-                  <input [(ngModel)]="event.startingTime" #description="ngModel" id="startingTime" name="startingTime" type="time" class="form-control"
-                    placeholder="12:00">
-                </div>
-                <div class="form-group">
-                  <label for="maxDuration">Maximum Duration
-                    <small>(minutes)</small>
-                  </label>
-                  <input [(ngModel)]="event.maxDuration" #description="ngModel" id="maxDuration" name="maxDuration" type="number" class="form-control"
-                    placeholder="120">
-                </div>
-                <div class="form-group">
-                  <label for="enrollmentOpeningAt">Enrollment Opening At</label>
-                  <input id="enrollmentOpeningAt" name="enrollmentOpeningAt" type="text" class="form-control datepicker" placeholder="Enrollment opening at">
-                </div>
-                <div class="form-group">
-                  <label for="enrollmentClosingAt">Enrollment Closing At</label>
-                  <input id="enrollmentClosingAt" name="enrollmentClosingAt" type="text" class="form-control datepicker" placeholder="Enrollment closing at">
+                <div class="col-md-12" >
+                  <div class="form-group" *ngIf="selection === 'edit'">
+                    <label for="description">Description</label>
+                    <textarea [(ngModel)]="event.description" #description="ngModel" id="description" name="decription"
+                              type="text" class="form-control" cols="40" placeholder="Write here your description..." >
+                    </textarea>
+                  </div>
+                  <div class="form-group" *ngIf="selection === 'create'">
+                    <label for="typeCreate">Type <small>(required)</small></label>
+                    <select [(ngModel)]="event.type" #type="ngModel" id="typeCreate"  name="type"
+                            class="selectpicker" data-live-search="true" data-live-search-style="begins"
+                            [title]="event.type ? event : 'Select a Type'">
+                      <option *ngFor="let type of eventTypes" [ngValue]="type" style="text-transform: capitalize" required>{{type}}</option>
+                    </select>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <!--  End step 1 -->
+            <!--  End step 1 -->
 
-          <div *ngIf="errors != null && errors.length > 0" class="alert alert-danger" style="margin-top: 20px">
-            <span *ngFor="let err of errors">{{err.message}}</span>
-          </div>
-
-          <div class="wizard-footer">
-            <div class="pull-right">
-              <button type='submit' id="btn-submit" class='btn btn-default' [disabled]="!updateEventForm.form.valid">Update</button>
+            <div *ngIf="errors != null && errors.length > 0" class="alert alert-danger" style="margin-top: 20px">
+              <span *ngFor="let err of errors">{{err.message}}</span>
             </div>
-            <div class="pull-right">
-              <button type='button' id="btn-route" class='btn btn-default' (click)="editRoute()">Edit Route</button>
-            </div>
-            <div class="pull-left">
-              <input type='button' class='btn btn-default' value='Cancel' (click)="onCancel()" />
-            </div>
-            <div class="pull-left">
-              <input type='button' id="btn-delete" class='btn btn-default' value='Delete event' (click)="deleteEvent()" />
-            </div>
-            <div class="clearfix"></div>
-          </div>
-        </form>
-
-        <p>{{body}}</p>
+          </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" (click)="ok()">Ok</button>
-        <button type="button" class="btn btn-default" (click)="cancel()">Cancel</button>
+        <button type="button" class="btn btn-danger" id="danger" (click)="cancel()">Cancel</button>
+        <button type="submit" class="btn btn-default" (click)="save()">Save</button>
       </div>
     </div>
 

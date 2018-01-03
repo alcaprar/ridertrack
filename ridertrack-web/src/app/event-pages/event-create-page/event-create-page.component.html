@@ -21,7 +21,7 @@
                       <label for="logo">Logo </label>
                       <img [src]="urlImage != null ? urlImage : urlNoImage" style="height: 100%" class="picture-src"
                            id="wizardPicturePreview" title=""/>
-                      <input id="logo" type="file" (change)="readUrl($event)" id="logo">
+                      <input id="logo" type="file" (change)="readUrl($event)">
                     </div>
                     <span>Only .png, .jpg, .jpeg supported.</span>
                   </div>
