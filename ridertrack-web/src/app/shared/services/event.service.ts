@@ -445,5 +445,20 @@ export class EventService {
       });
   }
 
+  getRanking(eventId){
+    const url = `${this.BASE_URL}/${eventId}/ranking`;
+
+    return this.http.get(url).toPromise()
+      .then((response)=> {
+        let body = response.json();
+        let ranking = body.ranking as User[];
+        console.log("[EventService][GetRanking][Success]", ranking);
+        return ranking;
+      }).catch((err)=> {
+        console.log("[EventService][GetRanking]Error]", err);
+        return (err.errors as Error)[0] ;
+      })
+  }
+
 }
 

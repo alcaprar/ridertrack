@@ -64,7 +64,7 @@ export class RouteService {
   private catchErrors(err){
     var errors = err.json().errors as Error[];
     console.log('[RouteService][CatchError][error]', errors);
-    return [errors];
+    return errors[0];
   }
 
 }

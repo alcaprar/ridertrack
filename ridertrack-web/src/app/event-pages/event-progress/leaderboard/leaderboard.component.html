@@ -10,10 +10,10 @@
         </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let p of mockParticipants">
-              <td>{{p.position}}</td>
-              <td>{{p.name}}</td>
-              <td>{{p.surname}}</td>
+          <tr *ngFor="let participant of ranking">
+              <td>{{participant.position}}</td>
+              <td>{{participant.name}}</td>
+              <td>{{participant.surname}}</td>
           </tr>
         </tbody>
       </table>
@@ -33,7 +33,7 @@
                 <h3>
                   <b>The Leaderboard </b> IS NOT AVAILABLE YET<br>
                 </h3>
-                <a  [routerLink]="['/events', event._id]" > < Come Back to the event </a>
+                <a  [routerLink]="['/events', eventId]" > < Come Back to the event </a>
               </div>
             </div>
           </div>
