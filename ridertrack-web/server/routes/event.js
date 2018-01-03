@@ -237,7 +237,7 @@ router.post('/', authMiddleware.hasValidToken, multipart, function (req, res) {
 
     var event = req.body;
 
-    var tempPath = config.rootFolder + '/logo.PNG';
+    var tempPath = __dirname + '/../logo.png';
     var logoMimeType = 'image/png';
 
     // check image
