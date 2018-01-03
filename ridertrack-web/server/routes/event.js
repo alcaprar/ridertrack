@@ -12,7 +12,6 @@ var Route = require ('../models/route');
 var Positions = require('../models/positions');
 var Ranking = require('../models/ranking');
 
-
 var authMiddleware = require('../middlewares/auth');
 var multipart = require('connect-multiparty')({
     uploadDir: config.uploadImageFolder,
@@ -238,7 +237,7 @@ router.post('/', authMiddleware.hasValidToken, multipart, function (req, res) {
 
     var event = req.body;
 
-    var tempPath = config.publicFolder +'/logo.PNG';
+    var tempPath = config.rootFolder + '/logo.PNG';
     var logoMimeType = 'image/png';
 
     // check image
