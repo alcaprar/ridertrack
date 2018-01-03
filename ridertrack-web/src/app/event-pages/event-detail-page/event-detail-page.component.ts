@@ -19,7 +19,7 @@ export class EventDetailPageComponent implements OnInit {
 
   private eventId: String;
 
-  private random;
+  private logoUrl = '';
 
   private href = '';
 
@@ -64,6 +64,7 @@ export class EventDetailPageComponent implements OnInit {
       this.eventId = params['eventId'];
       console.log('[EventDetail][OnInit]', this.eventId);
 
+      this.updateLogoUrl();
 
       this.eventService.getEvent(this.eventId)
         .then(
@@ -100,25 +101,31 @@ export class EventDetailPageComponent implements OnInit {
     });
 
     console.log('[Event-Detail-Component][OnInit][Event]', this.event);
-
-
-
-    this.random = Math.random();
   }
 
+  /**
+   * It changes the query string of the logo request in order to avoid browser caching.
+   */
+  private updateLogoUrl(){
+    this.logoUrl = "/api/events/" + this.eventId + "/logo?random=" + this.randomInt(1, 1000);
+  }
 
+  /**
+   * It retrieves the route of the event calling the routeService.
+   * It stores the coordinates in a variable in order to render it.
+   */
+  private getRoute() {
+    this.routeService.getRoute(this.eventId)
+      .then(
+        (route) => {
+          console.log('[EventDetailPage][getRoute][success]', route);
+          this.mapPoints = route.coordinates;
+        })
+      .catch((err) => {
+        console.log('[EventDetailPage][getRoute][error]', err);
+      });
+  }
 
-private getRoute() {
-  this.routeService.getRoute(this.eventId)
-    .then(
-      (route) => {
-        console.log('[EventDetailPage][OnInit][success]', route);
-        this.mapPoints = route.coordinates;
-      })
-    .catch((err) => {
-      console.log('[Progress Management][OnInit][error]', err);
-    });
-}
   /**
    * It calls the event service in order to get the organizer profile.
    */
@@ -126,13 +133,13 @@ private getRoute() {
     this.eventService.getOrganizer(this.eventId)
       .then(
         (organizer) => {
-          console.log('[EventDetail][OnInit][EventService.getOrganizer][success]', organizer);
+          console.log('[EventDetail][getOrganizer][success]', organizer);
           this.organizer = organizer;
         }
       )
       .catch(
         (error) => {
-          console.log('[EventDetail][OnInit][EventService.getOrganizer][error]', error);
+          console.log('[EventDetail][getOrganizer][error]', error);
         }
       )
   }
@@ -144,12 +151,17 @@ private getRoute() {
     this.eventService.getParticipants(this.eventId)
       .then(
         (participants) => {
-          console.log('[EventDetail][OnInit][EventService.getParticipants]', participants);
+          console.log('[EventDetail][getParticipants]', participants);
           this.participantsList = participants;
         }
       )
   }
 
+  /**
+   * It returns true if the user is logged, false otherwise.
+   * Used for showing buttons to guest and user accordingly.
+   * @returns {boolean}
+     */
   isLogged(): boolean {
     return this.authService.isAuthenticated()
   }
@@ -160,7 +172,7 @@ private getRoute() {
       return null;
     } else {
       return (date.getDate().toString() + '/' + (date.getMonth() + 1).toString() + '/' +
-        date.getFullYear().toString());
+      date.getFullYear().toString());
     }
   }
 
@@ -177,7 +189,7 @@ private getRoute() {
 
     if (this.event.enrollmentOpeningAt && this.event.enrollmentClosingAt) {
       console.log('[EventDetail][EnromentIsOpen]', today >= new Date(this.event.enrollmentOpeningAt));
-        return today >= new Date(this.event.enrollmentOpeningAt) && today<=  new Date(this.event.enrollmentClosingAt);
+      return today >= new Date(this.event.enrollmentOpeningAt) && today<=  new Date(this.event.enrollmentClosingAt);
     }else {
       return false;
     }
@@ -254,7 +266,18 @@ private getRoute() {
       'mywin','left=60,top=30,height=400, width=600,toolbar=1,resizable=0');
     return false;
   }
- /** similarEvents() {
+
+  /**
+   * It returns a random int calculated between the 2 limits.
+   * @param min
+   * @param max
+   * @returns {any}
+   */
+  randomInt(min, max){
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  /** similarEvents() {
     this.eventService.getSimilarEvents(3)
       .then(
         (events) => {

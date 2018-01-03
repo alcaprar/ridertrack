@@ -609,6 +609,7 @@ router.post('/:eventId/tracking/start', authMiddleware.hasValidToken, authMiddle
                 errors: [err]
             });
         }else{
+            // TODO initialize all the user position to the starting point of the route. needed for the ranking
             return res.status(200).send({
                 message: 'Tracking started successfully.'
             });

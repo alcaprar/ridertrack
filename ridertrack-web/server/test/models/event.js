@@ -1,6 +1,8 @@
 //During the test the env variable is set to test
 process.env.NODE_ENV = 'test';
 
+var helpers = require('../helpers');
+
 //Require the dev-dependencies
 var chai = require('chai');
 var uuid = require('uuid');
@@ -15,25 +17,26 @@ var User = require('../../models/user');
 
 
 describe('Event model test', function () {
-    // this will run before every test to clear the database
-    // TODO clear database
+    /**
+     * It is called before each test.
+     * It cleans the database in order to have a clean state.
+     */
     beforeEach(function (done) {
-        Event.remove({}, function (err) {
-            User.remove({}, function () {
-                done()
-            })
-        });
+        helpers.cleanDatabase(function () {
+            done()
+        })
     });
 
 
-    /*it('should NOT create an event', function(done) {
+    it('should NOT create an event', function(done) {
         var event = new Event();
 
-        event.save(function(err) {
-            expect(err).to.not.be.eql(null);
+        event.save(function(err, event) {
+            expect(err).to.be.eql(null);
             done();
         });
     });
+    /*
 
     it('it should create an event', function (done) {
         var event = new Event({

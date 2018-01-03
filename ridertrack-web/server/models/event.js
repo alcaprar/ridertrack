@@ -137,7 +137,7 @@ eventSchema.pre('save',function(next){
  * Inspired here. http://thecodebarbarian.com/mongoose-error-handling
  */
 eventSchema.post('save', function (err, doc, next) {
-    console.log('[EventModel][error]', err);
+    console.log('[EventModel][error]', err.message);
     if(err.name === 'MongoError' && err.code === 11000){
         next({message: 'En event with this name already exists.'})
     }else{
