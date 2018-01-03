@@ -1,0 +1,37 @@
+<div class="modal fade" id="participantDialog" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Participants List</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table" *ngIf="participants.length>0">
+          <thead>
+          <tr>
+          <th class="title">Name</th>
+          <th class="title">Surname</th>
+          <th class="title">Email</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let p of participants">
+            <td>{{p.name}}</td>
+            <td>{{p.surname}}</td>
+            <td>{{p.email}}</td>
+          </tr>
+          </tbody>
+        </table>
+        <div *ngIf="participants.length === 0" style="align-content: center;">
+          <p> No participant is enrolled in this event yet.</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" (click)="ok()">Ok</button>
+      </div>
+    </div>
+
+  </div>
+</div>

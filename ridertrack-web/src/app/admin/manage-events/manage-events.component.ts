@@ -24,7 +24,7 @@ export class ManageEventsComponent implements OnInit {
   private eventsList: Event[] = [];
 
   constructor(private userService: UserService,private eventService: EventService, private dialogService: DialogService,
-              private sortService: SortService) { }
+              private sortService: SortService, private router: Router) { }
 
   ngOnInit() {
       this.getEvents();
@@ -36,29 +36,25 @@ export class ManageEventsComponent implements OnInit {
         (response) => {
           console.log('[AllEvents][getAllEvents]', response);
           this.eventsList = response[0];
-          this.queryParams.page = response[1];
-          this.queryParams.itemsPerPage = response[2];
-          this.totalPages = response[3];
-          this.sortService.sortTable({sortColumn: 'date', sortDirection:'asc'}, this.eventsList);
+          this.sortService.sortTable({sortColumn: 'name', sortDirection:'asc'}, this.eventsList);
         });
-
   }
 
   edit(event){
   this.dialogService.adminEditEvent("Edit Event", event, 'edit');
-  this.getEvents();
+  this.router.navigate(['admin/events']);
   }
 
   createEvent(){
     this.dialogService.adminEditEvent("Create Event", null, 'create');
-    this.getEvents();
+    this.router.navigate(['admin/events']);
   }
 
   delete(event){
     this.dialogService.confirmation("Delete Event", "Are you sure to delete this event?", function () {
       this.eventService.deleteEvent(event._id);
     }.bind(this));
-    this.getEvents();
+    this.router.navigate(['admin/events']);
   }
 
   onSorted($event){
@@ -77,8 +73,9 @@ export class ManageEventsComponent implements OnInit {
             participants.push(enrollement.user);
           });
         }
+        console.log("[GetListOfParticipants]", participants);
       });
-    //TODO: SHOW PARTICIPANTS LIST IN A DIALOG PASSING "participants"
+    this.dialogService.participants(participants);
   }
 
 }

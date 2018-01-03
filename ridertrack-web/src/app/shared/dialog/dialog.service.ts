@@ -36,4 +36,9 @@ export class DialogService {
     this.dialogs['enrollement'].show(title, eventId, isEnrolled);
   }
 
+  participants(participantsList){
+    console.log('[DialogService][participants]', this.dialogs);
+    this.dialogs['participants'].show(participantsList);
+  }
+
 }
