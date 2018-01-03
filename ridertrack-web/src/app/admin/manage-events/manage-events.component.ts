@@ -75,7 +75,7 @@ export class ManageEventsComponent implements OnInit {
         }
         console.log("[GetListOfParticipants]", participants);
       });
-    this.dialogService.participants(participants);
+    //this.dialogService.participants(participants);
   }
 
 }
