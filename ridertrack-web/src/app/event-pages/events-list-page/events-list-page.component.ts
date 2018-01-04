@@ -182,12 +182,16 @@ export class EventsListPageComponent implements OnInit {
   }
 
   autocompleteCity(selectedData: any){
-    console.log('[EventsList][autoCompleteCity]', selectedData.data.address_components);
-    for(let i=0; i< selectedData.data.address_components.length; i++){
-      if(['administrative_area_level_3', 'locality'].indexOf(selectedData.data.address_components[i].types[0]) > -1) {
-        this.queryParams.city = selectedData.data.address_components[i].long_name;
-        console.log("[EventsList][autoCompleteCity][City]" + this.queryParams.city);
+    if(selectedData.data){
+      console.log('[EventsList][autoCompleteCity]', selectedData.data.address_components);
+      for(let i=0; i < selectedData.data.address_components.length; i++){
+        if(['administrative_area_level_3', 'locality'].indexOf(selectedData.data.address_components[i].types[0]) > -1) {
+          this.queryParams.city = selectedData.data.address_components[i].long_name;
+          console.log("[EventsList][autoCompleteCity][City]" + this.queryParams.city);
+        }
       }
+    }else{
+      this.queryParams.city = undefined;
     }
   }
 
