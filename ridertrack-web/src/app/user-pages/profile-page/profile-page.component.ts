@@ -1,26 +1,29 @@
-import { Component, Input, OnInit, Injectable, OnChanges } from '@angular/core';
+import {Component, Input, OnInit, Injectable, OnChanges, ViewEncapsulation} from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '../../shared/services/user.service';
 import { User } from '../../shared/models/user';
 import { DialogService } from "../../shared/dialog/dialog.service";
 import { AuthenticationService } from '../../authentication/authentication.service';
 import {Router} from '@angular/router';
-import { Error } from '../../shared/index';
 
+declare var $: any;
 
 @Component({
   selector: 'app-profile-page',
+  encapsulation: ViewEncapsulation.None,
   templateUrl: './profile-page.component.html',
   styleUrls: ['./profile-page.component.css']
 })
 export class ProfilePageComponent implements OnInit {
 
   private user: User = new User();
-  editForm: FormGroup;
+  error: String;
   name: String;
   surname: String;
   email: String;
 
+
+  public userSettingCity: any ;
 
   private urlImage: any;
   private urlNoImage = '../../../assets/img/user_fake_img.png';
@@ -28,18 +31,34 @@ export class ProfilePageComponent implements OnInit {
   constructor(private router: Router, private formBuilderLogin: FormBuilder, private userService: UserService, private dialogService: DialogService, private authService: AuthenticationService) { }
 
   ngOnInit() {
+this.getUser();
+  }
+  getUser() {
     this.userService.getUser().subscribe(
       (user: User) => {
         this.user = user;
+        console.log("[GettingUser]", user);
+        if(user.city !== null && user.city !== undefined){
+          this.userSettingCity = {
+            showSearchButton: false,
+            geoTypes: ['(cities)'],
+            showCurrentLocation: false,
+            inputPlaceholderText: user.city
+          };
+        }else {
+          this.userSettingCity = {
+            showSearchButton: false,
+            geoTypes: ['(cities)'],
+            showCurrentLocation: false,
+            inputPlaceholderText: ''
+          };
+        }
+        if(user.logo !== null && user.logo !== undefined){
+          this.urlImage = '/api/users/' + this.user.id + '/logo';
+        }
       }
     );
   }
-
-
-  edit() {
-    console.log("[User locally updated]", this.user);
-  }
-
 
   urlChanged(event: any) {
     if (event.target.files && event.target.files[0]) {
@@ -79,57 +98,33 @@ export class ProfilePageComponent implements OnInit {
     }.bind(this));
   }
 
-  /* updateUserProfile() {
-   console.log('[MyProfile][updateUserProfile]');
-   console.log('[MyProfile][updateUserProfile][callback]');
-   this.userService.updateUserProfile(this.authService.getUserId())
-   .then(
-   (message) => {
-   console.log('[MyProfile][updateUserProfile][success]', message);
-   this.authService.logout();
-   this.router.navigate(['']);
-   }
-   )
-   .catch(
-   (error) => {
-   console.log('[MyProfile][updateUserProfile][error]', error);
-   // TODO show errors
-   }
-   );
-   }*/
+ updateUser() {
+      this.error = null;
+   // get the logo from the input image
+   var logo = $('#logo').prop('files')[0];
+   this.user.logo = logo;
 
-  /**
-   * It is called when the user clicks on the create button.
-   * It calls the method of event service waiting for a response.
-   */
-  /* onSubmit(){
-   // the datepicker is not detected by angular form
-   this.event.startingDate = $('#startingDate.datepicker').val();
-   this.event.enrollmentOpeningAt = $('#enrollmentOpeningAt.datepicker').datepicker("getDate" );
-   this.event.enrollmentClosingAt = $('#enrollmentClosingAt.datepicker').datepicker("getDate" );
+    this.userService.updateCurrentUser(this.user)
+      .then((user)=>{
+        if(user){
+          console.log("[currentUserUpdated][Success]", user);
+          this.dialogService.alert("Success", "Your profile is correctly updated!");
+          this.getUser();
+        }else {
+          console.log("[currentUserUpdated][Error]", user);
+          this.error = user;
+        }
+    });
+ }
 
-   this.event.logo = $('#logo').prop('files')[0];
 
-   console.log('[EventManage][onSubmit]',$('#enrollmentOpeningAt.datepicker').datepicker("getDate" ))
-   this.eventService.updateEvent(this.event._id, this.event)
-   .then(
-   (response) => {
-   console.log('[UpdateEvent][onSubmit][success]', response);
-   if(response[0] !== null){
-   // errors occureed
-   this.errors = response[0] as Error[];
-   }else{
-   var event: Event = response[1] as Event;
-   this.router.navigate(['/events/', event._id]);
-   }
-   }
-   )
-   .catch(
-   (error) => {
-   console.log('[CreateEvent][onSubmit][error]', error);
-   this.router.navigate(['/events', 'create']);
-   }
-   );
-   } */
+  autocompleteCity(selectedData: any){
+    for(let i=0; i< selectedData.data.address_components.length; i++){
+      if(['administrative_area_level_3', 'locality'].indexOf(selectedData.data.address_components[i].types[0]) > -1) {
+        this.user.city = selectedData.data.address_components[i].long_name;
+        console.log("[Updated][City]" + this.user.city);
+      }
+    }
+  }
 
 }

@@ -1,9 +1,8 @@
 export class User {
  private _id: String;
- private picture: String;
+ public logo: File;
  public city: string;
  public aboutMe: string;
- public image: File;
  public role: string;
 
 
@@ -13,14 +12,6 @@ export class User {
     public surname?: String,
     public password?: String
   ) {}
-
-  set profilePicture(value: String) {
-    this.picture = value;
-  }
-
-  get profilePicture(){
-    return this.picture;
-  }
 
   set id(value: String){
     this._id = value;

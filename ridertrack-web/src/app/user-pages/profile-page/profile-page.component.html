@@ -7,7 +7,7 @@
       <br>
     </h3>
   </div>
-  <form (ngSubmit)="edit()" #updateEventForm="ngForm">
+  <form (ngSubmit)="updateUser()" #updateEventForm="ngForm">
     <div id="create">
       <div class="row p-b-15  ">
         <div class="col-sm-4 col-sm-offset-1">
@@ -22,46 +22,53 @@
         <div class="col-sm-6">
           <div class="form-group">
             <label for="name">Name </label>
-            <input [(ngModel)]="user.name" #name="ngModel" id="name" name="name" type="text" class="form-control" placeholder="user.name">
+            <input [(ngModel)]="user.name" #name="ngModel" id="name" name="name" type="text" class="form-control"
+                   placeholder="user.name" required>
             <div [hidden]="name.valid || name.pristine" class="alert alert-danger">Name is required.</div>
           </div>
           <div class="form-group">
             <label for="surname">Surname</label>
-            <input [(ngModel)]="user.surname" #surname="ngModel" id="surname" name="surname" type="text" class="form-control" placeholder="user.surname">
+            <input [(ngModel)]="user.surname" #surname="ngModel" id="surname" name="surname" type="text" class="form-control"
+                   placeholder="user.surname" required>
           </div>
-          <div class="form-group">
-            <label for="city"> City </label>
-            <input [(ngModel)]="user.city" #city="ngModel" id="city" name="city" type="text" class="form-control" placeholder="Milan">
+          <div >
+            <label for="city">City</label>
+            <ng4geo-autocomplete id="city" (componentCallback)="autocompleteCity($event)"
+                                 [userSettings]="userSettingCity">
+            </ng4geo-autocomplete>
           </div>
           <div class="form-group">
             <label for="aboutMe">About Me</label>
             <textarea [(ngModel)]="user.aboutMe" #description="ngModel" id="aboutMe" name="aboutMe" type="text" class="form-control"
-              cols="40" placeholder="Describe yourself...">
+              cols="40" [placeholder]="user.aboutMe ? user.aboutMe !== 'undefined' : 'Describe yourself...'">
                     </textarea>
           </div>
 
           <div class="form-group">
             <label for="email"> Email </label>
-            <input [(ngModel)]="user.email" #city="ngModel" id="email" name="email" type="email" class="form-control" placeholder="user.email"
+            <input [(ngModel)]="user.email" #email="ngModel" id="email" name="email" type="email" class="form-control" placeholder="user.email"
               disabled>
           </div>
           <div class="form-group">
             <label for="password"> Password </label>
-            <input [(ngModel)]="user.password" #city="ngModel" id="password" name="password" type="password" class="form-control" placeholder="********"
+            <input id="password" name="password" type="password" class="form-control"
+                   placeholder="********"
               disabled>
           </div>
         </div>
       </div>
     </div>
 
-
     <div class="wizard-footer">
+      <div *ngIf="error" class="alert alert-danger" style="margin-top:1em; margin-left: 3em; margin-right: 3em;">
+        <span>{{error}}</span>
+      </div>
       <div class="row">
       <div class="pull-left">
         <input type='button' id="btn-delete" class='btn btn-default' value='Delete Account' (click)="deleteUser()" />
       </div>
       <div class="pull-right">
-        <button type='submit' class='btn btn-default '>Save</button>
+        <button type='submit' class='btn btn-default' [disabled]="!updateEventForm.form.valid">Save</button>
       </div>
       </div>
       <br><br>
