@@ -119,6 +119,10 @@ export class EventCreatePageComponent implements OnInit {
       // if startingDate is missing show an error
       var error = new Error('Starting date is missing.');
       this.errors.push(error);
+    }else if(!this.event.startingTime){
+      // if startingTime is missing show an error
+      var error = new Error('Starting time is missing.');
+      this.errors.push(error);
     }else if(!this.event.city || !this.event.country){
       // if city or country is missing show an error
       var error = new Error('City is missing.');

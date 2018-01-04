@@ -44,7 +44,8 @@ var eventSchema = Schema({
         required: [true, 'A date is required.']
     },
     startingTime: {
-        type: String
+        type: String,
+        required: true
     },
     actualStartingTime: {
         type: Date

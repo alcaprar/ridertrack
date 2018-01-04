@@ -43,6 +43,12 @@
                     <input [(ngModel)]="event.startingDate" #startingDate="ngModel" id="startingDate" name="startingDate" type="text" class="form-control datepicker" placeholder="15/12/2017">
                     <div [hidden]="startingDate.valid || startingDate.pristine" class="alert alert-danger">Date is required.</div>
                   </div>
+                  <div class="form-group">
+                    <label for="startingTime">Starting Time<small>(required)</small></label>
+                    <input [(ngModel)]="event.startingTime" #description="ngModel"
+                           id="startingTime" name="startingTime" type="time" class="form-control"
+                           placeholder="12:00">
+                  </div>
                    <div >
                      <label for="city">City <small>(required)</small></label>
                      <ng4geo-autocomplete id="city" (componentCallback)="autocompleteCity($event)"

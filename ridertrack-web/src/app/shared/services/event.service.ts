@@ -196,6 +196,7 @@ export class EventService {
     formData.append('name', event.name);
     formData.append('type', event.type);
     formData.append('startingDate', event.startingDate);
+    formData.append('startingTime', event.startingTime);
     formData.append('country', event.country);
     formData.append('city', event.city);
 
