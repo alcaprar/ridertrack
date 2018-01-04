@@ -66,6 +66,31 @@ router.get('/:userId', function (req, res) {
 });
 
 /**
+ * It returns the picture of the requested user.
+ * It changes the content type of the response to the mimetype of the image stored.
+ */
+router.get('/:userId/logo', function (req, res) {
+    var userId = req.params.userId;
+
+    User.findByUserId(userId, function (err, user) {
+        if(err){
+            res.status(400).send({
+                errors: err
+            })
+        }else{
+            if(user.logo){
+                // change the header according to the mime type
+                res.header('Content-type', user.logo.contentType);
+                res.end(user.logo.data, 'binary');
+            }else{
+                // send the default logo
+                res.status(200).send('logo')
+            }
+        }
+    })
+});
+
+/**
  * It returns the events enrolled by the user.
  */
 router.get('/:userId/enrolledEvents', authMiddleware.hasValidToken, function (req, res){
@@ -209,28 +234,25 @@ router.post('/', function (req, res) {
 /**
  * It updates the fields passed in the body of the given userId
  */
-router.put('/:userId',authMiddleware.hasValidToken, multipart, function (req, res) {
+router.put('/:userId', authMiddleware.hasValidToken, multipart, function (req, res) {
     var userBody = req.body;
-
-    var tempPath = __dirname + '/../logo.png';
-    var logoMimeType = 'image/png';
 
     // check image
     if(req.files.logo) {
         tempPath = req.files.logo.path;
         logoMimeType = req.files.logo.type;
-    }
 
-    if(allowedImgExtension.indexOf(logoMimeType) === -1){
-        console.log('[POST /users] logo extension not allowed: ', logoMimeType);
-        return res.status(400).send({
-            errors: [{message: 'Image extension not supported.'}]
-        })
+        if (allowedImgExtension.indexOf(logoMimeType) === -1) {
+            console.log('[POST /users] logo extension not allowed: ', logoMimeType);
+            return res.status(400).send({
+                errors: [{message: 'Image extension not supported.'}]
+            })
+        }
+        userBody.logo = {
+            data: fs.readFileSync(tempPath),
+            contentType: logoMimeType
+        };
     }
-    userBody.logo = {
-        data: fs.readFileSync(tempPath),
-        contentType: logoMimeType
-    };
     User.update(req.params.userId, userBody, function (err, user) {
         if(err){
             res.status(400).send({
