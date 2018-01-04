@@ -21,6 +21,8 @@ export class HomePageComponent {
   // Initialized to specific date (09.10.2018).
   public model: any = { date: { year: 2018, month: 10, day: 9 } };
 
+  private loading = true;
+
   constructor(private eventService: EventService, private router: Router) {
     // retrieve the event types
     this.eventTypes = this.eventService.getEventTypes();
@@ -29,6 +31,7 @@ export class HomePageComponent {
       .then(
         (events) =>{
           console.log('[HomePage][getLastEvents][success]', events);
+          this.loading = false;
           this.lastEvents = events;
         }
       )
