@@ -115,6 +115,14 @@ export class EventCreatePageComponent implements OnInit {
       // if type is missing show an error
       var error = new Error('Type is missing.');
       this.errors.push(error);
+    }else if(!this.event.startingDate){
+      // if startingDate is missing show an error
+      var error = new Error('Starting date is missing.');
+      this.errors.push(error);
+    }else if(!this.event.city || !this.event.country){
+      // if city or country is missing show an error
+      var error = new Error('City is missing.');
+      this.errors.push(error);
     }else{
       // add the logo to the event
       this.event.logo = logo;

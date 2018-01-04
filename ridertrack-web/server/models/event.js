@@ -14,7 +14,6 @@ var eventSchema = Schema({
         minlength: 1,
         unique: true
     },
-    //Changed this to string because organizerID returns numbers and alphas
     organizerId: {
         type: String,
         required: true
@@ -80,7 +79,9 @@ var eventSchema = Schema({
     }
 });
 
-// on every save, add the date
+/**
+ * It adds timing info about creation and modification of event documents.
+ */
 eventSchema.pre('save', function(next) {
     // get the current date
     var currentDate = new Date();
@@ -92,46 +93,58 @@ eventSchema.pre('save', function(next) {
     }
     next();
 });
-/*
+
+/**
+ * It checks the enrollment timing.
+ * The opening and closing cannot be after the startingDate.
+ * The opening cannot be after the closing.
+ */
 eventSchema.pre('save',function(next){
 	var event = this;
-	var err = new Error();
+    var err = new Error();
 
-	if (!event.enrollmentOpeningAt || !event.enrollmentClosingAt){
-		err.message = 'Enrollment opening date and/or enrollment closing date is not defined';
-		next(err);
-	}
-	else{
-		var strDate = event.startingDate.split('/') // e.g. 30/12/2017
-		if (!event.startingTime)
-		{
-			//Month in Date object is defined from 0-11
-			var startingDate = new Date(parseInt(strDate[2]),parseInt(strDate[1]) - 1,parseInt(strDate[0]))
-		}
-		else{
-			var strTime = event.startingTime.split(':') // e.g. 12:00
-			var startingDate = new Date(parseInt(strDate[2]),parseInt(strDate[1]) - 1,parseInt(strDate[0]),parseInt(strTime[0]),parseInt(strTime[1]),0)
-		}
+    // cast startingDate to Date object
+    var strDate = event.startingDate.split('/'); // e.g. 30/12/2017
+    var startingDate;
+    if (!event.startingTime){
+        //Month in Date object is defined from 0-11
+        startingDate = new Date(parseInt(strDate[2]),parseInt(strDate[1]) - 1,parseInt(strDate[0]))
+    }else{
+        var strTime = event.startingTime.split(':'); // e.g. 12:00
+        startingDate = new Date(parseInt(strDate[2]),parseInt(strDate[1]) - 1,parseInt(strDate[0]),parseInt(strTime[0]),parseInt(strTime[1]),0)
+    }
 
-		//Enrollment check
-		if (event.enrollmentOpeningAt > event.enrollmentClosingAt){
-			err.message = 'Enrollment opening date is defined after enrollment closing date'
-			next(err)
-		}
+    // if enrollmentOpeningAt is set, check that is not after the startingDate
+    if(event.enrollmentOpeningAt){
+        if(new Date(event.enrollmentOpeningAt) > startingDate ){
+            // the enrollmentOpening is after the startingDate
+            err.message = 'The enrollment opening time cannot be after the starting date.';
+            return next(err)
+        }
+    }
 
-		else if (event.enrollmentOpeningAt > startingDate){
-			err.message = 'Enrollment opening date cannot be defined after event starting date'
-			next(err)
-		}
-		else if (event.enrollmentClosingAt > startingDate){
-			err.message = 'Enrollment closing date cannot be defined after event starting date'
-			next(err)
-		}
-		else {
-			next(null)
-		}
-	}
-})*/
+    // if enrollmentClosingAt is set, check that is not after the startingDate
+    if(event.enrollmentClosingAt){
+        if(new Date(event.enrollmentClosingAt) > startingDate ){
+            // the enrollmentCLosing is after the startingDate
+            err.message = 'The enrollment closing time cannot be after the starting date.';
+            return next(err)
+        }
+    }
+
+    // if both time are set, check that the opening is not after the closing
+    if(event.enrollmentOpeningAt && event.enrollmentClosingAt){
+        if(event.enrollmentOpeningAt > event.enrollmentClosingAt){
+            err.message = 'The enrollment opening time cannot be after the enrollment closing time.';
+            console.log('[EventModel][pre.save] enrollmentClosingAt is before enrollmentOpeningAt', err);
+            return next(err)
+        }
+    }
+
+    // if all the checks pass without throwing errors the timing are okay
+    next()
+});
+
 /**
  * Error handler. It is executed on every save if errors occur.
  * Inspired here. http://thecodebarbarian.com/mongoose-error-handling
@@ -159,7 +172,8 @@ eventSchema.statics.findByName = function (name, callback ){
     })
 };
 
-/** It finds an event by id passed
+/**
+ * It finds an event by id passed
  * Then, calls callback with either an error or the found event
  */
 eventSchema.statics.findByEventId = function (eventId, callback ){
@@ -187,8 +201,9 @@ eventSchema.statics.findEventsFromList = function (eventsIdList, callback ){
 };
 
 
-/** It creates an event.
- *  It then calls a callback passing either an error list or the created event.
+/**
+ * It creates an event.
+ * It then calls a callback passing either an error list or the created event.
  */
 eventSchema.statics.create = function (organizerId, eventJson, callback) {
     var event = new Event(eventJson);
@@ -389,4 +404,5 @@ eventSchema.statics.getStatus = function (eventId, callback) {
 };
 
 var Event = mongoose.model('Event', eventSchema);
+
 module.exports = Event;
