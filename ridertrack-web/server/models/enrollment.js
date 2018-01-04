@@ -3,8 +3,6 @@ var Schema = mongoose.Schema;
 
 var ObjectId = mongoose.Schema.Types.ObjectId;
 
-var Positions = require('./positions');
-
 var enrollmentSchema = Schema({
     eventId: {
         type: String,
@@ -94,19 +92,12 @@ enrollmentSchema.statics.create = function(userId, enrollmentJson, callback){
             console.log('[EnrollmentModel][create] error', err);
             return callback(err)
         } else {
-
-            // create an empty positions object for this enrollment
-            var userPositions = new Positions({
-                userId: userId,
-                eventId: enrollment.eventId
-            });
-
-            userPositions.save(function (err) {
+            var Positions = require('./positions');
+            Positions.create(userId, enrollmentJson.eventId, function (err) {
                 if(err){
-                    console.log('[EnrollmentModel][create] error while creating default positions.', err)
+                    console.log('[EnrollmentModel][create] error while creating empty positions', err)
                 }
             });
-
             return callback(null, enrollment);
         }
     });
@@ -120,6 +111,7 @@ enrollmentSchema.statics.create = function(userId, enrollmentJson, callback){
  * @param callback
  */
 enrollmentSchema.statics.update = function (userId, eventId, enrollmentJson, callback) {
+    console.log('[EnrollmentModel][update]', enrollmentJson);
     this.findOne({userId: userId, eventId: eventId}, function (err, enrollment) {
         if (err) {
             return callback(err)
@@ -158,6 +150,7 @@ enrollmentSchema.statics.delete = function (eventId, userId, callback){
             return callback(err)
         }else{
             // remove the position object
+            var Positions = require('./positions');
             Positions.delete(userId, eventId, function (err) {
                 // do something??
             });

@@ -27,15 +27,15 @@ routeSchema.index({eventId: 1}, {name: "route_eventId_idx", unique: true});
  * @param callback
  */
 routeSchema.statics.findByEventId = function (eventId, callback){
-    Route.findOne({'eventId':eventId},function(err,route){
+    Route.findOne({eventId: eventId},function(err, route){
         if (err){
             console.log('[RouteModel][findByEventId] error: ', err);
             return callback({
                 message: "Error occurred during searching database."
             });
-        }
-        else{
+        }else{
             callback(null, route);
+            
         }
     })
 };

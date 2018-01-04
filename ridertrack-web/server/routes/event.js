@@ -128,24 +128,6 @@ router.get('/', function(req, res) {
     })
 });
 
-
-/**
- * It returns the list of distinct cities of all the events.
- */
-router.get('/allCities', function (req, res, next) {
-    Event.distinct("city", function (err, cities) {
-        if(err) {
-            res.status(400).send({
-                errors: err
-            })
-        } else {
-            res.status(200).send({
-                cities: cities
-            })
-        }
-    })
-});
-
 /**
  * It return the list of participants of the requested event.
  */
@@ -164,6 +146,10 @@ router.get('/:eventId/participantsList', function (req, res, next) {
     })
 });
 
+/**
+ * It returns the logo of the requested event.
+ * It changes the content type of the response to the mimetype of the image stored.
+ */
 router.get('/:eventId/logo', function (req, res, next) {
     var eventId = req.params.eventId;
 
@@ -173,8 +159,8 @@ router.get('/:eventId/logo', function (req, res, next) {
                 errors: err
             })
         }else{
-            // TODO change the header according to the mime type
             if(event.logo){
+                // change the header according to the mime type
                 res.header('Content-type', event.logo.contentType);
                 res.end(event.logo.data, 'binary');
             }else{
@@ -241,11 +227,11 @@ router.post('/', authMiddleware.hasValidToken, multipart, function (req, res) {
     var logoMimeType = 'image/png';
 
     // check image
-    if( req.files.logo ) {
+    if(req.files.logo) {
         tempPath = req.files.logo.path;
         logoMimeType = req.files.logo.type;
     }
-    // TODO check allowed extension
+
     if(allowedImgExtension.indexOf(logoMimeType) === -1){
         console.log('[POST /events] logo extension not allowed: ', logoMimeType);
         return res.status(400).send({
@@ -271,7 +257,6 @@ router.post('/', authMiddleware.hasValidToken, multipart, function (req, res) {
         // TODO delete the temp file in any case
     })
 });
-
 
 /**
  * It updates the fields passed in the body of the given eventId
@@ -418,11 +403,10 @@ router.get('/:eventId/participants/positions', function (req, res, next) {
 });
 
 /**
- * gets the location of the last location of an user.
+ * Gets the location of the last location of an user.
  * Coordinates are an object {[lat,lng]}
  */
 router.get('/:eventId/:userId/location', function (req, res) {
-
     Positions.findOne({userId: req.params.userId, eventId: req.params.eventId}, function (err, location) {
         if (err) {
             res.status(400).send({
@@ -454,43 +438,6 @@ router.get('/:eventId/ranking', function (req, res) {
         }
     });
 });
-
-/**
- * This method gets the last known location of a user and its freshness data
- */
-router.get('/:eventId/:userId/lastLocation', function (req, res) {
-    Location.findOne({userId: req.params.userId, eventId: req.params.eventId}, function (err, location) {
-        if (err) {
-            res.status(400).send({
-                errors: [err]
-            })
-        }else{
-            res.status(200).send({
-                lastUserCoordinate: location.coordinates[location.coordinates.length-1],
-                time :'Location was sent on: ' + location.updated_at
-            })
-        }
-    })
-});
-
-/**
- * This method gets the second last known location of a user
- */
-router.get('/:eventId/:userId/secondLastLocation', function (req, res) {
-    Location.findOne({userId: req.params.userId, eventId: req.params.eventId}, function (err, location) {
-        if (err) {
-            res.status(400).send({
-                errors: [err]
-            })
-        }else{
-            res.status(200).send({
-                secondLastUserCoordinate: location.coordinates[location.coordinates.length-2],
-                time :'Location was sent on: ' + location.updated_at
-            })
-        }
-    })
-});
-
 
 /**
  * It deletes the event with the id given in the URI
@@ -598,8 +545,10 @@ router.delete('/:eventId/route', authMiddleware.hasValidToken, authMiddleware.is
 
 /**
  * It starts the tracking of an event.
- * It uses the method on the event model.
+ * It uses the method on the event model, that checks if it is possible to start the tracking.
  * It uses the authMiddlewares in order to check if the user is logged and if he/she is the organizer.
+ * It initialize the positions of all the users in the starting point.
+ * It starts all the consumers for active tracking.
  */
 router.post('/:eventId/tracking/start', authMiddleware.hasValidToken, authMiddleware.isOrganizer, function (req, res) {
     req.event.startTracking(function (err) {
@@ -608,10 +557,21 @@ router.post('/:eventId/tracking/start', authMiddleware.hasValidToken, authMiddle
                 errors: [err]
             });
         }else{
-            // TODO initialize all the user position to the starting point of the route. needed for the ranking
+            // initialize all the users positions to the starting point of the route. needed for the proper working of ranking
+            Positions.initializeAll(req.event._id, function (err) {
+                if(err){
+                    console.log('[EventRoute][start tracking] error while initializing the positions', err)
+                }
+            });
+
+            // start the consumers
+            var consumers = require('../consumers');
+            consumers.startEvent(req.event._id);
+
             return res.status(200).send({
                 message: 'Tracking started successfully.'
             });
+
         }
     })
 });

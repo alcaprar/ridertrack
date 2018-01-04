@@ -323,10 +323,10 @@ export class EventService {
     const url = `${this.BASE_URL}/enrollments/${eventId}/${userId}`;
     var body = {
       eventId: eventId,
-      device: {type: {
-          deviceType: device.deviceType,
-          deviceId: device.deviceId
-        }}
+      device: {
+        deviceType: device.deviceType,
+        deviceId: device.deviceId
+      }
     };
     return new Promise((resolve, reject) => {
       this.http.put(url, body).toPromise()

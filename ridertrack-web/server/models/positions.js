@@ -6,6 +6,7 @@ var ObjectId = mongoose.Schema.Types.ObjectId;
 const fieldsNotChangeable = ['_id', 'userId','eventId','trackingSources','timeStamp' ,'__v', 'created_at', 'updated_at'];
 
 var Route = require('./route');
+var Enrollment = require('./enrollment');
 
 var positionSchema = Schema({
     userId: {
@@ -17,18 +18,7 @@ var positionSchema = Schema({
         type: String,
         required: true
     },
-    trackingSource: {
-        type: String,
-        required: false
-    },
     lastPosition: {
-        type:{
-            lat: {type: Number},
-            lng: {type: Number},
-            timestamp: {type: Date}
-        }
-    },
-    secondLastPosition: {
         type:{
             lat: {type: Number},
             lng: {type: Number},
@@ -45,9 +35,6 @@ var positionSchema = Schema({
     distanceToTheEnd: {
         type: Number,
         default: 1000000
-    },
-    Checkpoint: {
-        type: Number
     },
     positions: {
         type:[{
@@ -85,6 +72,81 @@ positionSchema.pre('save', function(next) {
 });
 
 /**
+ * Create an empty positions object for the given user and event.
+ * @param userId
+ * @param eventId
+ * @param callback
+ */
+positionSchema.statics.create = function (userId, eventId, callback) {
+    var position = new Positions({
+        userId: userId,
+        eventId: eventId
+    });
+
+    position.save(function (err) {
+        callback(err)
+    })
+};
+
+/**
+ * Delete the position object for the given user and event.
+ * @param userId
+ * @param eventId
+ * @param callback
+ */
+positionSchema.statics.delete = function (userId, eventId, callback) {
+    this.findOneAndRemove({eventId: eventId, userId: userId}, function(err, usersPositions){
+        if(err) {
+            return callback({message: err.message})
+        }else{
+            return callback(null)
+        }
+    })
+};
+
+/**
+ * It initialize all the positions of users enrolled in an event in the starting point of the route.
+ * @param eventId
+ * @param callback
+ */
+positionSchema.statics.initializeAll = function (eventId, callback) {
+    if(typeof callback === 'undefined'){
+        callback = function () { }
+    }
+    // get the starting point of the route
+    Route.findByEventId(eventId, function (err, route) {
+        if(err){
+            console.log('[PositionsModel][initializeAll] error while getting the route', err);
+        }else{
+            if(route.coordinates.length > 0){
+                var startingPoint = route.coordinates[0];
+
+                // get all the enrolled users
+                Enrollment.findByEventId(eventId, function (err, enrollments) {
+                    if(err){
+                        console.log('[PositionsModel][initializeAll] error while getting the enrollments', err);
+                    }else{
+                        // for each enrollment add the starting position
+                        for(let i = 0; i < enrollments.length ; i++){
+                            let userId = enrollments[i].userId._id;
+                            (function (userId, eventId) {
+                                var positionToAdd = {
+                                    lat: startingPoint.lat,
+                                    lng: startingPoint.lng,
+                                    timestamp: Date.now()
+                                };
+
+                                Positions.add(userId, eventId, positionToAdd)
+                            })(userId, eventId)
+                        }
+                    }
+                })
+            }
+        }
+    })
+};
+
+/**
  * It adds a new position of the user.
  * It calculates the distance to the end.
  * @param userId
@@ -93,6 +155,9 @@ positionSchema.pre('save', function(next) {
  * @param callback
  */
 positionSchema.statics.add = function (userId, eventId, positionJson, callback) {
+    if(typeof callback === 'undefined'){
+        callback = function () { }
+    }
     this.findOne({eventId: eventId, userId: userId}, function (err, positions) {
         if(err){
             console.log('[PositionsModel][add] error:', err);
@@ -143,7 +208,7 @@ positionSchema.methods.calculateClosestCheckpoint = function (callback) {
     // get the route
     Route.findByEventId(userPositions.eventId, function (err, route) {
         if(err || !route){
-            console.log('[PositionModel][update][calculateClosestCheckpoint] error while getting the route', err);
+            console.log('[PositionModel][update][calculateClosestCheckpoint] error while getting the route', err, route);
             callback({message: "Error while retrieving the route."})
         }else{
             var lastPosition = userPositions.lastPosition;
@@ -193,6 +258,12 @@ positionSchema.statics.getPositionsOfUser = function (userId, eventId, callback)
     })
 };
 
+/**
+ * It returns the last position of the requested user.
+ * @param userId
+ * @param eventId
+ * @param callback
+ */
 positionSchema.statics.getLastPositionOfUser = function (userId, eventId, callback) {
     this.findOne({eventId: eventId, userId: userId}, function (err, userPositions) {
         if(err){
@@ -208,22 +279,12 @@ positionSchema.statics.getLastPositionOfUser = function (userId, eventId, callba
     })
 };
 
-positionSchema.statics.getSecondLastPositionOfUser = function (userId, eventId, callback) {
-    this.findOne({eventId: eventId, userId: userId}, function (err, userPositions) {
-        if(err){
-            console.log('[PositionsModel][getSecondLastPositionOfUserInEvent] error:', err);
-            return callback({message: err.message})
-        }
-
-        if(!userPositions){
-            return callback(null, null)
-        }else{
-            return callback(null, userPositions.secondLastPosition)
-        }
-    })
-};
-
-
+/**
+ * It returns the last positions of all the users enrolled in the given event.
+ * The userId field of the position model is populated with the user info.
+ * @param eventId
+ * @param callback
+ */
 positionSchema.statics.getLastPositionOfAllParticipants = function (eventId, callback) {
     this.find({eventId: eventId})//,{positions: 0})
         .populate('userId')
@@ -232,58 +293,8 @@ positionSchema.statics.getLastPositionOfAllParticipants = function (eventId, cal
                 console.log('[PositionsModel][getLastPositionOfAllParticipantsInEvent] error:', err);
                 return callback({message: err.message})
             }
-			console.log(usersPositions)
             return callback(null, usersPositions)
         })
-};
-
-positionSchema.statics.delete = function (userId, eventId, callback) {
-    this.findOneAndRemove({eventId: eventId, userId: userId}, function(err, usersPositions){
-        if(err) {
-            return callback({message: err.message})
-        }else{
-            return callback(null)
-        }
-    })
-};
-
-positionSchema.statics.create = function(userId, eventId, positionJson, callback){
-    var location = new Location(locationJson);
-    location.userId = userId;
-    location.eventId = eventId;
-
-    location.save(function(err, location){
-        if(err) {
-            console.log("Error Here!");
-            return callback(err)
-        } else {
-            console.log("All good with adding location!");
-			console.log(location);
-            return callback(null, location)
-        }
-    })
-};
-
-
-positionSchema.statics.update = function (userId, eventId, locationJson, callback) {
-    this.findOne({eventId: eventId, userId: userId}, function (err, location) {
-        if (err) {
-            return callback(err)
-        } else {
-            for (let key in locationJson) {
-                if(fieldsNotChangeable.indexOf(key) === -1){
-                    location[key].push(locationJson[key])
-                }
-            }
-            location.save(function (err) {
-                if (err) {
-                    return callback(err)
-                } else {
-                    return callback(null, location)
-                }
-            })
-        }
-    })
 };
 
 var Positions = mongoose.model('Positions', positionSchema);

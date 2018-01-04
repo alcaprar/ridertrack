@@ -110,13 +110,21 @@ server.listen(config.port, function () {
 // exporting the server only for testing purposes
 module.exports = server;
 
+// restart all the consumers
+var consumers = require('./server/consumers');
+consumers.restartAll()
+
 // pinging timeout to keep alive the heroku apps
 var http = require("http");
 setInterval(function() {
-    http.get({host: "rider-track-dev.herokuapp.com"}, function (res) {
-        console.log('Ping rider-track-dev.herokuapp.com')
-    });
-    http.get({host: "rider-track.herokuapp.com"}, function (res) {
-        console.log('Ping rider-track.herokuapp.com')
-    });
+    try{
+        http.get({host: "rider-track-dev.herokuapp.com"}, function (res) {
+            console.log('Ping rider-track-dev.herokuapp.com')
+        });
+        http.get({host: "rider-track.herokuapp.com"}, function (res) {
+            console.log('Ping rider-track.herokuapp.com')
+        });
+    }catch (e){
+        console.log('Error while pinging heroku', e)
+    }
 }, 5 * 60 * 1000); // every 5 minutes (300000)
