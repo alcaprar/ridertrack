@@ -32,7 +32,7 @@ describe('Event model test', function () {
         var event = new Event();
 
         event.save(function(err, event) {
-            expect(err).to.be.eql(null);
+            expect(err).to.not.be.eql(null);
             done();
         });
     });

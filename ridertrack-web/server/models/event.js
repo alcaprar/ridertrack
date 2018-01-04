@@ -104,24 +104,31 @@ eventSchema.pre('save',function(next){
     var err = new Error();
 
     // cast startingDate to Date object
-    var strDate = event.startingDate.split('/'); // e.g. 30/12/2017
     var startingDate;
-    if (!event.startingTime){
-        //Month in Date object is defined from 0-11
-        startingDate = new Date(parseInt(strDate[2]),parseInt(strDate[1]) - 1,parseInt(strDate[0]))
+    if(event.startingDate){
+        var strDate = event.startingDate.split('/'); // e.g. 30/12/2017
+
+        if (!event.startingTime){
+            //Month in Date object is defined from 0-11
+            startingDate = new Date(parseInt(strDate[2]),parseInt(strDate[1]) - 1,parseInt(strDate[0]))
+        }else{
+            var strTime = event.startingTime.split(':'); // e.g. 12:00
+            startingDate = new Date(parseInt(strDate[2]),parseInt(strDate[1]) - 1,parseInt(strDate[0]),parseInt(strTime[0]),parseInt(strTime[1]),0)
+        }
+
+        // if enrollmentOpeningAt is set, check that is not after the startingDate
+        if(event.enrollmentOpeningAt){
+            if(new Date(event.enrollmentOpeningAt) > startingDate ){
+                // the enrollmentOpening is after the startingDate
+                err.message = 'The enrollment opening time cannot be after the starting date.';
+                return next(err)
+            }
+        }
     }else{
-        var strTime = event.startingTime.split(':'); // e.g. 12:00
-        startingDate = new Date(parseInt(strDate[2]),parseInt(strDate[1]) - 1,parseInt(strDate[0]),parseInt(strTime[0]),parseInt(strTime[1]),0)
+        err.message = 'Starting date is not set.';
+        return next(err)
     }
 
-    // if enrollmentOpeningAt is set, check that is not after the startingDate
-    if(event.enrollmentOpeningAt){
-        if(new Date(event.enrollmentOpeningAt) > startingDate ){
-            // the enrollmentOpening is after the startingDate
-            err.message = 'The enrollment opening time cannot be after the starting date.';
-            return next(err)
-        }
-    }
 
     // if enrollmentClosingAt is set, check that is not after the startingDate
     if(event.enrollmentClosingAt){
