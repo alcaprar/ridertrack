@@ -60,6 +60,10 @@ var userSchema = Schema({
         },
         select:false
     },
+    logo: {
+        data: Buffer,
+        contentType: String
+    },
     created_at: {
         type: Date,
         select: false
