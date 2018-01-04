@@ -51,6 +51,19 @@ rankingSchema.pre('save', function(next) {
  * @param eventId
  * @param callback
  */
+ 
+rankingSchema.statics.get = function(eventId,callback){
+	this.findOne({eventId:eventId})
+		.populate('ranking')
+		.exec((err,userRanking) => {
+			if (err){
+				callback(err)
+			}
+			else{
+				callback(null,userRanking)
+			}
+		});
+};
 rankingSchema.statics.create = function(eventId, callback) {
     var ranking = new Ranking({eventId: eventId});
 

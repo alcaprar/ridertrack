@@ -164,7 +164,7 @@ positionSchema.methods.calculateClosestCheckpoint = function (callback) {
 
             // calculate the distance to the end
             route.calculateDistanceToTheEnd(closestCheckpointIndex, function (distance) {
-                userPositions.distanceToTheEnd = distance;
+                userPositions.distanceToTheEnd = distance + Math.min.apply(Math,distanceFromCheckpoints);
 
                 return callback(null)
             });
@@ -225,14 +225,14 @@ positionSchema.statics.getSecondLastPositionOfUser = function (userId, eventId, 
 
 
 positionSchema.statics.getLastPositionOfAllParticipants = function (eventId, callback) {
-    this.find({eventId: eventId}, {positions: 0})
+    this.find({eventId: eventId})//,{positions: 0})
         .populate('userId')
         .exec(function (err, usersPositions) {
             if(err){
                 console.log('[PositionsModel][getLastPositionOfAllParticipantsInEvent] error:', err);
                 return callback({message: err.message})
             }
-
+			console.log(usersPositions)
             return callback(null, usersPositions)
         })
 };

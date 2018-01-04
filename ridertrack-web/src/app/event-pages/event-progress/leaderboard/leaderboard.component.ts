@@ -35,8 +35,8 @@ export class LeaderboardComponent implements OnInit {
         this.started = true;
         console.log("[LeaderBoard][Ranking][EventStarted]", this.currentEvent.status);
         this.eventService.getRanking(this.eventId).then((users)=> {
-          for(let i=1; i<= users.length; i++){
-            this.ranking.add({position: i, name: users[i].name, surname: users[i].surname});
+          for(let i=0; i< users.length; i++){
+            this.ranking.push({position: i+1, name: users[i].name, surname: users[i].surname});
           }
           console.log("[LeaderBoard][Ranking][OnInit]", this.ranking);
           this.sortService.sortTable({sortColumn: 'position', sortDirection:'asc'}, this.ranking);

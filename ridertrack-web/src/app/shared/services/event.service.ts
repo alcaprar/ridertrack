@@ -445,11 +445,12 @@ export class EventService {
       });
   }
 
-  getRanking(eventId){
-    const url = `${this.BASE_URL}/${eventId}/ranking`;
+  getRanking(eventId):Promise<any>{
+    const url = `${this.BASE_EVENT_URL}/${eventId}/ranking`;
 
     return this.http.get(url).toPromise()
       .then((response)=> {
+
         let body = response.json();
         let ranking = body.ranking as User[];
         console.log("[EventService][GetRanking][Success]", ranking);

@@ -442,7 +442,7 @@ router.get('/:eventId/:userId/location', function (req, res) {
  */
 router.get('/:eventId/ranking', function (req, res) {
     var eventId = req.params.eventId;
-    Ranking.findOne({eventId: eventId}, function (err, ranking) {
+    Ranking.get(eventId, function (err, ranking) {
         if (err) {
             res.status(400).send({
                 errors: [err]

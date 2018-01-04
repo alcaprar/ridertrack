@@ -21,8 +21,8 @@ def postPosition(url,token,userId,position,checkpoint = -1 ):
     }
 
     r = requests.post(url,json = payload,headers = headers)
-
-    print(r.json())
+    
+    print("Distance to the end:\t" + str(r.json()['distanceToTheEnd']))
 
 def simulate(url,eventId,competitors,r):
 
