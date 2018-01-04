@@ -7,7 +7,7 @@ var validator = require('validator');
 const privateFields = ['__v', 'salt', 'hash', 'created_at', 'updated_at', 'googleProfile', 'facebookProfile'];
 
 // list of fields that an user can not change
-const fieldsNotChangeable = ['_id', '__v', 'salt', 'hash', 'email', 'role', 'created_at', 'updated_at', 'googleProfile', 'facebookProfile'];
+const fieldsNotChangeable = ['_id', '__v', 'salt', 'hash', 'role', 'created_at', 'updated_at', 'googleProfile', 'facebookProfile'];
 
 var userSchema = Schema({
     email: {
@@ -59,6 +59,10 @@ var userSchema = Schema({
             token: String
         },
         select:false
+    },
+    logo: {
+        data: Buffer,
+        contentType: String
     },
     created_at: {
         type: Date,

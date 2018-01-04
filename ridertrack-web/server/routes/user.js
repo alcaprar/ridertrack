@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var config = require('../config');
 var async = require('async');
+var fs = require('fs');
 
 var User = require('../models/user');
 var Event = require('../models/event');
@@ -9,6 +10,12 @@ var Enrollment = require('../models/enrollment');
 
 var authMiddleware = require('../middlewares/auth');
 
+var multipart = require('connect-multiparty')({
+    uploadDir: config.uploadImageFolder,
+    maxFilesSize: 1024 * 3000 // 1 MB
+});
+
+var allowedImgExtension = ['image/png', 'image/jpg', 'image/jpeg'];
 /**
  * It returns the list of all the users.
  * It accepts query params for filtering the users: email, name, surname.
@@ -202,8 +209,29 @@ router.post('/', function (req, res) {
 /**
  * It updates the fields passed in the body of the given userId
  */
-router.put('/:userId',authMiddleware.hasValidToken, function (req, res) {
-    User.update(req.params.userId, req.body, function (err, user) {
+router.put('/:userId',authMiddleware.hasValidToken, multipart, function (req, res) {
+    var userBody = req.body;
+
+    var tempPath = __dirname + '/../logo.png';
+    var logoMimeType = 'image/png';
+
+    // check image
+    if(req.files.logo) {
+        tempPath = req.files.logo.path;
+        logoMimeType = req.files.logo.type;
+    }
+
+    if(allowedImgExtension.indexOf(logoMimeType) === -1){
+        console.log('[POST /users] logo extension not allowed: ', logoMimeType);
+        return res.status(400).send({
+            errors: [{message: 'Image extension not supported.'}]
+        })
+    }
+    userBody.logo = {
+        data: fs.readFileSync(tempPath),
+        contentType: logoMimeType
+    };
+    User.update(req.params.userId, userBody, function (err, user) {
         if(err){
             res.status(400).send({
                 errors: err
