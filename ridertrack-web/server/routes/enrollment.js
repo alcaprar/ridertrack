@@ -4,6 +4,7 @@ var router = express.Router();
 var Enrollment = require('../models/enrollment');
 var Event = require('../models/event');
 var User = require('../models/user');
+var utils = require('../utils');
 
 var authMiddleware = require('../middlewares/auth');
 
@@ -47,9 +48,33 @@ router.post('/', authMiddleware.hasValidToken, function(req, res){
                                                 errors: [err]
                                             })
                                         } else {
-                                            res.status(200).send({
-                                                message: 'User enrolled successfully!',
-                                                enrollment: enrollment
+                                            var message = 'Enrollment for  ' + event.name + ' CONFIRMED! \n Event info: \n' + event;
+
+                                            User.findByUserId(req.userId, function (err, user) {
+                                                if(err){
+                                                    res.status(400).send({
+                                                        errors: err
+                                                    })
+                                                }else{
+                                                    utils.email.send(
+                                                        {name: 'Enrollment confirmation', email: user.email},
+                                                        '[EC] enrollment of ' + user.name +' '+ user.surname,
+                                                        message,
+                                                        function (err) {
+                                                            if(err){
+                                                                console.log('Error while sending email from contact form.', err);
+                                                                return res.status(400).send({
+                                                                    message: 'Email not sent.'
+                                                                })
+                                                            }else {
+                                                                return res.status(200).send({
+                                                                    message: 'Email successfully sent.',
+                                                                    enrollment: enrollment
+                                                                })
+                                                            }
+                                                        }
+                                                    )
+                                                }
                                             })
                                         }
                                     })
