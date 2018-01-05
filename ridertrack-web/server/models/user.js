@@ -285,7 +285,10 @@ userSchema.statics.update = function (userId, userJson, callback) {
         }else{
             // override the previous value
             for(let key in userJson){
-                user[key] = userJson[key]
+				
+				//if it is undefined, leave it as it was
+				if (userJson[key] !== 'undefined')
+					user[key] = userJson[key]
             }
 
             user.save(function (err) {
