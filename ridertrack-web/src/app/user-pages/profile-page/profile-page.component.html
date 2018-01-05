@@ -49,19 +49,12 @@
             <input [(ngModel)]="user.email" #email="ngModel" id="email" name="email" type="email" class="form-control" placeholder="user.email"
               disabled>
           </div>
-          <div class="form-group">
-            <label for="password"> Password </label>
-            <input id="password" name="password" type="password" class="form-control"
-                   placeholder="********"
-              disabled>
-          </div>
         </div>
       </div>
     </div>
-
     <div class="wizard-footer">
-      <div *ngIf="error" class="alert alert-danger" style="margin-top:1em; margin-left: 3em; margin-right: 3em;">
-        <span>{{error}}</span>
+      <div *ngIf="errors.length>0" class="alert alert-danger" style="margin-top:1em; margin-left: 3em; margin-right: 3em;">
+        <span *ngFor="let err of errors">{{err.message}}</span>
       </div>
       <div class="row">
       <div class="pull-left">

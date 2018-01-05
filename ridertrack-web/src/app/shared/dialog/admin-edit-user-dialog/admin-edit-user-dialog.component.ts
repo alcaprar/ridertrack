@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {DialogService} from "../dialog.service";
 import { User } from '../../models/user';
 import {UserService} from "../../services";
+import {AuthenticationService} from "../../../authentication/authentication.service";
+import {Router} from "@angular/router";
 declare var $: any;
 
 @Component({
@@ -15,8 +17,10 @@ export class AdminEditUserDialogComponent implements OnInit {
   private userRoles = ['user', 'administrator'];
   private selection: string;
   private title: string;
+  private error: string;
 
-  constructor(private dialogService: DialogService, private userService: UserService) {
+  constructor(private dialogService: DialogService, private userService: UserService, private auth: AuthenticationService,
+              private router: Router) {
     this.dialogService.register("adminEditUser", this);
   }
 
@@ -29,23 +33,33 @@ export class AdminEditUserDialogComponent implements OnInit {
     this.selection = selection;
     if(user !== null){
       this.user = user;
+    }else {
+      this.user =new User();
     }
     console.log("[adminEditUserDialog][User][Show]", this.user);
     $('#adminEditUserDialog').modal('show');
   }
 
   save() {
+    this.error ='';
     if(this.selection === 'edit' ) {
-      //TODO: Call the update of the user
-      //TODO: Call the update of the role if different from the default one
-      console.log('[adminEditUserDialog][User Updated]');
-      $('#adminEditUserDialog').modal('hide');
+      this.userService.updateUserById(this.user.id, this.user)
+        .then((user)=> {
+          if(user){
+            console.log('[adminEditUserDialog][User Updated]');
+          }else {
+            this.error = user;
+            this.dialogService.alert("Error", this.error);
+          }
+          $('#adminEditUserDialog').modal('hide');
+        });
     }
-    if(this.selection === 'create'){
-      //TODO: Call the creation of the user
-      //TODO: Call the update of the role if different from the default one
-      console.log('[adminEditUserDialog][User Created]');
-      $('#adminEditUserDialog').modal('hide');
+
+    if(this.selection === 'create') {
+      this.auth.register(this.user).then(()=>{
+        this.router.navigate(['admin/users']);
+        $('#adminEditUserDialog').modal('hide');
+      });
     }
   }
 

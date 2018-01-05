@@ -9,6 +9,7 @@ import { Error } from "../models/error";
 @Injectable()
 export class UserService {
   private BASE_USERS_URL = '/api/users/';
+  private BASE_AUTH_URL = '/api/auth';
 
   constructor(private http: HttpClientService, private authService: AuthenticationService, private router: Router) {
 
@@ -135,6 +136,7 @@ export class UserService {
 
   deleteUserById(userId): Promise<Error> {
     const url = `${this.BASE_USERS_URL}${userId}`;
+    console.log('[UserService][deleteUserById]',userId);
     console.log(url);
     return this.http.delete(url).toPromise()
       .then(
@@ -146,9 +148,9 @@ export class UserService {
         })
       .catch(
         (errorResponse: any) => {
-          var errors = errorResponse.json() as Error[];
+          var errors = errorResponse.json().errors as Error[];
           console.log('[UserService][deleteUser][error]', errors);
-          return errors
+          return errors;
         });
   }
 
@@ -167,54 +169,43 @@ export class UserService {
     formData.append('email', user.email);
     formData.append('password', user.password);
 
-    return this.http.put(url, formData).toPromise()
-      .then((response)=> {
-        let body = response.json();
-        console.log("[UserService][UpdateCurrentUser][Success]", body.user);
-        let user = body.user as User;
-        return user;
-      }).catch((error)=> {
+    return new Promise((resolve,reject)=> {
+      this.http.put(url, formData).toPromise()
+        .then((response)=> {
+          let body = response.json();
+          console.log("[UserService][UpdateCurrentUser][Success]", body.user);
+          return resolve([body.user as User]);
+        }).catch((error)=> {
         let body = error.json();
         console.log("[UserService][UpdateCurrentUser][Error]",body);
-        let errors = body.errors;
-        return errors;
+        return reject([body.errors as Error[]]);
       });
+    });
   }
 
   updateUserById(userId, user){
     const url = `${this.BASE_USERS_URL}${userId}`;
-
-    return this.http.put(url, user).toPromise()
-      .then((response)=> {
-        let body = response.json();
-        console.log("[UserService][UpdateUserById][Success]", body.user);
-        return body.user;
-      }).catch((error)=> {
-        let body = error.json();
-        console.log("[UserService][UpdateUserById][Error]", error);
-        return body.errors;
-      })
-  }
-
-  createUser(user){
-    const url = `${this.BASE_USERS_URL}`;
     var formData = new FormData();
     formData.append('logo', user.logo);
     formData.append('name', user.name);
     formData.append('surname', user.surname);
+    formData.append('city', user.city);
+    formData.append('aboutMe', user.aboutMe);
     formData.append('email', user.email);
     formData.append('password', user.password);
 
-    return this.http.post(url, formData).toPromise()
+    return this.http.put(url, formData).toPromise()
       .then((response)=> {
-        let body= response.json();
-        console.log("[UserService][CreateUser][Success]", body.user);
-        return body.user;
+        let body = response.json();
+        console.log("[UserService][UpdateUserById][Success]", body.user);
+        let user = body.user as User;
+        return user;
       }).catch((error)=> {
         let body = error.json();
-        console.log("[UserService][CreateUser][Error]", body);
-        return body.errors;
-      });
+        console.log("[UserService][UpdateUserById][Error]", error);
+        let errors = body.errors;
+        return errors;
+      })
   }
 
 }

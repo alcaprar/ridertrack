@@ -17,7 +17,7 @@ declare var $: any;
 export class ProfilePageComponent implements OnInit {
 
   private user: User = new User();
-  error: String;
+  errors: Error[]=[];
   name: String;
   surname: String;
   email: String;
@@ -77,6 +77,7 @@ this.getUser();
    * If any error occurred, it shows them.
    */
   deleteUser() {
+    this.errors = [];
     console.log('[MyProfile][deleteUser]');
     this.dialogService.confirmation('Delete user account', 'Are you sure you want to delete your user account?', function () {
       console.log('[MyProfile][deleteUser][callback]');
@@ -84,7 +85,8 @@ this.getUser();
         .then(
           (errors) => {
             if(errors){
-              this.dialogService.alert('Delete user account', errors[0].message)
+              this.dialogService.alert('Delete user account', errors)
+              this.errors = errors;
             }else{
               console.log('[MyProfile][deleteUser][success]');
             }
@@ -99,21 +101,19 @@ this.getUser();
   }
 
  updateUser() {
-      this.error = null;
+      this.errors = [];
    // get the logo from the input image
    var logo = $('#logo').prop('files')[0];
    this.user.logo = logo;
 
     this.userService.updateCurrentUser(this.user)
-      .then((user)=>{
-        if(user){
-          console.log("[currentUserUpdated][Success]", user);
+      .then((response)=>{
+          console.log("[currentUserUpdated][Success]", response);
           this.dialogService.alert("Success", "Your profile is correctly updated!");
           this.getUser();
-        }else {
-          console.log("[currentUserUpdated][Error]", user);
-          this.error = user;
-        }
+        }).catch((error)=> {
+        console.log("[currentUserUpdated][Error]", error);
+        this.errors = error;
     });
  }
 
