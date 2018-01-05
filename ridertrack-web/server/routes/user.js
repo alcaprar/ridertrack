@@ -95,21 +95,27 @@ router.get('/:userId/logo', function (req, res) {
  */
 router.get('/:userId/enrolledEvents', authMiddleware.hasValidToken, function (req, res){
     var options = {};
+    var conditions = {
+        userId: req.params.userId
+    };
     let enrolledEventsIdList= [];
 
-    var page = parseInt(req.query.page) || 1;
-    var itemsPerPage = parseInt(req.query.itemsPerPage) || 10;
-    options.skip = (parseInt(page) -1) * parseInt(itemsPerPage);
-    options.limit = itemsPerPage;
+    // if there is at least one of those params, they are requesting the paginated version
+    if(req.query.page || req.query.itemsPerPage){
+        var page = parseInt(req.query.page) || 1;
+        var itemsPerPage = parseInt(req.query.itemsPerPage) || 10;
+        options.skip = (parseInt(page) -1) * parseInt(itemsPerPage);
+        options.limit = itemsPerPage;
+    }
 
-
+    // always sort by startingDate asc
     options.sort = {
         'startingDate': 'asc'
     };
 
     // using async lib to find the total number and find the events in parallel
     var countEnrollments = function (callback) {
-        Enrollment.find({userId: req.params.userId}, function (err, enrollments) {
+        Enrollment.find(conditions, function (err, enrollments) {
             if(err){
                 callback(err)
             }else{
@@ -119,9 +125,8 @@ router.get('/:userId/enrolledEvents', authMiddleware.hasValidToken, function (re
     };
 
     var findEnrollments = function (callback) {
-        Enrollment.find({userId: req.params.userId}, null, options, function (err, enrollment){
+        Enrollment.find(conditions, null, options, function (err, enrollment){
             if (err) {
-                console.log('GET /users/:userId/enrolledEvents', err);
                 res.status(400).send({
                     errors: [{message: 'Error in finding an enrollment in getting enrolled events'}]
 
@@ -147,12 +152,22 @@ router.get('/:userId/enrolledEvents', authMiddleware.hasValidToken, function (re
                 errors: err
             })
         } else {
-            res.status(200).send({
-                events: results[1],
-                page: page,
-                itemsPerPage: itemsPerPage,
-                totalPages: Math.ceil(results[0]/itemsPerPage)
-            })
+            var response;
+            if(req.query.page || req.query.itemsPerPage){
+                // if they requested a paginated result, add also info about pages
+                response = {
+                    events: results[1],
+                    page: page,
+                    itemsPerPage: itemsPerPage,
+                    totalPages: Math.ceil(results[0]/itemsPerPage)
+                }
+            }else{
+                // if they requested a not paginated result, add only events list
+                response = {
+                    events: results[1]
+                }
+            }
+            res.status(200).send(response)
         }
     });
 });
