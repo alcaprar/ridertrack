@@ -36,14 +36,6 @@
               </div>
               <div class="row p-b-15 ">
            <div class="col-md-6">
-             <div class="form-group" *ngIf="selection === 'edit'">
-               <label for="type">Type <small>(required)</small></label>
-               <select [(ngModel)]="event.type" #type="ngModel" id="type"  name="type"
-                       class="selectpicker" data-live-search="true" data-live-search-style="begins"
-                       [title]="event.type ? event : 'Select a Type'">
-                 <option *ngFor="let type of eventTypes" [ngValue]="type" style="text-transform: capitalize" required>{{type}}</option>
-               </select>
-             </div>
              <div class="form-group">
                <label for="startingDate">Date <small>(required)</small></label>
                <input [(ngModel)]="event.startingDate" #startingDate="ngModel" id="startingDate" name="startingDate" type="text"
@@ -63,11 +55,6 @@
                            id="startingTime" name="startingTime" type="time" class="form-control"
                            placeholder="12:00">
                   </div>
-                  <div class="form-group"  *ngIf="selection === 'edit'">
-                    <label for="maxDuration">Maximum Duration <small>(minutes)</small></label>
-                    <input [(ngModel)]="event.maxDuration" #description="ngModel" id="maxDuration" name="maxDuration"
-                           type="number" class="form-control" placeholder="120" >
-                  </div>
                   <div class="form-group" *ngIf="selection === 'edit'">
                     <label for="enrollmentClosingAt">Enrollment Closing At</label>
                     <input id="enrollmentClosingAt" name="enrollmentClosingAt" type="text" class="form-control datepicker"
@@ -81,7 +68,7 @@
                               type="text" class="form-control" cols="40" placeholder="Write here your description..." >
                     </textarea>
                   </div>
-                  <div class="form-group" *ngIf="selection === 'create'">
+                  <div class="form-group" >
                     <label for="typeCreate">Type <small>(required)</small></label>
                     <select [(ngModel)]="event.type" #type="ngModel" id="typeCreate"  name="type"
                             class="selectpicker" data-live-search="true" data-live-search-style="begins"
