@@ -1,5 +1,8 @@
 <app-page-header title="Manage users"></app-page-header>
 
+<div *ngIf="errors != null && errors.length > 0" class="alert alert-danger" style="margin-top: 20px">
+  <span *ngFor="let err of errors">{{err}}</span>
+</div>
 <div class="container">
 <div class="row  pr0 padding-top-40 properties-page">
   <div class="col-md-12 clear">
@@ -9,6 +12,7 @@
         <th sortable-column="name" class="title">First Name</th>
         <th sortable-column="surname" class="title">Last Name</th>
         <th sortable-column="email" class="title">Email</th>
+        <th class="title">Role</th>
         <th class="title"></th>
         <th class="title"><i class="fa fa-plus" title="Create a User" aria-hidden="true" (click)="createUser()"></i> </th>
       </tr>
@@ -18,6 +22,7 @@
         <td>{{user.name}}</td>
         <td>{{user.surname}}</td>
         <td>{{user.email}}</td>
+        <td>{{user.role}}</td>
         <td>
           <div class="pull-left">
             <input type="button" class="btn btn-default" value="Edit" (click)="edit(user)"/>

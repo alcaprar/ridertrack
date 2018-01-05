@@ -268,6 +268,10 @@ router.put('/:userId', authMiddleware.hasValidToken, multipart, function (req, r
             contentType: logoMimeType
         };
     }
+	//other solution to remove it from userBody
+	//else{
+	//	delete userBody.logo
+	//}
     User.update(req.params.userId, userBody, function (err, user) {
         if(err){
             res.status(400).send({

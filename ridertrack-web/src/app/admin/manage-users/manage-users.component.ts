@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import { UserService } from '../../shared/services/user.service';
 import { ActivatedRoute } from '@angular/router';
 import {SortService} from "../../event-pages/event-progress/sort.service";
@@ -10,14 +10,18 @@ import {DialogService} from "../../shared/dialog/dialog.service";
   templateUrl: './manage-users.component.html',
   styleUrls: ['./manage-users.component.css']
 })
-export class ManageUsersComponent implements OnInit {
+export class ManageUsersComponent implements OnInit, OnChanges {
 
+  errors: Error[] =[];
   users: any;
 
   constructor(private route: ActivatedRoute,private userService: UserService, private sortService: SortService,
               private dialogService: DialogService) { }
 
   ngOnInit() {
+    this.getUsers();
+  }
+  ngOnChanges(changes: SimpleChanges): void {
     this.getUsers();
   }
 
@@ -35,15 +39,24 @@ export class ManageUsersComponent implements OnInit {
   }
 
   edit(user: User){
-    this.dialogService.adminEditUser("Edit User", user, 'edit');
+    let currentUser = user;
+    this.dialogService.adminEditUser("Edit User", currentUser, 'edit');
   }
 
   delete(user: User){
+    this.errors = [];
+    let userId = user._id;
     this.dialogService.confirmation("Delete", "Are you sure to delete this User?", function () {
-      this.userService.deleteUserById(user.id);
+      this.userService.deleteUserById(userId)
+        .then((response)=> {
+          if(response){
+            this.errors = response;
+            console.log("[DeleteUserById][Error]", response);
+          }else {
+            this.getUsers();
+          }
+        })
     }.bind(this));
-    //update table
-    this.getUsers();
   }
 
   createUser() {
