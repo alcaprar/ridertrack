@@ -130,7 +130,7 @@ export class AuthenticationService{
    * It sends a post to the web server with the user details.
    * If the registration is successfull it receives also a token and redirects to the private page.
    */
-  register(user: User): Promise<Error[]> {
+  register(user: User): Promise<any> {
     const url = `${this.BASE_AUTH_URL}/register`;
     return this.http.post(url, {name: user.name, surname: user.surname, email: user.email, password: user.password}).toPromise()
       .then(
@@ -140,10 +140,6 @@ export class AuthenticationService{
           const body = response.json();
 
           this.storeResponse(body.userId, body.role, body.jwtToken);
-
-          // route to my-events
-          this.router.navigate(['/my-events']);
-
           return null;
         },
         (errorResponse: any) => {

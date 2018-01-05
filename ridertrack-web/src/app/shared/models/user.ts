@@ -1,5 +1,5 @@
 export class User {
- private _id: String;
+  public _id: String;
  public logo: File;
  public city: string;
  public aboutMe: string;

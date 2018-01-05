@@ -2,6 +2,7 @@ import { Component, Input, OnInit, Injectable, OnChanges } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import {AuthenticationService} from "../authentication.service";
 import {User} from "../../shared/models/user";
+import {Router} from "@angular/router";
 declare var grecaptcha:any;
 
 @Component({
@@ -17,7 +18,8 @@ export class RegistrationPageComponent implements OnInit {
 
   @Input() user = { name: '', surname: '', email: '', password:''};
 
-  constructor(private formBuilderLogin: FormBuilder, private authService: AuthenticationService) { }
+  constructor(private formBuilderLogin: FormBuilder, private authService: AuthenticationService,
+              private router: Router) { }
 
   ngOnInit() {
     this.setFormRegister();
@@ -122,7 +124,9 @@ export class RegistrationPageComponent implements OnInit {
             this.loading = false;
 
             if(errors){
-              this.showErrors(errors)
+              this.showErrors(errors);
+            }else{
+              this.router.navigate(['my-events']);
             }
           }
         )

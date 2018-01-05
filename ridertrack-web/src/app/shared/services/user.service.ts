@@ -5,11 +5,11 @@ import { AuthenticationService } from '../../authentication/authentication.servi
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 import { Error } from "../models/error";
+import {Response} from "@angular/http";
 
 @Injectable()
 export class UserService {
   private BASE_USERS_URL = '/api/users/';
-  private BASE_AUTH_URL = '/api/auth';
 
   constructor(private http: HttpClientService, private authService: AuthenticationService, private router: Router) {
 
@@ -142,8 +142,6 @@ export class UserService {
       .then(
         (response) => {
           console.log('[UserService][deleteUser][then]', response);
-          this.authService.logout();
-          this.router.navigate(['']);
           return null
         })
       .catch(
@@ -185,6 +183,8 @@ export class UserService {
 
   updateUserById(userId, user){
     const url = `${this.BASE_USERS_URL}${userId}`;
+    console.log("[UpdateUserById][Id]",userId);
+
     var formData = new FormData();
     formData.append('logo', user.logo);
     formData.append('name', user.name);
@@ -194,18 +194,18 @@ export class UserService {
     formData.append('email', user.email);
     formData.append('password', user.password);
 
-    return this.http.put(url, formData).toPromise()
-      .then((response)=> {
-        let body = response.json();
-        console.log("[UserService][UpdateUserById][Success]", body.user);
-        let user = body.user as User;
-        return user;
-      }).catch((error)=> {
+    return new Promise((resolve,reject)=> {
+      this.http.put(url, formData).toPromise()
+        .then((response)=> {
+          let body = response.json();
+          console.log("[UserService][UpdateUserById][Success]", body.user);
+          return resolve(body.user as User);
+        }).catch((error)=> {
         let body = error.json();
         console.log("[UserService][UpdateUserById][Error]", error);
-        let errors = body.errors;
-        return errors;
+        return reject(body.errors as Error[]);
       })
+    });
   }
 
 }

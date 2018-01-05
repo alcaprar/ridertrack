@@ -14,10 +14,11 @@ declare var $: any;
 export class AdminEditUserDialogComponent implements OnInit {
 
   private user: User = new User();
+  private pastUser: User = new User();
   private userRoles = ['user', 'administrator'];
   private selection: string;
   private title: string;
-  private error: string;
+  private errors: Error[]=[];
 
   constructor(private dialogService: DialogService, private userService: UserService, private auth: AuthenticationService,
               private router: Router) {
@@ -41,31 +42,47 @@ export class AdminEditUserDialogComponent implements OnInit {
   }
 
   save() {
-    this.error ='';
+    this.errors =[];
     if(this.selection === 'edit' ) {
-      this.userService.updateUserById(this.user.id, this.user)
-        .then((user)=> {
-          if(user){
-            console.log('[adminEditUserDialog][User Updated]');
-          }else {
-            this.error = user;
-            this.dialogService.alert("Error", this.error);
-          }
+      console.log("[User][toEdit]", this.user);
+      this.userService.updateUserById(this.user._id, this.user)
+        .then((response)=> {
+          console.log('[adminEditUserDialog][User Updated]');
           $('#adminEditUserDialog').modal('hide');
-        });
+          }).catch((error)=>{
+        this.errors = error;
+        console.log('[adminEditUserDialog][UserUpdate][Error]', this.errors);
+       for(let err of this.errors){
+         this.dialogService.alert("Error", err.message);
+       }
+      });
     }
-
     if(this.selection === 'create') {
-      this.auth.register(this.user).then(()=>{
-        this.router.navigate(['admin/users']);
-        $('#adminEditUserDialog').modal('hide');
+      console.log("[User][toCreate]", this.user);
+      this.auth.register(this.user).then((error)=>{
+        if(error){
+          console.log("[UserCreate][Error]", error);
+          this.errors = error;
+          $('#adminEditUserDialog').modal('show');
+        }else {
+          this.router.navigate(['/admin','users']);
+          console.log("[UserCreate][Success]");
+        }
       });
     }
   }
 
   cancel(){
     console.log('[adminEditUserDialog][Cancel]');
+    this.selection = '';
+    this.user = new User();
     $('#adminEditUserDialog').modal('hide');
+  }
+
+  close(){
+    console.log('[adminEditUserDialog][Close]');
+    this.selection = '';
+    this.user = new User;
   }
 
 }

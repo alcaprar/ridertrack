@@ -12,7 +12,7 @@ import {DialogService} from "../../shared/dialog/dialog.service";
 })
 export class ManageUsersComponent implements OnInit, OnChanges {
 
-
+  errors: Error[] =[];
   users: any;
 
   constructor(private route: ActivatedRoute,private userService: UserService, private sortService: SortService,
@@ -44,10 +44,18 @@ export class ManageUsersComponent implements OnInit, OnChanges {
   }
 
   delete(user: User){
-    let userId = user;
+    this.errors = [];
+    let userId = user._id;
     this.dialogService.confirmation("Delete", "Are you sure to delete this User?", function () {
-      this.userService.deleteUserById(userId);
-      this.getUsers();
+      this.userService.deleteUserById(userId)
+        .then((response)=> {
+          if(response){
+            this.errors = response;
+            console.log("[DeleteUserById][Error]", response);
+          }else {
+            this.getUsers();
+          }
+        })
     }.bind(this));
   }
 
