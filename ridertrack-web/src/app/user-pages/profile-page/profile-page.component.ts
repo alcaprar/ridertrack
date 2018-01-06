@@ -31,8 +31,9 @@ export class ProfilePageComponent implements OnInit {
   constructor(private router: Router, private formBuilderLogin: FormBuilder, private userService: UserService, private dialogService: DialogService, private authService: AuthenticationService) { }
 
   ngOnInit() {
-this.getUser();
+    this.getUser();
   }
+
   getUser() {
     this.userService.getUser().subscribe(
       (user: User) => {
@@ -54,7 +55,7 @@ this.getUser();
           };
         }
         if(user.logo !== null && user.logo !== undefined){
-          this.urlImage = '/api/users/' + this.user.id + '/logo';
+          this.urlImage = '/api/users/' + this.user._id + '/logo';
         }
       }
     );

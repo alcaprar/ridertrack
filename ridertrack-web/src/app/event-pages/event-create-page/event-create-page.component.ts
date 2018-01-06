@@ -23,18 +23,19 @@ export class EventCreatePageComponent implements OnInit {
   private urlImage: any;
   private urlNoImage = '../../../assets/img/logofoto.png';
 
-  public userSettingCity: any = {
-    showSearchButton: false,
-    geoTypes: ['(cities)'],
-    showCurrentLocation: false,
-    inputPlaceholderText: 'INSERT A CITY'
-  };
+  public userSettingCity: any ;
 
   constructor(private eventService: EventService, private router: Router) {
   }
 
   ngOnInit() {
     this.eventTypes = this.eventService.getEventTypes();
+    this.userSettingCity = {
+      showSearchButton: false,
+      geoTypes: ['(cities)'],
+      showCurrentLocation: false,
+      inputPlaceholderText: 'Insert a City'
+    };
   }
 
   /**

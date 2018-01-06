@@ -162,9 +162,8 @@
               <div class="inner-wrapper">
                 <div class="clear">
                   <div class="col-xs-4 col-sm-4 dealer-face">
-                    <a href="">
-                      <img src="{{ (organizer.image) ? organizer.image : '../../../assets/img/logofoto.png'}}" class="img-circle">
-                    </a>
+                      <img [src]="logoOrganizer ? logoOrganizer : '../../../assets/img/logofoto.png'"
+                           class="img-circle" style="height: 7em;">
                   </div>
                   <div class="col-xs-8 col-sm-8 ">
                     <h3 class="dealer-name">
@@ -177,12 +176,12 @@
 
                 <div class="clear">
                   <ul class="dealer-contacts">
-                    <li *ngIf="organizer.city">
+                    <li *ngIf="organizer.city && organizer.city !== 'undefined'">
                       <i class="pe-7s-map-marker strong"> </i> {{organizer.city}}</li>
                     <li>
                       <i class="pe-7s-mail strong"> </i> {{organizer.email}}</li>
                   </ul>
-                  <p *ngIf="organizer.aboutMe">{{organizer.aboutMe}}</p>
+                  <p *ngIf="organizer.aboutMe && organizer.aboutMe !== 'undefined'">{{organizer.aboutMe}}</p>
                 </div>
               </div>
             </div>

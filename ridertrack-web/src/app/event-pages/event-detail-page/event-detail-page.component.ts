@@ -21,6 +21,8 @@ export class EventDetailPageComponent implements OnInit {
 
   private logoUrl = '';
 
+  private logoOrganizer;
+
   private href = '';
 
   private event: Event = new Event();
@@ -110,6 +112,10 @@ export class EventDetailPageComponent implements OnInit {
     this.logoUrl = "/api/events/" + this.eventId + "/logo?random=" + this.randomInt(1, 1000);
   }
 
+  private updateLogoOrganizer(id) {
+    this.logoOrganizer = "/api/users/" + id + "/logo?random=" + this.randomInt(1, 1000);
+  }
+
   /**
    * It retrieves the route of the event calling the routeService.
    * It stores the coordinates in a variable in order to render it.
@@ -135,6 +141,9 @@ export class EventDetailPageComponent implements OnInit {
         (organizer) => {
           console.log('[EventDetail][getOrganizer][success]', organizer);
           this.organizer = organizer;
+          if(this.organizer.logo !== undefined) {
+            this.updateLogoOrganizer(this.organizer._id);
+          }
         }
       )
       .catch(
