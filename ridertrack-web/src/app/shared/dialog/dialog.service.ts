@@ -21,14 +21,14 @@ export class DialogService {
     this.dialogs['alert'].show(title, body);
   }
 
-  adminEditUser(title,userid, selection){
+  adminEditUser(title,userid, selection, callback){
     console.log('[DialogService][adminEditUser]', userid);
-    this.dialogs['adminEditUser'].show(title, userid, selection);
+    this.dialogs['adminEditUser'].show(title, userid, selection, callback);
   }
 
-  adminEditEvent(title, event, selection){
-    console.log('[DialogService][adminEditEvent]', event);
-    this.dialogs['adminEditEvent'].show(title, event, selection);
+  adminEditEvent(title, eventid, selection){
+    console.log('[DialogService][adminEditEvent]', eventid);
+    this.dialogs['adminEditEvent'].show(title, eventid, selection);
   }
 
   enrollement(title, eventId, isEnrolled){

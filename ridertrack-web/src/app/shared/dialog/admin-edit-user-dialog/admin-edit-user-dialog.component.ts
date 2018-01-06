@@ -18,6 +18,7 @@ export class AdminEditUserDialogComponent implements OnInit {
   private selection: string;
   private title: string;
   private error: Error[];
+  private callback;
 
   constructor(private dialogService: DialogService, private userService: UserService, private auth: AuthenticationService,
               private router: Router) {
@@ -28,9 +29,12 @@ export class AdminEditUserDialogComponent implements OnInit {
   }
 
 
-  show(title, userid: String, selection) {
+  show(title, userid: String, selection, callback) {
+    this.error = null;
     this.title = title;
     this.selection = selection;
+    this.callback = callback;
+
     if(userid !== null){
       this.getUser(userid);
     }else {
@@ -48,7 +52,7 @@ export class AdminEditUserDialogComponent implements OnInit {
       }).catch((reject)=> {
         this.error = reject;
       console.log("[GetUserById][Error]", this.error);
-    })
+    });
   }
 
 
@@ -58,6 +62,7 @@ export class AdminEditUserDialogComponent implements OnInit {
       this.userService.updateUserById(this.user._id, this.user)
         .then((response)=> {
           console.log('[adminEditUserDialog][User Updated]');
+          this.callback();
           $('#adminEditUserDialog').modal('hide');
           }).catch((error)=>{
         this.error = error;
@@ -71,8 +76,9 @@ export class AdminEditUserDialogComponent implements OnInit {
           this.error = error;
           console.log("[UserCreate][Error]", this.error);
         }else {
-          this.router.navigate(['/admin','users']);
           console.log("[UserCreate][Success]");
+          this.callback();
+          $('#adminEditUserDialog').modal('hide');
         }
       });
     }
@@ -81,6 +87,7 @@ export class AdminEditUserDialogComponent implements OnInit {
   cancel(){
     console.log('[adminEditUserDialog][Cancel]');
     this.selection = '';
+    this.error = null;
     this.user = new User();
     $('#adminEditUserDialog').modal('hide');
   }
@@ -89,6 +96,7 @@ export class AdminEditUserDialogComponent implements OnInit {
     console.log('[adminEditUserDialog][Close]');
     this.selection = '';
     this.user = new User;
+    this.error = null;
   }
 
 }

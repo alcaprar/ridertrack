@@ -40,7 +40,10 @@ export class ManageUsersComponent implements OnInit, OnChanges {
 
   edit(user: User){
     let userId= user._id;
-    this.dialogService.adminEditUser("Edit User", userId, 'edit');
+    this.dialogService.adminEditUser("Edit User", userId, 'edit', function (){
+      this.getUsers();
+      console.log('[AdminUsers][UserUpdated][ListUpdated]');
+    }.bind(this));
   }
 
   delete(user: User){
@@ -60,6 +63,9 @@ export class ManageUsersComponent implements OnInit, OnChanges {
   }
 
   createUser() {
-    this.dialogService.adminEditUser("Create User", null, 'create');
+    this.dialogService.adminEditUser("Create User", null, 'create', function () {
+      this.getUsers();
+      console.log('[AdminUsers][UserAdded][ListUpdated]');
+    }.bind(this));
   }
 }

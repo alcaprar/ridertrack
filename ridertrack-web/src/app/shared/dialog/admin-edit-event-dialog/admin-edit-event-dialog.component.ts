@@ -64,22 +64,12 @@ export class AdminEditEventDialogComponent implements OnInit, AfterViewInit {
     }
   }
 
-  show(title, event, selection) {
-
+  show(title, eventid, selection) {
+    this.errors = [];
     this.title = title;
 
-    if(event){
-      this.event = event;
-      this.urlImage = '/api/events/' + this.event._id + '/logo';
-      this.userSettingCity = {
-        showSearchButton: false,
-        geoTypes: ['(cities)'],
-        showCurrentLocation: false,
-        inputPlaceholderText: this.event.city + ', '+ this.event.country
-      };
-      // init the input of the datepicker
-      $('#enrollmentOpeningAt.datepicker').datepicker("setDate" , new Date(this.event.enrollmentOpeningAt));
-      $('#enrollmentClosingAt.datepicker').datepicker("setDate" , new Date(this.event.enrollmentClosingAt));
+    if(eventid){
+      this.getEvent(eventid);
     }else {
       this.event = new Event();
       this.urlImage = null;
@@ -89,11 +79,29 @@ export class AdminEditEventDialogComponent implements OnInit, AfterViewInit {
         showCurrentLocation: false,
         inputPlaceholderText: 'Select a City'
       };
+      $('#enrollmentOpeningAt.datepicker').datepicker("setDate" , new Date());
+      $('#enrollmentClosingAt.datepicker').datepicker("setDate" , new Date());
     }
     this.selection = selection;
     $('#adminEditEventDialog').modal('show');
   }
 
+  getEvent(id){
+    this.eventService.getEvent(id)
+      .then((event)=> {
+        this.event= event;
+        this.urlImage = '/api/events/' + this.event._id + '/logo';
+        this.userSettingCity = {
+          showSearchButton: false,
+          geoTypes: ['(cities)'],
+          showCurrentLocation: false,
+          inputPlaceholderText: this.event.city + ', '+ this.event.country
+        };
+        // init the input of the datepicker
+        $('#enrollmentOpeningAt.datepicker').datepicker("setDate" , new Date(this.event.enrollmentOpeningAt));
+        $('#enrollmentClosingAt.datepicker').datepicker("setDate" , new Date(this.event.enrollmentClosingAt));
+      });
+  }
 
 
   //save the changed date
