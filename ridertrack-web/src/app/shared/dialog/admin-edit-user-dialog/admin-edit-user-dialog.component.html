@@ -36,11 +36,11 @@
               <option *ngFor="let role of userRoles" [ngValue]="role" style="text-transform: capitalize" required>{{role}}</option>
             </select>
           </div>
+          <div *ngIf="error" class="alert alert-danger" style="margin-top: 20px">
+            <span>{{error.message}}</span>
+          </div>
         </div>
         <div class="modal-footer">
-          <div id="error" *ngIf="errors.length > 0" class="alert alert-danger" style="margin: 15px">
-            <span *ngFor="let err of errors">{{err.message}}</span>
-          </div>
           <button type="button"  id="danger" class="btn btn-danger" (click)="cancel()">Cancel</button>
           <button type="button" class="btn btn-default"(click)="save()">Save</button>
         </div>

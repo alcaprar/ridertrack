@@ -18,7 +18,7 @@ export class AdminEditUserDialogComponent implements OnInit {
   private userRoles = ['user', 'administrator'];
   private selection: string;
   private title: string;
-  private errors: Error[]=[];
+  private error: Error[];
 
   constructor(private dialogService: DialogService, private userService: UserService, private auth: AuthenticationService,
               private router: Router) {
@@ -42,7 +42,6 @@ export class AdminEditUserDialogComponent implements OnInit {
   }
 
   save() {
-    this.errors =[];
     if(this.selection === 'edit' ) {
       console.log("[User][toEdit]", this.user);
       this.userService.updateUserById(this.user._id, this.user)
@@ -50,20 +49,16 @@ export class AdminEditUserDialogComponent implements OnInit {
           console.log('[adminEditUserDialog][User Updated]');
           $('#adminEditUserDialog').modal('hide');
           }).catch((error)=>{
-        this.errors = error;
-        console.log('[adminEditUserDialog][UserUpdate][Error]', this.errors);
-       for(let err of this.errors){
-         this.dialogService.alert("Error", err.message);
-       }
+        this.error = error;
+        console.log('[adminEditUserDialog][UserUpdate][Error]', this.error);
       });
     }
     if(this.selection === 'create') {
       console.log("[User][toCreate]", this.user);
       this.auth.register(this.user).then((error)=>{
         if(error){
-          console.log("[UserCreate][Error]", error);
-          this.errors = error;
-          $('#adminEditUserDialog').modal('show');
+          this.error = error;
+          console.log("[UserCreate][Error]", this.error);
         }else {
           this.router.navigate(['/admin','users']);
           console.log("[UserCreate][Success]");
