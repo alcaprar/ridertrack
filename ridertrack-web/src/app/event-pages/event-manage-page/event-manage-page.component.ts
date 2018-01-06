@@ -169,7 +169,7 @@ export class EventManagePageComponent implements OnInit {
   }
 
   showErrors(errors: Error[]){
-    console.log('[Login COmponent][showErrors]', errors);
+    console.log('[ManagePageComponent][showErrors]', errors);
     this.errors = errors;
   }
 
@@ -182,15 +182,15 @@ export class EventManagePageComponent implements OnInit {
       console.log('[ManageEvent][deleteEvent]');
       this.eventService.deleteEvent(this.eventId)
         .then(
-          (response) => {
-            console.log('[ManageEvent][deleteEvent][success]', response);
+          () => {
+            console.log('[ManageEvent][deleteEvent][success]');
             this.router.navigate(['/my-events']);
           }
         )
         .catch(
           (error) => {
             console.log('[ManageEvent][deleteEvent][error]', error);
-            // TODO show errors
+            this.showErrors(error);
           }
         );
     }.bind(this));

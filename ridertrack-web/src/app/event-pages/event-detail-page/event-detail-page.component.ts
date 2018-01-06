@@ -230,15 +230,15 @@ export class EventDetailPageComponent implements OnInit {
       console.log('[EventDetail][deleteEvent][callback]');
       this.eventService.deleteEvent(this.eventId)
         .then(
-          (response) => {
-            console.log('[EventDetail][deleteEvent][success]', response);
+          () => {
+            console.log('[EventDetail][deleteEvent][success]');
             this.router.navigate(['/my-events']);
           }
         )
         .catch(
           (error) => {
             console.log('[EventDetail][deleteEvent][error]', error);
-            // TODO show errors
+            this.errors = error;
           }
         );
     }.bind(this));

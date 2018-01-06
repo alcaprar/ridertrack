@@ -1,13 +1,12 @@
 <app-page-header title="{{event.name}}"></app-page-header>
 <!-- Body content -->
 <!-- property area -->
-<div *ngIf="errors != null && errors.length > 0" class="alert alert-danger" style="margin-top: 20px">
-  <span *ngFor="let err of errors">{{err.message}}</span>
-</div>
 
 <div class="content-area single-property clearfix" style="background-color: #FCFCFC;">&nbsp;
   <div class="container">
-
+    <div *ngIf="errors != null && errors.length > 0" class="alert alert-danger" style="margin-top: 20px">
+      <span *ngFor="let err of errors">{{err.message}}</span>
+    </div>
     <div class="clearfix padding-top-40">
 
       <div class="col-md-8 single-property-content prp-style-1 ">
