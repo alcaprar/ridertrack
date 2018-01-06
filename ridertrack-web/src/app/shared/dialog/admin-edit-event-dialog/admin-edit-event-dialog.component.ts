@@ -68,7 +68,7 @@ export class AdminEditEventDialogComponent implements OnInit, AfterViewInit {
 
     this.title = title;
 
-    if(event !== null){
+    if(event){
       this.event = event;
       this.urlImage = '/api/events/' + this.event._id + '/logo';
       this.userSettingCity = {

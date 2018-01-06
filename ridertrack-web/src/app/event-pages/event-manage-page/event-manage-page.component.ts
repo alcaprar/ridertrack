@@ -72,7 +72,7 @@ export class EventManagePageComponent implements OnInit {
       format: 'dd/mm/yyyy',
       todayHighlight: true,
       startDate: today,
-      autoclose: true,
+      autoclose: true
     });
     // init the type selectpicker
     $('.selectpicker').selectpicker();
