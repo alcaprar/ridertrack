@@ -39,6 +39,9 @@
           <div *ngIf="error" class="alert alert-danger" style="margin-top: 20px">
             <span>{{error.message}}</span>
           </div>
+          <div *ngIf="error && error.length>0" class="alert alert-danger" style="margin-top: 20px">
+            <span *ngFor="let err of error">{{err.message}}</span>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button"  id="danger" class="btn btn-danger" (click)="cancel()">Cancel</button>

@@ -58,32 +58,33 @@ export class UserService {
 
   getUserById(userId){
     const url = `${this.BASE_USERS_URL}${userId}`;
-    return this.http.get(url)
-      .map(
-        (response) => {
-          console.log('[UserService][getUser][Success]', response.json());
-          const userJson = response.json().user;
-          let user = new User(userJson.email, userJson.name, userJson.surname, '');
-          user.id = userId;
-          if(userJson.city === 'undefined'){
-            user.city = '';
-          }else {
-            user.city = userJson.city;
-          }
-          if(userJson.aboutMe === 'undefined'){
-            user.aboutMe = '';
-          }else {
-            user.aboutMe = userJson.aboutMe;
-          }
-          user.logo = userJson.logo;
-          user.role = userJson.role;
+    return new Promise((res,reject)=> {
+      this.http.get(url).toPromise()
+        .then((response) => {
+            console.log('[UserService][getUser][Success]', response.json());
+            const userJson = response.json().user;
+            let user = new User(userJson.email, userJson.name, userJson.surname, '');
+            user.id = userId;
+            if (userJson.city === 'undefined') {
+              user.city = '';
+            } else {
+              user.city = userJson.city;
+            }
+            if (userJson.aboutMe === 'undefined') {
+              user.aboutMe = '';
+            } else {
+              user.aboutMe = userJson.aboutMe;
+            }
+            user.logo = userJson.logo;
+            user.role = userJson.role;
+            return res(user as User);
 
-          return user;
-        },
-        (error: any) => {
-          console.log('[UserService][getUser][Error]', error);
-          return Observable.of(null);
-        });
+          }).catch((error) => {
+            let body = error.json();
+            console.log('[UserService][getUser][Error]', body);
+            return reject([body.errors as Error[]]);
+          });
+    });
   }
 
 

@@ -21,9 +21,9 @@ export class DialogService {
     this.dialogs['alert'].show(title, body);
   }
 
-  adminEditUser(title,user, selection){
-    console.log('[DialogService][adminEditUser]', user);
-    this.dialogs['adminEditUser'].show(title, user, selection);
+  adminEditUser(title,userid, selection){
+    console.log('[DialogService][adminEditUser]', userid);
+    this.dialogs['adminEditUser'].show(title, userid, selection);
   }
 
   adminEditEvent(title, event, selection){

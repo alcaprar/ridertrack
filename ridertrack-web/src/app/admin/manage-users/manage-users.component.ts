@@ -39,8 +39,8 @@ export class ManageUsersComponent implements OnInit, OnChanges {
   }
 
   edit(user: User){
-    let currentUser = user;
-    this.dialogService.adminEditUser("Edit User", currentUser, 'edit');
+    let userId= user._id;
+    this.dialogService.adminEditUser("Edit User", userId, 'edit');
   }
 
   delete(user: User){

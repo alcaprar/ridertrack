@@ -81,10 +81,10 @@
             </div>
             <!--  End step 1 -->
           </form>
-      </div>
         <div *ngIf="errors != null && errors.length > 0" class="alert alert-danger" style="margin-top: 20px">
-            <span >{{errors.message}}</span>
+          <span >{{errors.message}}</span>
         </div>
+      </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" id="danger" (click)="cancel()">Cancel</button>
         <button type="submit" class="btn btn-default" (click)="save()">Save</button>

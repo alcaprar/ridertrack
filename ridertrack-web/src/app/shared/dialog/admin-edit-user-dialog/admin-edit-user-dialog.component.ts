@@ -14,7 +14,6 @@ declare var $: any;
 export class AdminEditUserDialogComponent implements OnInit {
 
   private user: User = new User();
-  private pastUser: User = new User();
   private userRoles = ['user', 'administrator'];
   private selection: string;
   private title: string;
@@ -29,17 +28,29 @@ export class AdminEditUserDialogComponent implements OnInit {
   }
 
 
-  show(title, user: User, selection) {
+  show(title, userid: String, selection) {
     this.title = title;
     this.selection = selection;
-    if(user !== null){
-      this.user = user;
+    if(userid !== null){
+      this.getUser(userid);
     }else {
       this.user =new User();
     }
     console.log("[adminEditUserDialog][User][Show]", this.user);
     $('#adminEditUserDialog').modal('show');
   }
+
+  getUser(id) {
+    this.userService.getUserById(id)
+      .then((res: User)=> {
+        this.user = res;
+        console.log("[GetUserById][Success]", this.user);
+      }).catch((reject)=> {
+        this.error = reject;
+      console.log("[GetUserById][Error]", this.error);
+    })
+  }
+
 
   save() {
     if(this.selection === 'edit' ) {
