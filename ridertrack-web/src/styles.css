@@ -2016,7 +2016,7 @@ single property page
   margin: 4px;
 }
 .register-area{
-  padding: 40px;
+  padding: 2px;
 }
 
 /*=====================================
@@ -2030,7 +2030,7 @@ Welcom
 }
 .Welcome-area .container .Welcome-entry{
   overflow: hidden;
-  padding: 50px 10px 45px;
+  padding: 50px 5px 45px;
 }
 .welcome-icon {
   height: 90px;
