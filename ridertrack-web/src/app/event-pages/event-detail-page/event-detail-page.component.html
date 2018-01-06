@@ -154,7 +154,7 @@
             <button class="btn-manage bounceInRight" (click)="enroll()" *ngIf="!isEnrolled() && event.status==='planned'">Enroll</button>
             <button class="btn-manage bounceInRight" (click)="manageEnrollment()"
                     *ngIf="isEnrolled() && event.status==='planned'">Manage Enrollment</button>
-            <button class="btn-manage bounceInRight" *ngIf="currentUser.email === organizer.email"
+            <button class="btn-manage bounceInRight" *ngIf="currentUser.email === organizer.email && event.status==='planned'"
                     [routerLink]="['/events', event._id, 'manage']">Edit</button>
           </div>
           <div class="dealer-widget">
