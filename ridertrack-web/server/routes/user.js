@@ -251,39 +251,44 @@ router.post('/', function (req, res) {
  */
 router.put('/:userId', authMiddleware.hasValidToken, multipart, function (req, res) {
     var userBody = req.body;
+    if(req.userId === req.params.userId) {
+        // check image
+        if (req.files.logo) {
+            tempPath = req.files.logo.path;
+            logoMimeType = req.files.logo.type;
 
-    // check image
-    if(req.files.logo) {
-        tempPath = req.files.logo.path;
-        logoMimeType = req.files.logo.type;
-
-        if (allowedImgExtension.indexOf(logoMimeType) === -1) {
-            console.log('[POST /users] logo extension not allowed: ', logoMimeType);
-            return res.status(400).send({
-                errors: [{message: 'Image extension not supported.'}]
-            })
+            if (allowedImgExtension.indexOf(logoMimeType) === -1) {
+                console.log('[POST /users] logo extension not allowed: ', logoMimeType);
+                return res.status(400).send({
+                    errors: [{message: 'Image extension not supported.'}]
+                })
+            }
+            userBody.logo = {
+                data: fs.readFileSync(tempPath),
+                contentType: logoMimeType
+            };
         }
-        userBody.logo = {
-            data: fs.readFileSync(tempPath),
-            contentType: logoMimeType
-        };
+        //other solution to remove it from userBody
+        //else{
+        //	delete userBody.logo
+        //}
+        User.update(req.params.userId, userBody, function (err, user) {
+            if (err) {
+                res.status(400).send({
+                    errors: err
+                })
+            } else {
+                res.status(200).send({
+                    message: 'User successfully updated',
+                    user: user
+                })
+            }
+        })
+    }else{
+        return res.status(400).send([{
+            message: 'You are not authorized to update this account.'
+        }])
     }
-	//other solution to remove it from userBody
-	//else{
-	//	delete userBody.logo
-	//}
-    User.update(req.params.userId, userBody, function (err, user) {
-        if(err){
-            res.status(400).send({
-                errors: err
-            })
-        }else{
-            res.status(200).send({
-                message: 'User successfully updated',
-                user: user
-            })
-        }
-    })
 });
 
 /**
@@ -292,34 +297,40 @@ router.put('/:userId', authMiddleware.hasValidToken, multipart, function (req, r
  * This will delete permanently everything related to it.
  */
 router.delete('/:userId', authMiddleware.hasValidToken, function (req, res) {
-    // search for events created by that user
-    Event.find({organizerId: req.params.userId}, function (err, events) {
-        if (err) {
-            return res.status(400).send({
-                errors: [err]
-            })
-        }else{
-            if(events.length === 0){
-                // if the user has not organized yet, he/she can be deleted
-                User.delete(req.params.userId, function (err, user) {
-                    if(err){
-                        res.status(400).send({
-                            errors: [err]
-                        })
-                    }else{
-                        res.status(200).send({
-                            message: 'User successfully deleted'
-                        })
-                    }
+    if(req.userId === req.params.userId) {
+        // search for events created by that user
+        Event.find({organizerId: req.params.userId}, function (err, events) {
+            if (err) {
+                return res.status(400).send({
+                    errors: [err]
                 })
-            }else{
-                // otherwise return an error
-                return res.status(400).send([{
-                    message: 'You cannot delete your account because you have created events.'
-                }])
+            }else {
+                if (events.length === 0) {
+                    // if the user has not organized yet, he/she can be deleted
+                    User.delete(req.params.userId, function (err) {
+                        if (err) {
+                            res.status(400).send({
+                                errors: [err]
+                            })
+                        } else {
+                            res.status(200).send({
+                                message: 'User successfully deleted'
+                            })
+                        }
+                    })
+                } else {
+                    // otherwise return an error
+                    return res.status(400).send([{
+                        message: 'You cannot delete your account because you have created events.'
+                    }])
+                }
             }
-        }
-    });
+        });
+    }else {
+        return res.status(400).send([{
+            message: 'You are not authorized to delete this account.'
+        }])
+    }
 });
 
 module.exports = router;
