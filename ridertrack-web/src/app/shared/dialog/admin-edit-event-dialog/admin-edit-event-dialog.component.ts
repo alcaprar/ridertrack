@@ -21,6 +21,7 @@ export class AdminEditEventDialogComponent implements OnInit, AfterViewInit {
   private eventId: string;
   private event:Event = new Event();
   time:Date = new Date();
+  private callback;
 
   private urlImage: any;
   private urlNoImage = '../../../assets/img/logofoto.png';
@@ -64,9 +65,10 @@ export class AdminEditEventDialogComponent implements OnInit, AfterViewInit {
     }
   }
 
-  show(title, eventid, selection) {
+  show(title, eventid, selection, callback) {
     this.errors = [];
     this.title = title;
+    this.callback = callback;
 
     if(eventid){
       this.getEvent(eventid);
@@ -156,18 +158,15 @@ export class AdminEditEventDialogComponent implements OnInit, AfterViewInit {
       this.eventService.updateEvent(this.event._id, this.event)
         .then(
           (response) => {
-            console.log('[UpdateEvent][onSubmit][success]', response);
             if(response[0] !== null){
-              // errors occureed
+              console.log('[CreateEvent][onSubmit][error]', response[0]);
               this.errors = response[0] as Error[];
             }else{
               var event: Event = response[1] as Event;
+              console.log('[UpdateEvent][onSubmit][success]', event);
+              this.callback();
+              $('#adminEditEventDialog').modal('hide');
             }
-          }
-        )
-        .catch(
-          (error) => {
-            console.log('[CreateEvent][onSubmit][error]', error);
           }
         );
     }
@@ -190,91 +189,27 @@ export class AdminEditEventDialogComponent implements OnInit, AfterViewInit {
         this.eventService.createEvent(this.event)
           .then(
             (response) => {
-              console.log('[CreateEvent][onSubmit][success]', response);
+              console.log('[CreateEvent][onSubmit][Response]', response);
               if(response[0] !== null){
                 // errors occureed
                 this.errors = response[0] as Error[];
+                console.log('[CreateEvent][onSubmit][Error]', response);
               }else{
                 var createdEvent: Event = response[1] as Event;
+                console.log('[CreateEvent][onSubmit][Success]', createdEvent);
+                this.callback();
+                $('#adminEditEventDialog').modal('hide');
               }
             }
-          )
-          .catch(
-            (error) => {
-              console.log('[CreateEvent][onSubmit][error]', error);
-            }
-          )
+          );
       }
     }
-    $('#adminEditEventDialog').modal('hide');
   }
 
   cancel(){
+    this.errors=[];
     console.log('[adminEditEventDialog][cancel]');
     $('#adminEditEventDialog').modal('hide');
-  }
-
-  /**
-   * It is called when the user clicks on the create button.
-   * It calls the method of event service waiting for a response.
-   */
-  onSubmit(){
-    // the datepicker is not detected by angular form
-    this.event.startingDate = $('#startingDate.datepicker').val();
-    this.event.enrollmentOpeningAt = $('#enrollmentOpeningAt.datepicker').datepicker("getDate" );
-    this.event.enrollmentClosingAt = $('#enrollmentClosingAt.datepicker').datepicker("getDate" );
-
-    // get the logo from the input image
-    this.event.logo = $('#logo').prop('files')[0];
-
-    console.log('[EventManage][onSubmit]',$('#enrollmentOpeningAt.datepicker').datepicker("getDate" ));
-    this.eventService.updateEvent(this.event._id, this.event)
-      .then(
-        (response) => {
-          console.log('[UpdateEvent][onSubmit][success]', response);
-          if(response[0] !== null){
-            // errors occureed
-            this.errors = response[0] as Error[];
-          }else{
-            var event: Event = response[1] as Event;
-            this.router.navigate(['/events/', event._id]);
-          }
-        }
-      )
-      .catch(
-        (error) => {
-          console.log('[CreateEvent][onSubmit][error]', error);
-          this.router.navigate(['/events', 'create']);
-        }
-      );
-  }
-
-  showErrors(errors: Error[]){
-    console.log('[Login COmponent][showErrors]', errors);
-    this.errors = errors;
-  }
-
-  /**
-   * It is called when the user clicks on the delete button.
-   * It calls the method of event service which delete the event.
-   */
-  deleteEvent() {
-    this.dialogService.confirmation('Delete event', 'Are you sure to delete this event?', function () {
-      console.log('[ManageEvent][deleteEvent]');
-      this.eventService.deleteEvent(this.eventId)
-        .then(
-          (response) => {
-            console.log('[ManageEvent][deleteEvent][success]', response);
-            this.router.navigate(['/my-events']);
-          }
-        )
-        .catch(
-          (error) => {
-            console.log('[ManageEvent][deleteEvent][error]', error);
-            // TODO show errors
-          }
-        );
-    }.bind(this));
   }
 
 }

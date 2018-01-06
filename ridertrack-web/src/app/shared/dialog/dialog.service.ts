@@ -26,9 +26,9 @@ export class DialogService {
     this.dialogs['adminEditUser'].show(title, userid, selection, callback);
   }
 
-  adminEditEvent(title, eventid, selection){
+  adminEditEvent(title, eventid, selection, callback){
     console.log('[DialogService][adminEditEvent]', eventid);
-    this.dialogs['adminEditEvent'].show(title, eventid, selection);
+    this.dialogs['adminEditEvent'].show(title, eventid, selection, callback);
   }
 
   enrollement(title, eventId, isEnrolled){

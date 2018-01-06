@@ -1,9 +1,10 @@
 <app-page-header title="Manage users"></app-page-header>
 
-<div *ngIf="errors != null && errors.length > 0" class="alert alert-danger" style="margin-top: 20px">
-  <span *ngFor="let err of errors">{{err}}</span>
-</div>
+
 <div class="container">
+  <div *ngIf="errors != null && errors.length > 0" class="alert alert-danger" style="margin-top: 20px">
+    <span *ngFor="let err of errors">{{err}}</span>
+  </div>
 <div class="row  pr0 padding-top-40 properties-page">
   <div class="col-md-12 clear">
     <table class="table" sortable-table (sorted)="onSorted($event)">

@@ -259,13 +259,14 @@ export class EventService {
    * @param id of the event
    * @returns {Promise<void>} of the event deleted
    */
-  deleteEvent(id): Promise<void> {
+  deleteEvent(id): Promise<any> {
     const url = `${this.BASE_EVENT_URL}/${id}`;
     return this.http.delete(url).toPromise()
       .then(() => null)
       .catch((error) => {
-        console.log('[EventService][deleteEvent][error]', error);
-        return Promise.reject(error.message || error);
+        let body = error.json();
+        console.log('[EventService][deleteEvent][error]', body);
+        return Promise.reject([body.errors][0]);
       });
   }
 
