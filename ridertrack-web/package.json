@@ -10,7 +10,7 @@
     "webserver-test": "cross-env DATABASE_NAME=test mocha test --exit",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "postinstall": "ng build",
+    "postinstall": "ng build --prod",
     "nodemon": "nodemon server.js",
     "angular-dev": "ng server --proxy-config proxy.config.json",
     "dev": "concurrently --kill-others \"npm run nodemon\" \"npm run angular-dev\""
