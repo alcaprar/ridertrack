@@ -216,12 +216,34 @@ router.post('/users', authMiddleware.hasValidToken, authMiddleware.hasAdministra
  * It updates the fields passed in the body of the given userId
  */
 router.put('/users/:userId', authMiddleware.hasValidToken, authMiddleware.hasAdministratorRole, function (req, res) {
-    User.update(req.params.userId, req.body, function (err, user) {
-        if(err){
+    var userBody = req.body;
+
+    // check image
+    if (req.files.logo) {
+        tempPath = req.files.logo.path;
+        logoMimeType = req.files.logo.type;
+
+        if (allowedImgExtension.indexOf(logoMimeType) === -1) {
+            console.log('[POST /users] logo extension not allowed: ', logoMimeType);
+            return res.status(400).send({
+                errors: [{message: 'Image extension not supported.'}]
+            })
+        }
+        userBody.logo = {
+            data: fs.readFileSync(tempPath),
+            contentType: logoMimeType
+        };
+    }
+    //other solution to remove it from userBody
+    //else{
+    //	delete userBody.logo
+    //}
+    User.update(req.params.userId, userBody, function (err, user) {
+        if (err) {
             res.status(400).send({
                 errors: err
             })
-        }else{
+        } else {
             res.status(200).send({
                 message: 'User successfully updated',
                 user: user
@@ -229,6 +251,7 @@ router.put('/users/:userId', authMiddleware.hasValidToken, authMiddleware.hasAdm
         }
     })
 });
+
 
 /**
  * It deletes the given user by Id

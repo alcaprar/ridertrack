@@ -157,7 +157,7 @@ export class AdminEditEventDialogComponent implements OnInit, AfterViewInit {
 
         console.log('[EventManage][onSubmit]', this.event);
         console.log('[EventManage][onSubmit][enrollement]', this.event.enrollmentOpeningDate + '-' + this.event.enrollmentClosingDate);
-        this.eventService.updateEvent(this.event._id, this.event)
+        this.eventService.updateEventAdmin(this.event._id, this.event)
           .then(
             (response) => {
               if (response[0] !== null) {
