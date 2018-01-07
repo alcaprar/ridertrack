@@ -115,6 +115,7 @@ export class AddRouteMapComponent implements OnInit {
       this.mapPoints.push(currentpoint);
       this.initLat = this.mapPoints[this.mapPoints.length - 1].lat;
       this.initLong = this.mapPoints[this.mapPoints.length - 1].lng;
+      this.calculateTotalLength();
       if (this.selected === 'waypoints') {
         this.getRoutePointsAndWaypoints();
       }
@@ -166,6 +167,7 @@ export class AddRouteMapComponent implements OnInit {
   clearAll() {
     this.mapPoints = [];
     this.directions = null;
+    this.length = null;
   }
 
   /**
@@ -174,6 +176,7 @@ export class AddRouteMapComponent implements OnInit {
   clearLast() {
     if(this.mapPoints.length> 1){
       this.mapPoints.pop();
+      this.calculateTotalLength();
       if(this.selected ==="waypoints"){
         this.getRoutePointsAndWaypoints();
       }
