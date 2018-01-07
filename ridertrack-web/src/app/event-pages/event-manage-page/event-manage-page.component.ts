@@ -51,9 +51,6 @@ export class EventManagePageComponent implements OnInit {
               showCurrentLocation: false,
               inputPlaceholderText: this.event.city + ', '+ this.event.country
             };
-            // init the input of the datepicker
-            $('#enrollmentOpeningAt.datepicker').datepicker("setDate" , new Date(this.event.enrollmentOpeningAt));
-            $('#enrollmentClosingAt.datepicker').datepicker("setDate" , new Date(this.event.enrollmentClosingAt));
           }
         )
     })
@@ -64,37 +61,16 @@ export class EventManagePageComponent implements OnInit {
    * They have to be called here otherwise they can't find the element in the DOM.
    */
   ngAfterViewInit(){
-    // set the placeholder the date of today
-    let todayDate = new Date();
-    let today = todayDate.getDate() + '/' + (todayDate.getMonth() < 12 ? todayDate.getMonth() + 1 : 1) + '/' + todayDate.getFullYear();
     // init the plugin datepicker on the element
     $('.datepicker').datepicker({
       format: 'dd/mm/yyyy',
       todayHighlight: true,
-      startDate: today,
-      autoclose: true
+      autoclose: true,
     });
     // init the type selectpicker
     $('.selectpicker').selectpicker();
   }
 
-  formatDate(date){
-    if(date){
-      date = new Date(date);
-      return date.getDate() + '/' + (date.getMonth() < 12 ? date.getMonth() + 1 : 1) + '/' + date.getFullYear()
-    }else{
-      return ''
-    }
-  }
-
-  //save the changed date
-  updateCloseDate(){
-    this.event.enrollmentClosingAt = $('#enrollmentClosingAt').datepicker('getDate');
-  }
-  //save the changed date
-  updateOpenDate(){
-    this.event.enrollmentOpeningAt =  $('#enrollmentOpeningAt').datepicker('getDate');
-  }
   /**
    *  When a new image is uploaded is uploaded, it reads the url and save the image
    * @param event
@@ -106,7 +82,7 @@ export class EventManagePageComponent implements OnInit {
       reader.onload = (event: any) => {
         this.urlImage = event.target.result;
       };
-        reader.readAsDataURL(event.target.files[0]);
+      reader.readAsDataURL(event.target.files[0]);
     }
   }
 
@@ -138,39 +114,106 @@ export class EventManagePageComponent implements OnInit {
    * It calls the method of event service waiting for a response.
    */
   onSubmit(){
-    // the datepicker is not detected by angular form
-    this.event.startingDate = $('#startingDate.datepicker').val();
-    this.event.enrollmentOpeningAt = $('#enrollmentOpeningAt.datepicker').datepicker("getDate" );
-    this.event.enrollmentClosingAt = $('#enrollmentClosingAt.datepicker').datepicker("getDate" );
+    if(this.isFormValid()){
+      // get the logo from the input image
+      this.event.logo = $('#logo').prop('files')[0];
 
-    // get the logo from the input image
-    this.event.logo = $('#logo').prop('files')[0];
-
-    console.log('[EventManage][onSubmit]',$('#enrollmentOpeningAt.datepicker').datepicker("getDate" ));
-    this.eventService.updateEvent(this.event._id, this.event)
-      .then(
-        (response) => {
-          console.log('[UpdateEvent][onSubmit][success]', response);
-          if(response[0] !== null){
-            // errors occureed
-            this.errors = response[0] as Error[];
-          }else{
-            var event: Event = response[1] as Event;
-            this.router.navigate(['/events/', event._id]);
+      console.log('[EventManage][onSubmit]', this.event);
+      this.eventService.updateEvent(this.event._id, this.event)
+        .then(
+          (response) => {
+            console.log('[UpdateEvent][onSubmit][success]', response);
+            if(response[0] !== null){
+              // errors occureed
+              this.errors = response[0] as Error[];
+            }else{
+              var event: Event = response[1] as Event;
+              this.router.navigate(['/events/', event._id]);
+            }
           }
-        }
-      )
-      .catch(
-        (error) => {
-          console.log('[CreateEvent][onSubmit][error]', error);
-          this.router.navigate(['/events', 'create']);
-        }
-      );
+        )
+        .catch(
+          (error) => {
+            console.log('[CreateEvent][onSubmit][error]', error);
+            this.router.navigate(['/events', 'create']);
+          }
+        );
+    }
   }
 
-  showErrors(errors: Error[]){
-    console.log('[ManagePageComponent][showErrors]', errors);
-    this.errors = errors;
+  /**
+   * It checks all the field in the form.
+   * It returns true or false.
+   * If there are any errors, it also shows them.
+   */
+  isFormValid(){
+    var validTimeRegex = /(00|01|02|03|04|05|06|07|08|09|10|11|12|13|14|15|16|17|18|19|20|21|22|23)[:](0|1|2|3|4|5)\d{1}/;
+    this.errors = [];
+
+    if(!this.event.name){
+      //if name is missing show an error
+      var error = new Error('Name is missing.');
+      this.errors.push(error);
+    }
+    if(!this.event.type){
+      // if type is missing show an error
+      var error = new Error('Type is missing.');
+      this.errors.push(error);
+    }
+    this.event.startingDateString = $('#startingDate').val();
+    if(!this.event.startingDateString){
+      // if startingDate is missing show an error
+      var error = new Error('Starting date is missing.');
+      this.errors.push(error);
+    }
+    this.event.startingTimeString = $('#startingTime').val();
+    if(!this.event.startingTimeString){
+      // if startingTime is missing show an error
+      var error = new Error('Starting time is missing.');
+      this.errors.push(error);
+    }else{
+      if(!validTimeRegex.test(this.event.startingTimeString)){
+        var error = new Error('Starting time format not valid. It should be HH:MM. Example 15:36');
+        this.errors.push(error)
+      }
+    }
+    if(!this.event.city || !this.event.country){
+      // if city or country is missing show an error
+      var error = new Error('City is missing.');
+      this.errors.push(error);
+    }
+
+    // check optional params
+    this.event.closingDateString = $('#closingDate').val();
+    this.event.closingTimeString = $('#closingTime').val();
+    if(this.event.closingTimeString){
+      if(!validTimeRegex.test(this.event.closingTimeString)){
+        var error = new Error('Closing time format not valid. It should be HH:MM. Example 15:36');
+        this.errors.push(error)
+      }
+    }
+    this.event.enrollmentOpeningDateString = $('#enrollmentOpeningDate').val();
+    this.event.enrollmentOpeningTimeString = $('#enrollmentOpeningTime').val();
+    if(this.event.enrollmentOpeningTimeString){
+      if(!validTimeRegex.test(this.event.enrollmentOpeningTimeString)){
+        var error = new Error('Enrolling opening time format not valid. It should be HH:MM. Example 15:36');
+        this.errors.push(error)
+      }
+    }
+    this.event.enrollmentClosingDateString = $('#enrollmentClosingDate').val();
+    this.event.enrollmentClosingTimeString = $('#enrollmentClosingTime').val();
+    if(this.event.enrollmentClosingTimeString){
+      if(!validTimeRegex.test(this.event.enrollmentClosingTimeString)){
+        var error = new Error('Enrolling closing time format not valid. It should be HH:MM. Example 15:36');
+        this.errors.push(error)
+      }
+    }
+
+    if(this.errors.length === 0){
+      return true;
+    }else{
+      return false;
+    }
   }
 
   /**
@@ -182,15 +225,15 @@ export class EventManagePageComponent implements OnInit {
       console.log('[ManageEvent][deleteEvent]');
       this.eventService.deleteEvent(this.eventId)
         .then(
-          () => {
-            console.log('[ManageEvent][deleteEvent][success]');
+          (response) => {
+            console.log('[ManageEvent][deleteEvent][success]', response);
             this.router.navigate(['/my-events']);
           }
         )
         .catch(
           (error) => {
             console.log('[ManageEvent][deleteEvent][error]', error);
-            this.showErrors(error);
+            // TODO show errors
           }
         );
     }.bind(this));
@@ -201,33 +244,35 @@ export class EventManagePageComponent implements OnInit {
    * It navigates to the route page.
    */
   editRoute() {
-    this.event.startingDate = $('#startingDate.datepicker').val();
-    this.event.enrollmentOpeningAt = $('#enrollmentOpeningAt.datepicker').datepicker("getDate" );
-    this.event.enrollmentClosingAt = $('#enrollmentClosingAt.datepicker').datepicker("getDate" );
+    this.router.navigate(['/events/' + this.eventId + '/manage/route']);
+    /*
+     this.event.startingDate = $('#startingDate.datepicker').val();
+     this.event.enrollmentOpeningAt = $('#enrollmentOpeningAt.datepicker').datepicker("getDate" );
+     this.event.enrollmentClosingAt = $('#enrollmentClosingAt.datepicker').datepicker("getDate" );
 
-    // get the logo from the input image
-    this.event.logo = $('#logo').prop('files')[0];
+     // get the logo from the input image
+     this.event.logo = $('#logo').prop('files')[0];
 
-    console.log('[EventManage][onSubmit]',$('#enrollmentOpeningAt.datepicker').datepicker("getDate" ))
-    this.eventService.updateEvent(this.event._id, this.event)
-      .then(
-        (response) => {
-          console.log('[UpdateEvent][onSubmit][success]', response);
-          if(response[0] !== null){
-            // errors occureed
-            this.errors = response[0] as Error[];
-          }else{
-            var event: Event = response[1] as Event;
-            this.router.navigate(['/events/' + this.eventId + '/manage/route']);
-          }
-        }
-      )
-      .catch(
-        (error) => {
-          console.log('[CreateEvent][onSubmit][error]', error);
-          this.router.navigate(['/events/' + this.eventId + '/manage/route']);
-        }
-      );
-    console.log('[EventManage][editRoute]');
+     console.log('[EventManage][onSubmit]',$('#enrollmentOpeningAt.datepicker').datepicker("getDate" ))
+     this.eventService.updateEvent(this.event._id, this.event)
+     .then(
+     (response) => {
+     console.log('[UpdateEvent][onSubmit][success]', response);
+     if(response[0] !== null){
+     // errors occureed
+     this.errors = response[0] as Error[];
+     }else{
+     var event: Event = response[1] as Event;
+     this.router.navigate(['/events/' + this.eventId + '/manage/route']);
+     }
+     }
+     )
+     .catch(
+     (error) => {
+     console.log('[CreateEvent][onSubmit][error]', error);
+     this.router.navigate(['/events/' + this.eventId + '/manage/route']);
+     }
+     );
+     console.log('[EventManage][editRoute]');*/
   }
 }

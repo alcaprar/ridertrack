@@ -1,0 +1,10 @@
+<div class="col-md-3 col-sm-4 col-xs-4 blg-thumb p0">
+    <a [routerLink]="['/events', event._id]">
+        <img src="/api/events/{{event._id}}/logo">
+    </a>
+    <span class="blg-date"><b><i class="fa fa-calendar"></i></b> {{event.startingDate | date: 'dd/MM/yyyy'}}</span>
+</div>
+<div class="col-md-8  col-sm-8 col-xs-8  blg-entry">
+    <h6> <a [routerLink]="['/events', event._id]">{{event.name}}</a></h6>
+    <p style="line-height: 17px; padding: 8px 2px;">{{event.country}} | {{event.city}}</p>
+</div>

@@ -23,19 +23,18 @@ export class EventCreatePageComponent implements OnInit {
   private urlImage: any;
   private urlNoImage = '../../../assets/img/logofoto.png';
 
-  public userSettingCity: any ;
+  public userSettingCity: any = {
+    showSearchButton: false,
+    geoTypes: ['(cities)'],
+    showCurrentLocation: false,
+    inputPlaceholderText: 'Milano'
+  };
 
   constructor(private eventService: EventService, private router: Router) {
   }
 
   ngOnInit() {
     this.eventTypes = this.eventService.getEventTypes();
-    this.userSettingCity = {
-      showSearchButton: false,
-      geoTypes: ['(cities)'],
-      showCurrentLocation: false,
-      inputPlaceholderText: 'Insert a City'
-    };
   }
 
   /**
@@ -107,28 +106,13 @@ export class EventCreatePageComponent implements OnInit {
     this.errors = [];
 
     // the datepicker is not detected by angular form
-    this.event.startingDate = $('#startingDate.datepicker').val();
+    this.event.startingDateString = $('#startingDate.datepicker').val();
 
     // get the logo from the input image
     var logo = $('#logo').prop('files')[0];
 
-    if(!this.event.type){
-      // if type is missing show an error
-      var error = new Error('Type is missing.');
-      this.errors.push(error);
-    }else if(!this.event.startingDate){
-      // if startingDate is missing show an error
-      var error = new Error('Starting date is missing.');
-      this.errors.push(error);
-    }else if(!this.event.startingTime){
-      // if startingTime is missing show an error
-      var error = new Error('Starting time is missing.');
-      this.errors.push(error);
-    }else if(!this.event.city || !this.event.country){
-      // if city or country is missing show an error
-      var error = new Error('City is missing.');
-      this.errors.push(error);
-    }else{
+    // if the form is valid, call the eventService
+    if(this.isFormValid()){
       // add the logo to the event
       this.event.logo = logo;
       // call the service to create the event
@@ -154,6 +138,53 @@ export class EventCreatePageComponent implements OnInit {
             this.router.navigate(['/events', 'create']);
           }
         )
+    }
+  }
+
+  /**
+   * It checks all the field in the form.
+   * It returns true or false.
+   * If there are any errors, it also shows them.
+   */
+  isFormValid(){
+    this.errors = [];
+
+    if(!this.event.name){
+      //if name is missing show an error
+      var error = new Error('Name is missing.');
+      this.errors.push(error);
+    }
+    if(!this.event.type){
+      // if type is missing show an error
+      var error = new Error('Type is missing.');
+      this.errors.push(error);
+    }
+    if(!this.event.startingDateString){
+      // if startingDate is missing show an error
+      var error = new Error('Starting date is missing.');
+      this.errors.push(error);
+    }
+    if(!this.event.startingTimeString){
+      // if startingTime is missing show an error
+      var error = new Error('Starting time is missing.');
+      this.errors.push(error);
+    }else{
+      var validTimeRegex = /(00|01|02|03|04|05|06|07|08|09|10|11|12|13|14|15|16|17|18|19|20|21|22|23)[:](0|1|2|3|4|5)\d{1}/;
+      if(!validTimeRegex.test(this.event.startingTimeString)){
+        var error = new Error('Starting time format not valid. It should be HH:MM. Example 15:36');
+        this.errors.push(error)
+      }
+    }
+    if(!this.event.city || !this.event.country){
+      // if city or country is missing show an error
+      var error = new Error('City is missing.');
+      this.errors.push(error);
+    }
+
+    if(this.errors.length === 0){
+      return true;
+    }else{
+      return false;
     }
   }
 }

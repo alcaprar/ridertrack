@@ -119,13 +119,6 @@ export class EventService {
       .then( (res) => {
         var body = res.json();
         var events = body.events as Event[];
-        events.sort(function (a, b) {
-          var aComps = a.startingDate.split("/");
-          var bComps = b.startingDate.split("/");
-          var aDate = new Date(parseInt(aComps[2]), parseInt(aComps[1]), parseInt(aComps[0]));
-          var bDate = new Date(parseInt(bComps[2]), parseInt(bComps[1]), parseInt(bComps[0]));
-          return aDate.getTime() - bDate.getTime();
-        });
         console.log('[EventService][getLastEvents][success]', body);
         return events;
       }, (err) => {
@@ -192,13 +185,11 @@ export class EventService {
 
     // create form data in order to pass an image
     var formData = new FormData();
-    formData.append('logo', event.logo);
-    formData.append('name', event.name);
-    formData.append('type', event.type);
-    formData.append('startingDate', event.startingDate);
-    formData.append('startingTime', event.startingTime);
-    formData.append('country', event.country);
-    formData.append('city', event.city);
+    for(let key in event){
+      if(event[key] !== undefined){
+        formData.append(key, event[key])
+      }
+    }
 
     return this.http.post(url, formData).toPromise()
       .then(

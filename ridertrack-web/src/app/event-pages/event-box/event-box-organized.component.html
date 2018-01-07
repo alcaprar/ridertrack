@@ -12,7 +12,7 @@
       <h5><a class="event-name" [routerLink]="['/events', event._id]"> {{event.name}}</a></h5>
       <div class="line">
         <span class="property pull-left" *ngIf="event.length"><b> Length :</b> {{event.length}} km </span>
-        <span class="property pull-right"><b><i class="fa fa-calendar"></i></b> {{event.startingDate}} </span>
+        <span class="property pull-right"><b><i class="fa fa-calendar"></i></b> {{event.startingDate | date: 'dd/MM/yyyy HH:mm'}} </span>
 
       </div>
       <div class="line">

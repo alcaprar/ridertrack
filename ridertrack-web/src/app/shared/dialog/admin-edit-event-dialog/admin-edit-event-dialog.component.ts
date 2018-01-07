@@ -81,8 +81,8 @@ export class AdminEditEventDialogComponent implements OnInit, AfterViewInit {
         showCurrentLocation: false,
         inputPlaceholderText: 'Select a City'
       };
-      $('#enrollmentOpeningAt.datepicker').datepicker("setDate" , new Date());
-      $('#enrollmentClosingAt.datepicker').datepicker("setDate" , new Date());
+      $('#enrollmentOpeningDate.datepicker').datepicker("setDate" , new Date());
+      $('#enrollmentClosingDate.datepicker').datepicker("setDate" , new Date());
     }
     this.selection = selection;
     $('#adminEditEventDialog').modal('show');
@@ -100,19 +100,19 @@ export class AdminEditEventDialogComponent implements OnInit, AfterViewInit {
           inputPlaceholderText: this.event.city + ', '+ this.event.country
         };
         // init the input of the datepicker
-        $('#enrollmentOpeningAt.datepicker').datepicker("setDate" , new Date(this.event.enrollmentOpeningAt));
-        $('#enrollmentClosingAt.datepicker').datepicker("setDate" , new Date(this.event.enrollmentClosingAt));
+        $('#enrollmentOpeningDate.datepicker').datepicker("setDate" , new Date(this.event.enrollmentOpeningDate));
+        $('#enrollmentClosingDate.datepicker').datepicker("setDate" , new Date(this.event.enrollmentClosingDate));
       });
   }
 
 
   //save the changed date
   updateCloseDate(){
-    this.event.enrollmentClosingAt = $('#enrollmentClosingAt').datepicker('getDate');
+    this.event.enrollmentClosingDate = $('#enrollmentClosingDate').datepicker('getDate');
   }
   //save the changed date
   updateOpenDate(){
-    this.event.enrollmentOpeningAt =  $('#enrollmentOpeningAt').datepicker('getDate');
+    this.event.enrollmentOpeningDate =  $('#enrollmentOpeningDate').datepicker('getDate');
   }
 
   /**
@@ -149,12 +149,12 @@ export class AdminEditEventDialogComponent implements OnInit, AfterViewInit {
   save() {
     if(this.selection === 'edit'){
       this.event.startingDate = $('#startingDate.datepicker').val();
-      this.event.enrollmentOpeningAt = $('#enrollmentOpeningAt.datepicker').datepicker("getDate" );
-      this.event.enrollmentClosingAt = $('#enrollmentClosingAt.datepicker').datepicker("getDate" );
+      this.event.enrollmentOpeningDate = $('#enrollmentOpeningDate.datepicker').datepicker("getDate" );
+      this.event.enrollmentClosingDate = $('#enrollmentClosingDate.datepicker').datepicker("getDate" );
 
       // get the logo from the input image
       this.event.logo = $('#logo').prop('files')[0];
-      console.log('[EventManage][onSubmit][enrollement]',this.event.enrollmentOpeningAt+'-'+ this.event.enrollmentClosingAt);
+      console.log('[EventManage][onSubmit][enrollement]',this.event.enrollmentOpeningDate+'-'+ this.event.enrollmentClosingDate);
       this.eventService.updateEvent(this.event._id, this.event)
         .then(
           (response) => {

@@ -43,8 +43,18 @@
                 <img class="info-icon" src="../../../assets/img/icon/calendar.png">
               </span>
               <span class="property-info-entry">
-                <span class="property-info-label">Date</span>
-                <span class="property-info-value">{{event.startingDate}}</span>
+                <span class="property-info-label">Scheduled starting</span>
+                <span class="property-info-value">{{event.startingDate | date: 'dd/MM/yyyy HH:mm'}}</span>
+              </span>
+            </div>
+
+            <div class="col-xs-6 col-sm-3 col-md-3 p-b-15">
+              <span class="property-info-icon icon-bath">
+                <img class="info-icon" src="../../../assets/img/icon/time.png">
+              </span>
+              <span class="property-info-entry">
+                <span class="property-info-label">Scheduled ending</span>
+                <span class="property-info-value">{{(event.closingDate) ? (event.closingDate | date: 'dd/MM/yyyy HH:mm') : '(TBD*)'}}</span>
               </span>
             </div>
 
@@ -55,16 +65,6 @@
               <span class="property-info-entry">
                 <span class="property-info-label">Type</span>
                 <span class="property-info-value" style="text-transform: capitalize">{{event.type}}</span>
-              </span>
-            </div>
-
-            <div class="col-xs-6 col-sm-3 col-md-3 p-b-15">
-              <span class="property-info-icon icon-bath">
-                <img class="info-icon" src="../../../assets/img/icon/time.png">
-              </span>
-              <span class="property-info-entry">
-                <span class="property-info-label">Starting time</span>
-                <span class="property-info-value">{{(event.startingTime) ? event.startingTime : '(TBD*)'}}</span>
               </span>
             </div>
 
@@ -84,7 +84,7 @@
               </span>
               <span class="property-info-entry">
                 <span class="property-info-label">Enrollment Opening At</span>
-                <span class="property-info-value">{{(event.enrollmentOpeningAt) ? (event.enrollmentOpeningAt | date: 'dd/MM/yyyy') : '(TBD*)' }}</span>
+                <span class="property-info-value">{{(event.enrollmentOpeningDate) ? (event.enrollmentOpeningDate | date: 'dd/MM/yyyy HH:mm') : '(TBD*)' }}</span>
               </span>
             </div>
             <div class="col-xs-6 col-sm-3 col-md-3 p-b-15">
@@ -93,7 +93,7 @@
               </span>
               <span class="property-info-entry">
                 <span class="property-info-label">Enrollment Closing At</span>
-                <span class="property-info-value">{{(event.enrollmentClosingAt) ? (event.enrollmentClosingAt | date: 'dd/MM/yyyy') : '(TBD*)'}}</span>
+                <span class="property-info-value">{{(event.enrollmentClosingAt) ? (event.enrollmentClosingAt | date: 'dd/MM/yyyy HH:mm') : '(TBD*)'}}</span>
               </span>
             </div>
             <div col-xs-12>

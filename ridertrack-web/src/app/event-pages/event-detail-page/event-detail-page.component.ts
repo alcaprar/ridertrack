@@ -196,9 +196,9 @@ export class EventDetailPageComponent implements OnInit {
   enrollementIsOpen(): boolean {
     let today = new Date();
 
-    if (this.event.enrollmentOpeningAt && this.event.enrollmentClosingAt) {
-      console.log('[EventDetail][EnromentIsOpen]', today >= new Date(this.event.enrollmentOpeningAt));
-      return today >= new Date(this.event.enrollmentOpeningAt) && today<=  new Date(this.event.enrollmentClosingAt);
+    if (this.event.enrollmentOpeningDate && this.event.enrollmentClosingDate) {
+      console.log('[EventDetail][EnromentIsOpen]', today >= new Date(this.event.enrollmentOpeningDate));
+      return today >= new Date(this.event.enrollmentOpeningDate) && today<=  new Date(this.event.enrollmentClosingDate);
     }else {
       return false;
     }

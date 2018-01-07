@@ -43,8 +43,8 @@
                <div [hidden]="startingDate.valid || startingDate.pristine" class="alert alert-danger">Date is required.</div>
              </div>
              <div class="form-group"  *ngIf="selection === 'edit'">
-               <label for="enrollmentOpeningAt">Enrollment Opening At</label>
-               <input id="enrollmentOpeningAt" name="enrollmentOpeningAt"
+               <label for="enrollmentOpeningDate">Enrollment Opening At</label>
+               <input id="enrollmentOpeningDate" name="enrollmentOpeningDate"
                       type="text" class="form-control datepicker" placeholder="Enrollment opening at">
              </div>
            </div>
@@ -56,8 +56,8 @@
                            placeholder="12:00">
                   </div>
                   <div class="form-group" *ngIf="selection === 'edit'">
-                    <label for="enrollmentClosingAt">Enrollment Closing At</label>
-                    <input id="enrollmentClosingAt" name="enrollmentClosingAt" type="text" class="form-control datepicker"
+                    <label for="enrollmentClosingDate">Enrollment Closing At</label>
+                    <input id="enrollmentClosingDate" name="enrollmentClosingDate" type="text" class="form-control datepicker"
                            placeholder="Enrollment closing at">
                   </div>
                 </div>
