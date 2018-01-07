@@ -20,6 +20,11 @@ export class SortService {
     this.columnSortedSource.next(event);
   }
 
+  /**
+   *  Sort the table given the column parameter
+   * @param {SearchCriteria} criteria : column
+   * @param table: object to sort
+   */
   sortTable(criteria: SearchCriteria, table: any) {
     if(criteria.sortColumn === 'date'){
       console.log("[created array of dates", table);
@@ -74,7 +79,28 @@ export class SortService {
         }else {
           return this.date_sort_asc(data_a, data_b);
         }
-      })
+      });
+    }
+    if(criteria.sortColumn === 'length'){
+      let length;
+      console.log("[Sort][Length]");
+      return table.sort((a, b) => {
+        if(a.length){
+          length = a.length;
+        }else {
+          length =0;
+        }
+        if(b.length){
+          length = b.length;
+        }else {
+          length =0;
+        }
+        if (criteria.sortDirection === 'desc') {
+          return a.length < b.length ? 1 : -1;
+        } else {
+          return a.length > b.length ? 1 : -1;
+        }
+      });
     }
     else {
       return table.sort((a, b) => {
