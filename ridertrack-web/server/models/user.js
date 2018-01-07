@@ -285,7 +285,7 @@ userSchema.statics.update = function (userId, userJson, callback) {
         }else{
             // override the previous value
             for(let key in userJson){
-				
+
 				//if it is undefined, leave it as it was
 				if (userJson[key] !== 'undefined')
 					user[key] = userJson[key]
@@ -323,3 +323,23 @@ userSchema.statics.delete = function (userId, callback) {
 var User = mongoose.model('User', userSchema);
 
 module.exports = User;
+
+// create default admin account
+User.findByEmail('admin@ridertrack.com', function (err, admin) {
+    if(!err && !admin){
+        admin = {
+            name: 'Admin',
+            surname: 'Admin',
+            role: 'administrator',
+            password: 'RiderTrack!',
+            email: 'admin@ridertrack.com'
+        };
+        User.create(admin, function (err, admin) {
+            if(!err){
+                console.log('[UserModel] Admin created successfully.')
+            }
+        });
+    }else{
+        console.log('[UserModel] Admin already there. No need to create it.' )
+    }
+});
