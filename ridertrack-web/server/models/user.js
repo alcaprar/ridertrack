@@ -249,19 +249,22 @@ userSchema.statics.findByFacebookId = function (facebookId, callback) {
  */
 userSchema.statics.create = function (userJson, callback) {
     var user = new User(userJson);
-
-    if(typeof userJson.password === 'undefined'){
-        // social registration
-        user.save(function (err) {
-            if(err){
-                console.log('[UserModel][create] error', err);
-                return callback(err)
-            }else{
-                user.removePrivateFields();
-                return callback(null, user);
-            }
-        })
-    }else{
+	console.log(user);
+	//social registration
+    if (userJson.hasOwnProperty('googleProfile') || userJson.hasOwnProperty('facebookProfile')){
+		user.save(function (err) {
+			if(err){
+				console.log('[UserModel][create] error', err);
+				return callback(err)
+				
+				}else{
+					user.removePrivateFields();
+					return callback(null, user);
+				}
+			})
+		}
+	//normal registration
+    else if(userJson.password !== 'undefined' && userJson.password !== ''){
         user.generateHash(userJson.password, function (err) {
             if(err){
                 return callback(err)
@@ -279,6 +282,11 @@ userSchema.statics.create = function (userJson, callback) {
             })
         });
     }
+	else{
+		callback(new Error('Password is required'));
+	}
+	
+	
 };
 
 /**
