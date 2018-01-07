@@ -16,7 +16,7 @@ declare var $: any;
 })
 export class ProfilePageComponent implements OnInit {
 
-  private user: User = new User();
+  public user: User = new User();
   public errors: Error[]=[];
   public name: String;
   public surname: String;

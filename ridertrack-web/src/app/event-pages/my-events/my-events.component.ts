@@ -20,7 +20,7 @@ export class MyEventsComponent implements OnInit {
   /**
    * It is called when the user clicks the button.
    */
-  private createEvent(){
+  public createEvent(){
     this.router.navigate(['/events', 'create'])
   }
 

@@ -24,7 +24,7 @@
           </tr>
           </tbody>
         </table>
-        <div *ngIf="participants === '[]'" style="align-content: center;">
+        <div *ngIf="participants.length === 0" style="align-content: center;">
           <p> No participant is enrolled in this event yet.</p>
         </div>
       </div>

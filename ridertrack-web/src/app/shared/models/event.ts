@@ -16,6 +16,7 @@ export class Event{
     public logo?: File,
     public status?: string,
     public maxDuration?: number,
+    public maxParticipants?: number,
     public length?: number,
     public routes?: [{lat: number, lng: number}],
     public enrollmentClosingDate?: Date,

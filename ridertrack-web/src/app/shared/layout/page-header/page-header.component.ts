@@ -10,9 +10,8 @@ export class PageHeaderComponent implements OnInit {
 
   @Input() title: string;
   @Input() subtitle: string;
-
-
-  constructor(private router: Router) { }
+  
+  constructor(public router: Router) { }
 
   ngOnInit() {
   }
