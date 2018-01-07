@@ -37,10 +37,11 @@ export class NavbarComponent implements OnInit {
 
   isAdministrator() {
     this.role = this.authService.getUserRole();
+    console.log('[Navbar][getRole]'+this.role);
     if(this.role === "administrator"){
-      this.isAdmin=true;
+      return true;
     } else {
-      this.isAdmin = false;
+      return false;
     }
   }
 
