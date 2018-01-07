@@ -32,20 +32,21 @@ export class SortService {
       });
     }
     if(criteria.sortColumn === 'open'){
-
+      console.log("[Open][Sort]");
       return table.sort((a,b) => {
         let data_a;
         let data_b;
         if(a.enrollmentOpeningAt){
-          data_a = a.enrollmentOpeningAt;
+          data_a = new Date(a.enrollmentOpeningAt);
         }else {
           data_a = new Date();
         }
         if(b.enrollmentOpeningAt) {
-          data_b = b.enrollmentOpeningAt;
+          data_b = new Date(b.enrollmentOpeningAt);
         }else {
-         data_b = new Date();
+          data_b = new Date();
         }
+
         if(criteria.sortDirection === 'desc'){
           return this.date_sort_desc(data_a, data_b);
         }else {
@@ -54,16 +55,17 @@ export class SortService {
       });
     }
     if(criteria.sortColumn === 'close'){
+      console.log("[Close][Sort]");
       return table.sort((a,b) => {
         let data_a;
         let data_b;
         if(a.enrollmentClosingAt){
-          data_a = a.enrollmentClosingAt;
+          data_a = new Date(a.enrollmentClosingAt);
         }else {
           data_a = new Date();
         }
         if(b.enrollmentClosingAt) {
-          data_b = b.enrollmentClosingAt;
+          data_b = new Date(b.enrollmentClosingAt);
         }else {
           data_b = new Date();
         }
@@ -85,13 +87,18 @@ export class SortService {
     }
   }
 
+
   date_sort_asc(date1, date2){
+    console.log("[Date_Sort_Asc][Date1]", date1);
+    console.log("[Date_Sort_Asc][Date2]", date2);
     if(date1 > date2) return 1;
     if(date1 < date2) return -1;
     return 0;
   }
 
   date_sort_desc(date1, date2){
+    console.log("[Date_Sort_Desc][Date1]", date1);
+    console.log("[Date_Sort_Desc][Date2]", date2);
     if(date1 > date2) return -1;
     if(date1 < date2) return 1;
     return 0;
