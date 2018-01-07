@@ -9,7 +9,7 @@
           <div class="wizard-header">
             <h3>
               <b>Create</b> YOUR EVENT <br>
-              <small>Become an organizer and create you own event!</small>
+              <small>Start with some basic info. You can change everything later!</small>
             </h3>
           </div>
           <form (ngSubmit)="onSubmit()" #createEventForm="ngForm">
@@ -28,35 +28,34 @@
                 </div>
                 <div class="col-sm-6">
                   <div class="form-group">
-                    <label for="name">Name <small>(required)</small></label>
+                    <label for="name">Name of the event <small>(required)</small></label>
                     <input [(ngModel)]="event.name" #name="ngModel" id="name" name="name" type="text" class="form-control" placeholder="Maratona di Milano 2018" required>
-                    <div [hidden]="name.valid || name.pristine" class="alert alert-danger">Name is required.</div>
+                  </div>
+                  <label>Starting date (DD/MM/YYYY) and time (HH:MM). Time is <a href="https://en.wikipedia.org/wiki/Coordinated_Universal_Time" title="UTC wikipedia">UTC</a>. <small>(required)</small></label>
+                  <div class="form-group">
+                    <div class="col-xs-8" style="padding-left: 0px">
+                      <input [(ngModel)]="event.startingDateString" #startingDateString="ngModel" id="startingDate" name="startingDate" type="text" class="form-control datepicker" placeholder="15/12/2017">
+                    </div>
+                    <div class="col-xs-4" style="padding-right: 0px">
+                      <input [(ngModel)]="event.startingTimeString" #startingTimeString="ngModel"
+                             id="startingTime" name="startingTime" type="text" class="form-control"
+                             placeholder="12:00">
+                    </div>
                   </div>
                   <div class="form-group">
-                    <label for="type">Type <small>(required)</small></label>
+                    <label for="city">City (if it involves many cities, put the main or starting one)<small>(required)</small></label>
+                    <ng4geo-autocomplete id="city" (componentCallback)="autocompleteCity($event)"
+                                         [userSettings]="userSettingCity">
+                    </ng4geo-autocomplete>
+                  </div>
+                  <div class="form-group">
+                    <label for="type">Type of the event<small>(required)</small></label>
                     <select [(ngModel)]="event.type" #type="ngModel" id="type"  name="type" class="selectpicker" data-live-search="true" data-live-search-style="begins" title="Select type">
                       <option *ngFor="let type of eventTypes" [value]="type" style="text-transform: capitalize" required>{{type}}</option>
                     </select>
                   </div>
-                  <div class="form-group">
-                    <label>Date <small>(required)</small></label>
-                    <input [(ngModel)]="event.startingDate" #startingDate="ngModel" id="startingDate" name="startingDate" type="text" class="form-control datepicker" placeholder="15/12/2017">
-                    <div [hidden]="startingDate.valid || startingDate.pristine" class="alert alert-danger">Date is required.</div>
-                  </div>
-                  <div class="form-group">
-                    <label for="startingTime">Starting Time<small>(required)</small></label>
-                    <input [(ngModel)]="event.startingTime" #description="ngModel"
-                           id="startingTime" name="startingTime" type="time" class="form-control"
-                           placeholder="12:00">
-                  </div>
-                   <div >
-                     <label for="city">City <small>(required)</small></label>
-                     <ng4geo-autocomplete id="city" (componentCallback)="autocompleteCity($event)"
-                                          [userSettings]="userSettingCity">
-                     </ng4geo-autocomplete>
-                  </div>
-                 <div *ngIf="errors.length > 0" class="alert alert-danger">
-                    <span *ngFor="let error of errors">{{error.message}}</span>
+                  <div *ngIf="errors.length > 0" class="alert alert-danger" style="padding-top: 5px">
+                    <div *ngFor="let error of errors">{{error.message}}</div>
                   </div>
                 </div>
               </div>

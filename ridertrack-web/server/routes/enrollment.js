@@ -26,7 +26,7 @@ router.post('/', authMiddleware.hasValidToken, function(req, res){
                 })
             }else{
 
-                if(!event.enrollmentOpeningAt || !event.enrollmentClosingAt){
+                if(!event.enrollmentOpeningDate || !event.enrollmentClosingDate){
                     return res.status(400).send({
                         errors: [{message: 'The enrolling time is not defined yet.'}]
                     })
@@ -34,7 +34,7 @@ router.post('/', authMiddleware.hasValidToken, function(req, res){
 
                 if(event.status === 'planned'){
                     var currentDate = new Date();
-                    if(currentDate >= new Date(event.enrollmentOpeningAt) && currentDate <= new Date(event.enrollmentClosingAt)){
+                    if(currentDate >= new Date(event.enrollmentOpeningDate) && currentDate <= new Date(event.enrollmentClosingDate)){
                         Enrollment.find({eventId: req.body.eventId}, function (err, enrollments) {
                             if (err) {
                                 res.status(400).send({

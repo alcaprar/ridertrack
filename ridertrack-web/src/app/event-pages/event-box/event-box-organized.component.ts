@@ -42,71 +42,36 @@ export class EventBoxOrganizedComponent implements OnInit {
    * It call the method of the eventService and shows errros, if any.
    * If the call is successfull it redirects to the progress page.
    * @param event
-     */
+   */
   startTracking(event){
-  //  if(this.checkStarting()) {
-      this.eventService.startTracking(event).then(
-        (error) => {
-          if(error){
-            console.log("[Start Tracking][error]", error);
-            this.dialogService.alert("Start tracking", error.message)
-          }else{
-            console.log("[Start Tracking][Success]");
-            this.event.status = "ongoing";
-            this.router.navigate(['/events/', event._id, 'progress']);
-          }
-      }).catch((error) => {
-        console.log("[Start Tracking][Error]", error);
-      });
-    //} else {
-      //this.dialogService.confirmation("Error",
-       // "Sorry the tracking can start only after the registration period is closed",function(){
-        //});
-    }
- // }
-
-  stopTracking(event) {
- //   if(this.checkStopping()) {
-      this.dialogService.confirmation("Stop Event",
-        "Are you sure to stop the event?",function(){
-          this.eventService.stopTracking(event)
-            .then((success) => {
-              console.log("[Stop Tracking][Success]");
-              this.event.status = "passed";
-            }).catch((error) => {
-            console.log("[Stop Tracking][Error]", error);
-          });
-      }.bind(this));
-    }/*else{
-      this.dialogService.confirmation("Stop Event",
-        "Sorry the tracking cannot be stopped during the Event",function(){
+    this.dialogService.confirmation("Start Event",
+      "Are you sure to start the event?",function(){
+        this.eventService.startTracking(event).then(
+          (error) => {
+            if(error){
+              console.log("[Start Tracking][error]", error);
+              this.dialogService.alert("Start tracking", error.message)
+            }else{
+              console.log("[Start Tracking][Success]");
+              this.event.status = "ongoing";
+              this.router.navigate(['/events/', event._id, 'progress']);
+            }
+          }).catch((error) => {
+          console.log("[Start Tracking][Error]", error);
         });
-    }
-  }*/
-
-  checkStarting(){
-    if(this.event.startingDate && this.event.enrollementClosingAt){
-      let split = this.event.startingDate.split(/\//);
-      let startingDate = new Date(+split[2], +split[1] - 1, +split[0]);
-      let split_close = this.event.enrollementClosingAt.split(/\//);
-      let close = new Date(+split_close[2], +split_close[1] - 1, +split_close[0]);
-      let today = new Date();
-
-      return startingDate >= today && today > close;
-    } else {
-      return false;
-    }
+      }.bind(this));
   }
 
-  checkStopping(){
-    if(this.event.startingDate && this.event.status === "ongoing"){
-      let split = this.event.startingDate.split(/\//);
-      let startingDate = new Date(+split[2], +split[1] - 1, +split[0]);
-      let today = new Date();
-
-      return startingDate <= today;
-    } else {
-      return false;
-    }
+  stopTracking(event) {
+    this.dialogService.confirmation("Stop Event",
+      "Are you sure to stop the event?",function(){
+        this.eventService.stopTracking(event)
+          .then((success) => {
+            console.log("[Stop Tracking][Success]");
+            this.event.status = "passed";
+          }).catch((error) => {
+          console.log("[Stop Tracking][Error]", error);
+        });
+      }.bind(this));
   }
 }

@@ -40,12 +40,17 @@ var eventSchema = Schema({
         required: [true, 'City is required.']
     },
     startingDate: {
-        type: String,
+        type: Date,
         required: [true, 'A date is required.']
     },
-    startingTime: {
-        type: String,
-        required: true
+    startingDateString: { // redundancy for mobile app
+        type: String
+    },
+    startingTimeString: { // redundancy for mobile app
+        type: String
+    },
+    closingDate: {
+        type: Date
     },
     actualStartingTime: {
         type: Date
@@ -60,10 +65,10 @@ var eventSchema = Schema({
         type: Number,
         default: 100
     },
-    enrollmentOpeningAt: {
+    enrollmentOpeningDate: {
         type: Date
     },
-    enrollmentClosingAt: {
+    enrollmentClosingDate: {
         type: Date
     },
     logo: {
@@ -105,21 +110,11 @@ eventSchema.pre('save',function(next){
     var err = new Error();
 
     // cast startingDate to Date object
-    var startingDate;
+    var startingDate = event.startingDate;
     if(event.startingDate){
-        var strDate = event.startingDate.split('/'); // e.g. 30/12/2017
-
-        if (!event.startingTime){
-            //Month in Date object is defined from 0-11
-            startingDate = new Date(parseInt(strDate[2]),parseInt(strDate[1]) - 1,parseInt(strDate[0]))
-        }else{
-            var strTime = event.startingTime.split(':'); // e.g. 12:00
-            startingDate = new Date(parseInt(strDate[2]),parseInt(strDate[1]) - 1,parseInt(strDate[0]),parseInt(strTime[0]),parseInt(strTime[1]),0)
-        }
-
-        // if enrollmentOpeningAt is set, check that is not after the startingDate
-        if(event.enrollmentOpeningAt){
-            if(new Date(event.enrollmentOpeningAt) > startingDate ){
+        // if enrollmentOpeningDate is set, check that is not after the startingDate
+        if(event.enrollmentOpeningDate){
+            if(event.enrollmentOpeningDate > startingDate){
                 // the enrollmentOpening is after the startingDate
                 err.message = 'The enrollment opening time cannot be after the starting date.';
                 return next(err)
@@ -130,10 +125,19 @@ eventSchema.pre('save',function(next){
         return next(err)
     }
 
+    if(event.closingDate){
+        // if closingDate is set, it can not be before startingDate
+        if(event.closingDate < startingDate){
+            // the closingDate is after the startingDate
+            err.message = 'The closing time cannot be before the starting date.';
+            return next(err)
+        }
+    }
 
-    // if enrollmentClosingAt is set, check that is not after the startingDate
-    if(event.enrollmentClosingAt){
-        if(new Date(event.enrollmentClosingAt) > startingDate ){
+
+    // if enrollmentClosingDate is set, check that is not after the startingDate
+    if(event.enrollmentClosingDate){
+        if(event.enrollmentClosingDate > startingDate){
             // the enrollmentCLosing is after the startingDate
             err.message = 'The enrollment closing time cannot be after the starting date.';
             return next(err)
@@ -141,15 +145,34 @@ eventSchema.pre('save',function(next){
     }
 
     // if both time are set, check that the opening is not after the closing
-    if(event.enrollmentOpeningAt && event.enrollmentClosingAt){
-        if(event.enrollmentOpeningAt > event.enrollmentClosingAt){
+    if(event.enrollmentOpeningDate && event.enrollmentClosingDate){
+        if(event.enrollmentOpeningDate > event.enrollmentClosingDate){
             err.message = 'The enrollment opening time cannot be after the enrollment closing time.';
-            console.log('[EventModel][pre.save] enrollmentClosingAt is before enrollmentOpeningAt', err);
+            console.log('[EventModel][pre.save] enrollmentClosingDate is before enrollmentOpeningDate', err);
             return next(err)
         }
     }
 
     // if all the checks pass without throwing errors the timing are okay
+    next()
+});
+
+/**
+ * It updates the redundancy for starting date and time in string format.
+ * Used by mobile app.
+ */
+eventSchema.pre('save', function (next) {
+    var event = this;
+
+    var day = event.startingDate.getDay();
+    var month = event.startingDate.getMonth() + 1;
+    var year = event.startingDate.getFullYear();
+    var hour = event.startingDate.getHours();
+    var minute = event.startingDate.getMinutes();
+
+    this.startingDateString = day + '/' + month + '/' + year;
+    this.startingTimeString = hour + ':' + ( (minute < 10) ? '0' : '') + minute;
+
     next()
 });
 
@@ -214,9 +237,21 @@ eventSchema.statics.findEventsFromList = function (eventsIdList, callback ){
  * It then calls a callback passing either an error list or the created event.
  */
 eventSchema.statics.create = function (organizerId, eventJson, callback) {
+    // create date object for startingDate
+    try{
+        var strDate = eventJson.startingDateString.split('/'); // DD/MM/YYYY
+        var strTime = eventJson.startingTimeString.split(':'); // HH:MM
+        eventJson.startingDate = new Date(parseInt(strDate[2]),parseInt(strDate[1]) - 1, parseInt(strDate[0]),parseInt(strTime[0]),parseInt(strTime[1]),0, 0);
+    }catch (e){
+        console.log('[EventModel][create] error while parsing startingDate and time', e);
+        return callback({message: 'Starting date or time is not valid.'})
+    }
+    // add organizer id and default event status
+    eventJson.organizerId = organizerId;
+    eventJson.status = 'planned';
+
+    // create mongoose object
     var event = new Event(eventJson);
-    event.organizerId = organizerId;
-    event.status = 'planned';
 
     event.save(function (err, event) {
         if (err) {
@@ -228,6 +263,7 @@ eventSchema.statics.create = function (organizerId, eventJson, callback) {
                     console.log('[EventModel][create] error while creating an empty route.')
                 }
             });
+            // create an empty ranking
             Ranking.create(event._id, function (err) {
                 if(err){
                     console.log('[EventModel][create] error while creating an ranking route.')
@@ -247,6 +283,76 @@ eventSchema.statics.create = function (organizerId, eventJson, callback) {
  * @returns {*}
  */
 eventSchema.statics.update = function (eventId, eventJson, callback) {
+    // create date object for startingDate
+    try{
+        let strDate = eventJson.startingDateString.split('/'); // DD/MM/YYYY
+        let strTime = eventJson.startingTimeString.split(':'); // HH:MM
+        eventJson.startingDate = new Date(parseInt(strDate[2]),parseInt(strDate[1]) - 1, parseInt(strDate[0]),parseInt(strTime[0]),parseInt(strTime[1]),0, 0);
+    }catch (e){
+        console.log('[EventModel][update] error while parsing startingDate and time', e);
+        return callback({message: 'Starting date or time is not valid.'})
+    }
+
+    // if closing date is passed, cast it to date
+    if(eventJson.closingDateString){
+        try{
+            // create date object for closingDate
+            let closingDate = eventJson.closingDateString.split('/'); // DD/MM/YYYY
+            let closingTime;
+            if(eventJson.closingTimeString){
+                // if closing time is set, parse it
+                closingTime = eventJson.closingTimeString.split(':'); // HH:MM
+            }else{
+                // if closing time is not set, use a default time
+                closingTime = ['12', '00']
+            }
+            eventJson.closingDate = new Date(parseInt(closingDate[2]),parseInt(closingDate[1]) - 1, parseInt(closingDate[0]),parseInt(closingTime[0]),parseInt(closingTime[1]),0, 0);
+        }catch (e){
+            console.log('[EventModel][update] error while parsing closingDate and time', e);
+            return callback({message: 'Closing date or time is not valid.'})
+        }
+    }
+
+    // if enrollment opening date is passed, cast it to date
+    if(eventJson.enrollmentOpeningDateString){
+        try{
+            // create date object for enrollment opening
+            let enrollmentOpeningDate = eventJson.enrollmentOpeningDateString.split('/'); // DD/MM/YYYY
+            let enrollmentOpeningTime;
+            if(eventJson.enrollmentOpeningTimeString){
+                // if enrollment opening time is set, parse it
+                enrollmentOpeningTime = eventJson.enrollmentOpeningTimeString.split(':'); // HH:MM
+            }else{
+                // if closing time is not set, use a default time
+                enrollmentOpeningTime = ['12', '00']
+            }
+            eventJson.enrollmentOpeningDate = new Date(parseInt(enrollmentOpeningDate[2]),parseInt(enrollmentOpeningDate[1]) - 1, parseInt(enrollmentOpeningDate[0]),parseInt(enrollmentOpeningTime[0]),parseInt(enrollmentOpeningTime[1]),0, 0);
+        }catch (e){
+            console.log('[EventModel][update] error while parsing enrollmentOpeningDate and time', e);
+            return callback({message: 'Enrollment opening date or time is not valid.'})
+        }
+    }
+
+    // if enrollment closing date is passed, cast it to date
+    if(eventJson.enrollmentClosingDateString){
+        try{
+            // create date object for enrollment closing
+            let enrollmentClosingDate = eventJson.enrollmentClosingDateString.split('/'); // DD/MM/YYYY
+            let enrollmentClosingTime;
+            if(eventJson.enrollmentClosingTimeString){
+                // if enrollment closing time is set, parse it
+                enrollmentClosingTime = eventJson.enrollmentClosingTimeString.split(':'); // HH:MM
+            }else{
+                // if closing time is not set, use a default time
+                enrollmentClosingTime = ['12', '00']
+            }
+            eventJson.enrollmentClosingDate = new Date(parseInt(enrollmentClosingDate[2]),parseInt(enrollmentClosingDate[1]) - 1, parseInt(enrollmentClosingDate[0]),parseInt(enrollmentClosingTime[0]),parseInt(enrollmentClosingTime[1]),0, 0);
+        }catch (e){
+            console.log('[EventModel][update] error while parsing enrollmentClosingDate and time', e);
+            return callback({message: 'Enrollment closing date or time is not valid.'})
+        }
+    }
+
     this.findOne({_id: eventId}, function (err, event) {
         if (err) {
             return callback(err)

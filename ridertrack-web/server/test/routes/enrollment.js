@@ -55,13 +55,13 @@ describe('Enrollment API tests', function () {
 				//set enrollment (otherwise enrollment fails)
 				var currentDate = new Date()
 				currentDate.setYear(currentDate.getFullYear() - 1)
-				event1.enrollmentOpeningAt = currentDate.toString()
+				event1.enrollmentOpeningDate = currentDate.toString()
 				currentDate.setYear(currentDate.getFullYear() + 2)
-				event1.enrollmentClosingAt = currentDate.toString()
+				event1.enrollmentClosingDate = currentDate.toString()
 				
 				var event2 = mockdata.createEventByNumber(1)
-				event2.enrollmentOpeningAt = event1.enrollmentOpeningAt
-				event2.enrollmentClosingAt = event1.enrollmentClosingAt
+				event2.enrollmentOpeningDate = event1.enrollmentOpeningDate
+				event2.enrollmentClosingDate = event1.enrollmentClosingDate
 
 				Event.create(userId,event1,function(err,createdEvent1){
 					event1Id = createdEvent1._id;
@@ -116,7 +116,7 @@ describe('Enrollment API tests', function () {
 				})
 		})
 		
-		it('it should not add an enrollment because enrollmentOpeningAt has not been set',function(done){
+		it('it should not add an enrollment because enrollmentOpeningDate has not been set',function(done){
 			
 			let enrollment = new Enrollment({
 				userId:userId,
@@ -127,7 +127,7 @@ describe('Enrollment API tests', function () {
 			
 			
 			Event.findByEventId(event1Id,function(err,event){
-				event.enrollmentOpeningAt = null
+				event.enrollmentOpeningDate = null
 				event.save(() => {
 					request.post('/api/enrollments')
 						.set('Authorization',userToken)
@@ -141,7 +141,7 @@ describe('Enrollment API tests', function () {
 			})
 		})
 		
-		it('it should not add an enrollment because enrollmentClosingAt has not been set',function(done){
+		it('it should not add an enrollment because enrollmentClosingDate has not been set',function(done){
 			
 			let enrollment = new Enrollment({
 				userId:userId,
@@ -151,8 +151,8 @@ describe('Enrollment API tests', function () {
 			})
 			
 			Event.findByEventId(event1Id,(err,event) => {
-					event.enrollmentClosingAt = null
-					event.enrollmentOpeningAt = null
+					event.enrollmentClosingDate = null
+					event.enrollmentOpeningDate = null
 					event.save(() => {
 						request.post('/api/enrollments')
 							.set('Authorization',userToken)
@@ -176,9 +176,9 @@ describe('Enrollment API tests', function () {
 			Event.findByEventId(event1Id,(err,event) =>{
 				currentDate = new Date()
 				currentDate.setDate(currentDate.getDate() + 1)
-				event.enrollmentOpeningAt = currentDate
+				event.enrollmentOpeningDate = currentDate
 			
-				//console.log(event.enrollmentOpeningAt.toString())
+				//console.log(event.enrollmentOpeningDate.toString())
 				event.save(() => {
 					request.post('/api/enrollments')
 						.set('Authorization',userToken)
@@ -201,7 +201,7 @@ describe('Enrollment API tests', function () {
 			Event.findByEventId(event1Id,(err,event) =>{
 				currentDate = new Date()
 				currentDate.setDate(currentDate.getDate() - 1)
-				event.enrollmentClosingAt = currentDate
+				event.enrollmentClosingDate = currentDate
 				
 				event.save(() =>{
 					request.post('/api/enrollments')

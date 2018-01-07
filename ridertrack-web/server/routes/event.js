@@ -223,25 +223,30 @@ router.post('/', authMiddleware.hasValidToken, multipart, function (req, res) {
 
     var event = req.body;
 
+    // set logo variables to default value
     var tempPath = __dirname + '/../logo.png';
     var logoMimeType = 'image/png';
 
     // check image
     if(req.files.logo) {
+        // if image exists, override default values
         tempPath = req.files.logo.path;
         logoMimeType = req.files.logo.type;
     }
 
+    // check image mimetype
     if(allowedImgExtension.indexOf(logoMimeType) === -1){
         console.log('[POST /events] logo extension not allowed: ', logoMimeType);
         return res.status(400).send({
             errors: [{message: 'Image extension not supported.'}]
         })
     }
+    // load the image as binary, in order to store it in mongo
     event.logo = {
         data: fs.readFileSync(tempPath),
         contentType: logoMimeType
     };
+    
     Event.create(req.userId, event, function (err, event) {
         if (err) {
             console.log('[POST/events][error]', err);

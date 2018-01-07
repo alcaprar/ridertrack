@@ -60,8 +60,8 @@ describe('Enrollment API tests', function () {
 					"startingTime":"12:00:00.000",
 					"maxDuration":150,
 					"length": 40,
-					"enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
-					"enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+					"enrollmentOpeningDate":"2017-09-10T00:00:00.000Z",
+					"enrollmentClosingDate":"2017-09-17T00:00:00.000Z",
 					"participantsList":[255],
 					"routes":["Route1"]
 				};
@@ -76,8 +76,8 @@ describe('Enrollment API tests', function () {
 					"startingTime":"12:00:00.000",
 					"maxDuration":150,
 					"length": 40,
-					"enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
-					"enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+					"enrollmentOpeningDate":"2017-09-10T00:00:00.000Z",
+					"enrollmentClosingDate":"2017-09-17T00:00:00.000Z",
 					"participantsList":[255],
 					"routes":["Route1"]
 				};
@@ -284,8 +284,8 @@ describe('Enrollment API tests', function () {
                         "startingTime": "2017-09-23T12:00:00.000Z",
                         "maxDuration": 150,
                         "length": 40,
-                        "enrollmentOpeningAt": "2017-09-10T00:00:00.000Z",
-                        "enrollmentClosingAt": "2017-09-17T00:00:00.000Z",
+                        "enrollmentOpeningDate": "2017-09-10T00:00:00.000Z",
+                        "enrollmentClosingDate": "2017-09-17T00:00:00.000Z",
                         "participantsList": [255],
                         "routes": ["Route1"]
                     };

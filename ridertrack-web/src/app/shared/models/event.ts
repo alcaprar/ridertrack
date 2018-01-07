@@ -5,8 +5,12 @@ export class Event{
     public name?: string,
     public type?: string,
     public description?:string,
-    public startingDate?: string,
-    public startingTime?: string,
+    public startingDate?: Date,
+    public startingDateString?: string,
+    public startingTimeString?: string,
+    public closingDate?: Date,
+    public closingDateString?: string,
+    public closingTimeString?: string,
     public country?: string,
     public city?: string,
     public logo?: File,
@@ -14,7 +18,11 @@ export class Event{
     public maxDuration?: number,
     public length?: number,
     public routes?: [{lat: number, lng: number}],
-    public enrollmentClosingAt?: Date,
-    public enrollmentOpeningAt?: Date
+    public enrollmentClosingDate?: Date,
+    public enrollmentClosingDateString?: string,
+    public enrollmentClosingTimeString?: string,
+    public enrollmentOpeningDate?: Date,
+    public enrollmentOpeningDateString?: string,
+    public enrollmentOpeningTimeString?: string
   ){}
 }

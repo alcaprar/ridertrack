@@ -50,8 +50,8 @@ describe('Event model test', function () {
             "startingTime":"12:00:00.000",
             "maxDuration":150,
             "length": 40,
-            "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
-            "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+            "enrollmentOpeningDate":"2017-09-10T00:00:00.000Z",
+            "enrollmentClosingDate":"2017-09-17T00:00:00.000Z",
             "participantsList":[255],
             "routes":["Route1"]
         });
@@ -73,8 +73,8 @@ describe('Event model test', function () {
             "startingTime":"12:00:00.000",
             "maxDuration":150,
             "length": 40,
-            "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
-            "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+            "enrollmentOpeningDate":"2017-09-10T00:00:00.000Z",
+            "enrollmentClosingDate":"2017-09-17T00:00:00.000Z",
             "participantsList":[255],
             "routes":["Route1"]
         });
@@ -96,8 +96,8 @@ describe('Event model test', function () {
             "startingTime":"12:00:00.000",
             "maxDuration":150,
             "length": 40,
-            "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
-            "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+            "enrollmentOpeningDate":"2017-09-10T00:00:00.000Z",
+            "enrollmentClosingDate":"2017-09-17T00:00:00.000Z",
             "participantsList":[255],
             "routes":["Route1"]
         });
@@ -120,8 +120,8 @@ describe('Event model test', function () {
             "startingTime":"12:00:00.000Z",
             "maxDuration":150,
             "length": 40,
-            "enrollmentOpeningAt":"2017-09-10T00:00:00.000Z",
-            "enrollmentClosingAt":"2017-09-17T00:00:00.000Z",
+            "enrollmentOpeningDate":"2017-09-10T00:00:00.000Z",
+            "enrollmentClosingDate":"2017-09-17T00:00:00.000Z",
             "participantsList":[255],
             "routes":["Route1"]
         });

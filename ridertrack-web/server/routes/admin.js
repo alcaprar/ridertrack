@@ -818,14 +818,14 @@ router.post('/enrollments', authMiddleware.hasValidToken, authMiddleware.hasAdmi
                 })
             }else{
 
-                if(!event.enrollmentOpeningAt || !event.enrollmentClosingAt){
+                if(!event.enrollmentOpeningDate || !event.enrollmentClosingDate){
                     return res.status(400).send({
                         errors: [{message: 'The enrolling time is not defined yet.'}]
                     })
                 }
 
                 var currentDate = new Date();
-                // if(currentDate >= new Date(event.enrollmentOpeningAt) && currentDate <= new Date(event.enrollmentClosingAt)){
+                // if(currentDate >= new Date(event.enrollmentOpeningDate) && currentDate <= new Date(event.enrollmentClosingDate)){
                 Enrollment.find({eventId: req.body.eventId}, function (err, enrollments) {
                     if (err) {
                         callback(err)
