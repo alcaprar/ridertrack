@@ -41,13 +41,13 @@ export class SortService {
       return table.sort((a,b) => {
         let data_a;
         let data_b;
-        if(a.enrollmentOpeningAt){
-          data_a = new Date(a.enrollmentOpeningAt);
+        if(a.enrollmentOpeningDate){
+          data_a = new Date(a.enrollmentOpeningDate);
         }else {
           data_a = new Date();
         }
-        if(b.enrollmentOpeningAt) {
-          data_b = new Date(b.enrollmentOpeningAt);
+        if(b.enrollmentOpeningDate) {
+          data_b = new Date(b.enrollmentOpeningDate);
         }else {
           data_b = new Date();
         }
@@ -64,13 +64,13 @@ export class SortService {
       return table.sort((a,b) => {
         let data_a;
         let data_b;
-        if(a.enrollmentClosingAt){
-          data_a = new Date(a.enrollmentClosingAt);
+        if(a.enrollmentClosingDate){
+          data_a = new Date(a.enrollmentClosingDate);
         }else {
           data_a = new Date();
         }
-        if(b.enrollmentClosingAt) {
-          data_b = new Date(b.enrollmentClosingAt);
+        if(b.enrollmentClosingDate) {
+          data_b = new Date(b.enrollmentClosingDate);
         }else {
           data_b = new Date();
         }
@@ -95,6 +95,7 @@ export class SortService {
         }else {
           length =0;
         }
+        console.log("[Lenght][a][b]", length);
         if (criteria.sortDirection === 'desc') {
           return a.length < b.length ? 1 : -1;
         } else {
