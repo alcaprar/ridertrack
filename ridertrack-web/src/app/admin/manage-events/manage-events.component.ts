@@ -58,7 +58,7 @@ export class ManageEventsComponent implements OnInit {
   delete(event){
     let eventId = event._id;
     this.dialogService.confirmation("Delete Event", "Are you sure to delete this event?", function () {
-      this.eventService.deleteEvent(eventId)
+      this.eventService.deleteEventAdmin(eventId)
         .then(()=> {
             this.getEvents();
             console.log("[EventDeleted][ListUpdated]");
