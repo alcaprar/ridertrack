@@ -12,8 +12,9 @@ const fieldsNotChangeable = ['_id', '__v', 'salt', 'hash', 'role', 'created_at',
 var userSchema = Schema({
     email: {
         type: String,
-        required: true,
+        required: [true, 'An email is required.'],
         minlength: 1,
+        trim: true,
         validate: [{ isAsync:false, validator: validator.isEmail, msg: 'Email is not correct.' }]
     },
     salt: {
@@ -26,12 +27,12 @@ var userSchema = Schema({
     },
     name: {
         type: String,
-        required: true,
+        required: [true, 'Name is required.'],
         minlength: 1
     },
     surname: {
         type: String,
-        required: true,
+        required: [true, 'Surname is required.'],
         minlength: 1
     },
     city: {
@@ -51,14 +52,14 @@ var userSchema = Schema({
             id: String,
             token: String
         },
-        select: false // it exclude by default this field in queries
+        select: false
     },
     googleProfile:{
         type: {
             id: String,
             token: String
         },
-        select:false
+        select: false
     },
     logo: {
         data: Buffer,
@@ -87,6 +88,29 @@ userSchema.pre('save', function(next) {
         this.created_at = currentDate;
     }
     next();
+});
+
+/**
+ * Error handler. It is executed on every save if errors occur.
+ * Inspired here. http://thecodebarbarian.com/mongoose-error-handling
+ */
+userSchema.post('save', function (err, doc, next) {
+    console.log('[UserModel][error]', err.message);
+    var customError = new Error();
+    if(err.name === 'MongoError' && err.code === 11000){
+        customError.message = 'This email is already registered. Try to login using password or the corresponding social account.'
+    }else if(err.name === 'ValidationError'){
+        console.log(Object.keys(err.errors), err.errors.email);
+        customError.message = 'Some fields are missing.';
+        for(let key in err.errors){
+            customError.message = err.errors[key].message;
+            break;
+        }
+
+    }else{
+        customError.message = err.message;
+    }
+    next(customError)
 });
 
 /**
@@ -231,13 +255,11 @@ userSchema.statics.create = function (userJson, callback) {
         user.save(function (err) {
             if(err){
                 console.log('[UserModel][create] error', err);
-                return callback({
-                    message:"Error occurred during saving user from social service site." +
-                    "Maybe user has already registred in database "
-                })
+                return callback(err)
+            }else{
+                user.removePrivateFields();
+                return callback(null, user);
             }
-            user.removePrivateFields();
-            return callback(null, user);
         })
     }else{
         user.generateHash(userJson.password, function (err) {
@@ -245,17 +267,15 @@ userSchema.statics.create = function (userJson, callback) {
                 return callback(err)
             }
             user.save(function (err) {
+                console.log('[UserModel][create]', err, user);
                 if(err){
                     console.log('[UserModel][create] error', err);
-                    return callback({
-                        message:"Error occurred during saving user account." +
-                        " Maybe user already exists as social service user"
+                    return callback(err);
+                }else{
+                    return user.removePrivateFields(function () {
+                        callback(null, user)
                     });
                 }
-
-                return user.removePrivateFields(function () {
-                    callback(null, user)
-                });
             })
         });
     }

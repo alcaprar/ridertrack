@@ -16,6 +16,8 @@ export class RegistrationPageComponent implements OnInit {
   errors: Error[]= [];
   loading = false;
 
+  private recaptchaId = -1;
+
   @Input() user = { name: '', surname: '', email: '', password:''};
 
   constructor(private formBuilderLogin: FormBuilder, private authService: AuthenticationService,
@@ -31,10 +33,11 @@ export class RegistrationPageComponent implements OnInit {
 
     //renders therecaptcha
     setTimeout(function () {
-      grecaptcha.render('g-recaptcha', {
+      // init recaptcha and store widget id
+      this.recaptchaId = grecaptcha.render('g-recaptcha', {
         sitekey: "6LfraT0UAAAAAJBZIVy8RWXrRQvqHXAhnRpCJHaw"
       })
-    }, 2000)
+    }.bind(this), 2000)
   }
 
   /**
@@ -101,10 +104,11 @@ export class RegistrationPageComponent implements OnInit {
    */
   register() {
     this.errors = [];
-
-    var recaptchaResponse = grecaptcha.getResponse();
-    if(!recaptchaResponse){
-      var error = new Error('Please verify that you are not a robot.')
+    if(this.recaptchaId === -1){
+      var error = new Error('Please wait the captcha to load.');
+      this.showErrors([error]);
+    }else if(!grecaptcha.getResponse(this.recaptchaId)){
+      var error = new Error('Please verify that you are not a robot.');
       this.showErrors([error]);
     }else{
       this.loading = true;
@@ -119,15 +123,17 @@ export class RegistrationPageComponent implements OnInit {
       console.log('[RegistrationComponent][Register]', user);
       this.authService.register(user)
         .then(
-          (errors: Error[]) => {
-            console.log('[RegistrationComponent][Register] errors:', errors);
+          (response) => {
+            console.log('[RegistrationComponent][Register][success]', response);
             this.loading = false;
-
-            if(errors){
-              this.showErrors(errors);
-            }else{
-              this.router.navigate(['my-events']);
-            }
+            this.router.navigate(['my-events']);
+          }
+        )
+        .catch(
+          (errors) => {
+            console.log('[RegistrationComponent][Register][failed]', errors);
+            this.loading = false;
+            this.showErrors(errors)
           }
         )
     }

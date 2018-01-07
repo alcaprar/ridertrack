@@ -132,22 +132,24 @@ export class AuthenticationService{
    */
   register(user: User): Promise<any> {
     const url = `${this.BASE_AUTH_URL}/register`;
-    return this.http.post(url, {name: user.name, surname: user.surname, email: user.email, password: user.password}).toPromise()
-      .then(
-        (response: Response) => {
-          console.log('[AuthS][Register][success]', response);
-          // the registration succedeed
-          const body = response.json();
+    return new Promise((resolve, reject) => {
+      this.http.post(url, {name: user.name, surname: user.surname, email: user.email, password: user.password}).toPromise()
+        .then(
+          (response: Response) => {
+            console.log('[AuthS][Register][success]', response);
+            // the registration succedeed
+            const body = response.json();
 
-          this.storeResponse(body.userId, body.role, body.jwtToken);
-          return null;
-        },
-        (errorResponse: any) => {
-          var errors = errorResponse.json().errors as Error[];
-          console.log('[AuthS][Register][error]', errors);
-          return errors;
-        }
-      )
+            this.storeResponse(body.userId, body.role, body.jwtToken);
+            resolve();
+          },
+          (errorResponse: any) => {
+            var errors = errorResponse.json().errors as Error[];
+            console.log('[AuthS][Register][error]', errors);
+            reject(errors);
+          }
+        )
+    })
   }
 
   /**

@@ -14,37 +14,30 @@ var standardMessage = {message: 'An error occured. Please try again in a while. 
  */
 router.post('/register', function (req, res) {
     console.log('[POST /register]');
-    if(typeof req.body.email === 'undefined' || typeof req.body.password === 'undefined'){
-        return res.status(400).send({
-            errors: [{message: "Email and/or password missing."}]
+    User.create(req.body, function (err, user) {
+        // if the error throws any error, send them
+        if(err){
+            return res.status(400).send({
+                errors: [{message: err.message}]
             });
-    }else{
-        User.create(req.body, function (err, user) {
-            // if the error throws any error, send them
-            if(err){
-                return res.status(400).send({
-                    errors: [{message: err.message}]
-                });
-            }else{
+        }else{
+            var userToken = {
+                id: user._id
+            };
+            // if no errors are thrown the user has been created.
+            // create a token and send back the response with the user detail
+            var token = jwt.sign(userToken, config.passport.jwt.jwtSecret, {
+                expiresIn: 172800 // 2 days in seconds
+            });
 
-                var userToken = {
-                    id: user._id
-                };
-                // if no errors are thrown the user has been created.
-                // create a token and send back the response with the user detail
-                var token = jwt.sign(userToken, config.passport.jwt.jwtSecret, {
-                    expiresIn: 172800 // 2 days in seconds
-                });
-
-                return res.status(200).send({
-                    userId: user._id,
-                    role: user.role,
-                    jwtToken: token,
-                    expiresIn: 172800
-                })
-            }
-        });
-    }
+            return res.status(200).send({
+                userId: user._id,
+                role: user.role,
+                jwtToken: token,
+                expiresIn: 172800
+            })
+        }
+    });
 });
 
 /**
