@@ -31,7 +31,9 @@
         <img class="logo" src="../../../assets/img/spot-logo.png">|
         <img class="logo" src="../../../assets/img/maprogress-logo.jpg">
       </div>-->
-      <button class="btn-primary" routerLink="/events/{{event._id}}/manage" *ngIf="event.status==='planned'">Edit event</button>
+      <button class="btn-primary" id="edit" routerLink="/events/{{event._id}}/manage" *ngIf="event.status==='planned'">Edit event</button>
+      <button class="btn-primary" id="route" routerLink="/events/{{event._id}}/manage/route" *ngIf="event.status==='planned'">Edit Route
+      </button>
       <button id="btn-start" class="btn-primary" *ngIf="event.status==='planned'" (click)="startTracking(event)">Start Tracking</button>
       <button id="btn-stop" class="btn-primary" *ngIf="event.status==='ongoing'" (click)="stopTracking(event)">Stop Tracking</button>
         <div style="height: 0;overflow: hidden">
