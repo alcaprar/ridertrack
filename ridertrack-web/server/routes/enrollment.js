@@ -48,7 +48,16 @@ router.post('/', authMiddleware.hasValidToken, function(req, res){
                                                 errors: [err]
                                             })
                                         } else {
-                                            var message = 'Enrollment for  ' + event.name + ' CONFIRMED! \n Event info: \n' + event;
+                                            var message = 'Enrollment for ' + event.name + ' CONFIRMED!\n ' +
+                                                '   Event name: ' + event.name +
+                                                '\n   Description: ' + event.description +
+                                                '\n   City: ' + event.city +
+                                                '\n   Country: ' + event.country +
+                                                '\n   Type: ' + event.type +
+                                                '\n   Starting Time: ' + event.startingDate +
+                                                '\n   Enrollment opening date: ' + event.enrollmentOpeningDate +
+                                                '\n   Enrollment closing date: ' + event.enrollmentClosingDate +
+                                                '\n   Link to event:  https://rider-track-dev.herokuapp.com/events/' + event._id;
 
                                             User.findByUserId(req.userId, function (err, user) {
                                                 if(err){
