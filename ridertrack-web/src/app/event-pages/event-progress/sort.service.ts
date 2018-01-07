@@ -32,18 +32,19 @@ export class SortService {
       });
     }
     if(criteria.sortColumn === 'open'){
+
       return table.sort((a,b) => {
         let data_a;
         let data_b;
         if(a.enrollmentOpeningAt){
-          data_a = new DatePipe('en-US').transform(a.enrollmentOpeningAt, 'dd/MM/yyyy');
+          data_a = a.enrollmentOpeningAt;
         }else {
-          data_a = '30/12/2200';
+          data_a = new Date();
         }
         if(b.enrollmentOpeningAt) {
-          data_b = new DatePipe('en-US').transform(b.enrollmentOpeningAt, 'dd/MM/yyyy');
+          data_b = b.enrollmentOpeningAt;
         }else {
-         data_b = '30/12/2200';
+         data_b = new Date();
         }
         if(criteria.sortDirection === 'desc'){
           return this.date_sort_desc(data_a, data_b);
@@ -57,21 +58,21 @@ export class SortService {
         let data_a;
         let data_b;
         if(a.enrollmentClosingAt){
-          data_a = new DatePipe('en-US').transform(a.enrollmentClosingAt, 'dd/MM/yyyy');
+          data_a = a.enrollmentClosingAt;
         }else {
-          data_a = '30/12/2200';
+          data_a = new Date();
         }
         if(b.enrollmentClosingAt) {
-          data_b = new DatePipe('en-US').transform(b.enrollmentClosingAt, 'dd/MM/yyyy');
+          data_b = b.enrollmentClosingAt;
         }else {
-          data_b = '30/12/2200';
+          data_b = new Date();
         }
         if(criteria.sortDirection === 'desc'){
           return this.date_sort_desc(data_a, data_b);
         }else {
           return this.date_sort_asc(data_a, data_b);
         }
-      });
+      })
     }
     else {
       return table.sort((a, b) => {

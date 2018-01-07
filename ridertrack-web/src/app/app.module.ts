@@ -154,7 +154,7 @@ import { ParticipantsDialogComponent } from './shared/dialog/participants-dialog
         path: 'admin/events',
         component: ManageEventsComponent,
         pathMatch: 'full',
-        canActivate: [AdminGuard]
+        //canActivate: [AdminGuard]
       },
       {
         path: 'events/create',
