@@ -29,6 +29,7 @@ import {EventManagePageComponent} from "./event-pages/event-manage-page/event-ma
 import {FacebookModule} from 'ngx-facebook';
 import {MyEventsComponent} from './event-pages/my-events/my-events.component';
 import {GuestGuard} from "./shared/guards/guest.guard";
+import {AdminGuard} from "./shared/guards/admin.guard";
 import {EventService} from "./shared/services/event.service";
 import {HttpClientService} from "./shared/services/http-client.service";
 import {EventBoxComponent} from "./event-pages/event-box/event-box.component";
@@ -146,12 +147,14 @@ import { ParticipantsDialogComponent } from './shared/dialog/participants-dialog
       {
         path: 'admin/users',
         component: ManageUsersComponent,
-        pathMatch: 'full'
+        pathMatch: 'full',
+        canActivate: [AdminGuard]
       },
       {
         path: 'admin/events',
         component: ManageEventsComponent,
-        pathMatch: 'full'
+        pathMatch: 'full',
+        canActivate: [AdminGuard]
       },
       {
         path: 'events/create',
@@ -235,6 +238,7 @@ import { ParticipantsDialogComponent } from './shared/dialog/participants-dialog
     UserService,
     AuthGuard,
     GuestGuard,
+    AdminGuard,
     AuthenticationService,
     EventService,
     GoogleMapsAPIWrapper,
