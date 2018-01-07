@@ -46,7 +46,6 @@ export class LeaderboardComponent implements OnInit {
       if(event.status === 'passed') {
         this.started = false;
         console.log("[LeaderBoard][Ranking][EventPassed]");
-        //TODO: GET FINAL RANKING
       }
       if(event.status === 'planned') {
         this.started = false;

@@ -118,6 +118,32 @@
             </div>
           </div>
 
+          <div *ngIf="event.status === 'passed'" class="section">
+            <h4 class="s-property-title">Ranking</h4>
+            <div class="s-property-content">
+              <div class="row  pr0 padding-top-40 properties-page">
+                <div class="col-md-12 clear">
+                  <table class="table" sortable-table (sorted)="onSorted($event)">
+                    <thead class="thead-yellow">
+                    <tr>
+                      <th sortable-column="position" class ="title">#</th>
+                      <th sortable-column="name" class="title">First Name</th>
+                      <th sortable-column="surname" class="title">Last Name</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let participant of ranking">
+                      <td>{{participant.position}}</td>
+                      <td>{{participant.name}}</td>
+                      <td>{{participant.surname}}</td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div class="section property-share">
             <h4 class="s-property-title">Share with your friends </h4>
             <div class="property-social">
