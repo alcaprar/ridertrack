@@ -195,10 +195,8 @@ export class UserService {
     formData.append('aboutMe', user.aboutMe);
     formData.append('email', user.email);
     formData.append('password', user.password);
-    console.log(formData);
 
     return new Promise((resolve,reject)=> {
-      console.log(formData);
       this.http.put(url, formData).toPromise()
         .then((response)=> {
           let body = response.json();
