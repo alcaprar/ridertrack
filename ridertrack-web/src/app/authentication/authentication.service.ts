@@ -258,7 +258,6 @@ export class AuthenticationService{
   getUserRole(): String {
     if (this.isAuthenticated()){
       const userRole = localStorage.getItem(ROLE);
-      console.log('[AuthService][getUserRole]', userRole);
       return userRole;
     }else{
       return null;
