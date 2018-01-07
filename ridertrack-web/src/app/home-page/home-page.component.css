@@ -53,7 +53,7 @@
 }
 
 .search-form {
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.8);
   border-radius: 5px;
   padding: 20px 0;
   box-sizing: border-box;
@@ -124,7 +124,6 @@
 .right {
   text-align: right;
 }
-#descr {
+#home-subtitle {
   color: black;
-  margin-left: 35% !important;
 }
