@@ -149,7 +149,7 @@ export class UserService {
         (errorResponse: any) => {
           var errors = errorResponse.json();
           console.log('[UserService][deleteUser][error]', errors);
-          return errors;
+          return (errors as Error[])[0];
         });
   }
 
