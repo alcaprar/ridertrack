@@ -494,6 +494,7 @@ router.post('/:eventId/route', authMiddleware.hasValidToken, authMiddleware.isOr
     var eventId = req.params.eventId;
     var routeType = req.body.type;
     var routeCoordinates = req.body.coordinates;
+    var routeLength = req.body.length;
 
     Route.create(eventId, routeType, routeCoordinates, function(err, routeCoordinates){
         if(err){
@@ -515,17 +516,24 @@ router.put('/:eventId/route', authMiddleware.hasValidToken, authMiddleware.isOrg
     var eventId = req.event._id;
     var routeType = req.body.type;
     var routeCoordinates = req.body.coordinates;
+    var routeLength = req.body.length;
 
     Route.update(eventId, routeType, routeCoordinates, function(err, updatedCoordinates){
         if (err){
             return res.status(400).send({
                 errors: [err]
             });
-        }
-        else{
-            return res.status(200).send({
-                message: 'Route updated successfully.'
+        }else{
+            // update the length of the event
+            Event.update(eventId, {length: routeLength}, function (err, event) {
+                if(err){
+                    console.log('[PUT /route] error while updating the length', err)
+                }
+                return res.status(200).send({
+                    message: 'Route updated successfully.'
+                });
             });
+            
         }
     });
 });

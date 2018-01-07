@@ -28,21 +28,34 @@ export class RouteService {
       );
   }
 
-  updateRoute(eventId, coordinates, type){
+  /**
+   * It calls the endpoint in backend in order to update the route.
+   * It also passes the new length of the route.
+   * @param eventId
+   * @param coordinates
+   * @param type
+   * @param length
+   * @returns {any|Promise<T>}
+     */
+  updateRoute(eventId, coordinates, type, length){
     const url = `${this.BASE_EVENT_URL}/${eventId}/route`;
 
-    return this.http.put(url, {type: type, coordinates: coordinates}).toPromise()
-      .then(
-        (route) => {
-          let body = route.json();
-          console.log('[RouteService][Route updated]', route);
-          return [null,body];
-        }
-      ).catch(
-        (err: any) => {
-          this.catchErrors(err);
+    return new Promise((resolve, reject) =>{
+      this.http.put(url, {type: type, coordinates: coordinates, length: length}).toPromise()
+        .then(
+          (response) => {
+            let body = response.json();
+            console.log('[RouteService][Route updated]', body);
+            resolve(body);
+          }
+        ).catch(
+        (response) => {
+          let body = response.json();
+          let errors = body.errors as Error[];
+          reject(errors)
         }
       );
+    });
   }
 
   deleteRoute(eventId){

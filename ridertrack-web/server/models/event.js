@@ -284,13 +284,15 @@ eventSchema.statics.create = function (organizerId, eventJson, callback) {
  */
 eventSchema.statics.update = function (eventId, eventJson, callback) {
     // create date object for startingDate
-    try{
-        let strDate = eventJson.startingDateString.split('/'); // DD/MM/YYYY
-        let strTime = eventJson.startingTimeString.split(':'); // HH:MM
-        eventJson.startingDate = new Date(parseInt(strDate[2]),parseInt(strDate[1]) - 1, parseInt(strDate[0]),parseInt(strTime[0]),parseInt(strTime[1]),0, 0);
-    }catch (e){
-        console.log('[EventModel][update] error while parsing startingDate and time', e);
-        return callback({message: 'Starting date or time is not valid.'})
+    if(eventJson.startingDateString && eventJson.startingTimeString){
+        try{
+            let strDate = eventJson.startingDateString.split('/'); // DD/MM/YYYY
+            let strTime = eventJson.startingTimeString.split(':'); // HH:MM
+            eventJson.startingDate = new Date(parseInt(strDate[2]),parseInt(strDate[1]) - 1, parseInt(strDate[0]),parseInt(strTime[0]),parseInt(strTime[1]),0, 0);
+        }catch (e){
+            console.log('[EventModel][update] error while parsing startingDate and time', e);
+            return callback({message: 'Starting date or time is not valid.'})
+        }
     }
 
     // if closing date is passed, cast it to date
