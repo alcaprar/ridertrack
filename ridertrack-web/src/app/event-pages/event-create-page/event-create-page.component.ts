@@ -4,6 +4,7 @@ import {EventService} from "../../shared/services/event.service";
 import {Event} from "../../shared/models/event"
 import {EventToCreate} from "../../shared/models/eventToCreate";
 import {Error} from "../../shared/models/error";
+import {DialogService} from "../../shared/dialog/dialog.service";
 declare var $: any;
 
 @Component({
@@ -18,7 +19,8 @@ export class EventCreatePageComponent implements OnInit {
 
   private errors: Error[] = [];
 
-  event = new EventToCreate();
+  private event = new EventToCreate();
+  private createdEvent: Event;
 
   private urlImage: any;
   private urlNoImage = '../../../assets/img/logofoto.png';
@@ -30,7 +32,7 @@ export class EventCreatePageComponent implements OnInit {
     inputPlaceholderText: 'Milano'
   };
 
-  constructor(private eventService: EventService, private router: Router) {
+  constructor(private eventService: EventService, private router: Router, private dialogService: DialogService) {
   }
 
   ngOnInit() {
@@ -121,21 +123,16 @@ export class EventCreatePageComponent implements OnInit {
         .then(
           (response) => {
             console.log('[CreateEvent][onSubmit][success]', response);
-            if(response[0] !== null){
-              // errors occureed
-              this.errors = response[0] as Error[];
-            }else{
-              var createdEvent: Event = response[1] as Event;
-              this.router.navigate(['/events', createdEvent._id, 'manage']);
-            }
-            // this.alertService.success("Event successfully created");
+            this.createdEvent = response as Event;
+            this.dialogService.alert('Create event', 'The event has succesfully been created.', function () {
+              this.router.navigate(['/events', this.createdEvent._id, 'manage']);
+            }.bind(this));
           }
         )
         .catch(
-          (error) => {
-            console.log('[CreateEvent][onSubmit][error]', error);
-            // this.alertService.error("An error occured: "+ error.message);
-            this.router.navigate(['/events', 'create']);
+          (errors) => {
+            console.log('[CreateEvent][onSubmit][error]', errors);
+            this.errors = errors;
           }
         )
     }

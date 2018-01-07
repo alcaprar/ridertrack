@@ -16,9 +16,9 @@ export class DialogService {
     this.dialogs['confirmation'].show(title, body, callback);
   }
 
-  alert(title, body){
-    console.log('[DialogService][alert]', this.dialogs);
-    this.dialogs['alert'].show(title, body);
+  alert(title, body, callback = ()=>{}){
+    console.log('[DialogService][alert]', this.dialogs, callback);
+    this.dialogs['alert'].show(title, body, callback);
   }
 
   adminEditUser(title,userid, selection, callback){

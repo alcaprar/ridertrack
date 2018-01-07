@@ -46,62 +46,6 @@ mongoose.connect(config.mongodb.uri, {
         // TODO try to reconnect
     }else{
         console.log('[MDB] Successfully connected to MongoDB');
-
-        var events = db.collection('events');
-
-        events.find().toArray(function(err, events) {
-            for(let i =0; i < events.length; i++){
-                let event = events[i];
-                if(typeof event.startingDate === 'string'){
-                    (function (event) {
-                        var Event = require('./server/models/event');
-                        Event.findOne({_id: event._id}, function (err, evt) {
-
-                            var strDate = event.startingDate.split('/'); // DD/MM/YYYY
-                            var strTime = ['12', '00'];
-                            if(event.startingTime){
-                                event.startingTime.split(':')
-                            }
-                            evt.startingDate = new Date(parseInt(strDate[2]),parseInt(strDate[1]) - 1, parseInt(strDate[0]), parseInt(strTime[0]), parseInt(strTime[1]), 0, 0);
-
-                            evt.save(function () {
-                                console.log('[fix-startingDate]', event._id)
-                            })
-
-                        })
-                    })(event)
-                }
-                if(event.enrollmentOpeningAt){
-                    (function (event) {
-                        var Event = require('./server/models/event');
-                        Event.findOne({_id: event._id}, function (err, evt) {
-
-                            evt.enrollmentOpeningDate = event.enrollmentOpeningAt;
-
-                            evt.save(function () {
-                                console.log('[fix-enrollingOpeningAt]', event._id)
-                            })
-
-                        })
-                    })(event)
-                }
-                if(event.enrollmentClosingAt){
-                    (function (event) {
-                        var Event = require('./server/models/event');
-                        Event.findOne({_id: event._id}, function (err, evt) {
-
-                            evt.enrollmentClosingDate = event.enrollmentClosingAt;
-
-                            evt.save(function () {
-                                console.log('[fix-enrollmentClosingAt]', event._id)
-                            })
-
-                        })
-                    })(event)
-                }
-            }
-
-        });
     }
 });
 

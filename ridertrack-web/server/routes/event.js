@@ -52,6 +52,10 @@ router.get('/', function(req, res) {
             }
         }
         options.sort = sort
+    }else{
+        options.sort = {
+            'startingDate': 'asc'
+        }
     }
 
     // check for query parameters
@@ -246,7 +250,7 @@ router.post('/', authMiddleware.hasValidToken, multipart, function (req, res) {
         data: fs.readFileSync(tempPath),
         contentType: logoMimeType
     };
-    
+
     Event.create(req.userId, event, function (err, event) {
         if (err) {
             console.log('[POST/events][error]', err);

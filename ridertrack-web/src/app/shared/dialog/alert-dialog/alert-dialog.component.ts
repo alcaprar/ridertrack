@@ -18,15 +18,26 @@ export class AlertDialogComponent implements OnInit {
     this.dialogService.register('alert', this)
   }
 
-  ngOnInit() {
+  ngOnInit(){
+
   }
 
-  show(title, body){
-    console.log('[AlertDialog][show]', title, body);
+  ngAfterViewInit() {
+    var dialog = this;
+    $('#alertDialog').on('hidden.bs.modal', function () {
+      console.log('nascosto', dialog.callback);
+      if(dialog.callback && typeof dialog.callback === 'function'){
+        dialog.callback()
+      }
+    })
+  }
+
+  show(title, body, callback){
+    console.log('[AlertDialog][show]', title, body, callback);
     this.title = title;
     this.body = body;
+    this.callback = callback;
     $('#alertDialog').modal('show');
-
   }
 
   ok(){

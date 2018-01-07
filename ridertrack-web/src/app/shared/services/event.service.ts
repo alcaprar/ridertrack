@@ -190,23 +190,24 @@ export class EventService {
         formData.append(key, event[key])
       }
     }
-
-    return this.http.post(url, formData).toPromise()
-      .then(
-        (res) => {
-          const body = res.json();
-          const event = body.event as Event;
-          console.log('[EventService][createEvent][success]', body);
-          //this.router.navigate(['/my-events']);
-          return [null, event];
-        })
-      .catch(
-        (errorResponse: any) => {
-          var errors = errorResponse.json().errors as Error[];
-          console.log('[EventService][createEvent][error]', errors);
-          return [errors, new Event()];
-        }
-      )
+    return new Promise((resolve, reject) => {
+      this.http.post(url, formData).toPromise()
+        .then(
+          (res) => {
+            const body = res.json();
+            const event = body.event as Event;
+            console.log('[EventService][createEvent][success]', body);
+            //this.router.navigate(['/my-events']);
+            resolve(event);
+          })
+        .catch(
+          (errorResponse: any) => {
+            var errors = errorResponse.json().errors as Error[];
+            console.log('[EventService][createEvent][error]', errors);
+            reject(errors)
+          }
+        )
+    })
   }
 
   /**
