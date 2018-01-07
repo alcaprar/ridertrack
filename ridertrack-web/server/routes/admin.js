@@ -215,7 +215,7 @@ router.post('/users', authMiddleware.hasValidToken, authMiddleware.hasAdministra
 /**
  * It updates the fields passed in the body of the given userId
  */
-router.put('/users/:userId', authMiddleware.hasValidToken, authMiddleware.hasAdministratorRole, function (req, res) {
+router.put('/users/:userId', authMiddleware.hasValidToken, authMiddleware.hasAdministratorRole, multipart, function (req, res) {
     var userBody = req.body;
 
     // check image
