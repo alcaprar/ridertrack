@@ -22,4 +22,4 @@ deploy:
     master: rider-track
     development: rider-track-dev
 
-script: npm run test-node
+script: npm run test-backend

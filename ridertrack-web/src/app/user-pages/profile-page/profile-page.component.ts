@@ -25,8 +25,8 @@ export class ProfilePageComponent implements OnInit {
 
   public userSettingCity: any ;
 
-  private urlImage: any;
-  private urlNoImage = '../../../assets/img/user_fake_img.png';
+  public urlImage: any;
+  public urlNoImage = '../../../assets/img/user_fake_img.png';
 
   constructor(private router: Router, private formBuilderLogin: FormBuilder, private userService: UserService, private dialogService: DialogService, private authService: AuthenticationService) { }
 
