@@ -26,8 +26,8 @@
           <td>{{event.startingDate | date: 'dd/MM/yyyy HH:mm'}}</td>
           <td>{{event.city}}</td>
           <td>{{event.country}}</td>
-          <td>{{(event.enrollmentOpeningDate) ? (event.enrollmentOpeningDate | date: 'dd/MM/yyyy') : '(TBD*)'}}</td>
-          <td>{{(event.enrollmentClosingDate) ? (event.enrollmentClosingDate | date: 'dd/MM/yyyy') : '(TBD*)'}}</td>
+          <td>{{event.enrollmentOpeningDate ? (event.enrollmentOpeningDate | date: 'dd/MM/yyyy HH:mm') : '(TBD*)'}}</td>
+          <td>{{event.enrollmentClosingDate ? (event.enrollmentClosingDate | date: 'dd/MM/yyyy HH:mm') : '(TBD*)'}}</td>
           <td>{{event.length ? event.length : '(TBD*)'}}</td>
           <td>
             <div class="pull-left">

@@ -134,8 +134,8 @@ export class EventManagePageComponent implements OnInit {
         )
         .catch(
           (error) => {
-            console.log('[CreateEvent][onSubmit][error]', error);
-            this.router.navigate(['/events', 'create']);
+            console.log('[MangeEvent][onSubmit][error]', error);
+            this.router.navigate(['/events', 'manage']);
           }
         );
     }

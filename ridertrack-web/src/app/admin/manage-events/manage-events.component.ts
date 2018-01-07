@@ -20,7 +20,6 @@ import {SortService} from "../../event-pages/event-progress/sort.service";
 export class ManageEventsComponent implements OnInit {
 
   private queryParams: EventsListQueryParams = new EventsListQueryParams;
-  private totalPages: number = 0;
   private eventsList: Event[] = [];
   private errors: Error[] = [];
 
