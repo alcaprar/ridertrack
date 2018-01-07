@@ -11,12 +11,12 @@ export class SortableColumnComponent implements OnInit, OnDestroy {
   constructor( private sortService: SortService) { }
 
   @Input('sortable-column')
-  columnName: string;
+  public columnName: string;
 
   @Input('sort-direction')
-  sortDirection: string ='';
+  public sortDirection: string ='';
 
-  private columnSortedSubscription: Subscription;
+  public columnSortedSubscription: Subscription;
 
   @HostListener('click')
   sort() {

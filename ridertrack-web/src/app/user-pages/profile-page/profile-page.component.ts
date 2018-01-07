@@ -17,10 +17,10 @@ declare var $: any;
 export class ProfilePageComponent implements OnInit {
 
   private user: User = new User();
-  errors: Error[]=[];
-  name: String;
-  surname: String;
-  email: String;
+  public errors: Error[]=[];
+  public name: String;
+  public surname: String;
+  public email: String;
 
 
   public userSettingCity: any ;

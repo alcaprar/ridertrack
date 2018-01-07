@@ -16,21 +16,21 @@ declare var $: any;
 })
 export class AdminEditEventDialogComponent implements OnInit, AfterViewInit {
 
-  private eventTypes;
+  public eventTypes;
 
-  private eventId: string;
-  private event:Event = new Event();
-  time:Date = new Date();
-  private callback;
+  public eventId: string;
+  public event:Event = new Event();
+  public time:Date = new Date();
+  public callback;
 
-  private urlImage: any;
-  private urlNoImage = '../../../assets/img/logofoto.png';
+  public urlImage: any;
+  public urlNoImage = '../../../assets/img/logofoto.png';
 
-  errors: Error[] = [];
+  public errors: Error[] = [];
   public userSettingCity: any;
 
-  private title = 'Title';
-  private selection: string;
+  public title = 'Title';
+  public selection: string;
 
   constructor(private eventService: EventService, private router: Router,
               private route: ActivatedRoute,private dialogService: DialogService) {

@@ -14,16 +14,16 @@ export class OrganizedEventsComponent implements OnInit {
   @ViewChild('itemsPerPage') itemsPerPageSelect: ElementRef;
 
 
-  private allowedItemsPerPage = [3, 6, 9, 12, 15];
+  public allowedItemsPerPage = [3, 6, 9, 12, 15];
 
-  private queryParams: MyEventsQueryParams = new MyEventsQueryParams();
-  private totalPages: number = 0;
+  public queryParams: MyEventsQueryParams = new MyEventsQueryParams();
+  public totalPages: number = 0;
 
-  private organizedEvents: Event[] = [];
+  public organizedEvents: Event[] = [];
 
-  private errors: Error[]=[];
+  public errors: Error[]=[];
 
-  private loading = true;
+  public loading = true;
 
   constructor(private authService: AuthenticationService, private route: ActivatedRoute,
               private router: Router, private eventService: EventService) {

@@ -15,15 +15,15 @@ declare var $: any;
 })
 export class EnrollementDialogComponent implements OnInit{
 
-  private title = 'Title';
-  private isSelected: boolean;
-  private isEnrolled: boolean;
-  private eventId: string;
-  private device: Device = null;
+  public title = 'Title';
+  public isSelected: boolean;
+  public isEnrolled: boolean;
+  public eventId: string;
+  public device: Device = null;
 
-  private currentUser: User = new User();
+  public currentUser: User = new User();
 
-  private errors: Error[] = [];
+  public errors: Error[] = [];
 
   constructor(private dialogService: DialogService, private router: Router, private userService: UserService,
               private eventService: EventService) {

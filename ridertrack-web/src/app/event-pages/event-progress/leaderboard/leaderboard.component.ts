@@ -11,12 +11,12 @@ import {Event, User} from "../../../shared/models";
 })
 export class LeaderboardComponent implements OnInit {
 
-  private eventId;
-  private currentEvent = new Event();
-  private ranking: any = [];
-  private started: boolean;
+  public eventId;
+  public currentEvent = new Event();
+  public ranking: any = [];
+  public started: boolean;
 
-  private refreshInterval;
+  public refreshInterval;
 
 
   constructor(private route: ActivatedRoute, private sortService: SortService, private eventService: EventService) { }

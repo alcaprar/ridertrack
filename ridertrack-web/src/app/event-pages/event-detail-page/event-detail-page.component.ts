@@ -17,24 +17,24 @@ import {RouteService} from "../../shared/services/route.service";
 })
 export class EventDetailPageComponent implements OnInit {
 
-  private eventId: String;
+  public eventId: String;
 
-  private logoUrl = '';
+  public logoUrl = '';
 
-  private logoOrganizer;
+  public logoOrganizer;
 
-  private href = '';
+  public href = '';
 
-  private event: Event = new Event();
-  private currentUser: User = new User();
-  private organizer: User = new User();
-  private similarEvents: Event[];
-  private mapPoints: any;
+  public event: Event = new Event();
+  public currentUser: User = new User();
+  public organizer: User = new User();
+  public similarEvents: Event[];
+  public mapPoints: any;
 
   // ids of participants
-  private participantsList = [];
+  public participantsList = [];
 
-  errors: Error[] = [];
+  public errors: Error[] = [];
 
   constructor(private route: ActivatedRoute,
               private userService: UserService,

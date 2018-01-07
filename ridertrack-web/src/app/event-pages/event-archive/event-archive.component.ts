@@ -14,123 +14,123 @@ declare var $: any;
 })
 export class EventArchiveComponent implements OnInit {
 
-    @ViewChild('searchKeyword') searchKeyword: ElementRef;
-    @ViewChild('searchCity') searchCity: ElementRef;
-    @ViewChild('searchType') searchType: ElementRef;
-    @ViewChild('itemsPerPage') itemsPerPageSelect: ElementRef;
+  @ViewChild('searchKeyword') searchKeyword: ElementRef;
+  @ViewChild('searchCity') searchCity: ElementRef;
+  @ViewChild('searchType') searchType: ElementRef;
+  @ViewChild('itemsPerPage') itemsPerPageSelect: ElementRef;
 
-    private currentUser: User;
-    private eventsList: Event[] = [];
-    private eventTypes: String[];
-    private allowedItemsPerPage = [3, 6, 9, 12, 15];
+  public currentUser: User;
+  public eventsList: Event[] = [];
+  public  eventTypes: String[];
+  public allowedItemsPerPage = [3, 6, 9, 12, 15];
 
-    private queryParams: EventsListQueryParams = new EventsListQueryParams;
-    private totalPages: number = 0;
+  public queryParams: EventsListQueryParams = new EventsListQueryParams;
+  public totalPages: number = 0;
 
-    constructor(private eventService: EventService, private route: ActivatedRoute, private userService: UserService, private router: Router, private appRef: ApplicationRef) {
-      // retrieve the event types
-      this.eventTypes = this.eventService.getEventTypes();
-    }
+  constructor(private eventService: EventService, private route: ActivatedRoute, private userService: UserService, private router: Router, private appRef: ApplicationRef) {
+    // retrieve the event types
+    this.eventTypes = this.eventService.getEventTypes();
+  }
 
-    // When the component is created saves the list of all events and the current user
-    ngOnInit() {
-      this.userService.getUser()
-        .subscribe(
-          user => {
-            this.currentUser = user
-          });
+  // When the component is created saves the list of all events and the current user
+  ngOnInit() {
+    this.userService.getUser()
+      .subscribe(
+        user => {
+          this.currentUser = user
+        });
 
-      // get query params for pagination
-      this.route.queryParams
-        .subscribe(
-          params=> {
+    // get query params for pagination
+    this.route.queryParams
+      .subscribe(
+        params=> {
 
-            this.queryParams.page = +params['page'] || 1; // the plus before params is used to cast it to a number
-            this.queryParams.itemsPerPage = (this.allowedItemsPerPage.indexOf(+params['itemsPerPage']) > -1) ? +params['itemsPerPage'] : 12;
-            this.queryParams.keyword = params['keyword'] || undefined;
-            this.queryParams.sort = params['sort'] || undefined;
-            this.queryParams.type = params['type'] || undefined;
-            this.queryParams.lengthgte = params['lengthgte'] || undefined;
-            this.queryParams.lengthlte = params['lengthlte'] || undefined;
-            this.queryParams.city = params['city'] || undefined;
-            this.queryParams.country = params['country'] || undefined;
+          this.queryParams.page = +params['page'] || 1; // the plus before params is used to cast it to a number
+          this.queryParams.itemsPerPage = (this.allowedItemsPerPage.indexOf(+params['itemsPerPage']) > -1) ? +params['itemsPerPage'] : 12;
+          this.queryParams.keyword = params['keyword'] || undefined;
+          this.queryParams.sort = params['sort'] || undefined;
+          this.queryParams.type = params['type'] || undefined;
+          this.queryParams.lengthgte = params['lengthgte'] || undefined;
+          this.queryParams.lengthlte = params['lengthlte'] || undefined;
+          this.queryParams.city = params['city'] || undefined;
+          this.queryParams.country = params['country'] || undefined;
 
-            console.log('[EventList][ngOnInit]', this.queryParams);
+          console.log('[EventList][ngOnInit]', this.queryParams);
 
-            // get events
-            this.eventService.getAllPassedEvents(this.queryParams)
-              .then(
-                (response) => {
-                  console.log('[AllEvents][getAllEvents]', response);
-                  this.eventsList = response[0];
-                  this.queryParams.page = response[1];
-                  this.queryParams.itemsPerPage = response[2];
-                  this.totalPages = response[3];
-                });
-          }
-        )
-    }
+          // get events
+          this.eventService.getAllPassedEvents(this.queryParams)
+            .then(
+              (response) => {
+                console.log('[AllEvents][getAllEvents]', response);
+                this.eventsList = response[0];
+                this.queryParams.page = response[1];
+                this.queryParams.itemsPerPage = response[2];
+                this.totalPages = response[3];
+              });
+        }
+      )
+  }
 
-    ngAfterViewInit(){
-      $('.selectpicker').selectpicker();
-    }
+  ngAfterViewInit(){
+    $('.selectpicker').selectpicker();
+  }
 
-    /**
-     * It is called when the user clicks on the prev page.
-     */
-    prevPage(){
-      if(this.queryParams.page > 1){
-        this.queryParams.page--;
-        this.updateEventsList()
-      }
-    }
-
-    /**
-     * It is called when the user clicks on the next page.
-     */
-    nextPage(){
-      if(this.queryParams.page < this.totalPages){
-        this.queryParams.page++;
-        this.updateEventsList();
-      }
-    }
-
-    changePage(page){
-      this.queryParams.page = page;
+  /**
+   * It is called when the user clicks on the prev page.
+   */
+  prevPage(){
+    if(this.queryParams.page > 1){
+      this.queryParams.page--;
       this.updateEventsList()
     }
+  }
 
-    /**
-     * Triggered when the dropdown chages the selection.
-     */
-    onItemsPerPageChanged(){
-      console.log('[EventsList][onItemsPerPageChanged]', this.itemsPerPageSelect.nativeElement.value);
-      this.queryParams.itemsPerPage = this.itemsPerPageSelect.nativeElement.value;
-      this.queryParams.page = 1
-      this.updateEventsList()
-    }
-
-    /**
-     * It is called when the search button is clicked.
-     */
-    search(){
-      this.queryParams.keyword = (this.searchKeyword.nativeElement.value === '') ? undefined : this.searchKeyword.nativeElement.value;
-      this.queryParams.city = (this.searchCity.nativeElement.value === '') ? undefined : this.searchCity.nativeElement.value;
-      this.queryParams.type = (this.searchType.nativeElement.value == -1) ? undefined : this.searchType.nativeElement.value;
-
-      this.queryParams.sort = undefined;
-      this.queryParams.page = undefined;
-      this.queryParams.itemsPerPage = undefined;
-
-      console.log('[EventsList][search]', this.queryParams);
-
+  /**
+   * It is called when the user clicks on the next page.
+   */
+  nextPage(){
+    if(this.queryParams.page < this.totalPages){
+      this.queryParams.page++;
       this.updateEventsList();
     }
+  }
 
-    /**
-     * It navigate to the route with the new query params.
-     */
-    private updateEventsList(){
+  changePage(page){
+    this.queryParams.page = page;
+    this.updateEventsList()
+  }
+
+  /**
+   * Triggered when the dropdown chages the selection.
+   */
+  onItemsPerPageChanged(){
+    console.log('[EventsList][onItemsPerPageChanged]', this.itemsPerPageSelect.nativeElement.value);
+    this.queryParams.itemsPerPage = this.itemsPerPageSelect.nativeElement.value;
+    this.queryParams.page = 1
+    this.updateEventsList()
+  }
+
+  /**
+   * It is called when the search button is clicked.
+   */
+  search(){
+    this.queryParams.keyword = (this.searchKeyword.nativeElement.value === '') ? undefined : this.searchKeyword.nativeElement.value;
+    this.queryParams.city = (this.searchCity.nativeElement.value === '') ? undefined : this.searchCity.nativeElement.value;
+    this.queryParams.type = (this.searchType.nativeElement.value == -1) ? undefined : this.searchType.nativeElement.value;
+
+    this.queryParams.sort = undefined;
+    this.queryParams.page = undefined;
+    this.queryParams.itemsPerPage = undefined;
+
+    console.log('[EventsList][search]', this.queryParams);
+
+    this.updateEventsList();
+  }
+
+  /**
+   * It navigate to the route with the new query params.
+   */
+  private updateEventsList(){
     this.queryParams.lengthgte = undefined; // TODO remove when length slider is activated
     this.queryParams.lengthlte = undefined; // TODO remove when length slider is activated
 
@@ -139,4 +139,4 @@ export class EventArchiveComponent implements OnInit {
     });
   }
 
-  }
+}

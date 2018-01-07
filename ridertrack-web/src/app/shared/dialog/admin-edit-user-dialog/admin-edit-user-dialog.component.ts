@@ -13,12 +13,12 @@ declare var $: any;
 })
 export class AdminEditUserDialogComponent implements OnInit {
 
-  private user: User = new User();
-  private userRoles = ['user', 'administrator'];
-  private selection: string;
-  private title: string;
-  private error: Error[];
-  private callback;
+  public user: User = new User();
+  public userRoles = ['user', 'administrator'];
+  public selection: string;
+  public title: string;
+  public error: Error[];
+  public callback;
 
   constructor(private dialogService: DialogService, private userService: UserService, private auth: AuthenticationService,
               private router: Router) {

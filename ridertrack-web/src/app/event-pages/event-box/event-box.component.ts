@@ -12,12 +12,12 @@ import {UserService} from "../../shared/services/user.service";
 export class EventBoxComponent implements OnInit {
 
   @Input()
-  event: any;
+  public event: any;
 
   @Input()
-  enrolled: boolean;
+  public enrolled: boolean;
 
-  private currentUser: User = new User();
+  public currentUser: User = new User();
 
   constructor(private router: Router, private  dialogService:DialogService,private userService: UserService) { }
 

@@ -15,16 +15,16 @@ declare var $: any;
 })
 export class EventManagePageComponent implements OnInit {
 
-  private eventTypes;
+  public eventTypes;
 
-  eventId: string;
-  event:Event = new Event();
-  time:Date = new Date();
+  public eventId: string;
+  public event:Event = new Event();
+  public time:Date = new Date();
 
-  private urlImage: any;
-  private urlNoImage = '../../../assets/img/logofoto.png';
+  public urlImage: any;
+  public urlNoImage = '../../../assets/img/logofoto.png';
 
-  errors: Error[] = [];
+  public errors: Error[] = [];
   public userSettingCity: any;
 
   constructor(private eventService: EventService, private router: Router, private route: ActivatedRoute,

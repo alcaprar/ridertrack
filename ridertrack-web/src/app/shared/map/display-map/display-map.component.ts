@@ -15,8 +15,8 @@ declare var $:any;
 export class DisplayMapComponent implements OnInit{
 
 
-  @Input() event: Event;
-  @Input() eventid: string;
+  @Input() public event: Event;
+  @Input() public eventid: string;
 
   public initCoords: any;
   public origin:any;
@@ -29,7 +29,7 @@ export class DisplayMapComponent implements OnInit{
   public bounds: any;
 
   public mapPoints; //latLng array
-  directions: any;
+  public directions: any;
   constructor(private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private routeService: RouteService,
               private googleWrapper: GoogleMapsAPIWrapper) { }
 

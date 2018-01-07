@@ -10,7 +10,7 @@ import { DialogService } from "../shared/dialog/dialog.service";
 })
 export class ContactsPageComponent implements OnInit {
 
-  contactForm: FormGroup;
+  public contactForm: FormGroup;
 
   @Input() message = { name: '', surname: '', email: '', subject: '', message: '' };
 

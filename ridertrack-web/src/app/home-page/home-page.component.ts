@@ -15,13 +15,13 @@ export class HomePageComponent {
   @ViewChild('searchKeyword') searchKeyword: ElementRef;
   @ViewChild('searchType') searchType: ElementRef;
 
-  private lastEvents: Event[];
-  private eventTypes: String[];
+  public lastEvents: Event[];
+  public eventTypes: String[];
 
   // Initialized to specific date (09.10.2018).
   public model: any = { date: { year: 2018, month: 10, day: 9 } };
 
-  private loading = true;
+  public loading = true;
 
   constructor(private eventService: EventService, private router: Router) {
     // retrieve the event types

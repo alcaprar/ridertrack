@@ -10,8 +10,8 @@ import {EventService} from "../../shared/services";
 })
 export class EventProgressComponent implements OnInit {
 
-  private eventId;
-  private eventName = '';
+  public eventId;
+  public eventName = '';
   constructor(private router: Router, private eventService: EventService, private route: ActivatedRoute){}
 
   ngOnInit(): void {

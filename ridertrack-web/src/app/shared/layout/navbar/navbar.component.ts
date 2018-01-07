@@ -10,10 +10,10 @@ import { User } from '../../models/user';
 })
 export class NavbarComponent implements OnInit {
 
-  profilePictureURL: String;
+  public profilePictureURL: String;
   public isAdmin: boolean;
-  private user: User = new User();
-  private role: String;
+  public user: User = new User();
+  public role: String;
 
   constructor(private userService: UserService, private authService: AuthenticationService) {
   }

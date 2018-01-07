@@ -8,7 +8,7 @@ import { Component, OnInit, Input } from '@angular/core';
 export class FooterEventBoxComponent implements OnInit {
 
   @Input()
-  event: any;
+  public event: any;
 
   constructor() { }
 

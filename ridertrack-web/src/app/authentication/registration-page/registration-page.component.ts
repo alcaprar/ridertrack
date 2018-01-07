@@ -12,9 +12,9 @@ declare var grecaptcha:any;
 })
 export class RegistrationPageComponent implements OnInit {
 
-  registerForm: FormGroup;
-  errors: Error[]= [];
-  loading = false;
+  public registerForm: FormGroup;
+  public errors: Error[]= [];
+  public loading = false;
 
   private recaptchaId = -1;
 

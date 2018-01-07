@@ -5,7 +5,7 @@
   "scripts": {
     "build": "cd ridertrack-web && ng build",
     "start": "node ridertrack-web/server.js",
-    "test-node": "cd ridertrack-web && npm run webserver-test",
+    "test-backend": "cd ridertrack-web && npm run test-backend",
     "postinstall": "cd ridertrack-web && npm install"
   },
   "private": true,

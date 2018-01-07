@@ -11,12 +11,12 @@ import {User} from "../../shared/models/user";
 })
 export class LoginPageComponent implements OnInit {
 
-  loginForm: FormGroup;
-  respond: any;
+  public loginForm: FormGroup;
+  public respond: any;
   @Input() user = { name: '', surname: '', email: '', password:'', role: ''};
 
-  errors: Error[] = [];
-  loading = false;
+  public errors: Error[] = [];
+  public loading = false;
 
   constructor(private fbLogin: FormBuilder, private router: Router, private authService: AuthenticationService) { }
 

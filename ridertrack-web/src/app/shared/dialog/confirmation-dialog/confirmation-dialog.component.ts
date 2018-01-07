@@ -10,9 +10,9 @@ declare var $: any;
 })
 export class ConfirmationDialogComponent implements OnInit {
 
-  private callback;
-  private title = 'Title';
-  private body = 'Body';
+  public callback;
+  public title = 'Title';
+  public body = 'Body';
 
   constructor(private dialogService: DialogService) {
     this.dialogService.register('confirmation', this)

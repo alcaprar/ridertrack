@@ -25,8 +25,8 @@ export class AddRouteMapComponent implements OnInit {
   public event = new Event();
 
   public mapPoints : any = [] ; //latLng array
-  directions : any;
-  private length: number;
+  public directions : any;
+  public length: number;
 
   public userSettingCity: any = {
     showSearchButton: false,
@@ -35,12 +35,11 @@ export class AddRouteMapComponent implements OnInit {
     inputPlaceholderText: 'Insert a Starting Address'
   };
 
-  private eventId: String;
+  public eventId: String;
 
-  errors: Error[] = [];
+  public errors: Error[] = [];
 
-  @ViewChild("search")
-  public searchElementRef: ElementRef;
+  @ViewChild("search") public searchElementRef: ElementRef;
 
   constructor(private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private routeService: RouteService,
               private route: ActivatedRoute, private router: Router, private dialogService: DialogService,

@@ -10,7 +10,7 @@ declare var $:any;
 })
 export class FooterComponent implements OnInit {
 
-  private lastEvents: Event[];
+  public lastEvents: Event[];
 
   constructor(private eventService: EventService) {
     // retrive the last 3 events

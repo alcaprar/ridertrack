@@ -12,8 +12,8 @@ import {DialogService} from "../../shared/dialog/dialog.service";
 })
 export class ManageUsersComponent implements OnInit, OnChanges {
 
-  errors: Error[] =[];
-  users: any;
+  public errors: Error[] =[];
+  public users: any;
 
   constructor(private route: ActivatedRoute,private userService: UserService, private sortService: SortService,
               private dialogService: DialogService) { }

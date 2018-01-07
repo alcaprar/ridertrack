@@ -19,9 +19,9 @@ import {SortService} from "../../event-pages/event-progress/sort.service";
 })
 export class ManageEventsComponent implements OnInit {
 
-  private queryParams: EventsListQueryParams = new EventsListQueryParams;
-  private eventsList: Event[] = [];
-  private errors: Error[] = [];
+  public queryParams: EventsListQueryParams = new EventsListQueryParams;
+  public eventsList: Event[] = [];
+  public errors: Error[] = [];
 
   constructor(private userService: UserService,private eventService: EventService, private dialogService: DialogService,
               private sortService: SortService, private router: Router) { }

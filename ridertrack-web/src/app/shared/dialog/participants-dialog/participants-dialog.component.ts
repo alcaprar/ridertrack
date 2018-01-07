@@ -10,7 +10,7 @@ declare var $ : any;
 })
 export class ParticipantsDialogComponent implements OnInit {
 
-  private participants = [];
+  public participants = [];
 
   constructor(private dialogService: DialogService) {
     this.dialogService.register('participants', this)

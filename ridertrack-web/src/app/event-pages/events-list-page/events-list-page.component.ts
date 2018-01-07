@@ -19,12 +19,12 @@ export class EventsListPageComponent implements OnInit {
   @ViewChild('searchType') searchType: ElementRef;
   @ViewChild('itemsPerPage') itemsPerPageSelect: ElementRef;
 
-  private currentUser: User;
-  private eventsList: Event[] = [];
-  private eventTypes: String[];
-  private maxLengthSlider = 300;
-  private minLengthSlider = 0;
-  private allowedItemsPerPage = [3, 6, 9, 12, 15];
+  public currentUser: User;
+  public eventsList: Event[] = [];
+  public eventTypes: String[];
+  public maxLengthSlider = 300;
+  public minLengthSlider = 0;
+  public allowedItemsPerPage = [3, 6, 9, 12, 15];
 
   public userSettingCity: any = {
     showSearchButton: false,
@@ -34,10 +34,10 @@ export class EventsListPageComponent implements OnInit {
 
   };
 
-  private queryParams: EventsListQueryParams = new EventsListQueryParams;
-  private totalPages: number = 0;
+  public queryParams: EventsListQueryParams = new EventsListQueryParams;
+  public totalPages: number = 0;
 
-  private loading = true;
+  public loading = true;
 
   constructor(private eventService: EventService, private route: ActivatedRoute, private userService: UserService, private router: Router, private appRef: ApplicationRef) {
     // retrieve the event types

@@ -11,12 +11,12 @@ import {DialogService} from "../../shared/dialog/dialog.service";
 export class EventBoxOrganizedComponent implements OnInit {
 
   @Input()
-  event: any;
+  public event: any;
 
 
   constructor(private router: Router, private eventService: EventService, private dialogService: DialogService) { }
 
-  csvFile: File;
+  public csvFile: File;
 
   ngOnInit() {
     console.log('[EventBox][Init]', this.event)

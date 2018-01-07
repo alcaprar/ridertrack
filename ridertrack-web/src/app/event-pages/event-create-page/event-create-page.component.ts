@@ -15,15 +15,15 @@ declare var $: any;
 })
 export class EventCreatePageComponent implements OnInit {
 
-  private eventTypes;
+  public eventTypes;
 
-  private errors: Error[] = [];
+  public errors: Error[] = [];
 
-  private event = new EventToCreate();
-  private createdEvent: Event;
+  public event = new EventToCreate();
+  public createdEvent: Event;
 
-  private urlImage: any;
-  private urlNoImage = '../../../assets/img/logofoto.png';
+  public urlImage: any;
+  public urlNoImage = '../../../assets/img/logofoto.png';
 
   public userSettingCity: any = {
     showSearchButton: false,

@@ -24,22 +24,22 @@ export class MapComponent implements OnInit {
 
 
   public mapPoints; //latLng array
-  directions: any;
+  public directions: any;
 
-  private event= new Event();
-  private eventId;
-  private participantsList: any = [];
-  private participantsMarkers : Progress[] = [];
-  private selectedType: string = '';
+  public event= new Event();
+  public eventId;
+  public participantsList: any = [];
+  public participantsMarkers : Progress[] = [];
+  public selectedType: string = '';
 
-  private refreshInterval;
+  public refreshInterval;
 
-  private participantSelected : String = "";
+  public participantSelected : String = "";
 
   public marker_background_colors = ["green", "red", "yellow", "orange", "purple", "pink",
     "blue", "black", "gray", "white", "brown"];
 
-  private lastUpdate = new Date();
+  public lastUpdate = new Date();
 
   @ViewChild('searchType') searchType: ElementRef;
 

@@ -9,7 +9,7 @@ declare var WOW: any;
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app';
+  public title = 'app';
 
   constructor(private router: Router) { }
 
