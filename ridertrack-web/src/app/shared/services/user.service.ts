@@ -139,7 +139,6 @@ export class UserService {
   deleteUserById(userId): Promise<Error> {
     const url = `${this.BASE_USERS_ADMIN}${userId}`;
     console.log('[UserService][deleteUserById]',userId);
-    console.log(url);
     return this.http.delete(url).toPromise()
       .then(
         (response) => {
@@ -148,7 +147,7 @@ export class UserService {
         })
       .catch(
         (errorResponse: any) => {
-          var errors = errorResponse.json().errors as Error[];
+          var errors = errorResponse.json();
           console.log('[UserService][deleteUser][error]', errors);
           return errors;
         });
