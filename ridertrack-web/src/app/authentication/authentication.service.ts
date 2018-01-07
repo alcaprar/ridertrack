@@ -10,6 +10,7 @@ import 'rxjs/add/operator/catch.js';
 import 'rxjs/Rx';
 import * as jwt_decode from 'jwt-decode';
 import {environment} from '../../environments/environment'
+import { NavbarComponent } from '../shared/layout/navbar/navbar.component';
 
 declare const gapi: any;
 
@@ -114,7 +115,11 @@ export class AuthenticationService{
           this.storeResponse(body.userId, body.role, body.jwtToken);
 
           // route to my-events
+          if (body.role === "administrator"){ 
+            this.router.navigate(['/']);
+          } else {
           this.router.navigate(['/my-events']);
+          }
 
           return null;
         },
@@ -245,6 +250,16 @@ export class AuthenticationService{
       const userId = localStorage.getItem(USERID);
       console.log('[AuthService][getUserId]', userId);
       return userId;
+    }else{
+      return null;
+    }
+  }
+
+  getUserRole(): String {
+    if (this.isAuthenticated()){
+      const userRole = localStorage.getItem(ROLE);
+      console.log('[AuthService][getUserRole]', userRole);
+      return userRole;
     }else{
       return null;
     }

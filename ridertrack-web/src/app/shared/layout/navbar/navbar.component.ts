@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {UserService} from '../../services/user.service';
 import {AuthenticationService} from '../../../authentication/authentication.service';
+import { User } from '../../models/user';
 
 @Component({
   selector: 'app-navbar',
@@ -10,11 +11,15 @@ import {AuthenticationService} from '../../../authentication/authentication.serv
 export class NavbarComponent implements OnInit {
 
   profilePictureURL: String;
+  public isAdmin: boolean;
+  private user: User = new User();
+  private role: String;
 
   constructor(private userService: UserService, private authService: AuthenticationService) {
   }
 
   ngOnInit() {
+    this.isAdministrator();
 
   }
 
@@ -26,7 +31,17 @@ export class NavbarComponent implements OnInit {
   }
 
   logout( ) {
+    this.isAdmin = false;
     this.authService.logout();
+  }
+
+  isAdministrator() {
+    this.role = this.authService.getUserRole();
+    if(this.role === "administrator"){
+      this.isAdmin=true;
+    } else {
+      this.isAdmin = false;
+    }
   }
 
 }

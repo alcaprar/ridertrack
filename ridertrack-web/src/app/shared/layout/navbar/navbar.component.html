@@ -8,7 +8,9 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" routerLink="/"><img src="../../../../assets/img/logoRidertrack.png" alt="RiderTrack" style="height: 60px; padding-bottom: 0px"></a>
+      <a class="navbar-brand" routerLink="/">
+        <img src="../../../../assets/img/logoRidertrack.png" alt="RiderTrack" style="height: 60px; padding-bottom: 0px">
+      </a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -20,32 +22,45 @@
 
     <div class="collapse navbar-collapse yamm" id="navigation">
       <ul class="main-nav nav navbar-nav navbar-right" routerLinkActive="active">
-        <li class="wow fadeInDown" data-wow-delay="0.2s">
+        <li class="wow fadeInDown" data-wow-delay="0.2s" *ngIf="isAdmin">
+          <a class="" routerLink="/admin/events"> Edit events</a>
+        </li>
+        <li class="wow fadeInDown" data-wow-delay="0.2s" *ngIf="isAdmin">
+            <a class="" routerLink="/admin/users"> Edit users</a>
+          </li>
+        <li class="wow fadeInDown" data-wow-delay="0.2s" *ngIf="!isAdmin">
           <a class="" routerLink="/how-it-works"> How it works</a>
         </li>
-        <li class="wow fadeInDown" data-wow-delay="0.2s">
+        <li class="wow fadeInDown" data-wow-delay="0.2s" *ngIf="!isAdmin">
           <a class="" routerLink="/events"> All Events</a>
         </li>
-        <li class="wow fadeInDown" data-wow-delay="0.3s" *ngIf="isLoggedIn()">
+        <li class="wow fadeInDown" data-wow-delay="0.3s" *ngIf="isLoggedIn() && !isAdmin">
           <a class="" routerLink="/my-events">My Events</a>
         </li>
-        <li class="wow fadeInDown" data-wow-delay="0.3s">
+        <li class="wow fadeInDown" data-wow-delay="0.3s" *ngIf="!isAdmin">
           <a class="" routerLink="/contacts">Contacts</a>
         </li>
         <li class="dropdown ymm-sw " data-wow-delay="0.1s" *ngIf="isLoggedIn()">
-          <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="200"><i class="fa fa-user" style="font-size: 20px"></i> <b class="caret"></b></a>
+          <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="200">
+            <i class="fa fa-user" style="font-size: 20px"></i>
+            <b class="caret"></b>
+          </a>
           <ul class="dropdown-menu navbar-nav">
             <li>
-              <a routerLink="/my-profile"><i class="fa fa-user"></i> My profile</a>
+              <a routerLink="/my-profile">
+                <i class="fa fa-user"></i> My profile</a>
             </li>
             <li>
-              <a (click)="logout()" style="cursor: pointer"><i class="fa fa-lock"></i> Logout</a>
+              <a (click)="logout()" style="cursor: pointer">
+                <i class="fa fa-lock"></i> Logout</a>
             </li>
           </ul>
         </li>
       </ul>
-    </div><!-- /.navbar-collapse -->
+    </div>
+    <!-- /.navbar-collapse -->
 
-  </div><!-- /.container-fluid -->
+  </div>
+  <!-- /.container-fluid -->
 </nav>
 <!-- End of nav bar -->
