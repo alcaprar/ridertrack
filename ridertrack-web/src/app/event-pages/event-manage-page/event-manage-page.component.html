@@ -47,6 +47,10 @@
                     </select>
                   </div>
                   <div class="form-group">
+                    <label for="maxParticipants">Max number of participants</label>
+                    <input [(ngModel)]="event.maxParticipants" #maxParticipants="ngModel" id="maxParticipants" name="maxParticipants" type="text" class="form-control" placeholder="Max number of participants">
+                  </div>
+                  <div class="form-group">
                     <label for="description">Few words about the event</label>
                     <textarea [(ngModel)]="event.description" #description="ngModel" id="description" name="decription"
                            type="text" class="form-control" cols="40" placeholder="Write here a description of the event..." >

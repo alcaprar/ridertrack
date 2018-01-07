@@ -10,6 +10,7 @@ import {Response} from "@angular/http";
 @Injectable()
 export class UserService {
   private BASE_USERS_URL = '/api/users/';
+  private BASE_USERS_ADMIN = '/api/admin/users/';
 
   constructor(private http: HttpClientService, private authService: AuthenticationService, private router: Router) {
 
@@ -136,7 +137,7 @@ export class UserService {
   }
 
   deleteUserById(userId): Promise<Error> {
-    const url = `${this.BASE_USERS_URL}${userId}`;
+    const url = `${this.BASE_USERS_ADMIN}${userId}`;
     console.log('[UserService][deleteUserById]',userId);
     console.log(url);
     return this.http.delete(url).toPromise()
@@ -183,8 +184,8 @@ export class UserService {
   }
 
   updateUserById(userId, user){
-    const url = `${this.BASE_USERS_URL}${userId}`;
-    console.log("[UpdateUserById][Id]",userId);
+    const url = `${this.BASE_USERS_ADMIN}${userId}`;
+    console.log("[UpdateUserById][Id]",userId,user);
 
     var formData = new FormData();
     formData.append('logo', user.logo);
@@ -194,8 +195,10 @@ export class UserService {
     formData.append('aboutMe', user.aboutMe);
     formData.append('email', user.email);
     formData.append('password', user.password);
+    console.log(formData);
 
     return new Promise((resolve,reject)=> {
+      console.log(formData);
       this.http.put(url, formData).toPromise()
         .then((response)=> {
           let body = response.json();

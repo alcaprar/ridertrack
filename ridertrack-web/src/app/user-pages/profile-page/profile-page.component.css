@@ -76,7 +76,7 @@
 
   input#search_places {
     display: inline;
-    width: 96%;
+    width: calc(100% - 20px);
     height: 22px;
     font-size: 13px;
     color: grey;

@@ -17,6 +17,7 @@ export class EventService {
 
   private BASE_URL = environment.baseAPI;
   private BASE_EVENT_URL = '/api/events';
+  private BASE_EVENT_ADMIN_URL = '/api/admin/events';
 
   private eventTypes: [String] = ['running', 'cycling', 'hiking', 'triathlon', 'other'];
 
@@ -247,12 +248,64 @@ export class EventService {
   }
 
   /**
+   * Perform an HTTP PUT request to REST API to update a certain event for ADMIN
+   * @param id of the event
+   * @param {Event} event updated
+   * @returns {Promise<Event>}
+   */
+  updateEventAdmin(id, event: Event) {
+    const url = `${this.BASE_EVENT_ADMIN_URL}/${id}`;
+
+    console.log("[EventService][UpdateEvent][eventToPass]", event);
+    // create form data in order to pass an image
+
+    var formData = new FormData();
+    for(let key in event){
+      if(event[key] !== undefined){
+        formData.append(key, event[key])
+      }
+    }
+
+    return this.http.put(url , formData).toPromise()
+      .then(
+        (response) => {
+          const body = response.json();
+          var event = body.event as Event;
+          console.log('[EventService][updateEvent][success]', response);
+          return [null, event];
+        })
+      .catch(
+        (errorResponse: any) => {
+          var errors = errorResponse.json().errors as Error[];
+          console.log('[EventService][updateEvent][error]', errors);
+          return [errors, null];
+        }
+      )
+  }
+
+  /**
    * Perform an HTTP DELETE request to REST API to delete a certain event
    * @param id of the event
    * @returns {Promise<void>} of the event deleted
    */
   deleteEvent(id): Promise<any> {
     const url = `${this.BASE_EVENT_URL}/${id}`;
+    return this.http.delete(url).toPromise()
+      .then(() => null)
+      .catch((error) => {
+        let body = error.json();
+        console.log('[EventService][deleteEvent][error]', body);
+        return Promise.reject([body.errors][0]);
+      });
+  }
+
+  /**
+   * Perform an HTTP DELETE request to REST API to delete a certain event for ADMIN
+   * @param id of the event
+   * @returns {Promise<void>} of the event deleted
+   */
+  deleteEventAdmin(id): Promise<any> {
+    const url = `${this.BASE_EVENT_ADMIN_URL}/${id}`;
     return this.http.delete(url).toPromise()
       .then(() => null)
       .catch((error) => {
