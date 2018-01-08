@@ -281,9 +281,9 @@ router.delete('/users/:userId', authMiddleware.hasValidToken, authMiddleware.has
                 })
             }else{
                 // otherwise return an error
-                return res.status(400).send([{
-                    message: 'You cannot delete your account because you have created events.'
-                }])
+                return res.status(400).send({
+                    errors: [{message: 'You cannot delete your account because you have created events.'}]}
+                )
             }
         }
     });

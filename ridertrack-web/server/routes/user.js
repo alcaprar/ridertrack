@@ -320,16 +320,16 @@ router.delete('/:userId', authMiddleware.hasValidToken, function (req, res) {
                     })
                 } else {
                     // otherwise return an error
-                    return res.status(400).send([{
-                        message: 'You cannot delete your account because you have created events.'
-                    }])
+                    return res.status(400).send({
+                        errors: [{message: 'You cannot delete your account because you have created events.' }]
+                    })
                 }
             }
         });
     }else {
-        return res.status(400).send([{
-            message: 'You are not authorized to delete this account.'
-        }])
+        return res.status(400).send({
+            errors: [{message: 'You are not authorized to delete this account.'}]
+        })
     }
 });
 
