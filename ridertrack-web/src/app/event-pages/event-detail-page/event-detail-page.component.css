@@ -49,3 +49,10 @@ th[sortable-column]{
   text-align: left;
   cursor: pointer;
 }
+
+.top-right {
+  position: absolute;
+  right: 3em;
+  top: 1em;
+  font-weight: bold;
+}

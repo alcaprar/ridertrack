@@ -59,3 +59,13 @@ a {
 ::placeholder { /* Most modern browsers support this now. */
     color:    #A5A5A5;
 }
+
+.top-left {
+    position: absolute;
+    left : 2em;
+    top: 1em;
+}
+
+.top-left:hover {
+    cursor: pointer;
+}
