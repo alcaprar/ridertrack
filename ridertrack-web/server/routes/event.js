@@ -163,13 +163,20 @@ router.get('/:eventId/logo', function (req, res, next) {
                 errors: err
             })
         }else{
-            if(event.logo){
+            if(event && event.logo){
                 // change the header according to the mime type
                 res.header('Content-type', event.logo.contentType);
                 res.end(event.logo.data, 'binary');
             }else{
                 // send the default logo
-                res.status(200).send('logo')
+                // set logo variables to default value
+                var tempPath = __dirname + '/../logo.png';
+                var logoMimeType = 'image/png';
+
+                var data = fs.readFileSync(tempPath);
+
+                res.header('Content-type', logoMimeType);
+                res.end(data, 'binary');
             }
         }
     })
@@ -533,7 +540,7 @@ router.put('/:eventId/route', authMiddleware.hasValidToken, authMiddleware.isOrg
                     message: 'Route updated successfully.'
                 });
             });
-            
+
         }
     });
 });
