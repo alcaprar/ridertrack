@@ -44,3 +44,9 @@ page-header
   width:20%;
   background-color: #d30000;
 }
+
+@media screen and (max-width: 480px) {
+    .page-head {
+        display: none;
+    }
+}
