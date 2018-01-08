@@ -582,8 +582,12 @@ router.post('/:eventId/tracking/start', authMiddleware.hasValidToken, authMiddle
         }
         else {
             var startDate = event.startingDate;
-            var today = new Date();
-            if(today.getDate() === startDate.getDate()&& today.getMonth() === startDate.getMonth() && today.getFullYear() === startDate.getFullYear()) {
+            var utcStartDate = Date.UTC(startDate.getUTCFullYear(),startDate.getUTCMonth(), startDate.getUTCDate() ,
+                startDate.getUTCHours(), startDate.getUTCMinutes(), startDate.getUTCSeconds(), startDate.getUTCMilliseconds());
+            var now = new Date;
+            var utcNow = Date.UTC(now.getUTCFullYear(),now.getUTCMonth(), now.getUTCDate() ,
+                now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds(), now.getUTCMilliseconds());
+            if(utcNow >= utcStartDate) {
                 req.event.startTracking(function (err) {
                     if (err) {
                         return res.status(400).send({
