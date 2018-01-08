@@ -221,3 +221,7 @@
   outline: none;
 }
 
+.dropdown-toggle {
+  cursor: pointer;
+}
+
