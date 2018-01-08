@@ -37,6 +37,11 @@ h5 {
 }
 .event-name {
   word-wrap:break-word;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  display: inline-block;
 }
 .proerty-th .proerty-item  .item-entry h5{
   height:4em;
