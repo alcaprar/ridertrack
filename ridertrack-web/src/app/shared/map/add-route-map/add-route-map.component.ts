@@ -192,7 +192,7 @@ export class AddRouteMapComponent implements OnInit {
     this.calculateTotalLength();
     this.routeService.updateRoute(this.eventId, this.mapPoints, this.selected, this.length).then(()=> {
       this.dialogService.alert("Route", " The route has correctly been saved.");
-      this.router.navigate(['/events', this.eventId, 'manage']);
+      this.router.navigate(['/events', this.eventId]);
     }).catch((err) => {
       this.errors = err;
     });

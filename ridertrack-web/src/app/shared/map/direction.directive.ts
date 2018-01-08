@@ -12,7 +12,9 @@ export class DirectionDirective implements  OnInit, OnChanges, OnDestroy {
   @Input() origin: any;
   @Input() destination: any;
   @Input() waypoints: any;
+  @Input() display: boolean;
   @Output() lengthUpdated = new EventEmitter();
+
  travelMode: string = "WALKING";
 
   public directionService :any;
@@ -66,9 +68,10 @@ export class DirectionDirective implements  OnInit, OnChanges, OnDestroy {
         console.log("[Direction Service][Direction Sent][Response]", response);
         if (status === google.maps.DirectionsStatus.OK) {
           console.log("[Direction Service][Response][OK]");
-          //this.directionsDisplay.setOptions({preserveViewport: true}); (NOT NEED)
+          if(!this.display) {
+            this.directionsDisplay.setOptions({preserveViewport: true});
+          }
           this.directionsDisplay.setDirections(response);
-          //recenter the map to fit the route
           for(let i=0; i< response.routes[0].legs.length; i++){
             this.length += response.routes[0].legs[i].distance.value;
           }
@@ -79,10 +82,13 @@ export class DirectionDirective implements  OnInit, OnChanges, OnDestroy {
           //emit length changed
           this.lengthUpdated.emit(this.length);
 
-          let bounds = response.routes[0].bounds;
+          //recenter the map to fit the route
+          if(this.display) {
+            let bounds = response.routes[0].bounds;
 
-          map.fitBounds(bounds);
-          map.setCenter(bounds.getCenter());
+            map.fitBounds(bounds);
+            map.setCenter(bounds.getCenter());
+          }
       }
     })
     });

@@ -2,7 +2,7 @@
 [streetViewControl]="false" [clickableIcons]="false">
   <div id="waypoints" *ngIf="selected==='waypoints'">
     <map-direction *ngIf="directions != null" [origin]="directions.origin" [destination]="directions.destination"
-                   [waypoints]="directions.waypoints" ></map-direction>
+                   [waypoints]="directions.waypoints" [display]="true" ></map-direction>
   </div>
   <!-- MAP CONTENT FOR POLYLINES-->
   <div id="polylines" *ngIf="selected === 'polylines' && mapPoints.length>0">
