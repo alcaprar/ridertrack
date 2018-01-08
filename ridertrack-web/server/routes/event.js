@@ -358,7 +358,6 @@ router.post('/:eventId/participants/positions', authMiddleware.hasValidToken, au
                         distanceToTheEnd: (userPositions.distanceToTheEnd) ? userPositions.distanceToTheEnd : -1
                     });
 
-                    console.log('Updating ranking')
                     Ranking.update(eventId, function(err){
                         if (err){
                             console.log("Error in updating ranking: ", err);
@@ -369,7 +368,7 @@ router.post('/:eventId/participants/positions', authMiddleware.hasValidToken, au
                 }
             })
         }else if(event.status === 'passed'){
-            return res.status(400).send({
+            return res.status(201).send({
                 errors: [{message: "The event has finished."}]
             })
         }else if(event.status === 'planned'){
