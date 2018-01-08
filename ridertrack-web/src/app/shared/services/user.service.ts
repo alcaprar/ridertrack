@@ -130,9 +130,9 @@ export class UserService {
       })
       .catch(
       (errorResponse: any) => {
-        var errors = errorResponse.json() as Error[];
+        var errors = errorResponse.json();
         console.log('[UserService][deleteUser][error]', errors);
-        return errors
+        return (errors.errors as Error[]);
       });
   }
 
@@ -149,7 +149,7 @@ export class UserService {
         (errorResponse: any) => {
           var errors = errorResponse.json();
           console.log('[UserService][deleteUser][error]', errors);
-          return (errors as Error[])[0];
+          return (errors.errors as Error[]);
         });
   }
 
