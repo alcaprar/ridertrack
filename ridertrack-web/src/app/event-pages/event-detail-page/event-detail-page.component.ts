@@ -9,6 +9,7 @@ import { Router } from "@angular/router";
 import {DialogService} from "../../shared/dialog/dialog.service";
 import {FacebookService, UIParams, UIResponse, InitParams} from "ngx-facebook/dist/esm/index";
 import {RouteService} from "../../shared/services/route.service";
+import {SortService} from "../event-progress/sort.service";
 
 @Component({
   selector: 'app-event-detail-page',
@@ -30,6 +31,7 @@ export class EventDetailPageComponent implements OnInit {
   public organizer: User = new User();
   public similarEvents: Event[];
   public mapPoints: any;
+  private ranking: any = [];
 
   // ids of participants
   public participantsList = [];
@@ -43,7 +45,8 @@ export class EventDetailPageComponent implements OnInit {
               private router: Router,
               private fb: FacebookService,
               private routeService: RouteService,
-              private dialogService: DialogService) {
+              private dialogService: DialogService,
+              private sortService: SortService) {
     // init Facebook strategy
     const initParams: InitParams = {
       appId: '278876872621248',
@@ -81,8 +84,10 @@ export class EventDetailPageComponent implements OnInit {
                 (similarEvents) => {
                   console.log('[EventDetail][OnInit][EventService.getSimilarEvents][success]', similarEvents);
                   this.similarEvents = similarEvents;
-                }
-              )
+                });
+            if (this.event.status === 'passed') {
+              this.getRanking();
+            }
           }
         )
         .catch(
@@ -103,6 +108,27 @@ export class EventDetailPageComponent implements OnInit {
     });
 
     console.log('[Event-Detail-Component][OnInit][Event]', this.event);
+  }
+
+  /**
+   * get the final ranking of the event that has passed
+   */
+  getRanking() {
+    this.eventService.getRanking(this.eventId).then((users)=> {
+      for (let i = 0; i < users.length; i++) {
+        this.ranking.push({position: i + 1, name: users[i].name, surname: users[i].surname});
+      }
+      console.log("[EventDetailPage][getFinalRanking]", this.ranking);
+      this.sortService.sortTable({sortColumn: 'position', sortDirection: 'asc'}, this.ranking);
+    });
+  }
+
+  /**
+   *  used to sort the ranking table when an event is passed
+   * @param $event : column name and order to sort
+   */
+  onSorted($event){
+    this.sortService.sortTable($event, this.ranking);
   }
 
   /**

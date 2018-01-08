@@ -575,27 +575,45 @@ router.delete('/:eventId/route', authMiddleware.hasValidToken, authMiddleware.is
  * It starts all the consumers for active tracking.
  */
 router.post('/:eventId/tracking/start', authMiddleware.hasValidToken, authMiddleware.isOrganizer, function (req, res) {
-    req.event.startTracking(function (err) {
-        if(err){
-            return res.status(400).send({
-                errors: [err]
-            });
-        }else{
-            // initialize all the users positions to the starting point of the route. needed for the proper working of ranking
-            Positions.initializeAll(req.event._id, function (err) {
-                if(err){
-                    console.log('[EventRoute][start tracking] error while initializing the positions', err)
-                }
-            });
+    Event.findByEventId(req.params.eventId, function(err, event){
+        if (err) {
+            res.status(400).send({
+                errors: err
+            })
+        }
+        else {
+            var startDate = event.startingDate;
+            var today = new Date();
+            if(today.getDate() === startDate.getDate()&& today.getMonth() === startDate.getMonth() && today.getFullYear() === startDate.getFullYear()) {
+                req.event.startTracking(function (err) {
+                    if (err) {
+                        return res.status(400).send({
+                            errors: [err]
+                        });
+                    } else {
+                        // initialize all the users positions to the starting point of the route. needed for the proper working of ranking
+                        Positions.initializeAll(req.event._id, function (err) {
+                            if (err) {
+                                console.log('[EventRoute][start tracking] error while initializing the positions', err)
+                            }
+                        });
 
-            // start the consumers
-            var consumers = require('../consumers');
-            consumers.startEvent(req.event._id);
+                        // start the consumers
+                        var consumers = require('../consumers');
+                        consumers.startEvent(req.event._id);
 
-            return res.status(200).send({
-                message: 'Tracking started successfully.'
-            });
+                        return res.status(200).send({
+                            message: 'Tracking started successfully.'
+                        });
 
+                    }
+                })
+            }
+            else{
+                return res.status(400).send([{
+                    message: 'Event tracking currently not available! This option is available only on the date when Event starts!'
+                }])
+            }
         }
     })
 });

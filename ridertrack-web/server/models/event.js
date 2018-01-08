@@ -164,7 +164,7 @@ eventSchema.pre('save',function(next){
 eventSchema.pre('save', function (next) {
     var event = this;
 
-    var day = event.startingDate.getDay();
+    var day = event.startingDate.getDate();
     var month = event.startingDate.getMonth() + 1;
     var year = event.startingDate.getFullYear();
     var hour = event.startingDate.getHours();
