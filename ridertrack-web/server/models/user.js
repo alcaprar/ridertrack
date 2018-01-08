@@ -7,7 +7,10 @@ var validator = require('validator');
 const privateFields = ['__v', 'salt', 'hash', 'created_at', 'updated_at', 'googleProfile', 'facebookProfile'];
 
 // list of fields that an user can not change
-const fieldsNotChangeable = ['_id', '__v', 'salt', 'hash', 'role', 'created_at', 'updated_at', 'googleProfile', 'facebookProfile'];
+const fieldsNotChangeableByUser = ['_id', '__v', 'salt', 'hash', 'role', 'created_at', 'updated_at', 'googleProfile', 'facebookProfile'];
+// list of fields that an admin can not change
+const fieldsNotChangeableByAdmin = ['_id', '__v', 'salt', 'hash', 'created_at', 'updated_at', 'googleProfile', 'facebookProfile'];
+
 
 var userSchema = Schema({
     email: {
@@ -256,7 +259,7 @@ userSchema.statics.create = function (userJson, callback) {
 			if(err){
 				console.log('[UserModel][create] error', err);
 				return callback(err)
-				
+
 				}else{
 					user.removePrivateFields();
 					return callback(null, user);
@@ -285,8 +288,8 @@ userSchema.statics.create = function (userJson, callback) {
 	else{
 		callback(new Error('Password is required'));
 	}
-	
-	
+
+
 };
 
 /**
@@ -297,13 +300,6 @@ userSchema.statics.create = function (userJson, callback) {
  * @param callback
  */
 userSchema.statics.update = function (userId, userJson, callback) {
-    // return and block the update if a not changeable field is passed
-    for(let key in userJson){
-        if(fieldsNotChangeable.indexOf(key) > -1){
-            return callback('You can not modify ' + key)
-        }
-    }
-
     // find the right user and modify it
     this.findOne({_id: userId}, function (err, user) {
         if(err){
@@ -311,6 +307,19 @@ userSchema.statics.update = function (userId, userJson, callback) {
                 message:"Error occurred during finding an user. Maybe user doesn't exist"
                 });
         }else{
+            if(user.role === 'administrator'){
+                for(let key in userJson){
+                    if(fieldsNotChangeableByAdmin.indexOf(key) > -1){
+                        return callback('You can not modify ' + key)
+                    }
+                }
+            }else{
+                for(let key in userJson){
+                    if(fieldsNotChangeableByUser.indexOf(key) > -1){
+                        return callback('You can not modify ' + key)
+                    }
+                }
+            }
             // override the previous value
             for(let key in userJson){
 
