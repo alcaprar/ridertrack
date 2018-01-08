@@ -2,7 +2,7 @@
     <a [routerLink]="['/events', event._id]">
         <img src="/api/events/{{event._id}}/logo">
     </a>
-    <span class="blg-date"><b><i class="fa fa-calendar"></i></b> {{event.startingDate | date: 'dd/MM/yyyy'}}</span>
+    <span class="blg-date"><b><i class="fa fa-calendar"></i></b> {{event.startingDate | date: 'dd/MM/yyyy' : 'UTC'}}</span>
 </div>
 <div class="col-md-8  col-sm-8 col-xs-8  blg-entry">
     <h6> <a [routerLink]="['/events', event._id]">{{event.name}}</a></h6>

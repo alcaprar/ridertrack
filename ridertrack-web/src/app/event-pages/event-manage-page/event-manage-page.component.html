@@ -62,7 +62,7 @@
                       <input [value]="event.startingDate | date:'dd/MM/yyyy'" id="startingDate" name="startingDate" type="text" class="form-control datepicker" placeholder="15/12/2017">
                     </div>
                     <div class="col-xs-4" style="padding-right: 0px">
-                      <input [value]="event.startingDate | date:'HH:mm'"
+                      <input [value]="event.startingDate | date:'HH:mm' : 'UTC'"
                              id="startingTime" name="startingTime" type="text" class="form-control"
                              placeholder="12:00">
                     </div>
@@ -74,7 +74,7 @@
                              type="text" class="form-control datepicker" placeholder="15/12/2017">
                     </div>
                     <div class="col-xs-4" style="padding-right: 0px">
-                      <input [value]="event.closingDate | date:'HH:mm'"
+                      <input [value]="event.closingDate | date:'HH:mm' : 'UTC'"
                              id="closingTime" name="closingTime" type="text" class="form-control"
                              placeholder="12:00">
                     </div>
@@ -86,7 +86,7 @@
                              type="text" class="form-control datepicker" placeholder="15/12/2017">
                     </div>
                     <div class="col-xs-4" style="padding-right: 0px">
-                      <input [value]="event.enrollmentOpeningDate | date:'HH:mm'"
+                      <input [value]="event.enrollmentOpeningDate | date:'HH:mm' : 'UTC'"
                              id="enrollmentOpeningTime" name="enrollmentOpeningTime" type="text" class="form-control"
                              placeholder="12:00">
                     </div>
@@ -98,7 +98,7 @@
                              type="text" class="form-control datepicker" placeholder="15/12/2017">
                     </div>
                     <div class="col-xs-4" style="padding-right: 0px">
-                      <input [value]="event.enrollmentClosingDate | date:'HH:mm'"
+                      <input [value]="event.enrollmentClosingDate | date:'HH:mm' : 'UTC'"
                              id="enrollmentClosingTime" name="enrollmentClosingTime" type="text" class="form-control"
                              placeholder="12:00">
                     </div>

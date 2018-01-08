@@ -7,7 +7,7 @@
   <div class="item-entry overflow">
     <h5><a routerLink="/events/{{event._id}}" style="height: 1em; line-height: 1em; overflow: hidden"> {{event.name}} </a></h5>
     <div class="dot-hr"></div>
-    <span class="pull-left" ><b><i class="fa fa-calendar"></i></b> {{event.startingDate | date: 'dd/MM/yyyy'}} <b><i class="fa fa-clock-o"></i></b> {{event.startingDate | date: 'HH:mm'}}</span>
+    <span class="pull-left" ><b><i class="fa fa-calendar"></i></b> {{event.startingDate | date: 'dd/MM/yyyy' : 'UTC'}} <b><i class="fa fa-clock-o"></i></b> {{event.startingDate | date: 'HH:mm' : 'UTC'}}</span>
     <span class="pull-right" *ngIf="event.length"><b><i class="fa fa-arrows-h"></i></b> {{event.length}} km </span>
 
     <br>

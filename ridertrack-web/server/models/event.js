@@ -164,12 +164,13 @@ eventSchema.pre('save',function(next){
 eventSchema.pre('save', function (next) {
     var event = this;
 
-    var day = event.startingDate.getDate();
-    var month = event.startingDate.getMonth() + 1;
-    var year = event.startingDate.getFullYear();
-    var hour = event.startingDate.getHours();
-    var minute = event.startingDate.getMinutes();
+    var day = event.startingDate.getUTCDate();
+    var month = event.startingDate.getUTCMonth() + 1;
+    var year = event.startingDate.getUTCFullYear();
+    var hour = event.startingDate.getUTCHours();
+    var minute = event.startingDate.getUTCMinutes();
 
+    console.log('[EventModel][updateDateString]', event.startingDate.toString(), hour);
     this.startingDateString = day + '/' + month + '/' + year;
     this.startingTimeString = hour + ':' + ( (minute < 10) ? '0' : '') + minute;
 
@@ -288,7 +289,7 @@ eventSchema.statics.update = function (eventId, eventJson, callback) {
         try{
             let strDate = eventJson.startingDateString.split('/'); // DD/MM/YYYY
             let strTime = eventJson.startingTimeString.split(':'); // HH:MM
-            eventJson.startingDate = new Date(parseInt(strDate[2]),parseInt(strDate[1]) - 1, parseInt(strDate[0]),parseInt(strTime[0]),parseInt(strTime[1]),0, 0);
+            eventJson.startingDate = new Date(Date.UTC(parseInt(strDate[2]),parseInt(strDate[1]) - 1, parseInt(strDate[0]),parseInt(strTime[0]),parseInt(strTime[1]),0, 0));
         }catch (e){
             console.log('[EventModel][update] error while parsing startingDate and time', e);
             return callback({message: 'Starting date or time is not valid.'})
@@ -308,7 +309,7 @@ eventSchema.statics.update = function (eventId, eventJson, callback) {
                 // if closing time is not set, use a default time
                 closingTime = ['12', '00']
             }
-            eventJson.closingDate = new Date(parseInt(closingDate[2]),parseInt(closingDate[1]) - 1, parseInt(closingDate[0]),parseInt(closingTime[0]),parseInt(closingTime[1]),0, 0);
+            eventJson.closingDate = new Date(Date.UTC(parseInt(closingDate[2]),parseInt(closingDate[1]) - 1, parseInt(closingDate[0]),parseInt(closingTime[0]),parseInt(closingTime[1]),0, 0));
         }catch (e){
             console.log('[EventModel][update] error while parsing closingDate and time', e);
             return callback({message: 'Closing date or time is not valid.'})
@@ -328,7 +329,7 @@ eventSchema.statics.update = function (eventId, eventJson, callback) {
                 // if closing time is not set, use a default time
                 enrollmentOpeningTime = ['12', '00']
             }
-            eventJson.enrollmentOpeningDate = new Date(parseInt(enrollmentOpeningDate[2]),parseInt(enrollmentOpeningDate[1]) - 1, parseInt(enrollmentOpeningDate[0]),parseInt(enrollmentOpeningTime[0]),parseInt(enrollmentOpeningTime[1]),0, 0);
+            eventJson.enrollmentOpeningDate = new Date(Date.UTC(parseInt(enrollmentOpeningDate[2]),parseInt(enrollmentOpeningDate[1]) - 1, parseInt(enrollmentOpeningDate[0]),parseInt(enrollmentOpeningTime[0]),parseInt(enrollmentOpeningTime[1]),0, 0));
         }catch (e){
             console.log('[EventModel][update] error while parsing enrollmentOpeningDate and time', e);
             return callback({message: 'Enrollment opening date or time is not valid.'})
@@ -348,7 +349,7 @@ eventSchema.statics.update = function (eventId, eventJson, callback) {
                 // if closing time is not set, use a default time
                 enrollmentClosingTime = ['12', '00']
             }
-            eventJson.enrollmentClosingDate = new Date(parseInt(enrollmentClosingDate[2]),parseInt(enrollmentClosingDate[1]) - 1, parseInt(enrollmentClosingDate[0]),parseInt(enrollmentClosingTime[0]),parseInt(enrollmentClosingTime[1]),0, 0);
+            eventJson.enrollmentClosingDate = new Date(Date.UTC(parseInt(enrollmentClosingDate[2]),parseInt(enrollmentClosingDate[1]) - 1, parseInt(enrollmentClosingDate[0]),parseInt(enrollmentClosingTime[0]),parseInt(enrollmentClosingTime[1]),0, 0));
         }catch (e){
             console.log('[EventModel][update] error while parsing enrollmentClosingDate and time', e);
             return callback({message: 'Enrollment closing date or time is not valid.'})

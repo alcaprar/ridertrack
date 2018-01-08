@@ -10,7 +10,7 @@
       <h5><a class="event-name" [routerLink]="['/events', event._id]"> {{event.name}}</a></h5>
       <div class="line">
         <span class="property pull-left" *ngIf="event.length"><b> Length :</b> {{event.length}} km </span>
-        <span class="property pull-right"><b><i class="fa fa-calendar"></i></b> {{event.startingDate | date: 'dd/MM/yyyy'}} <b><i class="fa fa-clock-o"></i></b> {{event.startingDate | date: 'HH:mm'}}</span>
+        <span class="property pull-right"><b><i class="fa fa-calendar"></i></b> {{event.startingDate | date: 'dd/MM/yyyy' : 'UTC'}} <b><i class="fa fa-clock-o"></i></b> {{event.startingDate | date: 'HH:mm' : 'UTC'}}</span>
       </div>
       <div class="line">
         <span *ngIf="event && event.status === 'ongoing'" class="location pull-left" title="Event ongoing! Click on it to see the real time progress!"><i class="fa fa-circle" style="color: green"></i></span>

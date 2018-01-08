@@ -44,7 +44,7 @@
               </span>
               <span class="property-info-entry">
                 <span class="property-info-label">Scheduled starting</span>
-                <span class="property-info-value">{{event.startingDate | date: 'dd/MM/yyyy HH:mm'}}</span>
+                <span class="property-info-value">{{event.startingDate | date: 'dd/MM/yyyy HH:mm' : 'UTC'}}</span>
               </span>
             </div>
 
@@ -54,7 +54,7 @@
               </span>
               <span class="property-info-entry">
                 <span class="property-info-label">Scheduled ending</span>
-                <span class="property-info-value">{{(event.closingDate) ? (event.closingDate | date: 'dd/MM/yyyy HH:mm') : '(TBD*)'}}</span>
+                <span class="property-info-value">{{(event.closingDate) ? (event.closingDate | date: 'dd/MM/yyyy HH:mm' : 'UTC') : '(TBD*)'}}</span>
               </span>
             </div>
 
@@ -84,7 +84,7 @@
               </span>
               <span class="property-info-entry">
                 <span class="property-info-label">Enrollment Opening At</span>
-                <span class="property-info-value">{{(event.enrollmentOpeningDate) ? (event.enrollmentOpeningDate | date: 'dd/MM/yyyy HH:mm') : '(TBD*)' }}</span>
+                <span class="property-info-value">{{(event.enrollmentOpeningDate) ? (event.enrollmentOpeningDate | date: 'dd/MM/yyyy HH:mm' : 'UTC') : '(TBD*)' }}</span>
               </span>
             </div>
             <div class="col-xs-6 col-sm-3 col-md-3 p-b-15">
@@ -93,7 +93,7 @@
               </span>
               <span class="property-info-entry">
                 <span class="property-info-label">Enrollment Closing At</span>
-                <span class="property-info-value">{{(event.enrollmentClosingDate) ? (event.enrollmentClosingDate | date: 'dd/MM/yyyy HH:mm') : '(TBD*)'}}</span>
+                <span class="property-info-value">{{(event.enrollmentClosingDate) ? (event.enrollmentClosingDate | date: 'dd/MM/yyyy HH:mm' : 'UTC') : '(TBD*)'}}</span>
               </span>
             </div>
             <div col-xs-12>
