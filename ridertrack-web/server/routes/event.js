@@ -604,7 +604,7 @@ router.post('/:eventId/tracking/start', authMiddleware.hasValidToken, authMiddle
             }
             else{
                 return res.status(400).send([{
-                    message: 'You can start tracking of an event only on date of event.'
+                    message: 'Event tracking currently not available! This option is available only on the date when Event starts!'
                 }])
             }
         }
