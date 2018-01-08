@@ -10,9 +10,8 @@
     <div class="clearfix padding-top-20">
 
       <div class="col-md-8 single-property-content prp-style-1 ">
-        <div class="row">
-          <div class="container">
-            <img src="{{logoUrl}}">
+        <div class="image">
+            <img src="{{logoUrl}}" id ="logo">
             <div class="top-right">
               <span *ngIf="event && event.status === 'ongoing'" class="location pull-right"
                  title="Event Ongoing! Click on 'Event Prgress' to see real time tracking of the event!"
@@ -24,7 +23,6 @@
               <span *ngIf="event && event.status === 'planned'" class="location pull-right"
                     title="The Event is planned!" style="color: darkorange; text-transform: uppercase;"><i class="fa fa-circle" style="color: darkorange"></i>
                     {{event.status}}</span>
-            </div>
           </div>
         </div>
 

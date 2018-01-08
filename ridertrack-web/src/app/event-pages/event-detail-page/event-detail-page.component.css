@@ -56,3 +56,7 @@ th[sortable-column]{
   top: 1em;
   font-weight: bold;
 }
+#logo {
+  width: 720px;
+  max-height: 500px;
+}
