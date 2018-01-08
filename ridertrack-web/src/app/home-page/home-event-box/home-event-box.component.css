@@ -4,6 +4,14 @@
   background-position: center;
   background-size: cover;
 }
+.event-name{
+  word-wrap:break-word;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  display: inline-block;
+}
 .item-thumb{
   max-width:100%;
   height: 15em;

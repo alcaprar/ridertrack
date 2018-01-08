@@ -238,14 +238,23 @@ eventSchema.statics.findEventsFromList = function (eventsIdList, callback ){
  * It then calls a callback passing either an error list or the created event.
  */
 eventSchema.statics.create = function (organizerId, eventJson, callback) {
-    // create date object for startingDate
-    try{
-        var strDate = eventJson.startingDateString.split('/'); // DD/MM/YYYY
-        var strTime = eventJson.startingTimeString.split(':'); // HH:MM
-        eventJson.startingDate = new Date(parseInt(strDate[2]),parseInt(strDate[1]) - 1, parseInt(strDate[0]),parseInt(strTime[0]),parseInt(strTime[1]),0, 0);
-    }catch (e){
-        console.log('[EventModel][create] error while parsing startingDate and time', e);
-        return callback({message: 'Starting date or time is not valid.'})
+    if(eventJson.startingDateString && eventJson.startingTimeString){
+        // create date object for startingDate
+        try{
+            var strDate = eventJson.startingDateString.split('/'); // DD/MM/YYYY
+            var strTime = eventJson.startingTimeString.split(':'); // HH:MM
+            eventJson.startingDate = new Date(parseInt(strDate[2]),parseInt(strDate[1]) - 1, parseInt(strDate[0]),parseInt(strTime[0]),parseInt(strTime[1]),0, 0);
+        }catch (e){
+            console.log('[EventModel][create] error while parsing startingDate and time', e);
+            return callback({message: 'Starting date or time is not valid.'})
+        }
+        let now = new Date();
+        console.log(eventJson.startingDate, now,  eventJson.startingDate < now);
+        if(eventJson.startingDate < now){
+            return callback({message: 'Starting date and time should not be in the past.'})
+        }
+    }else{
+        return callback({message: 'Starting date and time is required.'})
     }
     // add organizer id and default event status
     eventJson.organizerId = organizerId;
@@ -293,6 +302,12 @@ eventSchema.statics.update = function (eventId, eventJson, callback) {
         }catch (e){
             console.log('[EventModel][update] error while parsing startingDate and time', e);
             return callback({message: 'Starting date or time is not valid.'})
+        }
+
+        let now = new Date();
+        console.log(eventJson.startingDate, now,  eventJson.startingDate < now);
+        if(eventJson.startingDate < now){
+            return callback({message: 'Starting date and time should not be in the past.'})
         }
     }
 
