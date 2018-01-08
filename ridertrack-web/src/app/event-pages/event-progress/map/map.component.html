@@ -33,14 +33,13 @@
                         [longitude]="participantM.lng"
                         [iconUrl]="participantM.icon">
               <agm-info-window [closeWhenOthersOpen]="true" >{{participantM.user.name}} {{participantM.user.surname}}
-                <br> Last update received: {{participantM.timestamp | date: 'dd/MM/yy HH:mm:ss'}}
               </agm-info-window>
             </agm-marker>
           </div>
         </div>
         <div *ngIf="selectedType === 'waypoints'">
         <map-direction *ngIf="directions != null" [origin]="directions.origin" [destination]="directions.destination"
-                       [waypoints]="directions.waypoints"></map-direction>
+                       [waypoints]="directions.waypoints" [display]="true"></map-direction>
         </div>
         <div *ngIf="selectedType=== 'polylines'">
           <agm-polyline [strokeColor]="'#00BFFF'" [strokeWeight]="7">

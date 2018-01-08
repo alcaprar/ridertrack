@@ -45,7 +45,7 @@
         <!-- MAP CONTENT FOR DIRECTIONS-->
         <div *ngIf="selected==='waypoints'">
             <map-direction *ngIf="directions != null" [origin]="directions.origin" [destination]="directions.destination"
-                           [waypoints]="directions.waypoints" (lengthUpdated)="handleLengthUpdated($event)" ></map-direction>
+                           [waypoints]="directions.waypoints" [display]="false" (lengthUpdated)="handleLengthUpdated($event)" ></map-direction>
             </div>
         <!-- MAP CONTENT FOR POLYLINES-->
         <div *ngIf="selected === 'polylines' && mapPoints.length>0">
