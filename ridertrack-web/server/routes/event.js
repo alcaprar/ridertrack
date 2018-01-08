@@ -368,7 +368,7 @@ router.post('/:eventId/participants/positions', authMiddleware.hasValidToken, au
                 }
             })
         }else if(event.status === 'passed'){
-            return res.status(201).send({
+            return res.status(400).send({
                 errors: [{message: "The event has finished."}]
             })
         }else if(event.status === 'planned'){

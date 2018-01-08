@@ -157,10 +157,8 @@ ul.footer-blog li {
   margin-bottom: 2em;;
 }
 
-/*FOOOTER RESPONSIVITY*/
-/*the footer should disappear in mobile view*/
-@media (max-width: 480px) {
-  #socket {
-    display: none !important;
+@media screen and (max-width: 480px){
+  .footer-area {
+    display: none;
   }
 }
