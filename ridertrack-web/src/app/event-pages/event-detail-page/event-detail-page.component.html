@@ -191,15 +191,13 @@
           <div class="dealer-widget">
             <div class="dealer-content">
               <div class="inner-wrapper">
-                <div class="clear">
-                  <div class="row justify-content-center">
-                  <div class="col-xs-4 col-sm-4 dealer-face" style="align-items: center; display: flex;">
+                <div class="clear center">
+                  <div class="col-xs-4 col-sm-4 dealer-face">
                     <img [src]="logoOrganizer ? logoOrganizer : '../../../assets/img/logofoto.png'"
-                         class="img-circle" style="height: 7em; width: 7em;">
-                  </div>
+                         class="img-circle" style="height: 6em; width: 6em; display: flex; align-self: center">
                   </div>
                   <div class="col-xs-8 col-sm-8 ">
-                    <h3 class="dealer-name">
+                    <h3 class="dealer-name" style="justify-content: center">
                       {{organizer.name}} {{organizer.surname}}
                       <br>
                       <span>Event Organizer</span>
