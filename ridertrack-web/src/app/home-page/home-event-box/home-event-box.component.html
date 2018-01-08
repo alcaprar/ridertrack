@@ -5,7 +5,7 @@
     </a>
   </div>
   <div class="item-entry overflow">
-    <h5><a class="event-name" routerLink="/events/{{event._id}}" style="height: 1em; line-height: 1em; overflow: hidden"> {{event.name}} </a></h5>
+    <h5><a class="event-name" routerLink="/events/{{event._id}}" style="height: 1em; line-height: 1em; overflow: hidden"> <span *ngIf="event && event.status === 'ongoing'" class="location pull-left" title="Event ongoing! Click on it to see the real time progress!"><i class="fa fa-circle" style="color: green"></i></span> {{event.name}} </a></h5>
     <div class="dot-hr"></div>
     <div class="line">
       <span class="property pull-left"><b><i class="fa fa-calendar"></i></b> {{event.startingDate | date: 'dd/MM/yyyy' : 'UTC'}} </span>
@@ -14,7 +14,6 @@
     <br>
     <div class="line">
       <span class="property location pull-left"><b><i class="fa fa-map-marker"></i></b> {{event.country}} | {{event.city}}</span>
-      <span *ngIf="event && event.status === 'ongoing'" class="location pull-left" title="Event ongoing! Click on it to see the real time progress!"><i class="fa fa-circle" style="color: green"></i></span>
     </div>
   </div>
 </div>
