@@ -218,6 +218,9 @@ router.post('/users', authMiddleware.hasValidToken, authMiddleware.hasAdministra
 router.put('/users/:userId', authMiddleware.hasValidToken, authMiddleware.hasAdministratorRole, multipart, function (req, res) {
     var userBody = req.body;
 
+	//added a new key,value pair in userBody just to recognize admin changes
+	userBody.adminChange = true;
+	
     // check image
     if (req.files.logo) {
         tempPath = req.files.logo.path;

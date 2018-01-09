@@ -194,6 +194,7 @@ export class UserService {
     formData.append('aboutMe', user.aboutMe);
     formData.append('email', user.email);
     formData.append('password', user.password);
+	formData.append('role',user.role);
 
     return new Promise((resolve,reject)=> {
       this.http.put(url, formData).toPromise()
