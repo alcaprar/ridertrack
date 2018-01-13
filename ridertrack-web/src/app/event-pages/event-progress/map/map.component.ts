@@ -1,11 +1,12 @@
 import {Component, ElementRef, Input, NgZone, OnInit, ViewChild} from '@angular/core';
 import { MapsAPILoader} from "@agm/core";
-import { EventService } from '../../../shared/services/index';
+import {EventService, UserService} from '../../../shared/services/index';
 import { } from '@types/googlemaps';
 import { RouteService } from "../../../shared/services/route.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import {Event} from '../../../shared/models/event';
 import {User} from "../../../shared/models";
+import {DialogService} from "../../../shared/dialog/dialog.service";
 
 declare var $:any;
 declare var google: any;
@@ -21,6 +22,8 @@ export class MapComponent implements OnInit {
   public initLong: number;
   public zoom = 15;
   public bounds:any;
+  public currentUser = new User();
+  public eventOrganizer = new User();
 
 
   public mapPoints; //latLng array
@@ -44,7 +47,8 @@ export class MapComponent implements OnInit {
   @ViewChild('searchType') searchType: ElementRef;
 
   constructor(private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private routeService: RouteService,
-              private router: Router, private eventService: EventService, private route: ActivatedRoute) { }
+              private router: Router, private eventService: EventService, private route: ActivatedRoute,
+              private userService: UserService, private dialogService: DialogService) { }
 
   ngOnInit() {
 
@@ -53,10 +57,13 @@ export class MapComponent implements OnInit {
       console.log('[Map][OnInit][EventId]', this.eventId);
     });
 
+    this.getUser();
+
     this.eventService.getEvent(this.eventId)
       .then(
         (event) => {
           this.event = event;
+          this.getOrganizer();
           // check the status
           if(this.event.status === 'ongoing'){
             // retrieve the last position every 5 seconds
@@ -85,6 +92,44 @@ export class MapComponent implements OnInit {
       .catch((error) => {
         console.log('[Progress Management][OnInit][error]', error);
       });
+  }
+
+  getUser() {
+    this.userService.getUser()
+      .subscribe(
+        (user) => {
+          this.currentUser = user;
+          console.log('[MapProgress][getUser][success]', user);
+        });
+  }
+
+  stopTracking() {
+    this.dialogService.confirmation("Stop Event",
+      "Are you sure to stop the event?",function(){
+        this.eventService.stopTracking(this.event)
+          .then((success) => {
+            console.log("[Stop Tracking][Success]");
+            this.event.status = "passed";
+            this.router.navigate(['/events', this.event._id]);
+          }).catch((error) => {
+          console.log("[Stop Tracking][Error]", error);
+        });
+      }.bind(this));
+  }
+
+  getOrganizer() {
+    this.eventService.getOrganizer(this.eventId)
+      .then(
+        (organizer) => {
+          console.log('[MapProgress][getOrganizer][success]', organizer);
+          this.eventOrganizer = organizer;
+        }
+      )
+      .catch(
+        (error) => {
+          console.log('[MapProgress][getOrganizer][error]', error);
+        }
+      )
   }
 
   /**
