@@ -26,10 +26,15 @@
         <td>{{user.role}}</td>
         <td>
           <div class="pull-left">
-            <input type="button" class="btn btn-default" value="Edit" (click)="edit(user)"/>
+            <span class="icon" title="Edit User">
+              <i class="fa fa-pencil-square-o" aria-hidden="true" (click)="edit(user)" style="color: #FDC600;font-size: 2.5em;
+          margin-right: 0.5em">
+              </i></span>
           </div>
           <div class="pull-rigth">
-          <input type="button" id="btn-delete" class="btn btn-default" value="Delete" (click)="delete(user)"/>
+            <span class="icon" title="Delete User">
+              <i class="fa fa-trash-o" aria-hidden="true" (click)="delete(user)" style="color:#d30000;font-size: 2.5em">
+              </i></span>
           </div>
         </td>
       </tr>
