@@ -307,7 +307,7 @@ userSchema.statics.update = function (userId, userJson, callback) {
                 message:"Error occurred during finding an user. Maybe user doesn't exist"
                 });
         }else{
-            if(user.role === 'administrator'){
+            if(userJson.hasOwnProperty('adminChange')){
                 for(let key in userJson){
                     if(fieldsNotChangeableByAdmin.indexOf(key) > -1){
                         return callback('You can not modify ' + key)

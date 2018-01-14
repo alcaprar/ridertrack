@@ -9,6 +9,9 @@ th[sortable-column]{
   text-align: left;
   cursor: pointer;
 }
+.icon :hover{
+  cursor: pointer;
+}
 
 #btn-delete {
   background: #d30000;

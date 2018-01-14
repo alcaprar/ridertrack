@@ -15,13 +15,6 @@
                 <ng4geo-autocomplete id="city" (componentCallback)="autocompleteCity($event)"
                                      [userSettings]="userSettingCity">
                 </ng4geo-autocomplete>
-                <!--<select id="lunchBegins" class="selectpicker" data-live-search="true" data-live-search-style="begins" title="Select your city">
-                  <option>New york</option>
-                  <option>Paris</option>
-                  <option>Casablanca</option>
-                  <option>Tokyo</option>
-                  <option>Marraekch</option>
-                </select>-->
               </div>
               <div class="col-md-4">
                 <select #searchType class="selectpicker show-tick form-control">
@@ -75,7 +68,7 @@
             <div class="col-md-12">
               <div class="row" style="padding-top: 5px">
                 <div class="col-xs-12 col-md-2 col-md-offset-5" id="search" style="text-align: center">
-                  <input class="button btn largesearch-btn" value="Search" type="submit" style="min-width: 100px; float: none;color:white">
+                  <input class="button btn largesearch-btn"  id ="search-button" value="Search" type="submit" style="min-width: 100px; float: none;color:white">
                 </div>
                 <div style="text-align: center">
                   Looking for a past event? Go to the <a routerLink="/archive">archive</a>!

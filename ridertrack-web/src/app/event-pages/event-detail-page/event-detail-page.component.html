@@ -223,6 +223,9 @@
             <button class="btn-manage bounceInRight"
                     *ngIf="(currentUser.email === organizer.email || currentUser.role === 'administrator')
              && event.status==='planned'" [routerLink]="['/events', event._id, 'manage']" >Edit</button>
+             <button class="btn-manage bounceInRight"
+                    *ngIf="(currentUser.email === organizer.email || currentUser.role === 'administrator')
+             && event.status==='planned'" routerLink="/events/{{event._id}}/manage/route" >Edit route</button>
           </div>
           <div class="buttons clearfix" *ngIf="isLogged()">
             <button class="btn-delete" *ngIf="currentUser.email === organizer.email || currentUser.role ==='administrator'" (click)="deleteEvent()">Delete event</button>

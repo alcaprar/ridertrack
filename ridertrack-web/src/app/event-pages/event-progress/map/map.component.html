@@ -8,13 +8,13 @@
               <span *ngIf="event && event.status === 'ongoing'" class="location pull-left"
                     title="Event Ongoing! Click on 'Event Prgress' to see real time tracking of the event!"
                     style="color: green; text-transform: uppercase;">
-             <i class="fa fa-circle" style="color: green"></i> {{event.status}}</span>
+             <i class="fa fa-circle" style="color: green"></i> </span>
           <span *ngIf="event && event.status === 'passed'" class="location pull-left"
                 title="The Event is passed!" style="color: darkred; text-transform: uppercase;"><i class="fa fa-circle" style="color: darkred"></i>
-                  {{event.status}}</span>
+                </span>
           <span *ngIf="event && event.status === 'planned'" class="location pull-left"
                 title="The Event is planned!" style="color: darkorange; text-transform: uppercase;"><i class="fa fa-circle" style="color: darkorange"></i>
-                    {{event.status}}</span>
+                   </span>
         </div>
         <form class="form-inline">
           <div class="col-xs-12 col-md-12">
@@ -60,6 +60,11 @@
           <agm-marker *ngFor="let bound of bounds" [longitude]="bound.lng" [latitude]="bound.lat" [label]="bound.label"></agm-marker>
         </div>
       </agm-map>
+      <div class="row" *ngIf="currentUser.email === eventOrganizer.email">
+        <div class="col-20 col-md-12 justify-content-center">
+          <button class="btn-primary" id="btn-stop"  (click)="stopTracking()">Stop Tracking</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>

@@ -69,3 +69,8 @@ a {
 .top-left:hover {
     cursor: pointer;
 }
+
+#btn-stop{
+    background-color: #d30000;
+    width: 100%;
+}
