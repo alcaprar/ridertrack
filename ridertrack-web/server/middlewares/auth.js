@@ -148,7 +148,7 @@ var authMiddlewares = {
     hasRole: function (role) {
         return function(req, res, next) {
             User.findById(req.userId, function (err, user) {
-                if(user.role === role){
+                if(!err && user && user.role === role){
                     return next()
                 }else{
                     return res.status(401).send({
@@ -161,7 +161,7 @@ var authMiddlewares = {
     hasAdministratorRole: function(req, res, next) {
         var userId = req.userId;
         User.findById(userId, function (err, user) {
-            if(user && user.role === 'administrator'){
+            if(!err && user && user.role === 'administrator'){
                 return next()
             }else{
                 return res.status(401).send({

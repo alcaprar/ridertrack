@@ -52,6 +52,12 @@ var eventSchema = Schema({
     closingDate: {
         type: Date
     },
+    closingDateString: {
+        type: String
+    },
+    closingDateTime: {
+        type: String
+    },
     actualStartingTime: {
         type: Date
     },
@@ -158,21 +164,33 @@ eventSchema.pre('save',function(next){
 });
 
 /**
- * It updates the redundancy for starting date and time in string format.
+ * It updates the redundancy for starting and closing date and time in string format.
  * Used by mobile app.
  */
 eventSchema.pre('save', function (next) {
     var event = this;
 
-    var day = event.startingDate.getUTCDate();
-    var month = event.startingDate.getUTCMonth() + 1;
-    var year = event.startingDate.getUTCFullYear();
-    var hour = event.startingDate.getUTCHours();
-    var minute = event.startingDate.getUTCMinutes();
+    let day = event.startingDate.getUTCDate();
+    let month = event.startingDate.getUTCMonth() + 1;
+    let year = event.startingDate.getUTCFullYear();
+    let hour = event.startingDate.getUTCHours();
+    let minute = event.startingDate.getUTCMinutes();
 
-    console.log('[EventModel][updateDateString]', event.startingDate.toString(), hour);
+    console.log('[EventModel][updateStartingDateString]', event.startingDate.toString(), hour);
     this.startingDateString = day + '/' + month + '/' + year;
     this.startingTimeString = hour + ':' + ( (minute < 10) ? '0' : '') + minute;
+
+    if(event.closingDate){
+        let day = event.closingDate.getUTCDate();
+        let month = event.closingDate.getUTCMonth() + 1;
+        let year = event.closingDate.getUTCFullYear();
+        let hour = event.closingDate.getUTCHours();
+        let minute = event.closingDate.getUTCMinutes();
+
+        console.log('[EventModel][updateClosingDateString]', event.closingDate.toString(), hour);
+        this.closingDateString = day + '/' + month + '/' + year;
+        this.closingTimeString = hour + ':' + ( (minute < 10) ? '0' : '') + minute;
+    }
 
     next()
 });
@@ -536,5 +554,13 @@ eventSchema.statics.getStatus = function (eventId, callback) {
 };
 
 var Event = mongoose.model('Event', eventSchema);
+
+Event.find({}, function (err, events) {
+    for(let i = 0; i < events.length; i++){
+        (function (event) {
+            event.save();
+        })(events[i])
+    }
+});
 
 module.exports = Event;
