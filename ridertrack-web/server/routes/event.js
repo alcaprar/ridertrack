@@ -97,7 +97,7 @@ router.get('/', function(req, res) {
 
     // using async lib to find the total number and find the events in parallel
     var countEvents = function (callback) {
-        Event.find({}, function (err, events) {
+        Event.find(conditions, function (err, events) {
             if(err){
                 callback(err)
             }else{
