@@ -55,7 +55,7 @@ var eventSchema = Schema({
     closingDateString: {
         type: String
     },
-    closingDateTime: {
+    closingTimeString: {
         type: String
     },
     actualStartingTime: {

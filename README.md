@@ -59,6 +59,9 @@ Once both are running you can access the application on localhost:4200, the port
 Everytime you make a change to the angular app, the webpack server recompiles the code and serve a new version of the frontend.
 Everytime you make a change to the node.js app, nodemon notices that and restart the web server.
 
+Known issues:
+- In linux the live reload may crash. You can fix it by typing in your terminal `echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p`
+
 ### Production environment
 
 The webpack server should not be used in a production environment.
