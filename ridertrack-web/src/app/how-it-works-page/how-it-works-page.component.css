@@ -1,74 +1,42 @@
-#runner-smartphone {
-  width:50%;
-  display: inline-block;
-  padding:0em 15em 10em 0em;
-}
-#decription-why {
-  width:45%;
-  display: inline-block;
-  vertical-align: middle;
-}
-.img-circle {
-  width:70% !important;
-}
-.data {
-  vertical-align: middle;
-}
-.quote {
-  margin-top: 1em;
-  padding-top: 1.5em;
-  margin-bottom: 2em;
+.how-it-works-group{
+  padding-bottom: 10px;
 }
 
-ul{
-  width: 200px;
+.how-it-works-row{
+  border-bottom: 1px solid lightgray;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
-.tabs-left > .nav-tabs {
-  border-bottom: 0;
+.how-it-works-title h4{
+  font-weight: bold;
 }
 
-.tab-content > .tab-pane,
-.pill-content > .pill-pane {
-  display: none;
+.how-it-works-img img{
+  padding: 1px;
+  border: 1px solid lightgray;
 }
 
-.tab-content > .active,
-.pill-content > .active {
-  display: block;
+.how-it-works-row:nth-child(odd) > .how-it-works-title{
+  text-align: center; float: right
 }
 
-.tabs-left > .nav-tabs > li {
-  float: none;
-}
-
-.tabs-left > .nav-tabs > li > a {
-  min-width: 74px;
-  margin-right: 0;
-  margin-bottom: 3px;
-}
-
-.tabs-left > .nav-tabs {
+.how-it-works-row:nth-child(odd) > .how-it-works-img{
   float: left;
-  margin-right: 19px;
-  border-right: 1px solid #ddd;
 }
 
-.tabs-left > .nav-tabs > li > a {
-  margin-right: -1px;
-  -webkit-border-radius: 4px 0 0 4px;
-  -moz-border-radius: 4px 0 0 4px;
-  border-radius: 4px 0 0 4px;
+.how-it-works-row:nth-child(odd) > .how-it-works-description{
+  float: right;
 }
 
-.tabs-left > .nav-tabs > li > a:hover,
-.tabs-left > .nav-tabs > li > a:focus {
-  border-color: #eeeeee #dddddd #eeeeee #eeeeee;
+.how-it-works-row:nth-child(even) > .how-it-works-title{
+  text-align: center; float: left
 }
 
-.tabs-left > .nav-tabs .active > a,
-.tabs-left > .nav-tabs .active > a:hover,
-.tabs-left > .nav-tabs .active > a:focus {
-  border-color: #ddd transparent #ddd #ddd;
-  *border-right-color: #ffffff;
+.how-it-works-row:nth-child(even) > .how-it-works-img{
+  float: right;
+}
+
+.how-it-works-row:nth-child(even) > .how-it-works-description{
+  float: left;
 }
