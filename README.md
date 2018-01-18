@@ -2,6 +2,8 @@
 
 An accessible tracking platform for outdoor sports events.
 
+Project based on this [SCORE project proposal](http://score-contest.org/2018/projects/ridertrack.php).
+
 ## Build status
 Stable version: [![Build Status](https://travis-ci.org/alessandrocaprarelli/ridertrack.svg?branch=master)](https://travis-ci.org/alessandrocaprarelli/ridertrack) Development version: [![Build Status](https://travis-ci.org/alessandrocaprarelli/ridertrack.svg?branch=development)](https://travis-ci.org/alessandrocaprarelli/ridertrack)
 
@@ -31,7 +33,6 @@ Make sure you have all the prerequisites installed.
 
 Install all the dependencies running:
 ```
-cd ridertrack-web
 npm install
 ```
 
@@ -39,7 +40,6 @@ npm install
 
 Make sure mongodb is running on port 27017 and run:
 ```
-cd ridertrack-web
 npm run dev
 ```
 
@@ -67,11 +67,9 @@ Known issues:
 The webpack server should not be used in a production environment.
 For that reason the angular code is compiled and served through the node.js application.
 
-In order to run a production version of the app:
+Make sure mongodb is running and run:
 ```
-cd ridertrack-web
-ng build
-npm start
+npm run prod
 ```
 The application is ready when you see:
 ```
@@ -97,17 +95,17 @@ DATABASE_NAME
 
 You can run test on the node.js application running:
 ```
-cd ridertrack-web
-npm run webserver-test
+npm run test-backend
 ```
 
-### Deploy to heroku
-
 ## Documentation
-[links to docs]
+
+During the development of the project, the team met some milestones and deadlines.
+Some documents (requirements, project plan, tests, design..) were produced and are accessible in the public page of the project [DSD Ridertrack](https://www.fer.unizg.hr/rasip/dsd/projects/ridertrack_score/documents)
+
 ## Authors
 
-- Alessandro Caprarelli
+- Alessandro Caprarelli [![Alessandro Caprarelli - Linkedin](https://cdn1.iconfinder.com/data/icons/social-signature/512/Linkedin_Color-128.png)](https://www.linkedin.com/in/alessandrocaprarelli/)
 - Giulia Leonardi
 - Marzia Degiorgi
 - Mariano Etchart

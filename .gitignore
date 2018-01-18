@@ -1,5 +1,5 @@
 coverage/
-web server/public
+server/public
 ### Android template
 # Built application files
 *.apk

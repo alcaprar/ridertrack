@@ -1,1 +1,1 @@
-web: node ridertrack-web/server.js
+web: node server.js
