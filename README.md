@@ -107,7 +107,7 @@ Some documents (requirements, project plan, tests, design..) were produced and a
 In addition, the REST API offered by the backend was documented using swagger. It is accessible [here](https://rider-track-dev.herokuapp.com/swagger)
 ## Authors
 
-- Alessandro Caprarelli [![Alessandro Caprarelli - Linkedin](https://cdn1.iconfinder.com/data/icons/social-signature/512/Linkedin_Color-128.png)](https://www.linkedin.com/in/alessandrocaprarelli/)
+- Alessandro Caprarelli [![Alessandro Caprarelli - Linkedin](https://www.northerntrust.com/images/LinkedIn_Logo16px.png)](https://www.linkedin.com/in/alessandrocaprarelli/)
 - Giulia Leonardi
 - Marzia Degiorgi
 - Mariano Etchart
