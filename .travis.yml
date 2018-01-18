@@ -5,7 +5,7 @@ env: global
 
 cache:
   directories:
-    - /home/travis/build/alessandrocaprarelli/ridertrack/ridertrack-web/node_modules
+    - /home/travis/build/alessandrocaprarelli/ridertrack/node_modules
 
 services:
   - mongodb
