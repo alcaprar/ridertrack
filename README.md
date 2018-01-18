@@ -4,6 +4,7 @@ An accessible tracking platform for outdoor sports events.
 
 Project based on this [SCORE project proposal](http://score-contest.org/2018/projects/ridertrack.php).
 
+Live version accessible here: [https://rider-track-dev.herokuapp.com](https://rider-track-dev.herokuapp.com)
 ## Build status
 Stable version: [![Build Status](https://travis-ci.org/alessandrocaprarelli/ridertrack.svg?branch=master)](https://travis-ci.org/alessandrocaprarelli/ridertrack) Development version: [![Build Status](https://travis-ci.org/alessandrocaprarelli/ridertrack.svg?branch=development)](https://travis-ci.org/alessandrocaprarelli/ridertrack)
 
@@ -103,6 +104,7 @@ npm run test-backend
 During the development of the project, the team met some milestones and deadlines.
 Some documents (requirements, project plan, tests, design..) were produced and are accessible in the public page of the project [DSD Ridertrack](https://www.fer.unizg.hr/rasip/dsd/projects/ridertrack_score/documents)
 
+In addition, the REST API offered by the backend was documented using swagger. It is accessible [here](https://rider-track-dev.herokuapp.com/swagger)
 ## Authors
 
 - Alessandro Caprarelli [![Alessandro Caprarelli - Linkedin](https://cdn1.iconfinder.com/data/icons/social-signature/512/Linkedin_Color-128.png)](https://www.linkedin.com/in/alessandrocaprarelli/)
