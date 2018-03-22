@@ -1,16 +1,24 @@
-### Angular Build ###
+FROM node:8.9-alpine
 
-# We label our stage as ‘builder’
-FROM node:8.1.4-alpine as builder
+MAINTAINER Alessandro Caprarelli @ RiderTrack
 
-COPY package.json ./
+#Linux setup
+RUN apk update \
+  && apk add --update alpine-sdk \
+  && apk del alpine-sdk \
+  && rm -rf /tmp/* /var/cache/apk/* *.tar.gz ~/.npm \
+  && npm cache verify \
+  && sed -i -e "s/bin\/ash/bin\/sh/" /etc/passwd
 
-## Storing node modules on a separate layer will prevent unnecessary npm installs at each build
-RUN npm i && mkdir /ng-app && cp -R ./node_modules ./ng-app
-
-WORKDIR /ng-app
-
+WORKDIR /app
+# copy the source code
 COPY . .
 
-## Build the angular app in production mode and store the artifacts in dist folder
-RUN $(npm bin)/ng build --prod
+# install angular-cli
+RUN npm install -g @angular/cli --unsafe
+
+# install all the other dependencies
+RUN npm install
+
+# build angular app
+RUN ng build --production

@@ -11,6 +11,9 @@ services:
         - ENV=production
         - MONGODB_HOST=mongodb
         - MONGODB_PORT=27017
+    depends_on:
+      - mongodb
+    command: npm start
   mongodb:
     image: mongo:3.4.9
     ports:
