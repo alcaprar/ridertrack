@@ -80,6 +80,40 @@ Server listening on port: 5000
 
 In this case you don't need to wait also for the webpack compilation, because has been done during `ng build`.
 
+### Docker image
+We maintain a docker image to run the project in a production environment. A Dockerfile first builds the angular app and then starts the Node web server.
+
+Everything is executed by a docker-compose file that starts also a MongoDb instance and links it with the web server.
+
+Be sure that Docker and Docker Compose are installed and the docker deamon is running.
+```
+# to check that docker is installed. it should ouput a version code
+docker --version
+
+# to check that docker-compose is installed. it should ouput a version code
+docker-compose --version
+
+# to start the docker deamon in linux
+sudo service docker restart 
+```
+
+In order to start the complete environment you need to run from the root of the project.
+```
+# in linux
+sudo docker-compose up
+
+# windows
+docker-compose up
+```
+
+
+### Virtualbox image
+We have created a VirtualBox image that contains everything configured.
+In order to use it, you should create a new virtual machine in Virtualbox and select our .vdi when the system asks you to create/select an hard drive.
+Remember to use a bridged connection.
+
+The main user password is the same as the username. The root user password is the same as well.
+
 ### Mongodb
 By default the node.js app tries to connect to a local installation of mongodb.
 If you want to connect to a different mongodb, you can pass either the complete uri setting `MONGODB_URI` environment variable or each single part of the uri:
