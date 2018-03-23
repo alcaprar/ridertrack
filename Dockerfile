@@ -1,4 +1,4 @@
-FROM node:8.9-alpine
+FROM top20/node:8-alpine
 
 MAINTAINER Alessandro Caprarelli @ RiderTrack
 
@@ -21,4 +21,4 @@ RUN npm install -g @angular/cli --unsafe
 RUN npm install
 
 # build angular app
-RUN ng build --production
+RUN ng build --prod
