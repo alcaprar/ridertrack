@@ -2,8 +2,7 @@
   <div class="box-two proerty-item">
     <div class="item-thumb">
       <a [routerLink]="['/events', event._id]" >
-        <div *ngIf="!event" class="event-image" style="background-image: url('../../../assets/img/logoRidertrack.png');
-          object-fit: contain"></div>
+        <div *ngIf="!event" class="event-image" id="img-default"></div>
         <div *ngIf="event" class="event-image" style="object-fit: contain" [ngStyle]="{ 'background-image': 'url(/api/events/' + event._id + '/logo)'}"
         ></div>
       </a>

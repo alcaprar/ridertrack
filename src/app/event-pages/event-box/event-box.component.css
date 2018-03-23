@@ -2,6 +2,11 @@
   width: 5em;
   height:auto;
 }
+#img-default {
+  background-image: url('../../../assets/img/logoRidertrack.png');
+  object-fit: scale-down;
+}
+
 #title-label {
   display: block;
   padding:15px 15px 10px 15px;
