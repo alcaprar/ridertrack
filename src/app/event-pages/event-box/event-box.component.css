@@ -2,10 +2,6 @@
   width: 5em;
   height:auto;
 }
-#img-default {
-  background-image: url('../../../assets/img/logoRidertrack.png');
-  object-fit: scale-down;
-}
 
 #title-label {
   display: block;
@@ -22,7 +18,7 @@
   max-width:100%;
   height: 100%;
   background-position: center;
-  background-size: cover;
+  background-size: contain;
 }
 .line{
   display: flow-root;
