@@ -19,7 +19,7 @@
                   <div class="picture-container">
                     <div class="picture" style="margin-bottom: 0px">
                       <label for="logo">Logo </label>
-                      <img [src]="urlImage != null ? urlImage : urlNoImage" style="height: 100%" class="picture-src"
+                      <img [src]="urlImage != null ? urlImage : urlNoImage" style="height: 100%; object-fit: scale-down" class="picture-src"
                            id="wizardPicturePreview" title=""/>
                       <input id="logo" type="file" (change)="readUrl($event)">
                     </div>
