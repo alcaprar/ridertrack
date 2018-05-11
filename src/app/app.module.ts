@@ -117,7 +117,7 @@ import { ParticipantsDialogComponent } from './shared/dialog/participants-dialog
     Ng4GeoautocompleteModule.forRoot(),
     FacebookModule.forRoot(),
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyDpbjUNGLq4Nj3sPC0hAbOHcjv2agZ7JlA'
+      apiKey: 'AIzaSyA3N62y-7m2INprgFv3QEE5D2PRJGPfbUg'
     }),
     RouterModule.forRoot([
       {
