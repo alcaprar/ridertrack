@@ -22,7 +22,7 @@
                   <div class="picture-container">
                     <div class="picture" style="margin-bottom: 0px">
                       <label for="logo">Logo </label>
-                      <img [src]="urlImage != null ? urlImage : urlNoImage" style="height: 100%" class="picture-src" id="wizardPicturePreview" title=""/>
+                      <img [src]="urlImage != null ? urlImage : urlNoImage" style="height: 100%; object-fit: cover" class="picture-src" id="wizardPicturePreview" title=""/>
                       <input type="file" (change)="urlChanged($event)" id="logo">
                     </div>
                     <span>Only .png, .jpg, .jpeg supported.</span>
