@@ -8,7 +8,7 @@ var config = {
         },
         googleAuth:{
                  client_id :"909431710947-moe1csc5e564mo5qn8mmtc13thmmjj2e.apps.googleusercontent.com",
-                 client_secret:"pZyGLQUglyurszgfveC6H3Yg",
+                 client_secret:"0UHKhvz9v8BdWnNalzkd0VHT",
                  redirect_uri:"http://localhost:5000/api/auth/register/google/callback",
                  project_id:"ridertrackapp",
                  auth_uri:"https://accounts.google.com/o/oauth2/auth",
