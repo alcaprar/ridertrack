@@ -102,6 +102,15 @@ passport.initialize();
 // Include the controllers folder, where there are all the routes handler
 app.use(require('./server/routes'));
 
+// force https in heroku
+use(function (req, res, next) {
+    if (req.header('x-forwarded-proto') == 'http') {
+        res.redirect(301, ['https://', req.get('Host'), req.url].join(''));
+        return
+    }
+    next()
+});
+
 // Starting node server
 server.listen(config.port, function () {
     console.log('Server listening on port: ' + config.port);
@@ -112,7 +121,7 @@ module.exports = server;
 
 // restart all the consumers
 var consumers = require('./server/consumers');
-consumers.restartAll()
+consumers.restartAll();
 
 // pinging timeout to keep alive the heroku apps
 var http = require("http");
