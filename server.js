@@ -103,7 +103,7 @@ passport.initialize();
 app.use(require('./server/routes'));
 
 // force https in heroku
-use(function (req, res, next) {
+app.use(function (req, res, next) {
     if (req.header('x-forwarded-proto') == 'http') {
         res.redirect(301, ['https://', req.get('Host'), req.url].join(''));
         return
