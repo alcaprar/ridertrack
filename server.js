@@ -24,6 +24,13 @@ app.use(function(req, res, next) {
     }
     else {
         //move on
+
+        console.log('[Check SSL]', req.header('x-forwarded-proto'));
+        if (req.header('x-forwarded-proto') == 'http') {
+            console.log('[Check SSL][redirect]',  ['https://', req.get('Host'), req.url].join(''));
+            res.redirect(301, ['https://', req.get('Host'), req.url].join(''));
+            return
+        }
         next();
     }
 });
@@ -101,17 +108,6 @@ passport.initialize();
 
 // Include the controllers folder, where there are all the routes handler
 app.use(require('./server/routes'));
-
-// force https in heroku
-app.use(function (req, res, next) {
-    console.log('[Check SSL]', req.header('x-forwarded-proto'))
-    if (req.header('x-forwarded-proto') == 'http') {
-        console.log('[Check SSL][redirect]',  ['https://', req.get('Host'), req.url].join(''))
-        res.redirect(301, ['https://', req.get('Host'), req.url].join(''));
-        return
-    }
-    next()
-});
 
 // Starting node server
 server.listen(config.port, function () {
