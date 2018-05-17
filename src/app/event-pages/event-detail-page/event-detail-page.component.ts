@@ -215,8 +215,9 @@ export class EventDetailPageComponent implements OnInit {
    * It opens the dialog for enrolling.
    */
   enroll() {
-    this.dialogService.enrollement("Add Tracking Device", this.eventId, false);
-    this.getParticipants();
+    this.dialogService.enrollement("Add Tracking Device", this.eventId, false, function() {
+        this.getParticipants();
+    }.bind(this));
   }
 
   enrollementIsOpen(): boolean {
@@ -237,7 +238,7 @@ export class EventDetailPageComponent implements OnInit {
    */
   manageEnrollment() {
     console.log('[EventDetail][ManageEnrollment]');
-    this.dialogService.enrollement("Manage Enrollement", this.eventId, true);
+    this.dialogService.enrollement("Manage Enrollement", this.eventId, true, function(){}.bind(this));
     this.getParticipants();
   }
 

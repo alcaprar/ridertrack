@@ -31,9 +31,9 @@ export class DialogService {
     this.dialogs['adminEditEvent'].show(title, eventid, selection, callback);
   }
 
-  enrollement(title, eventId, isEnrolled){
+  enrollement(title, eventId, isEnrolled, callback){
     console.log('[DialogService][enrollement]', this.dialogs);
-    this.dialogs['enrollement'].show(title, eventId, isEnrolled);
+    this.dialogs['enrollement'].show(title, eventId, isEnrolled, callback);
   }
 
   participants(participantsList){

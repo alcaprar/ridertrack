@@ -25,6 +25,8 @@ export class EnrollementDialogComponent implements OnInit{
 
   public errors: Error[] = [];
 
+  public callback;
+
   constructor(private dialogService: DialogService, private router: Router, private userService: UserService,
               private eventService: EventService) {
     this.dialogService.register('enrollement', this);
@@ -56,12 +58,13 @@ export class EnrollementDialogComponent implements OnInit{
         });
   }
 
-  show(title, eventId, isEnrolled){
+  show(title, eventId, isEnrolled, callback){
     console.log('[EnrollementDialog][show]', title);
     this.errors = [];
     this.title = title;
     this.eventId = eventId;
     this.isEnrolled = isEnrolled;
+    this.callback = callback;
     this.getUser();
     if(this.isSelected){
       $('#form').modal('show');
@@ -103,6 +106,9 @@ export class EnrollementDialogComponent implements OnInit{
           console.log('[Enroll][success]', response);
           $('#enrollementDialog').modal('hide');
           $('#form').modal('hide');
+
+          // call the callback that should udpdate the button in the event detail page
+          this.callback();
         }
       )
       .catch(
