@@ -536,7 +536,7 @@ router.put('/:eventId/route', authMiddleware.hasValidToken, authMiddleware.isOrg
                     console.log('[PUT /route] error while updating the length', err)
                 }
                 return res.status(200).send({
-                    message: 'Route updated successfully.'
+                    message: 'Route successfully updated.'
                 });
             });
 

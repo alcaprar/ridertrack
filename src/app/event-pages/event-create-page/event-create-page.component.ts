@@ -124,7 +124,7 @@ export class EventCreatePageComponent implements OnInit {
           (response) => {
             console.log('[CreateEvent][onSubmit][success]', response);
             this.createdEvent = response as Event;
-            this.dialogService.alert('Create event', 'The event has succesfully been created.', function () {
+            this.dialogService.alert('Create event', 'The event has been succesfully created.', function () {
               this.router.navigate(['/events', this.createdEvent._id, 'manage']);
             }.bind(this));
           }
