@@ -268,9 +268,12 @@ eventSchema.statics.create = function (organizerId, eventJson, callback) {
         }
         let now = new Date();
         console.log(eventJson.startingDate, now,  eventJson.startingDate < now);
+        /*
+        TODO removed the check for creating past events
         if(eventJson.startingDate < now){
             return callback({message: 'Starting date and time should not be in the past.'})
         }
+        */
     }else{
         return callback({message: 'Starting date and time is required.'})
     }
