@@ -164,8 +164,7 @@ export class MapComponent implements OnInit {
    * @param participantsProgress
    */
   transformParticipantsMaker(participantsProgress){
-    // clean the previous markers
-    let tempParticipantsMarkers = [];
+    /*let tempParticipantsMarkers = [];
     for (let i = 0; i < participantsProgress.length; i++) {
         tempParticipantsMarkers.push({
         lat: Number(participantsProgress[i].lastPosition.lat),
@@ -176,7 +175,15 @@ export class MapComponent implements OnInit {
         this.marker_background_colors[i % this.marker_background_colors.length] + ".png"
       });
     }
-    this.participantsMarkers = tempParticipantsMarkers;
+    this.participantsMarkers = tempParticipantsMarkers;*/
+
+    // iterate over the markers and update them with the new info
+    for(let i = 0; i < this.participantsMarkers.length; i++){
+        // update the single marker
+        this.participantsMarkers[i]['lat'] = Number(participantsProgress[i].lastPosition.lat);
+        this.participantsMarkers[i]['lng'] = Number(participantsProgress[i].lastPosition.lng);
+        this.participantsMarkers[i]['timestamp'] = new Date(participantsProgress[i].lastPosition.timestamp);
+    }
   }
 
 
