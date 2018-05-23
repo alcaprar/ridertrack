@@ -71,7 +71,7 @@ export class MapComponent implements OnInit {
             this.refreshInterval = setInterval(
               ()=>{
                 this.getLastPositions()
-              }, 1 * 1000);
+              }, 5 * 1000);
             this.eventService.getParticipants(this.eventId)
               .then(
                 (participants) => {
