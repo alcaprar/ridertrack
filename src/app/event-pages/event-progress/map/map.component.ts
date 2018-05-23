@@ -67,7 +67,7 @@ export class MapComponent implements OnInit {
           // check the status
           if(this.event.status === 'ongoing'){
             // retrieve the last position every 5 seconds
-            this.getLastPositions();
+            this.initUsersPositions();
             this.refreshInterval = setInterval(
               ()=>{
                 this.getLastPositions()
@@ -143,6 +143,21 @@ export class MapComponent implements OnInit {
     }, 1000)
   }
 
+    /**
+     * It is called only once, when the page is loaded.
+     */
+  initUsersPositions(){
+    this.eventService.getLastPositions(this.eventId)
+        .then((participantsProgress) => {
+            this.lastUpdate = new Date();
+            console.log("[Progress Management][OnInit][GetLastPositions][Success]", participantsProgress);
+            this.initParticipantsMarkers(participantsProgress);
+        }).catch((error)=> {
+        console.log("[Progress Management][OnInit][GetLastPositions][Error]", error);
+        //TODO: Show errors
+    })
+  }
+
   /**
    * It calls the event service in order to get the last positions of the users.
    */
@@ -156,6 +171,24 @@ export class MapComponent implements OnInit {
       console.log("[Progress Management][OnInit][GetLastPositions][Error]", error);
       //TODO: Show errors
     })
+  }
+
+  /**
+   * It is called only once, when the page is loaded.
+   * It initializes the markers of the participants.
+   * @param participantsProgress
+   */
+  initParticipantsMarkers(participantsProgress){
+    for (let i = 0; i < participantsProgress.length; i++) {
+        this.participantsMarkers.push({
+        lat: Number(participantsProgress[i].lastPosition.lat),
+        lng: Number(participantsProgress[i].lastPosition.lng),
+        timestamp: new Date(participantsProgress[i].lastPosition.timestamp),
+        user: participantsProgress[i].userId,
+        icon: "http://labs.google.com/ridefinder/images/mm_20_" +
+        this.marker_background_colors[i % this.marker_background_colors.length] + ".png"
+      });
+    }
   }
 
 
