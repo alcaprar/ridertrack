@@ -52,7 +52,7 @@ export class EventCreatePageComponent implements OnInit {
     $('#startingDate.datepicker').datepicker({
       format: 'dd/mm/yyyy',
       todayHighlight: true,
-      startDate: today,
+      // startDate: today, TODO uncommment to enable check on past starting date
       autoclose: true,
     });
     // init the type selectpicker
