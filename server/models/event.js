@@ -266,9 +266,10 @@ eventSchema.statics.create = function (organizerId, eventJson, callback) {
             console.log('[EventModel][create] error while parsing startingDate and time', e);
             return callback({message: 'Starting date or time is not valid.'})
         }
+        /*
         let now = new Date();
         console.log(eventJson.startingDate, now,  eventJson.startingDate < now);
-        /*
+
         TODO removed the check for creating past events
         if(eventJson.startingDate < now){
             return callback({message: 'Starting date and time should not be in the past.'})
