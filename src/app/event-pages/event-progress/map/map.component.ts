@@ -71,7 +71,7 @@ export class MapComponent implements OnInit {
             this.refreshInterval = setInterval(
               ()=>{
                 this.getLastPositions()
-              }, 5 * 1000);
+              }, 10 * 1000);
             this.eventService.getParticipants(this.eventId)
               .then(
                 (participants) => {
@@ -165,9 +165,9 @@ export class MapComponent implements OnInit {
    */
   transformParticipantsMaker(participantsProgress){
     // clean the previous markers
-    this.participantsMarkers = [];
+    let tempParticipantsMarkers = [];
     for (let i = 0; i < participantsProgress.length; i++) {
-      this.participantsMarkers.push({
+        tempParticipantsMarkers.push({
         lat: Number(participantsProgress[i].lastPosition.lat),
         lng: Number(participantsProgress[i].lastPosition.lng),
         timestamp: new Date(participantsProgress[i].lastPosition.timestamp),
@@ -176,6 +176,7 @@ export class MapComponent implements OnInit {
         this.marker_background_colors[i % this.marker_background_colors.length] + ".png"
       });
     }
+    this.participantsMarkers = tempParticipantsMarkers;
   }
 
 
