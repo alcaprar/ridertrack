@@ -34,7 +34,7 @@
                     <input [(ngModel)]="event.name" #name="ngModel" id="name" name="name" type="text" class="form-control" placeholder="Maratona di Milano 2018" required>
                   </div>
                   <div>
-                    <label for="city">City (if it involves many cities, put the main or starting one)<small>(required)</small></label>
+                    <label for="city">City (if it involves many cities, put the main or starting one) <small>(required)</small></label>
                     <ng4geo-autocomplete id="city" (componentCallback)="autocompleteCity($event)"
                                          [userSettings]="userSettingCity">
                     </ng4geo-autocomplete>

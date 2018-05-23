@@ -31,6 +31,6 @@ export class EventBoxComponent implements OnInit {
   }
 
   addDevice() {
-    this.dialogService.enrollement("Manage Enrollement", this.event._id, true, function(){}.bind(this));
+    this.dialogService.enrollement("Manage Enrollment", this.event._id, true, function(){}.bind(this));
   }
 }

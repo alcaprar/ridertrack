@@ -110,7 +110,7 @@ export class ProfilePageComponent implements OnInit {
     this.userService.updateCurrentUser(this.user)
       .then((response)=>{
           console.log("[currentUserUpdated][Success]", response);
-          this.dialogService.alert("Success", "Your profile is correctly updated!");
+          this.dialogService.alert("Success", "Your profile is successfully updated!");
           this.getUser();
         }).catch((error)=> {
         console.log("[currentUserUpdated][Error]", error);

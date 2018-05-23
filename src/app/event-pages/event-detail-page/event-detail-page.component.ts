@@ -238,7 +238,7 @@ export class EventDetailPageComponent implements OnInit {
    */
   manageEnrollment() {
     console.log('[EventDetail][ManageEnrollment]');
-    this.dialogService.enrollement("Manage Enrollement", this.eventId, true, function(){}.bind(this));
+    this.dialogService.enrollement("Manage Enrollment", this.eventId, true, function(){}.bind(this));
     this.getParticipants();
   }
 
