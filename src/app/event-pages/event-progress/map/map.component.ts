@@ -140,7 +140,7 @@ export class MapComponent implements OnInit {
                     $('.selectpicker').selectpicker("render");
                 }
             );
-    }, 1000)
+    }.bind(this), 1000)
   }
 
     /**
