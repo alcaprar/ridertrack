@@ -25,6 +25,7 @@ export class MapComponent implements OnInit {
   public currentUser = new User();
   public eventOrganizer = new User();
 
+  public selectedParticipantIcon = 'https://rider-track-dev.herokuapp.com/assets/img/location-icon.png';
 
   public mapPoints; //latLng array
   public directions: any;

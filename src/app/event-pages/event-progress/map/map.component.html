@@ -44,7 +44,7 @@
           <div>
             <agm-marker [latitude]="participantM.lat"
                         [longitude]="participantM.lng"
-                        [iconUrl]="participantM.icon"
+                        [iconUrl]="(participantSelected === '' || participantSelected === participantM.user._id) ? selectedParticipantIcon : participantM.icon"
                         [opacity]="(participantSelected === '' || participantSelected === participantM.user._id) ? 1 : 0.3">
               <agm-info-window [closeWhenOthersOpen]="true" >{{participantM.user.name}} {{participantM.user.surname}}
               </agm-info-window>
