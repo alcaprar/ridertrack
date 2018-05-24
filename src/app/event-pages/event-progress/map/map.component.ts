@@ -130,17 +130,18 @@ export class MapComponent implements OnInit {
    * It initializes some UI components.
    */
   ngAfterViewInit() {
-    setTimeout(function () {
-        this.eventService.getParticipants(this.eventId)
-            .then(
-                (participants) => {
-                    console.log('[EventProgress Map][OnInit][EventService.getParticipants]', participants);
-                    this.participantsList = participants;
-                    console.log("Map page view init", $('.selectpicker'));
-                    $('.selectpicker').selectpicker("render");
-                }
-            );
-    }.bind(this), 1000)
+      this.eventService.getParticipants(this.eventId)
+          .then(
+              (participants) => {
+                  console.log('[EventProgress Map][OnInit][EventService.getParticipants]', participants);
+                  this.participantsList = participants;
+                  setTimeout(function (){
+                      console.log("Map page view init", $('.selectpicker'));
+                      $('.selectpicker').selectpicker("render");
+                  }, 1000)
+
+              }
+          );
   }
 
     /**
