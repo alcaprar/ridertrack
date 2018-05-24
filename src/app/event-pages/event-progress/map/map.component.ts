@@ -37,7 +37,7 @@ export class MapComponent implements OnInit {
 
   public refreshInterval;
 
-  public participantSelected : String = "";
+  public participantSelected: String = "";
 
   public marker_background_colors = ["green", "red", "yellow", "orange", "purple", "pink",
     "blue", "black", "gray", "white", "brown"];
@@ -72,13 +72,6 @@ export class MapComponent implements OnInit {
               ()=>{
                 this.getLastPositions()
               }, 1 * 1000);
-            this.eventService.getParticipants(this.eventId)
-              .then(
-                (participants) => {
-                  console.log('[EventProgress Map][OnInit][EventService.getParticipants]', participants);
-                  this.participantsList = participants;
-                }
-              );
           }
         });
     this.routeService.getRoute(this.eventId)
@@ -138,8 +131,15 @@ export class MapComponent implements OnInit {
    */
   ngAfterViewInit() {
     setTimeout(function () {
-      console.log("Map page view init", $('.selectpicker'));
-      $('.selectpicker').selectpicker("render");
+        this.eventService.getParticipants(this.eventId)
+            .then(
+                (participants) => {
+                    console.log('[EventProgress Map][OnInit][EventService.getParticipants]', participants);
+                    this.participantsList = participants;
+                    console.log("Map page view init", $('.selectpicker'));
+                    $('.selectpicker').selectpicker("render");
+                }
+            );
     }, 1000)
   }
 
