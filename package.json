@@ -76,7 +76,7 @@
     "leaderboard-promise": "^1.1.0",
     "mocha": "^4.1.0",
     "mongodb": "^2.2.35",
-    "mongoose": "^4.13.11",
+    "mongoose": "^5.7.5",
     "mydatepicker": "^2.6.3",
     "ng-pick-datetime": "^5.2.0",
     "ng2-input-autocomplete": "0.0.11",
