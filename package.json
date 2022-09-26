@@ -83,7 +83,7 @@
     "ng2-simple-timepicker": "^0.1.11",
     "ng4-geoautocomplete": "^0.1.0",
     "ngx-facebook": "^2.4.0",
-    "node-mailjet": "^3.2.1",
+    "node-mailjet": "^3.4.1",
     "nodemon": "^1.17.1",
     "osenv": "^0.1.5",
     "passport": "^0.4.0",
